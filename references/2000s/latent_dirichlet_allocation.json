@@ -103,5 +103,12 @@
     ],
     "extraction_mode": "from_stage_files",
     "methodology_section": "§6 统一阅读卡字段"
-  }
+  },
+  "concepts": [
+    "主题建模",
+    "生成过程",
+    "先验结构",
+    "推断",
+    "参数学习"
+  ]
 }

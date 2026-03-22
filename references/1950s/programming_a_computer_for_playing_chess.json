@@ -101,5 +101,11 @@
     ],
     "extraction_mode": "from_stage_files",
     "methodology_section": "§6 统一阅读卡字段"
-  }
+  },
+  "concepts": [
+    "搜索策略",
+    "分支控制",
+    "评估函数",
+    "启发式近似"
+  ]
 }

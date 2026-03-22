@@ -103,5 +103,13 @@
     ],
     "extraction_mode": "from_stage_files",
     "methodology_section": "§6 统一阅读卡字段"
-  }
+  },
+  "concepts": [
+    "通信系统",
+    "离散无记忆信源",
+    "编码",
+    "压缩",
+    "噪声信道",
+    "信道容量"
+  ]
 }

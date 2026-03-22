@@ -100,5 +100,10 @@
     ],
     "extraction_mode": "from_stage_files",
     "methodology_section": "§6 统一阅读卡字段"
-  }
+  },
+  "concepts": [
+    "prompting 计算模型",
+    "prompting",
+    "图灵完备性"
+  ]
 }

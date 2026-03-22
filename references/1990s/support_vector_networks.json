@@ -101,5 +101,13 @@
     ],
     "extraction_mode": "from_stage_files",
     "methodology_section": "§6 统一阅读卡字段"
-  }
+  },
+  "concepts": [
+    "分类",
+    "间隔",
+    "支持向量",
+    "优化形式",
+    "核方法",
+    "泛化"
+  ]
 }

@@ -108,5 +108,15 @@
     ],
     "extraction_mode": "from_stage_files",
     "methodology_section": "§6 统一阅读卡字段"
-  }
+  },
+  "concepts": [
+    "序列建模",
+    "并行化",
+    "自注意力",
+    "多头机制",
+    "编码器",
+    "解码器结构",
+    "训练",
+    "机器翻译"
+  ]
 }

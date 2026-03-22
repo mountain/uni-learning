@@ -100,5 +100,16 @@
     ],
     "extraction_mode": "from_stage_files",
     "methodology_section": "§6 统一阅读卡字段"
-  }
+  },
+  "concepts": [
+    "学习目标重定义",
+    "PAC",
+    "分布框架下",
+    "可学习性分析",
+    "open computation",
+    "open",
+    "computation",
+    "limit",
+    "anytime"
+  ]
 }

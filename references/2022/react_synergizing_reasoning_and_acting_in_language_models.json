@@ -99,5 +99,9 @@
     ],
     "extraction_mode": "from_stage_files",
     "methodology_section": "§6 统一阅读卡字段"
-  }
+  },
+  "concepts": [
+    "ReAct 框架",
+    "推理行动循环"
+  ]
 }

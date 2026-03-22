@@ -100,5 +100,14 @@
     ],
     "extraction_mode": "from_stage_files",
     "methodology_section": "§6 统一阅读卡字段"
-  }
+  },
+  "concepts": [
+    "Agent",
+    "记忆",
+    "工具使用",
+    "规划执行",
+    "反馈",
+    "评测",
+    "安全"
+  ]
 }

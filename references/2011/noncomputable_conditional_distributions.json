@@ -102,5 +102,10 @@
     ],
     "extraction_mode": "from_stage_files",
     "methodology_section": "§6 统一阅读卡字段"
-  }
+  },
+  "concepts": [
+    "可计算",
+    "不可计算",
+    "贝叶斯推断"
+  ]
 }

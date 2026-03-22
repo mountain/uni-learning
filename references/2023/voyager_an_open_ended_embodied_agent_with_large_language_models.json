@@ -99,5 +99,12 @@
     ],
     "extraction_mode": "from_stage_files",
     "methodology_section": "§6 统一阅读卡字段"
-  }
+  },
+  "concepts": [
+    "系统",
+    "组件",
+    "自动课程",
+    "技能积累",
+    "具身环境"
+  ]
 }

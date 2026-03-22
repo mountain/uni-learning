@@ -102,5 +102,10 @@
     ],
     "extraction_mode": "from_stage_files",
     "methodology_section": "§6 统一阅读卡字段"
-  }
+  },
+  "concepts": [
+    "停机判定",
+    "概率化重写",
+    "anytime 算法"
+  ]
 }

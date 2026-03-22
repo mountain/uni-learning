@@ -101,5 +101,11 @@
     ],
     "extraction_mode": "from_stage_files",
     "methodology_section": "§6 统一阅读卡字段"
-  }
+  },
+  "concepts": [
+    "预测学习",
+    "时序差分",
+    "监督学习",
+    "动态规划"
+  ]
 }

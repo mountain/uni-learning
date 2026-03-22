@@ -103,5 +103,12 @@
     ],
     "extraction_mode": "from_stage_files",
     "methodology_section": "§6 统一阅读卡字段"
-  }
+  },
+  "concepts": [
+    "极限学习",
+    "可学习类",
+    "层级结构",
+    "可计算性",
+    "复杂度"
+  ]
 }

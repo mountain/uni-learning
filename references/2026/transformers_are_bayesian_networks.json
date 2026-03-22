@@ -100,5 +100,10 @@
     ],
     "extraction_mode": "from_stage_files",
     "methodology_section": "§6 统一阅读卡字段"
-  }
+  },
+  "concepts": [
+    "图模型",
+    "结构映射",
+    "条件独立"
+  ]
 }

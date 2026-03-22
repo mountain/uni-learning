@@ -101,5 +101,13 @@
     ],
     "extraction_mode": "from_stage_files",
     "methodology_section": "§6 统一阅读卡字段"
-  }
+  },
+  "concepts": [
+    "RNN 长期依赖学习困难",
+    "RNN",
+    "LSTM 单元",
+    "LSTM",
+    "门控结构",
+    "训练过程"
+  ]
 }

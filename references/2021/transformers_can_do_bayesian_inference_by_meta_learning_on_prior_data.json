@@ -100,5 +100,10 @@
     ],
     "extraction_mode": "from_stage_files",
     "methodology_section": "§6 统一阅读卡字段"
-  }
+  },
+  "concepts": [
+    "任务分布",
+    "元学习",
+    "贝叶斯推断"
+  ]
 }

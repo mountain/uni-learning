@@ -96,5 +96,13 @@
     ],
     "extraction_mode": "catalog_fallback",
     "methodology_section": "§6 统一阅读卡字段"
-  }
+  },
+  "concepts": [
+    "感知机模型",
+    "数学定义",
+    "能力分析",
+    "限制定理",
+    "结构任务上",
+    "反例"
+  ]
 }

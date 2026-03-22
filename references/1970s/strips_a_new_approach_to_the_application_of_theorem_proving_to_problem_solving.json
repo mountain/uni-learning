@@ -102,5 +102,12 @@
     ],
     "extraction_mode": "from_stage_files",
     "methodology_section": "§6 统一阅读卡字段"
-  }
+  },
+  "concepts": [
+    "表示",
+    "世界状态",
+    "动作算子",
+    "规划",
+    "搜索"
+  ]
 }

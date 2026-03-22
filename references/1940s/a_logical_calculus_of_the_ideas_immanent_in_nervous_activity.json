@@ -103,5 +103,14 @@
     ],
     "extraction_mode": "from_stage_files",
     "methodology_section": "§6 统一阅读卡字段"
-  }
+  },
+  "concepts": [
+    "神经活动",
+    "阈值神经元",
+    "逻辑表达",
+    "网络构造",
+    "命题演算关系",
+    "可计算过程",
+    "表达能力"
+  ]
 }

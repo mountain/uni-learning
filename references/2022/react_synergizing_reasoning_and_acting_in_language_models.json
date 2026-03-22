@@ -1,0 +1,52 @@
+{
+  "stage": "zero_preprocessing_catalog",
+  "source_pdf": {
+    "file_name": "react_synergizing_reasoning_and_acting_in_language_models.pdf",
+    "file_path": "/Users/mingli/Khex/uni-learning/references/2022/react_synergizing_reasoning_and_acting_in_language_models.pdf",
+    "same_directory_output": true
+  },
+  "bibliography": {
+    "title": "ReAct: Synergizing Reasoning and Acting in Language Models",
+    "authors": [
+      "Unknown"
+    ],
+    "year": 2022,
+    "publication": "Technical Article",
+    "volume": "",
+    "pages": ""
+  },
+  "input_context_for_catalog": {
+    "abstract_brief": "论文提出 ReAct 范式，将推理轨迹与动作调用交替执行，强化语言模型在交互任务中的可控决策能力。",
+    "toc_brief": [
+      "ReAct 框架定义",
+      "推理-行动循环机制",
+      "任务实验与误差分析"
+    ],
+    "preface_or_intro_brief": "引言强调仅推理或仅行动不足以支撑复杂任务执行。"
+  },
+  "catalog_result": {
+    "document_type": "技术论文",
+    "primary_route": "LM / agent / AGI",
+    "estimated_difficulty": {
+      "concept_density": "中",
+      "math_density": "低",
+      "historical_context_density": "中"
+    },
+    "reading_priority": "高",
+    "recommended_survey_chapters": [
+      "LM / agent / AGI"
+    ],
+    "misreading_risks": [
+      "将轨迹显式化误读为稳健推理保证",
+      "忽略工具调用环境与反馈质量约束",
+      "把少量任务收益外推到全部场景",
+      "仅关注提示模板而忽略框架假设"
+    ]
+  },
+  "generation_notes": {
+    "methodology_file": "/Users/mingli/Khex/uni-learning/agents/reader/methodolgy.md",
+    "notes": [
+      "本 JSON 对应 methodolgy.md 第 5.1 节“零号预处理（编目与分流）”输出。"
+    ]
+  }
+}

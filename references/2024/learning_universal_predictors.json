@@ -1,0 +1,53 @@
+{
+  "stage": "zero_preprocessing_catalog",
+  "source_pdf": {
+    "file_name": "learning_universal_predictors.pdf",
+    "file_path": "/Users/mingli/Khex/uni-learning/references/2024/learning_universal_predictors.pdf",
+    "same_directory_output": true
+  },
+  "bibliography": {
+    "title": "Learning Universal Predictors",
+    "authors": [
+      "Unknown"
+    ],
+    "year": 2024,
+    "publication": "Technical Article",
+    "volume": "",
+    "pages": ""
+  },
+  "input_context_for_catalog": {
+    "abstract_brief": "论文讨论通用预测器的学习路径，连接 algorithmic prediction 传统与现代学习框架中的可实现近似。",
+    "toc_brief": [
+      "通用预测问题定义",
+      "学习机制与理论条件",
+      "近似实现与实验分析"
+    ],
+    "preface_or_intro_brief": "引言聚焦如何在有限资源下逼近通用预测理想。"
+  },
+  "catalog_result": {
+    "document_type": "技术论文",
+    "primary_route": "Solomonoff / universal induction",
+    "estimated_difficulty": {
+      "concept_density": "高",
+      "math_density": "高",
+      "historical_context_density": "中"
+    },
+    "reading_priority": "高",
+    "recommended_survey_chapters": [
+      "Solomonoff / universal induction",
+      "open computation"
+    ],
+    "misreading_risks": [
+      "将通用预测理想误读为即刻工程可用方法",
+      "忽略逼近策略依赖的计算预算前提",
+      "把理论上界外推到有限样本稳定表现",
+      "只看总指标而忽略任务分布条件"
+    ]
+  },
+  "generation_notes": {
+    "methodology_file": "/Users/mingli/Khex/uni-learning/agents/reader/methodolgy.md",
+    "notes": [
+      "本 JSON 对应 methodolgy.md 第 5.1 节“零号预处理（编目与分流）”输出。"
+    ]
+  }
+}

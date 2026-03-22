@@ -1,0 +1,53 @@
+{
+  "stage": "zero_preprocessing_catalog",
+  "source_pdf": {
+    "file_name": "is_in_context_learning_in_large_language_models_bayesian_a_martingale_perspective.pdf",
+    "file_path": "/Users/mingli/Khex/uni-learning/references/2024/is_in_context_learning_in_large_language_models_bayesian_a_martingale_perspective.pdf",
+    "same_directory_output": true
+  },
+  "bibliography": {
+    "title": "Is In-Context Learning in Large Language Models Bayesian? A Martingale Perspective",
+    "authors": [
+      "Unknown"
+    ],
+    "year": 2024,
+    "publication": "Technical Article",
+    "volume": "",
+    "pages": ""
+  },
+  "input_context_for_catalog": {
+    "abstract_brief": "论文从鞅过程视角检验 ICL 的贝叶斯性，讨论序列更新行为是否满足贝叶斯一致性特征。",
+    "toc_brief": [
+      "ICL 贝叶斯性问题",
+      "鞅视角定义与判据",
+      "理论分析与实验观察"
+    ],
+    "preface_or_intro_brief": "引言聚焦用概率过程工具刻画上下文更新动态。"
+  },
+  "catalog_result": {
+    "document_type": "技术论文",
+    "primary_route": "Bayes / probability",
+    "estimated_difficulty": {
+      "concept_density": "高",
+      "math_density": "中",
+      "historical_context_density": "中"
+    },
+    "reading_priority": "中",
+    "recommended_survey_chapters": [
+      "Bayes / uncertainty",
+      "Transformer / ICL / PFN"
+    ],
+    "misreading_risks": [
+      "把统计特征一致性误读为机制同一性",
+      "忽略评测设定与任务分布依赖",
+      "将局部否证或支持结果泛化到全部模型",
+      "只看指标而忽略理论前提"
+    ]
+  },
+  "generation_notes": {
+    "methodology_file": "/Users/mingli/Khex/uni-learning/agents/reader/methodolgy.md",
+    "notes": [
+      "本 JSON 对应 methodolgy.md 第 5.1 节“零号预处理（编目与分流）”输出。"
+    ]
+  }
+}

@@ -1,0 +1,53 @@
+{
+  "stage": "zero_preprocessing_catalog",
+  "source_pdf": {
+    "file_name": "an_explanation_of_in_context_learning_as_implicit_bayesian_inference.pdf",
+    "file_path": "/Users/mingli/Khex/uni-learning/references/2021/an_explanation_of_in_context_learning_as_implicit_bayesian_inference.pdf",
+    "same_directory_output": true
+  },
+  "bibliography": {
+    "title": "An Explanation of In-Context Learning as Implicit Bayesian Inference",
+    "authors": [
+      "Unknown"
+    ],
+    "year": 2021,
+    "publication": "Technical Article",
+    "volume": "",
+    "pages": ""
+  },
+  "input_context_for_catalog": {
+    "abstract_brief": "论文将 in-context learning 解释为隐式贝叶斯推断过程，尝试连接预训练 Transformer 行为与概率推断理论。",
+    "toc_brief": [
+      "ICL 现象与理论问题",
+      "贝叶斯解释框架",
+      "理论分析与实验验证"
+    ],
+    "preface_or_intro_brief": "引言关注如何用概率推断机制解释提示学习能力。"
+  },
+  "catalog_result": {
+    "document_type": "技术论文",
+    "primary_route": "Bayes / probability",
+    "estimated_difficulty": {
+      "concept_density": "高",
+      "math_density": "中",
+      "historical_context_density": "中"
+    },
+    "reading_priority": "高",
+    "recommended_survey_chapters": [
+      "Transformer / ICL / PFN",
+      "Bayes / uncertainty"
+    ],
+    "misreading_risks": [
+      "将解释框架误读为严格等价定理",
+      "忽略任务分布与模型规模前提",
+      "把实验趋势外推为普适机制",
+      "仅看拟合结果而忽略反例边界"
+    ]
+  },
+  "generation_notes": {
+    "methodology_file": "/Users/mingli/Khex/uni-learning/agents/reader/methodolgy.md",
+    "notes": [
+      "本 JSON 对应 methodolgy.md 第 5.1 节“零号预处理（编目与分流）”输出。"
+    ]
+  }
+}

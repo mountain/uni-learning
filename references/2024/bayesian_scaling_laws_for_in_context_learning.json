@@ -1,0 +1,53 @@
+{
+  "stage": "zero_preprocessing_catalog",
+  "source_pdf": {
+    "file_name": "bayesian_scaling_laws_for_in_context_learning.pdf",
+    "file_path": "/Users/mingli/Khex/uni-learning/references/2024/bayesian_scaling_laws_for_in_context_learning.pdf",
+    "same_directory_output": true
+  },
+  "bibliography": {
+    "title": "Bayesian Scaling Laws for In-Context Learning",
+    "authors": [
+      "Unknown"
+    ],
+    "year": 2024,
+    "publication": "Technical Article",
+    "volume": "",
+    "pages": ""
+  },
+  "input_context_for_catalog": {
+    "abstract_brief": "论文研究 ICL 性能随模型与数据规模变化的贝叶斯刻画，尝试建立可解释的 scaling 关系。",
+    "toc_brief": [
+      "ICL 与贝叶斯框架",
+      "尺度律建模",
+      "实验拟合与误差分析"
+    ],
+    "preface_or_intro_brief": "引言聚焦将经验尺度律与推断理论联系起来。"
+  },
+  "catalog_result": {
+    "document_type": "技术论文",
+    "primary_route": "Bayes / probability",
+    "estimated_difficulty": {
+      "concept_density": "高",
+      "math_density": "中",
+      "historical_context_density": "中"
+    },
+    "reading_priority": "高",
+    "recommended_survey_chapters": [
+      "Bayes / uncertainty",
+      "Transformer / ICL / PFN"
+    ],
+    "misreading_risks": [
+      "把拟合尺度律误读为理论必然规律",
+      "忽略实验任务分布对参数估计影响",
+      "将局部区间规律外推到全部规模段",
+      "只看拟合优度忽略机制解释"
+    ]
+  },
+  "generation_notes": {
+    "methodology_file": "/Users/mingli/Khex/uni-learning/agents/reader/methodolgy.md",
+    "notes": [
+      "本 JSON 对应 methodolgy.md 第 5.1 节“零号预处理（编目与分流）”输出。"
+    ]
+  }
+}

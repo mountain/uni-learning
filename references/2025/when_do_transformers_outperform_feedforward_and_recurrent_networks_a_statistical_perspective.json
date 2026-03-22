@@ -1,0 +1,53 @@
+{
+  "stage": "zero_preprocessing_catalog",
+  "source_pdf": {
+    "file_name": "when_do_transformers_outperform_feedforward_and_recurrent_networks_a_statistical_perspective.pdf",
+    "file_path": "/Users/mingli/Khex/uni-learning/references/2025/when_do_transformers_outperform_feedforward_and_recurrent_networks_a_statistical_perspective.pdf",
+    "same_directory_output": true
+  },
+  "bibliography": {
+    "title": "When Do Transformers Outperform Feedforward and Recurrent Networks? A Statistical Perspective",
+    "authors": [
+      "Unknown"
+    ],
+    "year": 2025,
+    "publication": "Technical Article",
+    "volume": "",
+    "pages": ""
+  },
+  "input_context_for_catalog": {
+    "abstract_brief": "论文从统计视角比较 Transformer、前馈与循环网络的性能条件，分析何种数据结构与样本规模下 Transformer 更具优势。",
+    "toc_brief": [
+      "模型比较框架",
+      "统计条件与理论分析",
+      "实验验证"
+    ],
+    "preface_or_intro_brief": "引言关注架构优劣并非绝对，而取决于任务统计结构。"
+  },
+  "catalog_result": {
+    "document_type": "技术论文",
+    "primary_route": "Transformer / ICL / PFN",
+    "estimated_difficulty": {
+      "concept_density": "中",
+      "math_density": "中",
+      "historical_context_density": "中"
+    },
+    "reading_priority": "中",
+    "recommended_survey_chapters": [
+      "Transformer / ICL / PFN",
+      "历史前奏"
+    ],
+    "misreading_risks": [
+      "把统计比较结论误读为架构绝对排序",
+      "忽略数据生成假设对结果的决定性影响",
+      "将受控实验外推到开放任务与多模态场景",
+      "只看均值表现忽略方差与稳定性"
+    ]
+  },
+  "generation_notes": {
+    "methodology_file": "/Users/mingli/Khex/uni-learning/agents/reader/methodolgy.md",
+    "notes": [
+      "本 JSON 对应 methodolgy.md 第 5.1 节“零号预处理（编目与分流）”输出。"
+    ]
+  }
+}

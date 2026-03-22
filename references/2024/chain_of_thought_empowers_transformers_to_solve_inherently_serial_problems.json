@@ -1,0 +1,53 @@
+{
+  "stage": "zero_preprocessing_catalog",
+  "source_pdf": {
+    "file_name": "chain_of_thought_empowers_transformers_to_solve_inherently_serial_problems.pdf",
+    "file_path": "/Users/mingli/Khex/uni-learning/references/2024/chain_of_thought_empowers_transformers_to_solve_inherently_serial_problems.pdf",
+    "same_directory_output": true
+  },
+  "bibliography": {
+    "title": "Chain-of-Thought Empowers Transformers to Solve Inherently Serial Problems",
+    "authors": [
+      "Unknown"
+    ],
+    "year": 2024,
+    "publication": "Technical Article",
+    "volume": "",
+    "pages": ""
+  },
+  "input_context_for_catalog": {
+    "abstract_brief": "论文分析 CoT 对串行问题求解的作用机制，强调通过中间推理轨迹可改善 Transformer 的算法性表现。",
+    "toc_brief": [
+      "串行问题设定",
+      "CoT 机制与理论分析",
+      "实验验证与限制讨论"
+    ],
+    "preface_or_intro_brief": "引言关注并行模型如何借助外化步骤处理序列依赖计算。"
+  },
+  "catalog_result": {
+    "document_type": "技术论文",
+    "primary_route": "Transformer / ICL / PFN",
+    "estimated_difficulty": {
+      "concept_density": "高",
+      "math_density": "中",
+      "historical_context_density": "中"
+    },
+    "reading_priority": "高",
+    "recommended_survey_chapters": [
+      "Transformer / ICL / PFN",
+      "LM / agent / AGI"
+    ],
+    "misreading_risks": [
+      "把 CoT 提升误读为稳定可靠推理保证",
+      "忽略提示格式与任务结构敏感性",
+      "将受控任务表现外推到开放复杂场景",
+      "只看成功案例忽略错误传播"
+    ]
+  },
+  "generation_notes": {
+    "methodology_file": "/Users/mingli/Khex/uni-learning/agents/reader/methodolgy.md",
+    "notes": [
+      "本 JSON 对应 methodolgy.md 第 5.1 节“零号预处理（编目与分流）”输出。"
+    ]
+  }
+}

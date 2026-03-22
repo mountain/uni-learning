@@ -1,0 +1,53 @@
+{
+  "stage": "zero_preprocessing_catalog",
+  "source_pdf": {
+    "file_name": "attention_is_turing_complete.pdf",
+    "file_path": "/Users/mingli/Khex/uni-learning/references/2021/attention_is_turing_complete.pdf",
+    "same_directory_output": true
+  },
+  "bibliography": {
+    "title": "Attention Is Turing Complete",
+    "authors": [
+      "Unknown"
+    ],
+    "year": 2021,
+    "publication": "Technical Article",
+    "volume": "",
+    "pages": ""
+  },
+  "input_context_for_catalog": {
+    "abstract_brief": "论文讨论注意力机制的图灵完备性，分析 Transformer 类模型在计算表达能力上的理论上界。",
+    "toc_brief": [
+      "模型形式化定义",
+      "图灵完备性构造或证明",
+      "限制条件与讨论"
+    ],
+    "preface_or_intro_brief": "引言聚焦从计算理论角度理解注意力机制能力。"
+  },
+  "catalog_result": {
+    "document_type": "技术论文",
+    "primary_route": "Transformer / ICL / PFN",
+    "estimated_difficulty": {
+      "concept_density": "高",
+      "math_density": "高",
+      "historical_context_density": "中"
+    },
+    "reading_priority": "高",
+    "recommended_survey_chapters": [
+      "Transformer / ICL / PFN",
+      "open computation"
+    ],
+    "misreading_risks": [
+      "把图灵完备性误读为可高效训练保证",
+      "忽略精度与长度等证明前提",
+      "将可表达性等同于泛化能力",
+      "只看理论上限而忽略实际约束"
+    ]
+  },
+  "generation_notes": {
+    "methodology_file": "/Users/mingli/Khex/uni-learning/agents/reader/methodolgy.md",
+    "notes": [
+      "本 JSON 对应 methodolgy.md 第 5.1 节“零号预处理（编目与分流）”输出。"
+    ]
+  }
+}

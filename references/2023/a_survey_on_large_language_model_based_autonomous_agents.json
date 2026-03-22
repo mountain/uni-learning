@@ -1,0 +1,53 @@
+{
+  "stage": "zero_preprocessing_catalog",
+  "source_pdf": {
+    "file_name": "a_survey_on_large_language_model_based_autonomous_agents.pdf",
+    "file_path": "/Users/mingli/Khex/uni-learning/references/2023/a_survey_on_large_language_model_based_autonomous_agents.pdf",
+    "same_directory_output": true
+  },
+  "bibliography": {
+    "title": "A Survey on Large Language Model Based Autonomous Agents",
+    "authors": [
+      "Unknown"
+    ],
+    "year": 2023,
+    "publication": "Survey",
+    "volume": "",
+    "pages": ""
+  },
+  "input_context_for_catalog": {
+    "abstract_brief": "综述系统总结 LLM Agent 的架构组件、记忆机制、规划执行链路与评测挑战，为后续研究建立统一术语与分类视角。",
+    "toc_brief": [
+      "Agent 架构总览",
+      "记忆与工具使用",
+      "规划执行与反馈",
+      "评测与安全挑战"
+    ],
+    "preface_or_intro_brief": "引言关注从单模型能力走向任务闭环系统能力。"
+  },
+  "catalog_result": {
+    "document_type": "综述",
+    "primary_route": "LM / agent / AGI",
+    "estimated_difficulty": {
+      "concept_density": "中",
+      "math_density": "低",
+      "historical_context_density": "中"
+    },
+    "reading_priority": "高",
+    "recommended_survey_chapters": [
+      "LM / agent / AGI"
+    ],
+    "misreading_risks": [
+      "把综述分类误当作能力定理",
+      "忽略不同实验平台造成的不可比性",
+      "将原型系统成功案例外推为通用能力",
+      "只看组件列表而忽略闭环依赖关系"
+    ]
+  },
+  "generation_notes": {
+    "methodology_file": "/Users/mingli/Khex/uni-learning/agents/reader/methodolgy.md",
+    "notes": [
+      "本 JSON 对应 methodolgy.md 第 5.1 节“零号预处理（编目与分流）”输出。"
+    ]
+  }
+}

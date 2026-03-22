@@ -1,0 +1,52 @@
+{
+  "stage": "zero_preprocessing_catalog",
+  "source_pdf": {
+    "file_name": "voyager_an_open_ended_embodied_agent_with_large_language_models.pdf",
+    "file_path": "/Users/mingli/Khex/uni-learning/references/2023/voyager_an_open_ended_embodied_agent_with_large_language_models.pdf",
+    "same_directory_output": true
+  },
+  "bibliography": {
+    "title": "Voyager: An Open-Ended Embodied Agent with Large Language Models",
+    "authors": [
+      "Unknown"
+    ],
+    "year": 2023,
+    "publication": "Technical Article",
+    "volume": "",
+    "pages": ""
+  },
+  "input_context_for_catalog": {
+    "abstract_brief": "论文提出开放式具身 Agent 框架，通过技能库、自动课程与环境交互推动持续任务扩展。",
+    "toc_brief": [
+      "系统框架与组件",
+      "自动课程与技能积累",
+      "具身环境评测"
+    ],
+    "preface_or_intro_brief": "引言强调从单任务表现转向开放世界持续增长能力。"
+  },
+  "catalog_result": {
+    "document_type": "技术论文",
+    "primary_route": "LM / agent / AGI",
+    "estimated_difficulty": {
+      "concept_density": "中",
+      "math_density": "低",
+      "historical_context_density": "中"
+    },
+    "reading_priority": "高",
+    "recommended_survey_chapters": [
+      "LM / agent / AGI"
+    ],
+    "misreading_risks": [
+      "将特定环境表现误读为通用具身智能能力",
+      "忽略工具链与环境反馈对结果的主导作用",
+      "把开放式探索成功率外推到安全关键场景",
+      "只看示例轨迹而忽略失败与回退机制"
+    ]
+  },
+  "generation_notes": {
+    "methodology_file": "/Users/mingli/Khex/uni-learning/agents/reader/methodolgy.md",
+    "notes": [
+      "本 JSON 对应 methodolgy.md 第 5.1 节“零号预处理（编目与分流）”输出。"
+    ]
+  }
+}

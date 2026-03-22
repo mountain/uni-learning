@@ -1,0 +1,53 @@
+{
+  "stage": "zero_preprocessing_catalog",
+  "source_pdf": {
+    "file_name": "transformers_can_do_bayesian_inference_by_meta_learning_on_prior_data.pdf",
+    "file_path": "/Users/mingli/Khex/uni-learning/references/2021/transformers_can_do_bayesian_inference_by_meta_learning_on_prior_data.pdf",
+    "same_directory_output": true
+  },
+  "bibliography": {
+    "title": "Transformers Can Do Bayesian Inference by Meta-Learning on Prior Data",
+    "authors": [
+      "Unknown"
+    ],
+    "year": 2021,
+    "publication": "Technical Article",
+    "volume": "",
+    "pages": ""
+  },
+  "input_context_for_catalog": {
+    "abstract_brief": "论文提出 Transformer 可通过元学习在上下文中近似贝叶斯推断，连接模型预训练与先验-后验更新视角。",
+    "toc_brief": [
+      "任务分布与元学习设定",
+      "贝叶斯推断对应分析",
+      "实验验证与误差讨论"
+    ],
+    "preface_or_intro_brief": "引言关注 ICL 能力是否可被解释为分布级推断机制。"
+  },
+  "catalog_result": {
+    "document_type": "技术论文",
+    "primary_route": "Bayes / probability",
+    "estimated_difficulty": {
+      "concept_density": "高",
+      "math_density": "中",
+      "historical_context_density": "中"
+    },
+    "reading_priority": "高",
+    "recommended_survey_chapters": [
+      "Transformer / ICL / PFN",
+      "Bayes / uncertainty"
+    ],
+    "misreading_risks": [
+      "把近似行为误当作严格贝叶斯等价",
+      "忽略元训练分布与测试分布差异",
+      "将受控实验结论直接迁移到开放任务",
+      "只看平均性能而忽略失败模式"
+    ]
+  },
+  "generation_notes": {
+    "methodology_file": "/Users/mingli/Khex/uni-learning/agents/reader/methodolgy.md",
+    "notes": [
+      "本 JSON 对应 methodolgy.md 第 5.1 节“零号预处理（编目与分流）”输出。"
+    ]
+  }
+}

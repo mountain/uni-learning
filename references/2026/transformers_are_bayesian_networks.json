@@ -1,0 +1,53 @@
+{
+  "stage": "zero_preprocessing_catalog",
+  "source_pdf": {
+    "file_name": "transformers_are_bayesian_networks.pdf",
+    "file_path": "/Users/mingli/Khex/uni-learning/references/2026/transformers_are_bayesian_networks.pdf",
+    "same_directory_output": true
+  },
+  "bibliography": {
+    "title": "Transformers Are Bayesian Networks",
+    "authors": [
+      "Unknown"
+    ],
+    "year": 2026,
+    "publication": "Technical Article",
+    "volume": "",
+    "pages": ""
+  },
+  "input_context_for_catalog": {
+    "abstract_brief": "论文提出将 Transformer 解释为贝叶斯网络结构的观点，讨论注意力依赖图与概率图推断之间的关系。",
+    "toc_brief": [
+      "Transformer 与图模型对应",
+      "结构映射与条件独立讨论",
+      "理论与实验分析"
+    ],
+    "preface_or_intro_brief": "引言聚焦统一神经架构与概率图模型的解释框架。"
+  },
+  "catalog_result": {
+    "document_type": "技术论文",
+    "primary_route": "Bayes / probability",
+    "estimated_difficulty": {
+      "concept_density": "高",
+      "math_density": "中",
+      "historical_context_density": "中"
+    },
+    "reading_priority": "高",
+    "recommended_survey_chapters": [
+      "Bayes / uncertainty",
+      "Transformer / ICL / PFN"
+    ],
+    "misreading_risks": [
+      "将结构类比误读为完整语义等价",
+      "忽略映射过程中的近似与简化假设",
+      "把解释性结果直接外推为性能改进结论",
+      "只看对应关系忽略反例与失配场景"
+    ]
+  },
+  "generation_notes": {
+    "methodology_file": "/Users/mingli/Khex/uni-learning/agents/reader/methodolgy.md",
+    "notes": [
+      "本 JSON 对应 methodolgy.md 第 5.1 节“零号预处理（编目与分流）”输出。"
+    ]
+  }
+}

@@ -1,0 +1,2042 @@
+Astronomy & Astrophysics manuscript no. main
+January 7, 2025
+
+84v1 [astro-ph.SR] 6 Jan 2025
+
+ox
+Ql
+S
+=
+S
+a)
+N
+
+ee
+
+Ch |
+
+=
+S
+
+Resolving the mass transfer in the symbiotic recurrent nova
+T Corone Borealis*
+
+L. Planquart!**, A. Jorissen', and H. Van Winckel*
+
+' Institut d’ Astronomie et d’ Astrophysique, Université Libre de Bruxelles, CP 226, Boulevard du Triomphe, 1050 Brussels, Belgium
+e-mail: lea. planquart@ulb.be
+? Institute of Astronomy, KU Leuven, Celestijnenlaan 200D, B-3001 Leuven, Belgium
+
+Received 31/10/2024; accepted 29/12/2024
+
+ABSTRACT
+
+Context. T Corone Borealis (T CrB) is a symbiotic recurrent nova with an 80-year recurrence interval whose next eruption is immi-
+nent.
+
+Aims. We aim to resolve the accretion mechanism of the binary system governing the mass transfer during its super-active phase.
+Methods. Using phase-resolved high-resolution spectroscopy, we analyze the zoo of spectral-line profiles arising from the symbiotic
+activity. We perform Doppler tomography of selected emission lines to resolve the system’s gaseous components and their different
+velocity regimes.
+
+Results. We find evidence of enhanced accretion through Roche lobe overflow during the super-active phase, as traced by the oxygen,
+helium, and hydrogen lines. The accretion disc is found to be fully viscously evolved and extends up to its maximal radius. By mapping
+the kinematics of lines probing different excitation energies, we can identify distinct interaction sites. These include the bright spot at
+the stream impact on the accretion disc outer radius, the irradiation at the red-giant facing side, the stream-disc overflow, the accretion
+disk wind, and an expanding nebula. The nebula emerged at the rise of the super-active phase and underwent an acceleration phase
+of about five years. The temporal evolution of the lines supports the scenario where the departure from quiescence started in the disc,
+likely triggered by a disc instability similar to what occurs in dwarf novae outburst, leading to an increased mass accretion and causing
+important irradiation of the giant that has further enhanced the mass-transfer rate during the super-active phase.
+
+Conclusions. Symbiotic recurrent nova, such as T CrB, are governed by similar mass-transfer mechanisms as found in cataclysmic
+variables despite their different orbital properties (longer orbital periods imposing larger accretion discs) and evolutionary pathways.
+
+Key words. binaries: symbiotic — novae, cataclysmic variables — stars:individual: T Coronae Borealis — accretion, accretion discs —
+
+©ESO 2025
+
+Techniques: imaging spectroscopy
+
+1. Introduction
+
+Cataclysmic variables (CVs) are interacting binaries composed
+of a white dwarf (WD) primary accreting material from a Roche-
+filling later-type donor. Depending on their photometric behav-
+ior, they are subdivided into classical novae (CN, one recorded
+eruption with an amplitude typically larger than 6 mag), recur-
+rent novae (RN, more than one eruption recorded), dwarf no-
+vae (DN, with frequent and less intense outburst¢]] of 2—5 mag)
+and nova-like systems (NL, regrouping all the non-eruptive CVs)
+(Warner 1995).
+
+T Corone Borealis (T CrB) is a prototypical symbiotic re-
+current nova. It has two previously reported eruptions in 1866
+and 1946 (Warner |/1995), and possibly two others in 1217 and
+1787 (Schaefer 2023b). The system is composed of an evolved
+M giant in a 227-d orbit (Kraft 1958) with a WD companion,
+
+* Based on observations made with the Mercator Telescope, operated
+on the island of La Palma by the Flemish Community, at the Spanish
+Observatorio del Roque de los Muchachos of the Instituto de Astrofisica
+de Canarias
+
+** Research fellow, FNRS, Belgium.
+
+' Tn the paper, the term ’eruption’ refers to a nova explosion caused by
+a thermonuclear runaway at the WD surface. The term ’outburst’ refers
+to outburst events seen in dwarf novae that are triggered by an instability
+in the accretion disc.
+
+whose nature is inferred from the ultraviolet emission lines (such
+as Hen, Nv, Crv) and hot continuum (Selvelli et al. 1992). The
+T CrB recurrent eruptions are assumed to be driven by a ther-
+monuclear runaway at the surface of a WD close to the Chan-
+drasekhar mass (Kato 1999, Shara et al. 2018). The Gaia paral-
+lax of the system is 1.09 + 0.03 mas (Gaia Collaboration et al.
+2023), translating to a nominal distance of 895*5; pe (Bailer-
+Jones et al. 2021). Each of the two recorded nova eruptions dis-
+plays a peculiar photometric behavior: a decade-long phase of
+increased flux (up to 1 mag in the optical) precedes the eruption
+(Schaefer/2023a), and a secondary maximum appears 5 months
+after the nova explosion (Sanford 1949). The origin of the sec-
+ondary maximum is still unclear: it could be caused by the irradi-
+ation of the red giant by a tilted accretion disc (AD) surrounding
+the WD (Hachisu & Kato 1999) or by the cooling WD whose
+AD has been destroyed after the explosion (Munari 2023).
+
+After the last eruption, the system remained in the qui-
+escence phase until 2015, when the system suddenly bright-
+ened up. The mass accretion rate abruptly increased by about
+20 times its value in quiescence (Schaefer 2023a), reaching
+2- 6x 10-8 Mo/yr (Luna et al. 2018, Zamanov et al. 2023,
+Toala et al.)2024, Schaefer 2023a), and several changes across
+the wavelength range were reported. In the X-ray range, the
+hard X-ray (E > 2 keV) flux decreased, while a soft component
+
+Article number, page 1 of 15
+
+A&A proofs: manuscript no. main
+
+(E < 0.6keV) appeared, implying that the boundary layer be-
+tween the WD surface and the inner region of the AD switched
+to an optically thick regime (Luna et al./2018) 2019). In the op-
+tical, the appearance and strengthening of emission lines and
+blue continuum were reported (Munari et al. 2016). The B-
+band flux increased by 0.9 mag and deviated from its ellip-
+soidal variations (see Fig[A.T] and Schaefer 2023a). The rising
+blue continuum is associated with an effective temperature of
+9400 + 500 K attributed to the hot component (Zamanov et al.
+2023). A flux increase was also detected in the radio band, prob-
+ing bremsstrahlung emission of ionized material surrounding the
+system (Linford et al. 2019). All those multi-wavelength in-
+dicators reflect that the system has entered a so-called super-
+active phase (SAP; |/Munari et al. 2016) during which a sig-
+nificant amount of mass was accreted onto the compact star
+(~ 2x10-7 Mo; Zamanov et al..2023). It suggests that most of the
+mass needed to trigger the thermonuclear runaway could have
+been accreted during the recent SAP (Luna et al. 2020). The SAP
+of T CrB stopped in 2023, hinting at its imminent nova eruption,
+predicted around 2025.5+1.3 (Schaefer |2023a). While the SAP
+seems to be an essential precursor in the recurrent nova eruption,
+the underlying binary interaction still remains to be understood.
+T CrB represents a key system at the crossroads of different fam-
+ilies of interacting binaries: symbiotic system, recurrent nova,
+and cataclysmic variable. It exhibits some unique characteristics,
+such as the pre-eruption SAP and the post-eruption second max-
+imum. It is, therefore, a crucial object to constrain the accretion
+physics of long-period interacting binaries and to understand the
+binary evolution of potential progenitors of Type Ia supernovae
+(Hachisu & Kato 2001, Liu et al.|2019).
+
+In this paper, we shed new light on the binary interaction
+during the SAP, by spectrally resolving the accretion flows that
+drive the mass transfer of the symbiotic system. We derived the
+orbital elements during the SAP (Sect. 2). Then, we analyze the
+phase-dependent behaviors of spectral lines and assess their lo-
+cations within the system using Doppler tomography (Sect. }).
+Next, we evaluate the temporal evolution of selected lines during
+the SAP (Sect. f). Finally, we discuss the possible origin of the
+system recent behavior and its link with the expected nova erup-
+tion (Sect. 5). We end up with a summary of our main findings
+
+(Sect. (6).
+
+2. Observations and orbital model
+
+In this section, we retrieve the system orbital parameters from
+the spectroscopic monitoring and derive its orbital model. T CrB
+has been monitored with the HERMES spectrograph mounted on
+the 1.2m Mercator telescope at La Palma (Raskin et al. 2011).
+The high-resolution mode was used, providing a resolution of
+R = 86000 over the wavelength range from 3800 to 9000 A.A
+hundred spectra were taken on different dates between January
+2011 and June 2023, among which 83 were obtained during the
+SAP (2015-2023), with a median exposure time of 900 seconds.
+The observation log can be found in Table [B-1}
+
+2.1. Spectroscopic orbit
+
+The Keplerian orbit was retrieved from the radial velocity (RV)
+curve using a y” minimization. The RV values were obtained
+by cross-correlating the object spectrum with an MIII template
+— compatible with the spectral type estimates: M4.5 (Miirset
+& Schmid |}1999) or M3HI (Munari et al. 2016) — and fitting a
+Gaussian function to the mean line profile, as represented by the
+
+Article number, page 2 of 15
+
+Table 1: Orbital parameters for the giant in the T CrB system.
+
+Parameters 2013-22 (1) 1997-99 (2)
+P [d] 227.58 + 0.03 227.57 + 0.01
+e 0.009 + 0.003 0.0
+K, [km/s] 23.94 + 0.13 23.89 + 0.17
+V, [km/s] -28.47 + 0.05 -27.79 + 0.13
+a, sini [au] 0.500 + 0.003 0.488 + 0.004
+tm) [Mo] 0.324 + 0.005 0.322 + 0.007
+To [HJD] 2455 825.44+ 0.08 2447861.73 + 0.27
+fi [HJD] — 2455 826.68 + 9.45
+R 99.91% -
+
+References. (1) This work; (2) Fekel et al.) (2000)
+
+Notes. P is the orbital period, e the eccentricity, K; the semi-amplitude
+of the giant’s RV curve, V, the center-of-mass velocity, a; the semi-
+major axis of the orbit of the giant around the center-of-mass of the
+system, i the inclination, f(m) the mass function, To is the epoch of
+inferior conjunction, Tj is the epoch of inferior conjunction of (2) ex-
+trapolated to the epoch of (1), and R? is the regression coefficient.
+
+Table 2: Derived orbital parameters of the system.
+
+Parameters Value Formula
+i[°] 65+5 Fixed, (1)
+Mya [Mo] 1.32 + 0.10 Fixed, (2)
+qd 0.74+0.18 derived from f(m), i, Mya
+Mrg [Mo] 0.98 +0.31 aX Mya
+a [au] 0.96 + 0.06 (l+q)xa,
+b, [au] 0.51 +0.01 a X (0.500 — 0.227 log(q))
+Rrg [au] 0.34+0.04 ax (0.38 + 0.20log(q)), (3)
+Teire [au] 0.13 + 0.01 bt /(P? Mya)
+r, [au] 0.33 + 0.02 0.6a/(1 + q), (4)
+
+References. (1) Stanishev et al. 2004; (2) Shara et al. 2018; (3)
+Paczynski 1971; (4) Warner 1995,
+
+Notes. For the definition of the parameters, see text.
+
+resulting cross-correlation function. In the fitting process, the
+orbital period was initially set to the maximum of the Lomb-
+Scargle periodogram.
+
+The obtained parameters are listed in Table [I] and compared
+with the values obtained from infrared RV measurements by
+Fekel et al.| (2000). Their good agreement, except for V, related
+to the offset between the instrumental systems, implies that no
+significant change in the orbital period has occurred between the
+quiescent phase and the SAP. The RV curve is shown in Fig. [I]
+The standard deviation of the O-C residuals (9c = 0.5 km/s)
+is larger than the instrumental error (0.07 km/s; Jorissen et al.
+2016) and is probably caused by the intrinsic jitter observed for
+M giants (Famaey et al.) 2009).
+
+2.2. Orbital model and disc size
+
+As the RV curve only gives partial information on some orbital
+parameters and does not give access to the individual masses, ad-
+ditional constraints should come from complementary studies,
+such as the analyses of photometric data. From the ellipsoidal
+variations observed in the light curve, the orbital inclination is
+constrained between 60° and 70° (Belczynski & Mikolajewska
+1998, Stanishev et al. 2004). From amplitude and decline time
+modeling of the nova eruption, the WD mass estimates lie be-
+
+L. Planquart et al.: Resolving the mass transfer in the symbiotic recurrent nova T Corone Borealis
+
+-10
+
+| |
+w N
+(=) °o
+
+RV [km/s]
+
+I
+b
+o
+
+-50 i y ff
+
+58000 59000 60000
+
+JD - 2400000
+
+56000 57000
+
+-10
+
+RV [km/s]
+wo 9
+fo} fo}
+
+|
+nS
+°
+
+I
+uw
+o
+
+4
+tr)
+
+ay
+e
+
+Res. [km/s]
+°
+b
+e
+ee%e °
+Y
+e
+ad
+8
+e
+‘
+,
+’
+
+i
+ay
+e
+°
+
+0.0
+
+Fig. 1: Radial velocities of T CrB. The error bars are plotted as
+well, but they are smaller than the symbol size of the data points.
+Top: RV curve as a function of time. Middle: Phase-folded orbit
+of T CrB. The full red line is the Keplerian orbit. Bottom: Resid-
+ual values.
+
+tween 1.32 + 0.10 Mo (Shara et al. 2018) and 1.37 + 0.01 Mo
+(Kato 1999). In this paper, we adopt Mwp = 1.32 + 0.10 Mo
+(Shara et al.|2018), i = 65° + 5° (Stanishev et al.|2004), leading
+to Mrg = 1.0+0.3 Mo and gq = 0.74 + 0.15. The mass ratio is
+later confirmed by the He 1 monitoring (see Sect. 3-3).
+
+As the system is semi-detached, the donor radius is equal
+to its Roche lobe, Rrg, and the mass transfer is, therefore, gov-
+erned by Roche lobe overflow, where the equations of the re-
+stricted three-body problem describe the accretion flow’s analyt-
+ical path. The flow originates from the L, point at the surface of
+the Roche-filling donor, at a distance b; from the WD, and fol-
+lows a ballistic trajectory until it reaches the outer radius of the
+AD (Warner & Peters||1972). The location of the stream impact
+within the outer radius defines the bright spot (sometimes re-
+ferred to as the hotspot). Two boundaries fix the extension of the
+AD. The circularization radius, r¢i-c, sets the lower bound to the
+outer radius and corresponds to the radius of the circular Keple-
+rian orbit having the same angular momentum as that carried by
+the matter coming from the L, point. The tidal-truncation radius,
+r;, defines the upper bound of the AD-outer radius (Frank et al.
+2002). After the stream hits the AD at its outer rim, the flow is
+deflected and spread vertically, creating a disc overflow that can
+veil the inner disc from the observer for i > 65° (Kunze et al.
+
+2001). Tab. 2] lists the derived parameters that scale the binary
+system.
+
+3. Orbital-phase variation of the spectral lines
+
+While the spectrum of the red giant largely dominates the over-
+all flux in the visible and near-infrared ranges, the bluest part
+(A < 4500 A) is blended by the rising blue continuum associ-
+ated with the hot component during the SAP. Table [3] lists the
+principal spectral line signatures indicative of symbiotic behav-
+ior observed during the SAP. Those are detected in emission or
+absorption, either with a velocity or line strength variation.
+
+In this section, we analyze the dependence of the spectral
+lines on the orbital phase. First, we describe the emission lines
+detected on top of the giant spectrum and assess their location
+through Doppler tomography and their evolution during the SAP.
+Then, we report on those absorption line profiles whose behav-
+ior shows an unusual change associated with the orbital motion.
+Doppler tomography consists of spatially mapping the emission
+intensity in the velocity space from time-resolved spectroscopic
+observations. Marsh & Horne (1988) first introduced this tech-
+nique to interpret the complex S-wave line variations found in
+the spectra of CVs, as it allows us to directly compare the ob-
+servation with the model of an accreting binary translated into
+its velocity coordinates lying in the orbital plane (V,, V,). In
+such representation, the signature of an accretion disc is seen
+inside-out, as the inner disc appears as a ring at large veloci-
+ties while the outer edge probes lower velocities. The Doppler
+maps are computed using the filtered back-projection method of
+the RADON function from the scikIT-IMAGE PyTHoN3 package. The
+Doppler maps are performed on the cleaned dynamic spectrum,
+obtained by subtracting, for each observed spectrum, a model
+spectrum of the giant Doppler-shifted to the appropriate phase.
+The result of the cleaning and Doppler mapping is illustrated in
+Fig. }2| for the line O1 line at 8446A. Appendix |C} displays the
+individual phase-folded interpolated spectra of the spectral lines
+described below and, for the emission lines, their corresponding
+Doppler maps.
+
+3.1. Neutral atom transitions
+
+The neutral helium and hydrogen lines are all found in emission
+on top of the giant spectrum (for A > 4500 A), together with the
+Ot transition at 8446 A.
+
+The Her lines are found in two flavors: the orthohelium
+(triplet state, e.g., 5875 A transition) and the parahelium (sin-
+glet state, e.g., 6678 A line). The variation of the emission pro-
+file with the orbital phase differs despite similar excitation en-
+ergies (see Table B), hence similar excitation temperatures (T >
+20000 K; Woodward et al. 2020): the Her 6678 A line shows
+a narrow "S-wave" emission pattern while the Her 5875 A line
+is found to exhibit a more complex profile made of a varying
+broad emission blended with a blueshifted absorption compo-
+nent (Fig. |C.I). The dual behavior of para and ortho Het lines
+can serve as a probe of different density regions, as already re-
+ported by Kafka et al. (2003) for the old nova Q Cygni. It can be
+understood in terms of atomic considerations: in the orthohelium
+configuration, the lowest state is metastable and located 19.8 eV
+above the ground state. As a result, the levels are more likely
+to be overpopulated due to collisional excitation than their para-
+helium counterparts, where radiative de-excitation to the ground
+state can occur, contrary to the situation prevailing for orthohe-
+lium. For high-density regions, we can expect parahelium transi-
+
+Article number, page 3 of 15
+
+A&A proofs: manuscript no. main
+
+Dynamic spectrum
+
+Phase
+
+Cleaned dynamic spectrum
+
+Doppler map
+
+200
+
+100
+
+Vy [km/s]
+oO
+
+—100
+
+—200
+
+—100 0 100 200
+RV [km/s]
+
+—200 —200 —100
+
+7
+0 100 200
+RV [km/s]
+
+—200 -100 100 200
+
+0
+Vx [km/s]
+
+— Observed spectrum 0.8
+sesseeee Model spectrum
+
+— Emission component 4
+
+8440 8442 8444 8446 8448 8450 8452
+Wavelength [A]
+
+.0 1
+8440 8442 8444 8446 8448 8450 8452
+Wavelength [A]
+
+Fig. 2: Computation of the Doppler map for the O1 line. The dynamic spectrum from the observation (left), the dynamic spectrum
+after removing the giant contribution (middle), and the Doppler map (right). The color of the dynamic spectra represents the pseudo-
+continuum-normalized fluxes taken as the median value of the spectral window. The color of the Doppler maps corresponds to
+arbitrary units of emission intensity. On the Doppler map, the position of the donor is given by an empty circle, that of the accretor
+by across, and the center of mass by the plus sign. The bottom panels show the spectral profile before (left) and after (right) the
+
+subtraction of the giant contribution for a spectrum at ¢ = 0.55.
+
+tions to show a pure emission profile and orthohelium transitions
+to display an absorption component instead.
+
+Similar considerations can be made when comparing Ha
+with the 8446A Or line. The Ha line (and the other Balmer
+transitions) exhibits a broad (+150 km/s) emission, more pro-
+nounced around phase 0.5 and nearly absent at phase 0, where a
+blueshifted additional absorption component is superimposed on
+the emission profile, leading to a P-Cygni profile. On the other
+hand, the O1 line exhibits a similar S-wave profile (see Fig.
+as the Her 6678 A line, with an additional absorption compo-
+nent originating from the part of the giant photosphere facing
+the disc, around phase 0.5 (see Sect. Ba). The O1 8446 A line is
+known to be a fluorescence line excited by the H1 Lyf photons.
+Hence, both the O1/Ly and Ha transitions depend on the pop-
+ulation of the third level of H1. But while O1/Ly@ can only be
+excited by radiative recombination through fluorescence mecha-
+nism, the Ha line profile in symbiotic binaries is expected to bear
+the signature of several processes: the core is formed in a narrow
+transition zone near the ionization front (Schwank et al. 1997)
+while its wings are believed to be dominated by Raman scat-
+tering of Ly8 photons (Lee 2000) or by an optically-thin stellar
+wind from the WD (Skopal) 2006).
+
+To further assess the location of formation of the emission
+lines, their respective Doppler tomograms are superimposed in
+Fig. B] and compared with the velocity path of the accretion
+stream and the Keplerian velocity at the AD outer radii [Tcire, 11]
+derived in Sect. [2.2] In Or and Het, the emission pattern forms a
+clear arc-shaped spot located in the negative V, region between
+the Keplerian velocities of the two accretion radii. It can be in-
+terpreted as originating from the bright spot, where the stream
+impacts the material from the AD. The O1 emission is located
+at the intersection of the stream with the lower velocity circle
+associated with the tidal truncation radius. In contrast, the He1
+
+Article number, page 4 of 15
+
+emission is enclosed between those two circles of Keplerian ve-
+locity. Hence, we can conclude that the He 1 6678A line is excited
+closer to the circularization radius than O1 that is already excited
+at the disc’s outer edge. By resolving the bright spot in the ve-
+locity space, we confirm the presence of a large AD around the
+WD extending up to its tidal-truncation limit, filling almost 70%
+of the Roche surface at the WD. In contrast, the Balmer Ha and
+the He1 5875 A lines have a shallower emission pattern peaking
+on the WD velocity and an absence of emission at the position
+of the bright spot. We suggest these lines arise instead from the
+accretion wind surrounding the AD or the WD.
+
+3.2. Forbidden transitions
+
+Forbidden lines of [Om] and [Ne m] are found in emission, with
+a pattern composed of a double emission profile centered near
+the center-of-mass velocity, creating a ring-like structure in the
+Doppler maps (Fig. |C-2). The spectral profile is invariant against
+the orbital phase, indicating that the lines — collisionally excited
+and probing low-density regions — are formed in the nebula sur-
+rounding the system. From the detection of the auroral line [O m]
+at 4363 A, we obtained a ratio log(Us007+La959)/ 14363) = 0.80.1,
+implying an electron density larger than ~ 10° cm™? (Fig. 9 from
+Harvey et al./2023).
+
+Considering that the [Om] transition in the spatially-
+integrated spectra exhibits a symmetrical double-peaked line
+profile (Fig. A), two opposite geometries for the emitting region
+could be envisioned: either the double-peaked emission is the
+signature of circumbinary material forming an equatorial ring in
+the orbital plane and expanding radially with a de-projected ve-
+locity of 25/ sin(65°) ~ 28 km/s, or the double-peaked emission
+is associated with a bipolar jet, launched perpendicular to the or-
+bital plane (e.g., from the AD), with a de-projected velocity of
+
+Vy [km/s]
+oO
+
+-75
+
+—100
+
+L. Planquart et al.: Resolving the mass transfer in the symbiotic recurrent nova T Corone Borealis
+
+018446
+H 16563
+
+100t Hel 6678
+
+He 15876
+
+Vy [km/s]
+i=}
+
+-75
+
+—100
+
+-100 -75 -50 -25 0 25
+
+Vx [km/s]
+
+Fig. 3. Combined Doppler tomograms. The
+Roche lobe (black solid line), the center of
+mass (black plus), the ballistic flow velocity
+(dashed line), the Keplerian velocities of the
+AD at rire (dotted line) and r,; (dash-dotted line)
+are marked. Left: Hydrogen-based transition.
+Right: Helium-based transition.
+
+Table 3: Inventory of the spectral lines associated with the sym-
+
+biotic activity.
+
+Element a [A] Xu [eV] Comment
+H1 8750.46 13.50 weak absorption
+*6562.85 12.09
+*4861.34 12.75
+4340.47 13.06
+4101.75 13.22 blended by Nm
+3970.07 13.32 blended by Can
+3889.06 13.39 blended by Her
+Het 7065.18 22.72 38,
+*6678.15 23.08 'So
+*5875.64 23.08 3S;
+5015.68 23.07 'So
+4921.93 23.74 'So
+“4713.15 23.59 absorption
+4471.48 23.74 absorption
+4026.19 24.04 absorption
+*3964.73 23.74 absorption
+3888.65 23.01 blended by H1
+Hen *4685.70 51.02
+Nu 4634.14 33.13. Hen fluorescence
+“4640.64 33.13. Hen fluorescence
+4097.33 30.46 blended by Hr
+O1 *8446.36 10.99 Ly@ fluorescence
+*7775.39 10.74 absorption
+“TTIA AT 10.74 absorption
+“7771.94 10.74 absorption
+[Om] *5006.84 2.51
+4958.91 2.51
+4363.21 5.35
+[Ne m1] *3868.76 3.20
+Can 8662.14 3.12 blended emission
+8498.02 3.15 blended emission
+8542.09 3.15 blended emission
+
+Notes. Lines marked with « in front of their wavelengths 2 have their
+phase-folded spectra displayed in Appendix [C.J] y,, is the upper energy
+level taken from the NIST database (https: //physics.nist.gov/
+asd). The atomic configuration of the Helium lines, singlet 'Sy or triplet
+3§1, in emission, is also given.
+
+25/ cos(65°) ~ 60 km/s. The nebula of symbiotic stars can also
+be found to exhibit a more complex morphology, composed of
+knotty polar filaments and an equatorial torus — e.g., the optical
+
+iN — o=0.49 |
+
+3.0 H \ — o=077 |
+H \ = 0.08
+
+2.55 H \ ° j
+” 1 ---- CH Cyg
+
+Flux
+
+—25 0 25 50 75
+RV [km/s]
+
+—50
+
+“ -100 —-75
+
+Fig. 4: Spectral profiles of the [Om] line at 5007 A at differ-
+ent orbital phases of the same cycle. The profiles are obtained
+after subtracting the giant contribution. The y-axis is the pseudo-
+continuum-normalized flux obtained as the median value of the
+spectral window. One spectrum of the symbiotic system CH Cyg
+is shown for comparison.
+
+nebula of CH Cyg (Tomov et al. 1996, Corradi et al.)2001) — but
+it should result in a more complex emission profile (see Fig. A).
+
+Given that these lines are formed in low-density regions and
+that the [Om] line at 5007A has been found in the polar region
+of some symbiotic systems — see R Agr (Liimets et al.) 2018)
+or EG And (Shagatova et al.|2021) —, we favor the explanation
+where the forbidden lines are formed in the polar region of the
+system. Coincidentally, bipolar ejections were also suggested by
+Toala et al. (2024) to explain the appearance of the soft X-ray
+component in the T CrB spectrum during the SAP. In their anal-
+ysis, the soft X-ray emission results from the shock of the matter
+ejection perpendicular to the AD with the circumstellar medium
+surrounding the system. From their modeled plasma tempera-
+ture for the soft emission (1.7 — 9.7 x 10° K), they estimate a jet
+velocity, v, of 110-200 km/s, a factor two higher than our mea-
+surements in the optical. If the line traces the propagation of a
+blast wave, the post-shock plasma temperature follows a v « VT
+dependency; hence, a lower velocity by a factor two implies tem-
+perature reduction by a factor four. The forbidden line of [Om]
+would correspond to a temperature region of about 45 000 K.
+
+3.3. lonized helium transitions
+
+The high excitation emission lines of Hen 4686A and Nm
+(Bowen fluorescence of Hem at 303 A) are found in emission
+
+Article number, page 5 of 15
+
+A&A proofs: manuscript no. main
+
+Observations
+1
+
+Reconstructed
+0.0 H
+
+0.2
+
+4
+wu
+
+S
+B
+
+Normalized flux
+
+0.8
+
+-200 -100 -200 -100 200
+
+100 200
+
+0 100
+RV [km/s] RV [km/s]
+Fig. 5: Hem orbital variation. Left: observation after subtraction
+of the giant contribution and second normalization. Right: re-
+constructed dynamic spectrum. The motion of the white dwarf is
+shown with a white dashed line.
+
+during the SAP and can be attributed to a hot (T > 60000 K)
+region in the system (Woodward et al. 2020)
+
+Their emission profile exhibits a narrow single-peaked emis-
+sion profile with a small RV-variation (< 50 km/s) through
+the orbital cycle. These lines exhibit a strong intensity modu-
+lation independent of the orbital phase (but that could be cor-
+related with hard X-ray variation, according to tkiewicz et al.
+2016), that leads to a flickering aspect of the dynamic phase-
+resolved spectrum (Fig. {C-I). To assess the location of the emit-
+ting source, disregarding this additional amplitude modulation,
+each spectrum (after subtraction of the giant contribution) was
+re-normalized to set its maximum intensity to unity. The cleaned
+phase-resolved spectra and the reconstruction from Doppler
+mapping are shown in Fig. | The emission profile follows a
+clear sinusoidal modulation in phase with the WD motion, witha
+velocity offset of —6 + 3km/s to the center-of-mass velocity. The
+semi-amplitude of the peak maximum is 16+2 km/s, comparable
+to the WD predicted semi-amplitude of Ky = qx K, = 18+4km/s
+(from Tables [I] and 2), confirming the previous estimates of the
+accretor mass and mass ratio. Such a pattern results in a broad
+emission spot around the WD velocity in the Doppler maps
+(Fig. |C-2). Thus, the ionized emission lines (Hem and its fluo-
+rescent transitions) originate from the region close to WD. They
+could result from reprocessed X-ray radiation at the boundary
+layer between the AD and the WD or come directly from the
+inner part of the AD wind from near the WD, as found and mod-
+eled in some high-inclination nova-like systems, as the result of
+a high mass-transfer rate (see Hoare, 1994, Hellier 1996).
+
+3.4. Absorption lines from the donor
+
+The absorption lines of the donor dominate the optical spectrum.
+However, in the near-infrared part of the spectrum, the depth of
+the calcium and oxygen triplets varies according to the orbital
+phase. The calcium triplet exhibits a shallower absorption profile
+from phases 0.3 to 0.5, attributed to an emission blend from the
+symbiotic activity. In the case of the oxygen triplet at 7772 A,
+the absorption lines abruptly deepen from phases 0.45 to 0.55.
+This is illustrated in Fig. |6} The left panel shows the dynamical
+spectrum of T CrB centered on the O1 triplet, while the mid-
+dle panel illustrates the spectral profile at two different orbital
+phases. Comparison with synthetic spectra obtained using MARcS
+
+Article number, page 6 of 15
+
+model atmospheres and TurBospecTRUM LTE (Plez 2012) is su-
+perimposed. The giant parameters used are taken from Gatan
+et al. (2023): Tz= 3400 K, log g = 0.5, [Fe/H] = 0.35, [O/H]
+=0.1.
+
+Since the O1 lines follow the orbital motion, they must form
+within the Roche lobe of the giant. Figure [6] (right panel) illus-
+trates the phase dependence of the Or line at 7772 A, which
+experiences a 40% absorption-depth variation with the orbital
+phase} It is clear that the extra absorption originates from the
+side facing the WD and could hint at irradiation or deformation
+effects near the L; nozzle} Apart from the O1 triplet line, the
+general shape of the giant spectrum does not change significantly
+with the orbital phase: the TiO lines that dominate the spectrum
+undergo a slight modulation interpreted as an increase of Teg by
++80 K, likely to be due to irradiation (Munari et al. 2016). But
+the additional absorption depth seen in the O1 triplet lines cannot
+be explained by a change of the surface integrated Teg — as an
+increase of +80 K does not lead to prominent absorption lines —
+or log g — as it would affect other lines as well. Instead, it could
+hint at a localized irradiated spot on the deformed side of the
+giant. The difference spectrum between orbital phases 0.49 and
+0.77, plotted in the bottom left panel of Fig. |6, is compared with
+a synthetic spectrum of Teg = 7500 K, as the O1 triplet is found
+in stellar atmospheres with T.¢>5000 K (Takeda et al.) 2018).
+While beyond the scope of the current paper, synthetic models
+considering the 3D effects at the irradiated side of the deformed
+giant could be foreseen to derive the temperature gradient on the
+stellar surface.
+
+3.5. Absorption lines following the accretor
+
+Het lines at 4713.15 A and below are found in absorption and
+anti-phase with the giant motion. Their detection in the spec-
+trum is associated with the rising blue continuum. But while their
+variation is in phase with the WD motion, their amplitude ex-
+hibits higher velocities, especially around ¢ = 0.8: up to 60 km/s
+compared with the WD semi-amplitude K, = 18 + 4km/s (see
+Sect. . The absorption strength also varies with the orbital
+phase, as illustrated in Fig. [7} The absorption is stronger for
+phases 0.6 to 1.0 and takes its deepest value at ¢ = 0.85 when
+the stream impacts the AD outer radius, r;. Hence, the absorp-
+tion lines come from the outer edge of the optically thick AD
+and could be the effect of the deflection of the L; stream at the
+bright spot (Godon 2019). When the stream bounces off over the
+disc, it creates an extended vertical extension after the stream-
+disc impact that induces a veiling of the inner AD for phases
+in the range ¢ = 0.7 — 0.9 (Kunze et al. 2001). Depending on
+the deflection angle, a radial-velocity shift between 3 to 6 times
+the WD semi-amplitude is predicted. Furthermore, veiling by
+disc overflow would provide a natural explanation for the fainter
+maximum reported in the ellipsoidal variations at ¢ = 0.6 — 0.9
+during the SAP (Schaefer/2023a) and illustrated in Fig. [A-]] for
+the B-band light curve.
+
+3.6. Summary
+
+Different types of emission patterns are found: broad (H1 and
+Het triplet) associated with the extended wind around the hot
+component, S-wave (O1 and Her singlet) associated with the
+
+2 A similar dependence is found for the Paschen line at 8750.46 A, but
+the line depth only reaches 10%.
+
+3 It should be noted that similar behavior is seen in the classical sym-
+biotic EG And (Planquart et al., in prep.)
+
+L. Planquart et al.: Resolving the mass transfer in the symbiotic recurrent nova T Corone Borealis
+
+Dynamic spectrum
+
+0.0
+1.4
+0.2
+1.2
+0.4
+o i
+w '
+£ 1.05 :
+a i
+0.6 :
+0.25 i
+0.8 :
+os g 0.00
+, * 0.25
+0.6 -0.50 ’
+7174
+
+77710 7772 «7774 «7776 =7778 7772 7776
+
+Wavelength [A]
+
+7770 7778 7780
+
+Wavelength [A]
+
+Fig. 6: O1 triplet lines. Left: dynamic spectrum. Middle: T CrB spectra at phases 0.49 (black solid line) and 0.77 (dashed line), and
+a synthetic spectrum at 3400 K (red line). The bottom panel displays the difference spectrum between phases 0.49 and 0.77 (black
+line) and a synthetic spectrum at 7500 K. Right panel: surface mapping of the residual absorption in the difference spectrum. The
+
+orbital phase marks the corresponding viewing angle.
+
+A=4713.15A
+. 0.8
+
+A=7711.94A
+. 0.8
+———
+
+———
+
+°
+a
+—_——.
+S
+2
+i}
+°
+w
+Residual depth
+I
+S 4
+iu
+Residual depth
+
+\
+I
+
+Fig. 7: Surface mapping of the intensity of the absorption lines.
+The orbital phase (with 0.5 corresponding to the superior con-
+junction when the companion is located in front of the giant) are
+marked at their corresponding viewing angle. Left: Het line fol-
+lowing the accretor showing that the absorption deepens at the
+stream-disc impact (¢ = 0.6 — 0.9). Right: O1 line following the
+donor showing that the absorption deepens on the side facing the
+AD (¢ = 0.4 - 0.6).
+
+bright spot at the AD outer rim, single-peaked flickering emis-
+sion (Hen, Nu) from the hot region near the boundary layer
+between the AD and the WD, and static double-peaked emission
+([Ne m], [Om]) from the expanding nebula. For the absorption
+lines, the absorption excess around ¢ = 0.5 (O1 triplet) is asso-
+ciated with an irradiated spot at the surface of the giant facing
+the WD. The stream overflowing an optically thick AD explains
+the absorption lines (He transitions) in phase with the hot com-
+ponent motion but with a larger velocity amplitude. The inferred
+locations of the different atomic transitions are summarized in
+Table A] and a schematic view of the system is shown in Fig. B}
+
+4. Secular evolution
+
+The previous section analyzed the orbital dependency of the
+spectral lines, probing the symbiotic activity to assess their lo-
+cation within the system. This section compares the photometric
+brightening with the long-term evolution of the spectral-lines in-
+tensity probing different interaction sites (see Table f). This is
+illustrated in Fig. | where the temporal evolution of the peak
+relative intensity (/,, obtained after normalizing by its maximum
+value over the temporal evolution) is shown for five representa-
+tive spectral lines A, and compared with the light curve in the B
+
+Table 4: Interacting sites in T CrB system inferred from the spec-
+troscopic monitoring during the SAP.
+
+Interaction site lines T [kK] _ ¢, [d]
+
+1 irradiation spot O1 (abs) [5,10] 1289
+ATT712-7171715
+
+2 bright spot Het 26678 >20° 481
+O1 28446
+
+3. disc overflow Het (abs) [9, 10}? -
+(A<4800)
+
+4 accretion wind H12 6563 >20° 860
+Het 25578
+
+5 boundary layer He 11 24686 >60° 894
+Nm 14641
+
+6 nebula Get orring?) [Om],[Nem] [10-50] 210
+
+References. a: Woodward et al. (2020), b: Zamanov et al. (2023)
+
+Notes. n refers to the different locations in Fig. |8} ¢, is the time of the
+peak maximum, taking t = 0 as the start of the SAP (JD=2457023.5). T
+provides a range or a lower bound on the temperature.
+
+6?
+
+6?
+
+Fig. 8: Schematic view of the system for i = 65° and q = 0.75 at
+@ = 0.25. The numbers displayed (1 — 6) refer to Table 4
+
+band (Fig. Pp) that sets the start, maximum (taken from Itkiewicz
+et al.|(2023)), and end of the optical brightening (vertical dotted
+lines). The complete spectral profile evolution of the individual
+spectral line during the SAP can be found in Fig. [DI] As re-
+
+Article number, page 7 of 15
+
+A&A proofs: manuscript no. main
+
+ported by [Luna et al. (2019), the ratio of soft- over hard- emis-
+sions started after the beginning of the SAP (vertical gray region
+in Fig. 9) and about 60 days after the UV flux maximum (pink
+dashed line). The peak intensity of each spectral line is corre-
+lated with the SAP, as their intensity increased strongly during
+2015-2023 and abruptly declined at the end of the SAP. Since
+all these lines (except [O m], see Sect. B-2)) experience a strong
+variability with the orbital motion, their evolution should only
+be compared after averaging over an orbital cycle (black curves
+in Fig. Op.
+
+The intensity strength of Het at 6678A (Fig. 9b), probing the
+bright spot, is directly correlated with the B-band light curve: a
+fast rise reaching its maximum in 2016, and then followed by a
+slow decline until the end of the SAP. This correlation can be
+understood assuming the B-band flux is dominated by the emis-
+sion from the AD outer edge during the SAP. The Ha and Hen
+emission lines (Fig. e-d), probing the AD wind at the outer and
+inner edge, have their maximum delayed by about one year after
+the light-curve maximum.
+
+The intensity 17772 displayed in Fig. [De represents the rela-
+tive depth of the oxygen absorption line, and the rolling mean
+is computed only taking into account data in the phase interval
+[0.4, 0.6]. The depth is strengthened during the SAP: the phase-
+averaged absorption depth curve is symmetrical and takes its
+maximum value at the middle of the SAP, around 2018. There-
+fore, it seems time-delayed compared to the emission lines prob-
+ing the disc. This finding is further discussed in Sect. 5}
+
+In contrast, the emission of the nebular line [Om] (Fig. a)
+attains its maximum values before the light curve maximum and
+even before the softening of the X-ray radiation when the bound-
+ary layer changes its optical thickness (vertical gray region in
+Fig. 9p. In addition to its intensity variation, the [Om] line un-
+derwent a profile variation during the first half of the SAP, illus-
+trated in Fig. [[0} The emission pattern was first single-peaked
+during the rise of the SAP, then changed to a double-peaked pro-
+file whose absolute radial velocity increased during the first 1000
+days. The positions of the two peaks of the emission profile are
+fitted with two Lorentzian profiles and follow av « Vi evolution
+during the first half of the SAP to reach their asymptotic value
+of (25,—23) km/s implying that the ejecta continues its expan-
+sion with a frozen structure. The velocity stays constant until the
+end of the SAP when the line fades below the detection limit.
+Assuming that the emission profile is associated with a localized
+amount of matter (e.g., blast wave or ionization front) launched
+and accelerated, the distance it traveled along the line-of-sight
+during the SAP (about 3000 days) would be about 40+10 au. Us-
+ing the distance from Bailer-Jones et al./2021| (see Sect. [I), it cor-
+responds to a sky-projected displacement of about 106+26 mas if
+the ejection goes in the polar direction and of about 50 + 12 mas
+if the ejection travels in the equatorial plane. No evidence of
+any structure was found in the radio-emission maps of |Linford
+et al. (2019) obtained on 19/12/2016 because the traveled dis-
+tance by the ejection in its accelerating phase (corresponding to
+SAP + 718 d in Fig. [[0) would have been below the spatial res-
+olution of the radio-image (~ 63 mas).
+
+To summarize, the symbiotic lines at the different interac-
+tion sites dramatically strengthened during the SAP. Still, their
+evolution does not appear to be synchronous: the emission from
+the expanding nebula emerged first, then followed by emission
+probing the AD outer edge and wind. A delayed effect is seen
+in the lines probing the irradiation at the giant surface. If signifi-
+cant, these delays between the spectral lines are the signature of
+
+Article number, page 8 of 15
+
+2014 2016 2020 2022
+
+10;
+
+B [mag]
+
+1.0
+
+0.8
+
+o
+a
+
+Orbital phase
+
+oS
+i
+
+0.2
+
+0.0
+
+Is007
+
+58000 59000 60000
+
+JD -2400000
+
+57000
+
+Fig. 9: Relative intensity, /,, of the emission peak as a function of
+time for selected spectral lines, 2, and colored according to their
+orbital phase. The J, values have been divided by their maximum
+value over the time series to set them on a [0,1] interval, see
+text. The upper panel displays the B-band photometry. For each
+panel, a 227-day rolling mean is drawn in black. The SAP’s start,
+maximum, and end (vertical dotted lines) are shown. For the pink
+and gray lines, see the text.
+
+causal relationships and/or different timescales governing their
+evolution. This is discussed in the next section.
+
+5. Discussion
+
+From a comparison of the pre-eruption photometric archives, it
+was shown that the same photometric behavior was found for
+each of the two recorded nova explosions (Munari et al. 2016,
+Luna et al. 2020, Schaefer 2023a): A ten-year-long SAP fol-
+lowed by a dip before the eruption. Hence, the SAP is expected
+to be essential in triggering the eruption by increasing the mass
+accretion rate onto the WD surface (see Sect. [I]. One of the
+remaining questions concerns the physical origin of the sud-
+den transition from quiescence to SAP. The above spectroscopic
+analysis demonstrates that the recent SAP correlates with the
+bright spot enhancement. Such an increase in the bright spot lu-
+minosity should originate from the disc through a variation at its
+
+L. Planquart et al.: Resolving the mass transfer in the symbiotic recurrent nova T Corone Borealis
+
+1.0
+60}
+40 0.8
+Pad
+— 207 2
+ov 065
+ov
+Eo 8
+o
+>
+O4£
+= _30} 5
+2
+—407 0.2
+-60 L
+
+1000. 1500 2000 2500 3000
+
+JD-—2457023.5 [d]
+
+0 500
+
+Fig. 10: Temporal evolution of the [Om] profile. The SAP start
+is set at tf = 0. The emission profiles are obtained after remov-
+ing the giant contribution and interpolating between the observa-
+tions. The evolution of the peak positions is represented by the
+dashed white line. The emergence and acceleration of the nebula
+is clearly seen.
+
+outer radius or from the donor through a mass transfer variation
+(Hameury 2020).
+
+Below, we discuss the spectroscopic evidence and the re-
+spective timescales of two possible origins of mass accretion
+enhancement in light of the usual instability scenarios existing
+for CVs. From there, we propose a scenario to explain the SAP
+of T CrB. We end up briefly mentioning the superoutburst hy-
+pothesis.
+
+5.1. Mass-transfer variation
+
+Mass-transfer variation through L; should be initiated by an
+instability at the giant’s surface. Mass-transfer enhancement is
+usually used to explain the stunted outbursts in some nova-like
+systems (Honeycutt et al. 1998). A cyclic mass transfer could be
+either intrinsic (e.g., solar-type cycle) or externally driven (e.g.,
+irradiation by a tilted AD). The spectroscopic analysis of O1con-
+firms that the SAP induces a change at the facing side of the giant
+that can be interpreted as the effect of enhanced irradiation. The
+effect of irradiation is found to be delayed with respect to the
+optical rise (see Sect. f), suggesting it traces a retroactive effect
+of the increased disc luminosity rather than being the cause of it.
+
+Assuming the irradiation reaches the atmospheric layer be-
+low the photosphere, the time scale for the heat to be evacu-
+ated at the surface should be controlled by the thermal adjust-
+ment timescale that varies with (AR/R,) X tey (Frank et al.
+2002), where AR is the atmospheric depth reached by the ir-
+radiation, and txy is the Kelvin-Helmholtz timescale (tgy =
+GM2/R,L, ~ 200 years for the giant, taking a stellar luminosity,
+L,, of 620 + 120L,; Belczynski & Mikolajewska 1998).
+
+Contrary to CVs where the main-sequence donor imposes
+thermal adjustment timescales larger than 10*yr, in the case of
+T CrB, an irradiation reaching a few percent of the photospheric
+radius should induce a stellar expansion needed to radiate the
+excess flux in only a couple of years. The mass transfer at L
+being very sensitive to a change in AR (M « exp AR/H p)» such
+an irradiation could cause significant fluctuations of the mass
+transfer rate.
+
+5.2. Disc instability model (DIM)
+
+DN outbursts are commonly explained by the thermal-viscous
+disc instability model (DIM, see the reviews of \Lasota 2001 and
+Hameury)2020) where the instability is attributed to partial hy-
+drogen ionization within the disc that switches the disc from a
+low-viscosity cold state to a high-viscosity hot state. The canon-
+ical DIM and its cyclic behavior that we briefly recall below can
+be understood through the 2 — Tz curve (sketched in Fig. [U),
+where & is the disc surface density at a given radius. The two
+branches represent the thermally stable states that differ by their
+Shakura-Sunyaev viscosity parameter: a, and @, for the hot and
+cold branches, respectively. During the quiescent state, the AD
+lies on the cold branch of the curve, and its hydrogen is mainly
+neutral. With continuous mass transfer, matter accumulates in
+the disc and diffuses inward on a viscous timescale. The out-
+burst begins when, at a given radius, the surface density reaches
+its maximal surface density X)¢, (marked with | in Fig. (Ip. The
+hydrogen ionization starts, and a heat wave propagates on a ther-
+mal timescale inward and outward (1 — 2). During the outburst
+phase, the disc lies on the hot branch (2 — 3), which is thermally
+stable, and enhanced mass accretion occurs at the WD surface.
+The hot branch is associated with a higher viscosity (a@;,/@¢ is
+typically between 5—10) and, consequently, shorter viscous and
+thermal timescales than during the quiescence phase. The depar-
+ture from the outburst phase happens when the surface density
+goes below &,,i,, and the AD returns to the cold branch, closing
+the instability loop (3 — 4).
+
+Bollimpalli et al. (2018) have transposed the DIM used for
+DN outbursts to symbiotic systems. They conclude that the large
+ADs of symbiotic systems are still prone to thermal-viscous in-
+stability. Nevertheless, the larger dimension of the AD (T CrB
+outer radius of r, ~ 5 x 10!2.cm, see Sect. 2.2] compared to a
+mean outer radius of 5 x 10!°cm for CVs, Hameury 2020) al-
+ters some of the properties of the disc instability F] and its tem-
+poral evolution. The timescales governing the disc equilibrium
+(dynamical, thermal, and viscous) scale with the disc geometry,
+roughly through the following sequence: a (H/R) tyis ~ @ tin ~
+tayn ~ T/VK = ¥r>/GM (Frank et al.|/2002). Hence, a disc size
+larger by two orders of magnitude affects the different timescales
+by an increase of ~ 1000x. As a comparison, DN experience
+outbursts lasting 1-10 days, between two and three orders of
+magnitude shorter than the SAP duration of ~ 3000 days. The
+timescale for the rise of the outburst should be proportional to
+the disc’s thermal timescale, t;,, while the time spent in the hot
+state is about one or two orders of magnitude larger as it scales
+with the viscous timescale (as H/R < 1 for thin discs: Frank et al.
+2002). So, the SAP shape (with a rise of ~ 450 days and duration
+of ~ 3000 days) is qualitatively compatible with the expected
+order of magnitude of t,,, and t,;s- during a DIM outburst extrap-
+olated for the large AD of the T CrB system, making the disc
+instability a viable candidate to explain the SAP properties.
+
+* For example, it should affect the propagation of heating and cool-
+ing waves during the outburst, preventing them from reaching the outer
+edge, while enhanced accretion rate at the boundary layer of the massive
+WD should induce a non-negligible irradiation effect on the disc outer
+edge. Also, large discs prevent outbursts from being initiated at the outer
+edge, implying that only ‘inside-out’ type outbursts (starting at the disc
+inner region and propagating outward) could occur (Bollimpalli et al.
+2018).
+
+Article number, page 9 of 15
+
+A&A proofs: manuscript no. main
+
+Tmax
+
+Temperature, T
+
+T min
+
+z max
+
+Zmin
+
+Surface density, 2
+
+Fig. 11: Schematic X — Tg curve, showing the instability loop.
+
+5.3. The suggested scenario
+
+The AD properties inferred from the spectroscopic monitoring
+study agree with a thermally-unstable disc, as required for DIM.
+The delayed irradiation of the donor can be attributed to a (posi-
+tive) retro-action feedback loop of the increased disc luminosity
+sustained by mass transfer from the irradiation. This supports the
+idea that a DN-type outburst (which probably started at the disc
+inner region) can account for the recent SAP of T CrB and that
+the induced irradiation may have sustained the SAP by enhanc-
+ing the mass transfer.
+
+Further simulation of such DIM, considering the physical
+properties of T CrB (mass transfer rate, AD extension, and SAP
+duration), should be foreseen to test the application of disc in-
+stability scenario for triggering the recurrent nova eruption and
+to asses how the stream-disc interaction and induced irradiation
+would affect the amplitude and duration of the outburst phase.
+
+5.4. The SAP as a superoutburst ?
+
+While the SAP has been recorded only twice in the T CrB sys-
+tem (Schaefer 2023a), the system has shown several active states
+in the past (Selvelli et al. 1992) Stanishev et al. 2004, |Itkiewicz
+et al..2023) of enhanced luminosity but reduced amplitude com-
+pared to the SAP (four times fainter in the B-band). This obser-
+vation led Itkiewicz et al.| (2023) to associate the recent SAP of
+T CrB with superoutbursts as found in the SU UMa-type DN. In
+their comparison, only these recurrent active phases of enhanced
+luminosity should be compared to the DN outbursts produced
+by thermal disc instability, whereas the SAP would instead be
+associated with a superoutburst. The superoutbursts occur in a
+subclass of CVs in addition to the regular outbursts but exhibit
+a longer duration and larger flux increase. They are suspected
+to be triggered by a tidal instability in an eccentric precessing
+AD (Osaki|1989)). However, such a mechanism cannot occur in
+the T CrB system, as a tidally unstable disc requires a mass ra-
+tio smaller than 0.26 (Whitehurst 1988). Suppose we want to
+explain the previously recorded active phases by the occurrence
+of DIM cycles. In that case, the increased strength and duration
+of the SAP with respect to active phases should be explained
+by a strong DIM reinforced by mass transfer, as proposed by
+Hameury et al. (2000) for SU UMa-type CVs.
+
+Article number, page 10 of 15
+
+6. Conclusions
+
+Thanks to a decade-long high-resolution spectral monitoring, we
+provide spectroscopic evidence of the accretion mechanism that
+governed the symbiotic system T CrB during its high state. This
+paper presents two main results.
+
+In the first and main step, the orbital-phase dependency of
+the spectral lines probing the symbiotic activity in the optical
+range (mainly H, He, and O transitions) allowed us to investi-
+gate the accretion structure of the T CrB system. To this end,
+Doppler tomography was performed for the first time on a sym-
+biotic system. Different interaction sites have been resolved: the
+bright spot at the disc-stream impact, the stream-disc overflow,
+the AD wind, the irradiation spot at the red-giant surface, and
+the expanding nebula. The mass transfer is dominated by Roche
+lobe overflow from the Roche-filling giant to an optically thick
+and viscously evolved AD surrounding the WD. These charac-
+teristics are reminiscent of what is spectroscopically observed in
+distinct classes of CVs, such as DN during their outburst phase
+and high-accreting nova-like systems, suggesting that the accre-
+tion mechanisms found in those short-period interacting binaries
+(P < 6h for most CVs) can be transposed to symbiotic semi-
+detached binaries, despite their different donor type and their
+larger orbital period that imposes larger AD geometry and lower
+velocity regime.
+
+In a second step, the time delay of the spectral lines emer-
+gence between 2015 and 2023 is investigated to understand their
+impact on the recent optical brightening event, referred to here as
+the super-active phase, SAP. We found that the rise of the optical
+flux is concurrent with the radial acceleration of the forbidden
+transitions probing the nebula. We interpreted this as a signature
+of bipolar ejection launched at the inner disc edge (e.g., blast
+wave at the WD boundary layer) whose interaction with the cir-
+cumstellar medium leads to the excitation of forbidden lines that
+underwent heating and acceleration. Additionally, the evolution
+of the spectral line intensity suggests that the SAP of the T CrB
+system was triggered in the inner part of the disc, increasing the
+disc temperature and the mass accretion rate at the WD surface,
+as previously suggested by |Luna et al. (2019) with X-rays ob-
+servations. The higher temperature in the disc later affected the
+donor properties by inducing time-delayed irradiation at its sur-
+face. The emergence of the irradiation spot should have further
+enhanced the mass transfer and sustained the SAP. Hence, we
+suggest that the irradiation-induced mass-transfer enhancement
+has altered the duration or amplitude of the SAP phase, which
+could have been initiated by disc instability, as found in DN out-
+bursts. The spectral signatures of the SAP abruptly stop in 2023,
+implying that the AD has return to a quiet phase of reduced ac-
+tivity and lower temperature. This work consistently depicts the
+system’s initial conditions before its nova eruption. With its im-
+minent eruption, multi-wavelength monitoring (from y-rays to
+radio range) will provide a unique view of its secular dynamics
+and the fate of the AD.
+
+Acknowledgements. We thank Jan Kara for providing us with useful insights on
+Doppler maps. L.P. is a FNRS research fellow. A.J. acknowledges support from
+the Fonds de la Recherche Fondamentale Collective (FNRS, F.R.E.C.) of Bel-
+gium through grant PDR T.0115.23, and from FNRS-ER.S. through grant CDR
+J.0100.21 ( ASTRO-HERMES’). L.P. and A.J. are members of BLU-ULB, the
+interfaculty research group focusing on space research at ULB - Université libre
+de Bruxelles. Based on observations obtained with the HERMES spectrograph,
+which is supported by the Research Foundation - Flanders (FWO), Belgium, the
+Research Council of KU Leuven, Belgium, the Fonds National de la Recherche
+Scientifique (F.R.S.- FNRS), Belgium, the Royal Observatory of Belgium, the
+Observatoire de Genéve, Switzerland and the Thiiringer Landessternwarte Taut-
+enburg, Germany. We acknowledge all observers of the HERMES consortium
+who contributed to obtaining the time series. We acknowledge with thanks the
+
+L. Planquart et al.: Resolving the mass transfer in the symbiotic recurrent nova T Corone Borealis
+
+variable star observations from the AAVSO International Database contributed
+by observers worldwide and used in this research. Use was made of the Simbad
+database, operated at the CDS, Strasbourg, France, and of NASA’s Astrophysics
+Data System Bibliographic Services. This research made use of Numpy, Mat-
+plotlib, SciPy, scikit-image, and Astropy, a community-developed core Python
+package for Astronomy (Astropy Collaboration et al. 2018).
+
+References
+
+Astropy Collaboration, Price-Whelan, A. M., Sipécz, B. M., et al. 2018, AJ, 156,
+123
+
+Bailer-Jones, C. A. L., Rybizki, J., Fouesneau, M., Demleitner, M., & Andrae,
+R. 2021, AJ, 161, 147
+
+Belczynski, K. & Mikolajewska, J. 1998, MNRAS, 296, 77
+
+Bollimpalli, D. A., Hameury, J. M., & Lasota, J. P. 2018, MNRAS, 481, 5422
+
+Corradi, R. L. M., Munari, U., Livio, M., et al. 2001, ApJ, 560, 912
+
+Famaey, B., Pourbaix, D., Frankowski, A., et al. 2009, A&A, 498, 627
+
+Fekel, F. C., Joyce, R. R., Hinkle, K. H., & Skrutskie, M. F. 2000, AJ, 119, 1375
+
+Frank, J., King, A., & Raine, D. J. 2002, Accretion Power in Astrophysics, 3rd
+edn. (Cambridge University Press)
+
+Gaia Collaboration, Vallenari, A., Brown, A. G. A., et al. 2023, A&A, 674, Al
+
+Gatan, C., Mikotajewska, J., Hinkle, K. H., & Joyce, R. R. 2023, MNRAS, 526,
+918
+
+Godon, P. 2019, ApJ, 870, 112
+
+Hachisu, I. & Kato, M. 1999, ApJ, 517, L47
+
+Hachisu, I. & Kato, M. 2001, ApJ, 558, 323
+
+Hameury, J. M. 2020, Advances in Space Research, 66, 1004
+
+Hameury, J.-M., Lasota, J.-P., & Warner, B. 2000, A&A, 353, 244
+
+Harvey, E. J., Aydi, E., Izzo, L., et al. 2023, MNRAS, 521, 4750
+
+Hellier, C. 1996, ApJ, 471, 949
+
+Hoare, M. G. 1994, MNRAS, 267, 153
+
+Honeycutt, R. K., Robertson, J. W., & Turner, G. W. 1998, AJ, 115, 2527
+
+Itkiewicz, K., Mikotajewska, J., Stoyanov, K., Manousakis, A., & Miszalski, B.
+2016, MNRAS, 462, 2695
+
+Itkiewicz, K., Mikotajewska, J., & Stoyanov, K. A. 2023, ApJ, 953, L7
+
+Jorissen, A., Van Eck, S., Van Winckel, H., et al. 2016, A&A, 586, A158
+
+Kafka, S., Tappert, C., Honeycutt, R. K., & Bianchini, A. 2003, AJ, 126, 1472
+
+Kato, M. 1999, PASJ, 51, 525
+
+Kraft, R. P. 1958, ApJ, 127, 625
+
+Kunze, S., Speith, R., & Hessman, F. V. 2001, MNRAS, 322, 499
+
+Lasota, J.-P. 2001, New A Rev., 45, 449
+
+Lee, H.-W. 2000, ApJ, 541, L25
+
+Liimets, T., Corradi, R. L. M., Jones, D., et al. 2018, A&A, 612, A118
+
+Linford, J. D., Chomiuk, L., Sokoloski, J. L., et al. 2019, ApJ, 884, 8
+
+Liu, D., Wang, B., Ge, H., Chen, X., & Han, Z. 2019, A&A, 622, A35
+
+Luna, G. J. M., Mukai, K., Sokoloski, J. L., et al. 2018, A&A, 619, A6l
+
+Luna, G. J. M., Nelson, T., Mukai, K., & Sokoloski, J. L. 2019, ApJ, 880, 94
+
+Luna, G. J. M., Sokoloski, J. L., Mukai, K., & M. Kuin, N. P. 2020, ApJ, 902,
+L14
+
+Marsh, T. R. & Horne, K. 1988, MNRAS, 235, 269
+
+Munari, U. 2023, Research Notes of the American Astronomical Society, 7, 251
+
+Munari, U., Dallaporta, S., & Cherini, G. 2016, New A, 47, 7
+
+Miirset, U. & Schmid, H. M. 1999, A&AS, 137, 473
+
+Osaki, Y. 1989, PASJ, 41, 1005
+
+Paczyniski, B. 1971, ARA&A, 9, 183
+
+Plez, B. 2012, Turbospectrum: Code for spectral synthesis, Astrophysics Source
+Code Library, record ascl:1205.004
+
+Raskin, G., van Winckel, H., Hensberge, H., et al. 2011, A&A, 526, A69
+
+Sanford, R. F. 1949, ApJ, 109, 81
+
+Schaefer, B. E. 2023a, MNRAS, 524, 3146
+
+Schaefer, B. E. 2023b, Journal for the History of Astronomy, 54, 436
+
+Schwank, M., Schmutz, W., & Nussbaumer, H. 1997, A&A, 319, 166
+
+Selvelli, P. L., Cassatella, A., & Gilmozzi, R. 1992, ApJ, 393, 289
+
+Shagatova, N., Skopal, A., Shugarov, S. Y., et al. 2021, A&A, 646, A116
+
+Shara, M. M., Prialnik, D., Hillman, Y., & Kovetz, A. 2018, ApJ, 860, 110
+
+Skopal, A. 2006, A&A, 457, 1003
+
+Stanishev, V., Zamanov, R., Tomov, N., & Marziani, P. 2004, A&A, 415, 609
+
+Takeda, Y., Jeong, G., & Han, I. 2018, PASJ, 70, 8
+
+Toala, J. A., Gonzalez-Martin, O., Sacchi, A., & Vasquez-Torres, D. A. 2024,
+MNRAS, 532, 1421
+
+Tomoy, T., Kolev, D., Munari, U., & Antov, A. 1996, MNRAS, 278, 542
+
+Warner, B. 1995, Cataclysmic variable stars, Vol. 28; Cambridge astrophysics
+series (Cambridge University Press)
+
+Warner, B. & Peters, W. L. 1972, MNRAS, 160, 15
+
+Whitehurst, R. 1988, MNRAS, 232, 35
+
+Woodward, C. E., Pavlenko, Y. V., Evans, A., et al. 2020, AJ, 159, 231
+
+Zamanov, R., Boeva, S., Latev, G. Y., et al. 2023, A&A, 680, L18
+
+Article number, page 11 of 15
+
+A&A proofs: manuscript no. main
+
+Appendix A: Photometry
+
+Figure [A-]] represents the B-band photometry from AAVSO
+phase-folded and phase-averaged using a rolling mean of win-
+dow A¢d = 0.15 and step of Ad = 0.005. The data of the SAP
+covers the JD-range 2457157-—2459945, and the quiescence cov-
+ers the JD-range 2450634—2456779. The SAP is associated with
+a brightening of about 0.9 mag in the blue.
+
+11.4
+
+B mag
+
+quiescence
+— SAP + 0.9 mag
+
+0.00 0.25 0.50 0.75 1.00
+
+Phase
+
+1.25
+
+Fig. A.1: Phase-folded B-band light curve. The observed phases
+are displayed twice to guide the eyes.
+
+Note how the second maximum (at phase 0.6—0.9) is oblit-
+erated during the SAP compared to the quiescent phase. This
+is caused by absorption from matter flowing over the disc (see
+Sect. B-5Jand flow labeled "3" in Fig. 8).
+
+Appendix B: Observation log
+
+Table [B-T] lists the radial velocities from the HERMES spectro-
+graph used in Sect. 2}
+
+Article number, page 12 of 15
+
+Table B.1: Radial velocities of T CrB measured with HERMES
+(barycentric correction applied).
+
+HJD RV O-C HJD RV O-C
+2400000+ [km/s] [km/s] | 2400000+ [km/s] [km/s]
+55575.74 -43.65 —-1.19 | 58355.39 = -11.68 0.57
+56110.39 = -3.60 0.98 | 58503.78 -52.74 = -0.40
+56165.42 -26.49 0.96 | 58518.73 -49.76 — -0.40
+56478.41 -46.50 -0.21 | 58538.66 -39.68 0.26
+56486.40 -42.56 -0.30 | 58558.60 -26.87 0.13
+56756.70 -15.88 -0.66 | 58595.52 -7.74 = -0.52
+56782.48 -6.07 -0.66 | 58615.49 -4.40 0.24
+56842.42 -24.69 -0.92 | 5864654 -14.22 -0.13
+56844.42 -26.20 -1.15 | 58661.42 -22.97 -0.22
+56903.35. -53.00 -0.68 | 58678.44 -34.00 — -0.30
+57137.50 -52.45 = -0.06 | 58881.70 -18.63 = -0.33
+57208.42 -18.02 -0.83 | 58897.71 -28.18 0.17
+57228.43 -7.96 = -0.23 | 58920.61 -42.20 0.13
+57229.48 -7.47 = -0.07 | 5898654 -44.71 = -0.75
+57234.41 -6.53 = -0.47 | 59002.49 -35.34 = -0.82
+57236.41 -6.43 -0.80 | 59025.41 -20.04 -0.65
+57239.39 = -5.86 = -0.73 | 59037.40 -13.11 = -0.50
+57400.79 = -39.51 0.43 | 59059.41 -5.43 — -0.21
+57422.69 -25.42 0.25 | 59133.33 -33.61 — -0.08
+57435.69 -16.55 0.83 | 59259.73 -14.90 0.50
+57477.59 — -3.55 1.10 | 59288.64 -4.40 0.59
+57504.53 -11.22 0.82 | 59299.62 -4.60 0.14
+57514.45 -16.24 1.03 | 59363.52 -34.88 0.29
+57536.53 -30.51 0.61 | 59365.50 -36.10 0.30
+57783.73 -43.28 = -0.42 | 59371.39 = -39.57 0.34
+57800.72 -49.57 0.36 | 59376.48 -42.53 0.18
+57817.74 = -51.79 0.67 | 59380.48 -44.39 0.34
+57838.57 -48.46 0.00 | 59381.46 -44.76 0.43
+57852.62 -41.63 0.22 | 59383.41 -45.90 0.19
+57874.65 -27.75 0.06 | 59396.43 -50.78 = -0.12
+57874.66 -27.78 0.03 | 59398.39 -51.17 = -0.05
+57905.44 = -9.63 0.26 | 59401.39 -51.47 0.23
+57912.47 — -7.17 0.15 | 59404.40 -52.01 0.10
+57939.44 -5.61 -0.23 | 59410.40 -52.52 = -0.06
+57952.42 — -8.81 0.14 | 59456.38 -34.48 0.85
+57974.40 -20.34 -0.25 | 59663.65 -46.10 0.55
+58139.76 -8.40 -0.99 | 59691.73 -29.88 0.31
+58187.61 -12.89 -0.68 | 5973155 -6.94 0.87
+58195.58 -16.17 0.19 | 59739.45 — -5.24 0.46
+58212.67 -26.87 -0.02 | 59740.43 = -4.89 0.61
+58222.65 -33.32 -0.03 | 59753.42 = -4.14 0.51
+58224.49 -34.61 -0.15 | 59791.39 -18.03 — -0.10
+58250.60 -48.34 -0.17 | 5981141 -30.70 = -0.15
+58275.59 -52.41 = -0.03 | 59949.79 -11.90 — -0.30
+58293.43 -48.50 0.07 | 59971.74 -5.53 — -0.58
+58294.45 -48.16 0.03 | 59996.79 -7.97 — -0.34
+58311.41 -39.56 0.18 | 60023.67 -21.17 -041
+58311.42 -39.12 0.61 | 60042.52 -33.29 -0.46
+58311.44 -39.55 0.18 | 60076.48 -50.39 -0.46
+58346.44 -16.54 0.57 | 60104.56 -51.22 0.07
+
+Appendix C: Spectra and Doppler maps
+
+The dynamic spectra obtained during the SAP for twelve repre-
+sentative lines from Table B] are displayed in Fig. (C-I] The color
+code is inverted for absorption lines (bottom row) to highlight the
+low flux values. The Doppler tomograms of the emission lines
+are displayed in Fig [C.2}
+
+L. Planquart et al.: Resolving the mass transfer in the symbiotic recurrent nova T Corone Borealis
+
+HI 6562.85 A HI 4861.34A OI 8446.36A
+
+0.00 =
+oss
+i 1.4
+0.505
+0.752 1.2
+wo : wo wo
+01.005 3 a 5 8 . 3
+x = i o£ i ris
+a i= a a
+E 1.0
+1.255
+1.503
+F 0.8
+1.75:
+=100 0 2.0000 100 0 100 200 0
+RV [km/s] RV [km/s] RV [km/s]
+0.00 x Hel 6678.15 A 0.00 Hel 5875.64 A
+oust) 0.252
+0.505 0.505
+07 0.752
+ou ou E wo
+1.00 3 @ 1.004 81.00 3
+é = c 3 a ~
+1.25 1.25%
+1.50 1.504
+1.75 1755 {
+2.008 : P : : 20 4, ks 0 ;
+000-100 0 100 200 =100 000-100 0 100 200
+RV [km/s] RV [km/s] RV [km/s]
+[Ne III] 3868.76A HeII 4685.74 7 NIII 4640.64 A
+0.00 “. 0.00 = = =
+0.25 0.255 18
+ia 3.0
+0.50 0.505 1.6
+0.755 0.755 ; Bal 25 4
+4 o : = : o
+wu x u = x u x
+% 1.00 3 @ 1.008 202 2° 12
+1.25 1255
+i= 1S 0
+1.50 1.505
+E , | }0.8
+L.I5= 1.752 < ™ 4\{-9
+2.00; | 2008 ; : J Vid). 4%, J
+"00 100 0 100 200 ~200 100 0 100 200 —100 0 100
+RV [km/s] RV [km/s] RV [km/s]
+O17774.17A HeI 4713.15A Hel 3964.73 A
+0.00 ; 2.0
+0.25
+0.50 15
+0.75
+wo wo wo
+1.00 1.03 a 3 o1. 103
+£ ira £ ir £ ir
+
+1.75
+
+100. ~—-200
+
+0 100 200 2.0000 —100 0 100 200 2.0000 —100
+
++
+2.09509 10}
+RV [km/s] RV [km/s] RV [km/s]
+
+—100
+
+Fig. C.1: Dynamic spectra of T CrB as a function of the orbital phase during the SAP. Each panel shows the observed phases twice
+to guide the eyes, with time running downward. The color represents the pseudo-continuum-normalized fluxes taken as the median
+value of the spectral window. The black curve represents the primary motion, while the vertical line marks the systemic velocity,
+and the horizontal lines on the left indicate the observed phases.
+
+Article number, page 13 of 15
+
+HI 6562.85 A
+
+Vy [km/s]
+
+-50 -25 0 25 50
+Vx [km/s]
+
+100 Hel 6678.15A
+
+g
+€
+x
+>
+>
+—25
+—50
+-75
+100 og —75 —50 —25 0 25 50 75 100
+Vx [km/s]
+100 (Ne III] 3868.76A
+2
+€
+x
+>
+
+_ ~ — mia
+100109 -75 -50 -25 0 25 50 75 100
+Vx [km/s]
+
+Vy [km/s]
+
+Vy [km/s]
+
+Vy [km/s]
+
+A&A proofs: manuscript no. main
+
+HI 4861.34A
+
+—25
+—50
+
+-75
+
+~10% 50 -75 -50 -25 0
+Vx [km/s]
+
+He I 5875.64A
+
+- * _
+109/00 -75 -50 -25 0 25
+Vx [km/s]
+
+He II 4685.7A
+
+50 75 100
+
+~10% 0-75-50 -25 0
+Vx [km/s]
+
+Vy [km/s]
+
+Vy [km/s]
+
+Vy [km/s]
+
+OI 8446.36A
+
+100
+
+—25
+—50
+
+-75
+
+10090 -75 -50 -25 0 25 50
+
+Vx [km/s]
+[O III] 5006.84 A
+100), —
+a
+75
+50
+25
+ie}
+.
+—25
+—50
+[
+
+-75
+
+100/99 -75 -50 -25 0 25 50 75 100
+Vx [km/s]
+
+NIII 4640.64 A
+
+100
+
+roo
+109/00 -75 50 -25 0
+Vx [km/s]
+
+Fig. C.2: Doppler maps for the emission lines of Fig.
+
+Appendix D: Secular evolution
+
+Figure [D. I] displays the temporal evolution of the emission com-
+ponent of the lines shown in Fig. [CI] The start of the SAP, JD
+=2457023.5, defines t = 0. The [Nem] line, being at the bor-
+der of the detector, is noise-dominated for times greater than
+2800 days, when the blue continuum has dropped down.
+
+Article number, page 14 of 15
+
+L. Planquart et al.: Resolving the mass transfer in the symbiotic recurrent nova T Corone Borealis
+
+200- HI 6562.85 A
+
+150 =
+100 =
+
+wa
+o 6
+
+RV [km/s]
+
+50:
+-100 E
+
+-150-
+-2005
+
+0 500 1000 1500 2000 3000
+
+JD-2457023.5 [d]
+
+2500
+
+Hel 6678.15A
+
+200 -
+150 =
+100 :
+
+RV [km/s]
+w
+oO oO
+
+i
+ua
+°
+
+-100-
+
+-150-
+
+0 500 1000 1500 2000 3000
+
+JD-2457023.5 [d]
+
+2500
+
+[Ne III] 3868.76A
+
+wo
+°
+
+ca
+Eo
+z
+
+|
+
+e |
+ou
+nm)
+
+1
+B
+a
+i=}
+
+A
+1500
+JD-2457023.5 [d]
+
+500 1000 2000 2500
+
+1.0
+
+id
+for)
+
+Normalized flux
+
+Normalized flux
+
+2
+N
+
+2
+°
+
+Normalized flux
+
+RV [km/s]
+
+RV [km/s]
+
+RV [km/s]
+
+HI 4861.34A
+
+200 -
+150 =
+100 =
+
+wa
+o 6
+
+i
+ua
+o
+
+-100-
+
+-150=
+-2005
+
+0 500 1000 1500 2000 2500 3000
+
+JD-2457023.5 [d]
+
+Hel 5875.64A
+
+200 -
+150 =
+100 :
+
+wa
+o 6
+
+i
+ua
+o
+
+0 500 1000 1500 2000 2500 3000
+
+JD-2457023.5 [d]
+He II 4685.7A
+
+wa
+o 6
+
+i
+ua
+o
+
+0 500 1000 1500 2000 2500 3000
+
+JD-2457023.5 [d]
+
+1.0
+
+o
+o
+Normalized flux
+
+2
+N
+
+2
+°
+
+Pr
+o
+
+o
+o
+Normalized flux
+
+2
+N
+
+2
+°
+
+Pr
+o
+
+o
+o
+Normalized flux
+
+2
+N
+
+0.0
+
+RV [km/s]
+
+RV [km/s]
+
+RV [km/s]
+
+: 01 8446.36 A Lo
+150:
+4 0.8
+100 =
+Ey 5
+50> e
+a 065
+E ov
+oO: N
+0.4 g
+-50= we
+i. 2
+-100=
+[ 0.2
+-150=
+500 100015002000 2500 3000——-°
+JD-2457023.5 [d]
+OIIT] 5006.84 A
+F 7 _t u 1.0
+i \ ml |
+150: " / =
+i 0.8
+100 =
+E EI
+50: e
+i 065
+0: s
+q oa @
+—50> : 5
+i 2
+-100=
+F 0.2
+-150:
+500 1000 1500 00 2500 3000 °°
+JD-2457023.5 [d]
+NITI 4640.64 A Lo
+0.8
+5
+50 = =
+j 3
+q ov
+0: N
+504 5
+q 2
+-100 2
+J 0.2
+-150°
+
+1000
+JD-2457023.5 [d]
+
+1500 2000 2500 3000
+
+Fig. D.1: Temporal evolution of the emission lines of Fig. Each panel shows the time elapsed since the SAP start (t = 0), with
+
+time running rightward.
+
+Article number, page 15 of 15

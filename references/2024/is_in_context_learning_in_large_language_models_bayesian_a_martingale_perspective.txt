@@ -1,0 +1,2384 @@
+2406.00793v1 [stat.ML] 2 Jun 2024
+
+e
+e
+
+arXiv
+
+Is In-Context Learning in Large Language Models Bayesian?
+A Martingale Perspective
+
+Fabian Falck“! Ziyu Wang”! Chris Holmes !
+
+Abstract
+
+In-context learning (ICL) has emerged as a par-
+ticularly remarkable characteristic of Large Lan-
+guage Models (LLM): given a pretrained LLM
+and an observed dataset, LLMs can make pre-
+dictions for new data points from the same dis-
+tribution without fine-tuning. Numerous works
+have postulated ICL as approximately Bayesian
+inference, rendering this a natural hypothesis. In
+this work, we analyse this hypothesis from a new
+angle through the martingale property, a funda-
+mental requirement of a Bayesian learning sys-
+tem for exchangeable data. We show that the
+martingale property is a necessary condition for
+unambiguous predictions in such scenarios, and
+enables a principled, decomposed notion of uncer-
+tainty vital in trustworthy, safety-critical systems.
+We derive actionable checks with corresponding
+theory and test statistics which must hold if the
+martingale property is satisfied. We also examine
+if uncertainty in LLMs decreases as expected in
+Bayesian learning when more data is observed. In
+three experiments, we provide evidence for vio-
+lations of the martingale property, and deviations
+from a Bayesian scaling behaviour of uncertainty,
+falsifying the hypothesis that ICL is Bayesian.
+
+1. Introduction
+
+Large Language Models (LLMs) are autoregressive gener-
+ative models trained on vast amounts of data, exhibiting
+extraordinary performance across a wide array of tasks
+(Zhao et al., 2023). A particularly remarkable charac-
+teristic of LLMs is so-called in-context learning (ICL)
+
+“Equal contribution "Department of Statistics, Uni-
+versity of Oxford, Oxford, UK. Correspondence to:
+Fabian Falck <fabian.falck @ stats.ox.ac.uk>, Ziyu
+Wang <ziyu.wang @stats.ox.ac.uk>, Chris Holmes
+<cholmes @ stats.ox.ac.uk>.
+
+Proceedings of the 41% International Conference on Machine
+Learning, Vienna, Austria. PMLR 235, 2024. Copyright 2024 by
+the author(s).
+
+(Brown et al., 2020; Dong et al., 2022): Given a pre-
+trained language model pa, and an observed dataset D :=
+{(x1,y1),---;(@n,;Yn)} = Zin Of samples, LLMs cap-
+ture the distribution of the underlying random variables
+X and Y in this in-context dataset. This allows them pro-
+duce a new sample (2n41, Yn+1) using the predictive dis-
+tribution py (Xn41; Yn4ilZin = Z1:n), or if 2p41 is ob-
+served infer the predictive distribution pyr (Yn41|Xn41 =
+Lnt1; Zin = Z1-n), Without retraining or fine-tuning py.
+
+Few-shot learning via ICL (Brown et al., 2020) has pro-
+duced numerous breakthroughs in LLM research (Dong
+et al., 2022), such as in supervised learning (Min et al.,
+2021) or chain-of-thought prompting (Wei et al., 2022). In
+spite of the remarkable empirical success of ICL, we lack
+a unified understanding of the algorithm and the properties
+of conditioning LLMs on in-context data. In this work, we
+are interested in characterising the type of learning that oc-
+curs in ICL. Specifically, we aim to answer the question:
+is in-context learning for LLMs on exchangeable data
+(approximately) Bayesian?
+
+In contrast to prior work, our analysis focuses on one fun-
+damental property of Bayesian learning systems for ex-
+changeable data: the martingale property. In a nutshell, the
+martingale property describes the invariance of a model’s
+predictive distribution with respect to missing data from a
+population. We will formally define and extensively explain
+the martingale property in §2, but begin by intuitively de-
+scribing two important and desirable consequences of it with
+an example, highlighting its relevance. These consequences
+are: (i) the martingale property is a necessary condition
+for rendering predictions unambiguous in an exchangeable
+data setting, and (ii) it establishes a principled notion of the
+model’s uncertainty.
+
+Consider a drug company exploring the efficacy of a new
+medication for headaches. The company runs a two-arm
+Randomised Control Trial (RCT) with 100 patients, 50 in
+each arm, comparing the new treatment with the current
+standard of care (in this case ibuprofen), and records the out-
+come Y € {0,1} whether patients are symptom-free four
+hours after treatment. It is important to note that in this set-
+ting, the distribution of outcomes is independent of the order
+in which the patients are observed, a property known as ex-
+
+Is In-Context Learning in Large Language Models Bayesian? A Martingale Perspective
+
+Sn ee ean Se ees tar a
+
+Pau(Zn4m|Zentm)
+
+S
+iy
+ot
+
+--- En)
+
+Om °
+
+S
+eS
+Ss
+
+Lon wens yeni nanny teenth ted
+Aor
+were
+ey
+'
+
+Pau(Zn4m|Zentm)
+
+LLM
+— Bayes
+
+--- E(On)
+
+Bin
+
+10 20 30 0 1
+m
+
+2 3 4 100 200 300
+
+density m
+
+Figure 1: In-context learning in Large Language Models is not Bayesian. [Left] The martingale property, a necessary
+condition of Bayesian learning systems, is satisfied for short sample paths. [Centre] This allows us to approximate the
+martingale posterior (see §2.3) which, however, indicates deviation from a reference Bayesian model. [Right] For longer
+sample paths, we observe a drift which violates the martingale property, together rendering the ICL system non-Bayesian.
+
+changeability (see §2 for a formal definition). Half-way into
+the trial, the company conducts an interim analysis. Define
+the interim observations D = {(21,y1),.--, (50, Ys0) }
+where y;, indicates outcome, and x, the treatment arm and
+other patient covariates. Given these observations, the com-
+pany wants to decide whether to stop the trial early. The
+company uses an LLM, which was trained on potentially
+useful background information from the internet (e.g. on
+clinical trials, or the efficacy of ibuprofen), to generate the
+missing patients via ICL conditioning on %1-,4,—1 for the
+(n + k)-th patient, and determines if the RCT is successful
+combining the observed and synthetic data. It repeats this
+imputation procedure J times, and decides to keep going
+with the trial if the fraction of symptom-free patients in the
+treatment over the control arm is above a certain threshold
+on average over these J hypothetical trials. Should we trust
+the LLM’s prediction using ICL under this procedure?
+
+In preview of our experimental results in §4, the answer is
+‘No’. Our experiments present evidence that state-of-the-art
+LLMs violate the martingale property in certain settings (see
+Fig. 1). The martingale property is a necessary condition
+for exchangeability, and in turn a fundamental property of
+Bayesian learning. If the martingale property is violated by
+an LLM performing ICL it implies that the model’s predic-
+tions are not exchangeable, and hence that ICL with this
+LLM is not following any reasonable notion of probabilistic
+conditioning. This renders the LLM’s predictive distribu-
+tion incoherent: the model can make different predictions
+depending on the order in which the patients are imputed.
+This is problematic because by the design of an RCT, we
+know that there is no outcome dependence on the order of
+observations. It is incoherent and ambiguous to receive a
+different marginal predictions if we for example impute pa-
+tient #51 or patient # 100 first. Note that independent and
+identically distributed (i.i.d.) is a stricter condition implying
+exchangeability, and hence our work also applies to any
+1.1.d. data setting. This should caution the practitioner of the
+use of LLMs in exchangeable applications and data settings.
+
+But there is a second reason why the martingale property is
+
+crucial: it enables a principled interpretation of the uncer-
+tainty of LLMs, allowing us to decompose inference into
+epistemic and aleatoric uncertainty (see §2 for a detailed
+introduction). Revisiting the RCT example above, if we
+acquire data from the 50 remaining patients, a costly deci-
+sion, can this substantially decrease (epistemic) uncertainty?
+What is the effect of acquiring additional features for each
+patient, e.g. a genetic predisposition, on the (aleatoric) un-
+certainty? — Without satisfying the martingale property, we
+have no understanding of the effect on reducing uncertainty
+in applications where additional data acquisition is feasible,
+for instance active learning or reinforcement learning. We
+cannot study the question ‘why is the point prediction of my
+LLM imprecise’ in a principled way, and the uncertainty
+of an LLM’s predictive distribution remains opaque. This
+finding has important implications for safety-critical, high-
+stakes applications of LLMs where trustworthy systems
+with a principled uncertainty estimate are vital.
+
+This work states the hypothesis that ICL in LLMs given ex-
+changeable data is Bayesian. Numerous works have argued
+that ICL approximates some form of Bayesian inference
+(Xie et al., 2021; Hahn & Goyal, 2023; Akyiirek et al., 2022;
+Zhang et al., 2023b; Jiang, 2023) which we will carefully
+review in App. D, rendering this hypothesis natural. Our
+work introduces a novel perspective which contradicts their
+conclusion: we show that the martingale property, a funda-
+mental property of Bayesian learning systems, is violated
+for state-of-the-art LLMs such as Llama2, Mistral, GPT-3.5
+and GPT-4. We on purpose focus our analysis on three syn-
+thetic experiments where the ground-truth data generating
+process is simple and known, and which provide a useful
+test bed without the convolution of unknown latent effects as
+is typical in natural language. Our goal is to provide a scien-
+tific and precise framework which measures and quantifies
+the degree to which ICL of an LLM is Bayesian.
+
+More specifically, our contributions are: (a) We motivate the
+martingale property as a fundamental property of Bayesian
+learning, crucial for unambiguous predictions of an LLM in
+exchangeable settings, and a principled interpretation of un-
+
+Is In-Context Learning in Large Language Models Bayesian? A Martingale Perspective
+
+certainty in LLMs (§2). (b) We derive actionable diagnostics
+with corresponding theory and test statistics of the martin-
+gale property for ICL. We also characterise the efficiency
+of ICL compared to standard Bayesian inference (§3). (c)
+We provide novel evidence for violations of the martingale
+property through LLMs in certain settings, and a deviation
+of the sample efficiency of ICL relative to Bayesian systems,
+falsifying our hypothesis that ICL in LLMs is Bayesian and
+cautioning against the use of LLMs in exchangeable and
+safety-critical applications (§4).
+
+2. What Characterises a Bayesian Learning
+System? A Martingale Perspective
+In this section we rigorously formalise properties of an ICL
+
+system that follows Bayesian principles. Theoretical details
+and technical proofs are presented in App. A.
+
+2.1. The Martingale Property
+
+We begin by defining the martingale property.
+
+Definition 1. The predictive distributions for {Z;} satisfy
+the martingale property if for all integers n,k > 0 and
+realisations {z, Z1.,, } we have
+
+Eq. (1) states that {Z;} ~ pyq are conditionally identically
+distributed (Betti et al., 2004). As we will explain in §2.3,
+this renders distributions {pys(Zn4i1 = -|Zi1-n)} to forma
+martingale, hence the name ‘martingale property’.
+
+It follows from Eq. (1) that predictive distributions of the
+form pyr (Yn+z|Xn+k, Zin) Satisfy a similar identity:
+
+pu (Yn41 = y |X. +1 = 2%, Zin = Z1:n)
+= pM (Yn+k = y |X. +k =, Zin = Zin)
+
+,
+4Zntiintk—1~PM (-|Zi:n=Z1:n)
+
+pu (Yntk = y|Xn+k =a, Zimn+k—1); (2)
+
+for all integers n, k > 0, realisations {21.,,y}, and (almost
+every) realisation z measured by py (Xn41|Zien = Z1:n)-
+In Eq. (2) the martingale property renders a model’s pre-
+dictions invariant to imputations of missing samples from
+the population (on average). Note that Eqs. (1) and (2) are
+equivalent in the unconditional case (x; = @), which we
+consider in the majority of our experiments in §4.
+
+2.2. The Martingale Property is Necessary for
+Unambiguous Predictions under Exchangeable
+Data
+
+To understand the intuition behind the seemingly techni-
+cal notion of the martingale property, consider two sce-
+narios for ICL, illustrated in Fig. 2. In both scenarios,
+
+Scenario 1: Predict
+given observed data
+
+Scenario 2: Predict given observed
+data and imputed missing observations
+
+x Y xX Y xX Y
+zy YI 1 Yi Ea YI
+En Yn In Un En Yn
+aes tan] Ff ped | mst)?
+? 2 20) 3a) Or)
+: Pnt2 | Ynt2 Tria | nse
+0) 1 ) )
+2 | 2 Brim | Gen 22m [In
+
+Figure 2: The martingale property, a fundamental require-
+ment of a Bayesian learning system, requires invariance
+with respect to missing samples from a population.
+
+the LLM is given the observed data (D,2n+1). In sce-
+nario 1, the LLM directly infers the predictive distribution
+pM (YneilZin = Zin;Xn41 = Ln+41). In scenario 2,
+before making a prediction, the LLM generates (imputes)
+m — 1 missing samples 2;,42:n4m from the population au-
+toregressively. Given the observed data and the imputed
+samples as a prompt, we then sample from the LLM’s
+predictive distribution pyy(Yn4i|Zien = Z1:n,Xn41 =
+Lnt1; Zn42:ntm = 2n+2:n+m). We repeat this imputa-
+tion procedure J times and average the obtained predictive
+distributions to receive a Monte Carlo estimate of the right-
+hand side of Eq. (2). Scenario 2 is of practical interest
+when estimating aggregated statistics of a population as
+illustrated in our RCT example in §1. — The martingale
+property then states that the predictive distribution from
+scenario 1, py(Yn41|Zn = 2n;Xn+1 = Ln41), and the
+predictive distribution from scenario 2, py(Yn4i|Zn =
+Zn;En41;Zn42n+¢m = 2n+2:n+m), when averaged over
+all possible imputations of 2,,42:n4m are equivalent.
+
+Why is the martingale property natural for any probabilistic
+system, and LLMs in particular? It is important to observe
+that all information about the distribution of X and Y pre-
+sented to the model (in addition to its prior belief (Zellner,
+1988)) lies in the observed data (D,x,,+1). Imputing the
+samples 2,42:n+m should hence not change the predictive
+distribution for y,41 when averaged over all possible im-
+putations. This is precisely the core idea of the martingale
+property. If the predictive distribution for y,41 changes on
+average, the model is ‘creating new knowledge’ when there
+is none: it is ‘hallucinating’. In preview of our experimental
+results in §4, we observe this violation of the martingale
+property in state-of-the-art LLM families. We call this phe-
+nomenon introspective hallucinations: by querying itself,
+the model changes its predictions (on average), which as we
+
+Is In-Context Learning in Large Language Models Bayesian? A Martingale Perspective
+
+shall see in §2.4 violates how Bayesian systems learn.
+
+There is another way in which predictions are rendered un-
+ambiguous: under exchangeability for which the martingale
+property is a necessary condition (see App. A) the model is
+invariant to the order of the observed and missing data. This
+requirement is vital if we know that the order of the under-
+lying distributions is irrelevant, for instance because—as in
+the RCT example in §1—we have designed the experiment
+such that we can exclude a dependency on the order. For-
+mally, this concept is known as exchangeability. A sequence
+of random variables {Z;} ~ paz is exchangeable if for all
+£ € N and é-permutations o,
+
+pM(41,---,;Ze) =pM(Zo(1)s+++sZo(e)). (3)
+Exchangeability guarantees the invariance of predictions to
+the ordering of the observations Z;.,,, but also with respect
+to the order of future imputations Z,41,...|Zi:n. In the stan-
+dard ICL setup, it is natural to assume that the sequence
+of example tuples in the ICL dataset, which is part of the
+prompt, is iid. and thus exchangeable, and many influen-
+tial works make this assumption (often without stating it
+explicitly) (Xie et al., 2021; Wang et al., 2023; Jiang, 2023).
+To understand the importance of this assumption further,
+consider the RCT example in §1, where {Z1.1099} are (by
+experimental design) exchangeable. A model pay should
+hence satisfy
+
+pM (Yn k1Xn k=, Zin, Xn l:in+k 1=&n41:n+k p=
+
+pu(Yn nl|Xn k=2, Zin, Xn l:in+k 1=25(nt1n+k—1))s
+
+meaning that the prediction for Y,,+;|D, Xn+x is indepen-
+dent of the order of the imputed inputs @,41.n44-1. Ifa
+model pyy violates the above equality, there may be ambi-
+guities in the prediction of the next sample (Y;,+4%, Xn+z)
+as it may depend on and vary with the ordering. Such ambi-
+guities would substantially undermine the credibility of pre-
+dictions, as well as the downstream decision-making based
+on such procedures. The martingale property is connected
+to the above notions of invariance as a necessary condition
+for exchangeability. Furthermore, it can even ensure ex-
+changeability of imputed samples as the observed sample
+size n becomes large, because Eq. (1) implies asymptotic ex-
+changeability of Z,41,...|Z1-n (Berti et al., 2004, Thm. 2.5).
+
+2.3. The Martingale Property Enables a Principled
+Notion of Uncertainty
+
+The second desirable and important consequence of the mar-
+tingale property is that it establishes a principled notion of
+uncertainty in the model’s predicitive distribution. More
+specifically, it allows us to decompose this uncertainty, en-
+abling us to study and interpret the uncertainty of a model.
+
+To simplify the exposition, suppose the variables Z; are
+discrete and have A < o realisations (both standard in
+
+LLMs) |, so that any distribution pg(Z = -) can be identified
+by a vector 6 € R“. Let 6,, denote the random vector that
+indexes pyr(Zn41 | Zien). Then, the martingale property is
+equivalent to stating that {0,, } form a martingale w.r.t. the
+filtration defined by {Z,,}. Under boundedness conditions
+always satisfied in the above case, Doob’s theorem (Doob,
+1949) states that 0,, converges almost surely to a random
+vector 4.., and we have 6, = Eg,,|Z,,,, 900, or equivalently,
+
+Note the similarity of Eq. (4) with Bayesian inference: the
+Bayesian posterior predictive distribution has the form
+
+The random vector 6,,. plays the same role as the parameter
+@ in a Bayesian model, as both determine a predictive distri-
+bution (p9,, (Z) or p(Z|0)). They are thus interchangeable
+for prediction purposes. Moreover, if pyy is defined through
+Bayesian inference over 6, pg, will define the same distri-
+bution over Z as p(-|@) (see App. B.1). Therefore we refer
+to the distribution 6,,|Z1.,, as the martingale posterior.
+
+Eq. (4) shows that the variation or uncertainty in the predic-
+tive distribution pyr (Zn41 = + | Z1:n) has two sources:
+
+1. epistemic uncertainty, which is about the latent 0,, and
+can be reduced if more data is available; and
+
+2. aleatoric uncertainty, which is irreducible given a fixed
+set of features even if infinite samples are observed and
+all aspects of the data generating process, namely the
+latent 0,,, are known.
+
+The close connection between Eqs. (4) and (5) shows that
+this decomposition of uncertainty is established by the same
+foundations as in Bayesian inference. This is particularly
+relevant for LLMs which lack clearly stated, interpretable
+and verifiable assumptions (such as a prespecified statistical
+model), rendering their predictive distribution a ‘black-box’.
+
+Importantly, we can construct the martingale posterior
+solely using path samples from pyjy: we can sample from
+limps00 O9n+k = Ioo. Alternatively, we can also estimate
+parametric models on the path samples as proposed in Fong
+et al. (2021) (see App. B.1 for further details). This construc-
+tion is an appealing tool for interpreting black-box models
+such as LLMs.
+
+The interpretable decomposition of uncertainty further pro-
+vides actionable guidance on how the combined uncertainty
+can be reduced: We can collect more samples to reduce epis-
+temic uncertainty in scenarios where this is possible such as
+
+'We refer to App. B.1 for a review of the more general case.
+
+Is In-Context Learning in Large Language Models Bayesian? A Martingale Perspective
+
+active learning, reinforcement learning or healthcare; partic-
+ularly in regions of the input space where the uncertainty is
+high. In §3.3 we propose diagnostics to check if epistemic
+uncertainty decreases w.r.t. training sample size. On the
+contrary, if the aleatoric uncertainty is high and ought to
+be reduced, we cannot do so without “changing the prob-
+lem’, for instance by collecting more features for each data
+point. This principled notion of uncertainty in a model is
+crucial in safety-critical, high-stakes scenarios for building
+trustworthy systems.
+
+We present the following example for further intuition:
+Example 1. Suppose Z; € {0,1}. Then 0, =
+(000,0; 90,1) € R*, and po, = Bern(@.,1). Thus, in
+both Eq. (4) and Eq. (5) the epistemic uncertainty is repre-
+sented by a distribution over the Bernoulli parameter, re-
+vealing their inherent connection. The epistemic uncer-
+tainty is especially important in scenarios where we use a
+black-box model pj, to impute the missing samples {Z,,+; }
+from a population —as in the RCT example in §1— and
+want to quantify a model’s lack of knowledge about the
+population. Note this distribution is not identifiable if we
+only have samples from a single-step predictive distribu-
+tion pyr (Zn+1|Zi:n), but becomes identifiable given sample
+paths.
+
+2.4. On the Link between the Martingale Property and
+Bayesian Learning Systems
+
+So far, we asserted that the martingale property is fundamen-
+tal to a Bayesian ICL system. In this subsection, we want to
+further formalise this. We have already discussed the close
+connection between the martingale property, exchangeabil-
+ity (§2.2), and uncertainty ($2.3). We will now show that for
+ICL on i.i.d. data, exchangeability, for which the martingale
+property is a necessary condition, and Bayesian inference
+are closely connected, equivalent conditions.
+
+ICL typically assumes i1.i.d. observations Z;.,,, which is
+our primary focus in this work (see §2.2). Therefore, a
+correctly specified Bayesian model should produce marginal
+predictive distributions of the form
+
+=| pw (21=21,---, Zr=2n|9)m(0)d0
+
+_ | (II par(2=2|0)) (0) wneN. (7)
+
+i=l
+
+Here, @ denotes the parameter of a Bayesian model, 7 de-
+notes the prior measure and pyy(Z = - | 6) denotes the
+likelihood. From the factorisation over the data dimension
+nin (7), we can see that it is invariant with respect to permu-
+tations of 21.,, and thus the left-hand side of the equation in
+(6) is invariant, too. It then follows that {Z;} ~ pjy satisfies
+
+Eq. (3), and thus {Z;} are exchangeable. The converse is
+also true by de Finetti’s representation theorem (De Finetti,
+1929): Under mild regularity conditions any pa, that de-
+fines exchangeable {Z;} must have a representation in the
+form of Eq. (7). It then follows that the predictive distribu-
+tion pw (Zn41|Z1:n) has the form of a Bayesian posterior
+predictive distribution,
+
+pa(Znsi|Zun) = / par(Znv|0)1 (6) Z1n)d8,
+
+and can thus be viewed as implicit Bayesian inference for
+the latent variable 6 (Huszar, 2022). In conclusion, ICL on
+i.i.d. data corresponds to a Bayesian model that assumes
+(conditionally) i.i.d. observations if and only if it defines
+an exchangeable sample sequence. Since the martingale
+property is a necessary condition for exchangeability, an
+ICL system not satisfying the martingale property cannot be
+Bayesian.
+
+3. Probing Bayesian Learning Systems
+through Martingales
+
+In this section we introduce practical diagnostics to probe if
+LLMs match the behaviour of Bayesian learning systems.
+
+3.1. Are All Deviations from Bayes Bad? - Expected and
+Acceptable Deviations from Bayesian Reasoning
+
+Numerous properties are implied if a learning system satis-
+fies the martingale property, a distributional characteristic,
+and it is both infeasible and unnecessary as often practically
+irrelevant to check all of them in order to provide evidence
+for or against our hypothesis. For example, the martingale
+property implies that all conditional moments should be
+equivalent, ie. E(Z),,4|Zim) = E(Z1,4,|Zim) for all in-
+tegers n,n’, k,l > Oandn’ > n, yet higher-order moments
+are not vital in most applications and hence are acceptable
+deviations, if existent. Therefore, we will restrict our at-
+tention to two key implications of the martingale property
+which—if present—have important practical consequences.
+
+Pretrained LLMs are general-purpose models and can at
+best approximate Bayesian learning via ICL. The martin-
+gale property is an invariance that is not hard-coded in their
+transformer-based architecture, and can only be approxi-
+mately (rather than exactly) satisfied. Let us assume that
+an LLM internally maintains a ‘hierarchy of states’ (Wang
+et al., 2023), say a hierarchical Bayesian model, capturing
+different tasks (e.g. Bayesian ICL from i.i.d. data, or acting
+in a dialogue system), and at each sampling step first up-
+dates its belief about this state. Say there is a probability p
+that the LLM deviates from Bayesian ICL or simply fails to
+approximate. Even if p is small, the probability of a devia-
+tion 1—(1—p)™ becomes substantial when accumulated over
+a long sampling path of length m. In early experiments, we
+
+Is In-Context Learning in Large Language Models Bayesian? A Martingale Perspective
+
+observed frequent poor approximations for long sampling
+paths (see Fig. 11 in the Appendix). This would trivially
+falsify the martingale property and our hypothesis.
+
+In our experiments in §4, we hence restrict the sampling
+paths to a short, finite length where we check the martingale
+property. We also design our checks to be robust against
+such behaviour, for example by removing outliers before
+computing a test statistic. Furthermore, we are particularly
+interested in stark and unequivocal evidence of the model vi-
+olating the martingale property beyond an expected error of
+any approximating model. We will analyse and quantify vi-
+olations of the martingale property with diagnostics, which
+we introduce in §3.2, in order to check our hypothesis exper-
+imentally. In App. B.3 we derive the order of ‘acceptable
+violations’ for the test statistics we will introduce.
+
+3.2. Diagnostics for the Martingale Property
+
+As we showed in §2.4, the martingale property is fundamen-
+tal to a Bayesian learning system. In this work, we probe
+the martingale property in LLMs via two properties implied
+by it. If these implied properties are strongly violated, so is
+the martingale property. More specifically, we will derive
+implications involving conditional expectations of the form
+U(f(Zntin+m)|Zin), which can be estimated by gener-
+ating sample paths {2am ~ PM(Zn41:ntm|Zin =
+Zin) aa autoregressively with an LLM, and use these
+samples to form Monte Carlo estimates of the conditional
+expectations. We begin with an equivalent characterisation
+of the (conditional) martingale property.
+
+Proposition 1. A sequence {Zp4intm} ~ pu (-|Zin)
+satisfies the martingale property if and only if the following
+holds: for all n', k € N and integrable functions g, h:
+
+We now state two implications of Proposition |, our two
+diagnostics of the martingale property, which we will check
+experimentally in §4.
+
+Corollary 1. Let {Z; : i © N} be a sequence of random
+variables satisfying the martingale property. Then for all
+integers n,n',k > Oand n' > nit holds that:
+
+(i) E(g(Zn41)|Zin) = E(g(Zn+k)|Zin) for all inte-
+grable functions g, and
+
+Properties (i) and (ii) are derived from Proposition 1 by
+making different choices of the functions (g, h). Property
+(i) follows by setting h(Zy41:n’) = 1 and examines the
+marginal predictive distributions pay (Zn+%|Zi:n). We in-
+stantiate (i) using (at most) two choices of g: In preview
+of §4, we will perform our checks on unconditional exper-
+iments where Z;—or equivalently Y; because of the un-
+conditional setting—are Bernoulli or Gaussian distributed
+
+random variables. In the Bernoulli experiment it suffices
+to choose the identity function g(z) = z, as the mean
+'(Zn+k|Z1-n) provides full information about the distri-
+bution pyy(Zn+z|Zin). In the Gaussian experiment, we
+will observe that choosing g(z) = z and g(z) = z? is in
+most cases sufficient to reveal substantial violations from
+the martingale property.
+
+Property (ii) is equivalent to requiring Eq. (8) to hold for
+all linear functions (g, h), which follows by linearity of the
+functions and the conditional expectation. We will again
+see in our experiments that this choice is usually sufficient
+to reveal deviations from the martingale property. Let us
+further consider our choices for h and g with an example.
+
+Example 2. Suppose py is a Bayesian learning system over
+a latent parameter @ (see Eq. (7)), and the respective like-
+lihood p(Z|@) satisfies Ez,(z\9)Z = 0. Then by Corol-
+lary 1, for all (k, n’) we have
+
+© E(Zn4n|Zim) = E(O| Zin), and
+
+© E(Zn4r+1Z941|Ziin) = E(00"|Z1.n) (see e.g. Ghosal
+& Van der Vaart, 2017, p. 454).
+
+In this setting, condition (i) (with g(z) = 2) and (ii) thus
+guarantee that the conditional mean and covariance equal the
+posterior mean and covariance, respectively, independent
+of the indices (n’, &). These two important aspects of the
+posterior are hence consistently expressed by the model.
+The example is especially relevant as it covers Bernoulli
+(p(Z|@) = Bern(@)) and Gaussian data, which will be our
+main focus in the experiments.
+
+In App. C we present aggregated statistics 7], and T>;, to
+compute and empirically measure properties (i) and (ii) from
+sample paths generated by an LLM. In our experiments, we
+check if these statistics lie within bootstrapped confidence
+intervals obtained by a reference Bayesian predictive model,
+which is readily available in synthetic settings, through the
+same sampling procedure. We will refer to these compar-
+isons as ‘checks’ of the martingale property. If 7), and
+T> , lie outside the confidence interval, properties (i) and
+(ii) and hence the martingale property are violated.
+
+3.3. Diagnostics for Epistemic Uncertainty
+
+As discussed in §2.3, the martingale property allows us to
+identify epistemic uncertainty, which should decrease with
+more observed samples. Here, we derive a third diagnostic
+for Bayesian ICL systems which probes this. We begin
+by presenting a theoretical fact which provides important
+intuition on the role of epistemic uncertainty.
+
+Fact 1. Let 7(@) and py(Z|@) be the prior and likelihood
+of a Bayesian model, 6, := Egor(o|z;,,)9 the posterior
+
+Is In-Context Learning in Large Language Models Bayesian? A Martingale Perspective
+
+mean given data 21.,,, and || - || be any vector norm. Then,
+
+owmzin~m (2/00) Eo~m(O|z1n) IO — On|”
+
+LOo~mzZ1:n~(z|00) |9o _ On|. (9)
+
+The left-hand side in Eq. (9) is the trace of the posterior co-
+variance (variance) and thus measures epistemic uncertainty.
+The right-hand side is the estimation error for the true param-
+eter. Thus, Fact | states that epistemic uncertainty provides
+a quantification for the average-case estimation error. Note
+that Eq. (9) only applies to data from the prior predictive
+distribution, and thus not necessarily to the real observa-
+tions. Nonetheless, a significant deviation of a model from
+the known scaling behaviour of the estimation error will
+indicate non-conformance with any reasonable Bayesian
+models. This is precisely our starting point to derive another
+diagnostic for Bayesian ICL systems.
+
+As discussed in §2.3, we use sample paths generated by
+an LLM to approximate a martingale posterior and esti-
+mate its epistemic uncertainty. Here, we characterise epis-
+temic uncertainty through the trace of the posterior covari-
+ance of the martingale posterior, the ‘spread’ of the distri-
+bution. Because the sample paths we use are finite (see
+§3.1) we cannot study the exact martingale posterior di-
+rectly, which can only be recovered with infinite samples.
+Instead, we study the sampling distribution of the maxi-
+mum likelihood estimate (MLE) on the first m samples:
+Om = argmaxgeo >> ,, log pe(Zn+i), where po is the
+known parametric likelihood. We measure the spread of this
+distribution using its inter-quartile range
+
+Ts = Qos ({62 }7_4) — Qo.25({OP }7_1), 10)
+
+where 6 denotes the MLE using the j-th sample path
+{2 }™, and Qo.25 and Qo.75 are the 0.25- and 0.75-
+quantiles. In our experiments in §4 we consider scenarios
+where the true data distribution is defined by regular para-
+metric models. In such cases the optimal (squared) estima-
+tion error for the true parameter scales O(d/n) where n is
+the ICL dataset size and d is the dimension of the parameter,
+which is also the minimax lower bound (Van der Vaart, 2000,
+Ch. 8). When choosing m = O(n), a reference Bayesian
+model will also have the O(d/n) scaling behaviour follow-
+ing classical posterior contraction results in statistics; see
+App. B.2. Therefore, we can compare the asymptotic scaling
+of T3 between an LLM and a reference Bayesian parametric
+model through the same sampling-based procedure. If the
+scaling behaviour of 73 from our LLM deviates from that
+of the reference Bayesian model, we can conclude that the
+LLM either exhibits a marked loss of estimation efficiency,
+or does not maintain a correct notion of epistemic uncer-
+tainty at all. Both characteristics contradict a Bayesian ICL
+system and are undesirable.
+
+4. Experimental Analysis on LLMs
+
+In this section, we experimentally probe whether ICL in
+state-of-the-art LLMs is Bayesian using the diagnostics dis-
+cussed in §3 and corresponding test statistics T\ 4, T>,, T3.
+We provide our code base on https: //github.com/
+meta-inf/bayes_icl.
+
+4.1. Experiment Setup
+We consider three types of synthetic datasets 21.,:
+
+* Bernoulli: Z; ~ Bern(@), where 6 € {0.3, 0.5, 0.7};
+
+* Gaussian: Z; ~ N’(6,1), where 6 € {—1,0, 1};
+
+e A synthetic natural language experiment representing a
+prototypical clinical diagnostic task, where Z; = (Xi, Y;)
+indicate the presence or absence of a symptom and disease
+as a text string for the 7-th patient, respectively. Further,
+
+On purpose, we reduce our experimental setup to these
+minimum viable test beds where the ground-truth latent
+parameters are known, stripping away the convoluted latent
+complexity of in-the-wild NLP data. We use the following
+LLMs: 1lama-2-7B with 7B parameters (Touvron et al.,
+2023), mist ral—7B (Jiang et al., 2023), gpt-—3 (Brown
+et al., 2020) with 2.7B and 170B parameters, gpt-3.5,
+and gpt—4 (OpenAl, 2023)’.
+
+In all experiments we compute test statistics on LLM sam-
+ples, and compare their behaviour with the same statistics
+evaluated on samples from a reference Bayesian model.
+More specifically, in §4.2 we compare the statistics obtained
+from LLMs with the bootstrap confidence intervals (CIs)
+derived from the reference Bayesian model. A deviation
+will thus indicate that the LLM is unlikely to be a good
+approximation of the reference Bayesian model. More im-
+portantly, when n becomes moderately large, the Bernsten
+von-Mises theorem (Van der Vaart, 2000) applies: the devia-
+tions then imply that the LLM is highly likely deviating from
+all reasonable Bayesian models, namely those satisfying the
+regularity conditions of the theorem. This is because the
+theorem guarantees that the test statistics derived from all
+such models have asymptotically? equivalent distributions.
+
+We refer to App. C.1 for additional experimental details,
+such as the prompt format, tokenization, and computational
+requirements, as well as additional experimental results.
+
+°We only use gpt —4 in a subset of experiments (Fig. 3, Fig. 5
+in the text) due to API and resource limitations (App. C.1).
+
+3We note that the asymptotic equivalence results are relevant in
+our setting. As a concrete example, in the setting of Fig. 3 (a), the
+Cls obtained by using Beta(1, 11) and Beta(1, 1) as the reference
+model are practically indistinguishable; the difference is on the
+order of 1074.
+
+Is In-Context Learning in Large Language Models Bayesian? A Martingale Perspective
+
+(a) T), for g(z) = z,n = 50,m = 25
+
+GPT-3-170B GPT-4 Llama-2-7B Mistral-7B
+0.00 Po > ——_
+—0.05 ae
+0.3 0.5 07 03 0.5 0.7 03 05 0.7 03 0.5 0.7
+a 0 0 0
+(c) Ty, for g(z) = z,n = 50,m = 100
+GPT-3-170B GPT-4 Llama-2-7B Mistral-7B
+0.00 he aa | eee
+0.05 aan
+0.3 05 07 03 05 0.7 03 0.5 0.7 03 0.5 0.7
+a 0 0 0
+
+(b) Thy, for k € {2,3, 4,5}, = 50,m = 25
+GPT-3-170B GPT-4 Llama-2-7B Mistral-7B
+0.1 ow
+0.0 ———+ 3 ASS ——_,
+03 05 07 03 05 07 03 05 07 03 05 ov
+6 6 6 a
+(d) Toy for k € {2,3,4,5},n = 50,m = 10
+0.05 GPT-3-170B GPT-4 Llama-2-7B Mistral-7B
+0.00 — —— =——.——4 ————
+03 05 07 03 0.5 07 03 05 07 03 05 ov
+0 0 6 0
+
+Figure 3: Checking the martingale property on Bernoulli experiments. Each data point represents a test statistic (y-axis)
+evaluated for an LLM, as derived in §3.2. Subplot and x-axis correspond to choices of Bernoulli probabilities and LLMs.
+Shade indicates the 95% confidence interval from a reference Bayesian model.
+
+4.2. Checking the Martingale Property
+
+We first check if state-of-the-art LLMs satisfy the martin-
+gale property. As we discussed in §2, this is a necessary
+condition for an exchangeable Bayesian ICL system.
+
+Bernoulli experiment. Fig. 3 reports the results of the
+Bernoulli experiments with n = 50 observed samples, LLM
+sample paths of length m € {n/2,2n}, and datasets with
+ground-truth mean @ € {.3,.5,.7}. As discussed in §3.2
+and §4.1 above, we compute the test statistics T) 4 and T> ;,
+on J sample paths generated by an LLM, and compare
+them with bootstrap CIs (of high confidence, see scale of
+y-axis) obtained from a reference Bayesian model. Here we
+define the reference model using a Bernoulli likelihood and
+a non-informative Beta(1, 1) prior.
+
+For short sample paths of length m = n/2 (subplots (a)
+and (b)), most LLMs lead to test statistics that are generally
+within the respective CIs, with the main exception being
+gpt-4 (0 € {0.3, 0.5}), indicating a mostly adherence to
+the martingale property. However, for longer sample paths
+with m = 2n (subplots (c) and (d)), more frequent devi-
+ations from the CIs are observed. For brevity, full results
+for other choices of n and LLMs are deferred to App. C.2.
+The findings are generally consistent across all choices of n.
+We also observe gpt—3.5 to perform better than gpt—4
+but worse than gpt-3-170b. As we discuss in App. C.2
+the latter observation may be explained by the fact that
+gpt-3.5 and gpt—4 have undergone instruction tuning
+(Ouyang et al., 2022). In summary, in the Bernoulli experi-
+ments the LLMs generally adhere to the martingale property
+in short sampling horizons, but in longer horizons demon-
+strate a significant deviation from the martingale property
+and hence the Bayesian principle.
+
+Gaussian experiment. In Fig. 4 we present results on
+the Gaussian experiment with 0 = —1,n = 100,m =
+
+n/2, again performing both checks of the martingale prop-
+erty and using a reference Bayesian model with the non-
+informative prior V(0, 100). As we can see, all models
+except gpt—3.5 demonstrate clear deviation from the mar-
+tingale property. Additional results for got —3.5 in App. C
+present our diagnostics with other choices of (n,m, 6),
+demonstrating a deviation from the predictive distribution
+of the reference Bayesian posterior. In conclusion, the pre-
+sented evidence on the Gaussian experiment falsifies our
+hypothesis of Bayesian behaviour with the tested LLMs.
+
+0.0 wa 0.00 J .
+% =0.05
+0.1 0.25
+
+13 13 WB ig 3D 13 13
+ase gat aw" REPT sa ah
+
+V0
+
+en PT we gears
+G »
+
+Figure 4: Checking the martingale property on Gaussian
+experiments. We present runs with 6 = —1,n = 100,m =
+50 from different LLMs (x-axis) with test functions g(z) =
+
+zand g(z) = z?. See Fig. 3 for further details.
+
+Synthetic natural language experiment. In Fig. 5 we
+present our results for the natural language experiment with
+n = 80,m = 40, g9(z) = z using the GPT models. Here,
+we compute the test statistics on samples separated by the
+Bernoulli-distributed value of X; (see App. C.1 for details).
+As we can see, both got-3.5 and gpt-—4 demonstrate
+deviation from a reference Bayesian posterior. This provides
+further evidence of violations of the martingale property in
+settings where natural language (instead of numbers) is
+used.
+
+4.3. Checking Epistemic Uncertainty of LLMs
+
+In this subsection we analyse the scaling behaviour of an
+LLM’s uncertainty. In Fig. 6 we measure T3 (y-axis on a log-
+scale) and compare the approximate martingale posterior of
+
+Is In-Context Learning in Large Language Models Bayesian? A Martingale Perspective
+
+0.025
+
+———,| 0.05
+e—!_
+
+F 0.025 __—— 0.025 0.1
+2 2 2
+i fo000 8 0.000 ic
+——, —0.025 0.0
+
+al
+0 1 0 1 0 1
+x x x
+
+(a) GPT-3-170B (b) GPT-3.5 (c) GPT-4
+
+Figure 5: Checking the martingale property on the natural
+language experiment. We present both checks with test
+statistics computed separately for each value of X; (x-axis).
+See Fig. 3 for further details.
+
+0.304
+GPT-3
+
+GPT-3.5
+Llama-2-7B
+Mistral-7B
+
+- ref. Bayesian model
+
+0.204
+
+T3
+
+0.104
+fractional Bayes (a=0.5)
+
+0.06 4 fractional Bayes (a=2)
+
+Figure 6: Scaling of epistemic uncertainty on the Bernoulli
+experiment: the test statistic T3 (§3.3) computed on LLMs,
+compared with Bayesian and fractional Bayesian models.
+
+an LLM with a reference Bayesian model when increasing
+the number of observed samples n (x-axis). We consider
+a Bernoulli experiment with 6 = 0.5 as it is the only ex-
+perimental setting where, with a short sampling horizon of
+m = n/2, all LLMs approximately adhere to the martingale
+property. In addition to the standard reference Bayesian
+model, we also consider two a-fractional Bayesian posteri-
+ors (Bhattacharya et al., 2019), which are generalisations of
+the Bayesian posterior that exhibit a O(d/an) scaling for
+its epistemic uncertainty. They allow us to check the weaker
+hypothesis whether an LLM’s epistemic uncertainty scales
+at least up to the correct order of magnitude.
+
+We observe that the asymptotic rate of Llama-2-7b
+and gpt-—3.5 is slower than that of a Bayesian model,
+which suggests inefficiency as discussed in §3.3. Fur-
+thermore, gopt—3.5 demonstrates over-confidence in the
+small-sample regime. The scaling of got-3-170b and
+mistral-7b are closer to the Bayesian model, even
+though not exactly matching the latter. This finding is inter-
+esting as on the Bernoulli experiments, got -3-170b and
+mistral-—7b also demonstrate the best adherence to the
+martingale property.
+
+5. Conclusion
+
+In this work we stated the martingale property as a funda-
+mental requirement of a Bayesian learning system for ex-
+changeable data, and discussed its desirable consequences
+if satisfied by an LLM. Based on this property we derived
+three different diagnostics that allowed us to check whether
+LLMs adhere to the Bayesian principle on synthetic in-
+context learning tasks. We presented stark evidence that
+state-of-the-art LLMs violate the martingale property, and
+hence falsified the hypthesis that ICL in LLMs is Bayesian.
+
+Our investigation is particularly relevant to a recent line of
+work that investigates LLM-based ICL for tabular data mod-
+elling: for prediction on noisy tabular datasets (Manikandan
+et al., 2023; Yan et al., 2024), the martingale property would
+enable us to diagnose the predictive uncertainty; and for
+synthetic data generation (Borisov et al., 2022; Hamaldinen
+et al., 2023; Veselovsky et al., 2023), it is vital to ensuring
+valid inference based on imputations of missing data (§2.2).
+It is thus of practical interest to develop models that better
+adhere to the martingale property.
+
+The primary limitation of our work is the (intentional) re-
+striction to small-scale, synthetic datasets, which are differ-
+ent from common NLP applications. We note that while our
+diagnostics are designed for synthetic problems, they reflect
+a broader principle: Bayesian epistemic uncertainty can be
+extracted from black-box models by examining the corre-
+lation structure in sequential predictions. This is clearly
+shown by the variance estimator in Example 2, and by the
+fact that MLE on sampled paths approximates the Bayesian
+posterior (§3.3). Future work could investigate generalisa-
+tions of this approach.
+
+More broadly, the RCT example in §1 can arguably be
+viewed as the simplest type of decision task involving multi-
+step reasoning, as the right decision (here based on an av-
+erage treatment effect) is only naturally determined after
+imputing all missing samples. Thus, it would be interesting
+to investigate analogies to the hallucination behaviour we
+have identified for ICL in more complex reasoning tasks
+such as those involving chain-of-thought prompting (Wei
+et al., 2022). Lastly, it may be worth to consider fine-tuning
+objectives to achieve an idealised Bayesian behaviour with
+a model after pretraining, but before deployment.
+
+Impact Statement
+
+This paper presents work whose goal is to advance the field
+of Machine Learning. There are many potential societal
+consequences of our work, none which we feel must be
+specifically highlighted here. We refer to App. E for further
+discussion.
+
+Is In-Context Learning in Large Language Models Bayesian? A Martingale Perspective
+
+Acknowledgments
+
+Fabian Falck acknowledges the receipt of studentship
+awards from the Health Data Research UK-The Alan
+Turing Institute Wellcome PhD Programme (Grant Ref:
+218529/Z/19/Z). Ziyu Wang acknowledges support from
+Novo Nordisk. Chris Holmes acknowledges support from
+the Medical Research Council Programme Leaders award
+MC_UP_A390_1107, The Alan Turing Institute, Health Data
+Research, U.K., and the U.K. Engineering and Physical
+Sciences Research Council through the Bayes4Health pro-
+gramme grant.
+
+This research is supported by research compute from the
+Baskerville Tier 2 HPC service. Baskerville is funded by the
+EPSRC and UKRI through the World Class Labs scheme
+(EP/T022221/1) and the Digital Research Infrastructure pro-
+gramme (EP/W032244/1) and is operated by Advanced Re-
+search Computing at the University of Birmingham. We fur-
+ther acknowledge the receipt of OpenAI API credits through
+the OpenAI Researcher Access Program.
+
+References
+
+Akyiirek, E., Schuurmans, D., Andreas, J., Ma, T., and
+Zhou, D. What learning algorithm is in-context learn-
+ing? investigations with linear models. arXiv preprint
+arXiv:2211.15661, 2022.
+
+Bai, Y., Chen, F, Wang, H., Xiong, C., and Mei, S.
+Transformers as statisticians: Provable in-context learn-
+ing with in-context algorithm selection. arXiv preprint
+arXiv:2306.04637, 2023.
+
+Berti, P., Pratelli, L., and Rigo, P. Limit theorems for a class
+of identically distributed random variables. The Annals
+of Probability, 32(3), July 2004. ISSN 0091-1798. doi:
+10.1214/009117904000000676.
+
+Bhattacharya, A., Pati, D., and Yang, Y. Bayesian fractional
+posteriors. Annals of Statistics, 47(1):39-66, 2019.
+
+Biewald, L. Experiment tracking with weights and biases,
+2020. URL https://www.wandb.com/. Software
+available from wandb.com.
+
+Borisov, V., SeBler, K., Leemann, T., Pawelczyk, M., and
+Kasneci, G. Language models are realistic tabular data
+generators. arXiv preprint arXiv:2210.06280, 2022.
+
+Brown, T., Mann, B., Ryder, N., Subbiah, M., Kaplan, J. D.,
+Dhariwal, P., Neelakantan, A., Shyam, P., Sastry, G.,
+Askell, A., et al. Language models are few-shot learners.
+Advances in neural information processing systems, 33:
+1877-1901, 2020.
+
+De Finetti, B. Funzione caratteristica di un fenomeno aleato-
+rio. In Atti del Congresso Internazionale dei Matematici:
+
+10
+
+Bologna del 3 al 10 de settembre di 1928, pp. 179-190,
+1929.
+
+Dong, Q., Li, L., Dai, D., Zheng, C., Wu, Z., Chang, B., Sun,
+X., Xu, J., and Sui, Z. A survey for in-context learning.
+arXiv preprint arXiv:2301.00234, 2022.
+
+Doob, J. L. Application of the theory of martingales. Le
+calcul des probabilites et ses applications, pp. 23-27,
+1949.
+
+Fong, E., Holmes, C., and Walker, S. G. Martingale pos-
+terior distributions. arXiv preprint arXiv:2103.15671,
+2021.
+
+Ghosal, S. and Van der Vaart, A. Fundamentals of non-
+parametric Bayesian inference, volume 44. Cambridge
+University Press, 2017.
+
+Griffiths, T. L. and Tenenbaum, J. B. Optimal predictions
+in everyday cognition. Psychological science, 17(9):767-
+773, 2006.
+
+Gruver, N., Finzi, M., Qiu, S., and Wilson, A. G. Large
+language models are zero-shot time series forecasters.
+arXiv preprint arXiv:2310.07820, 2023.
+
+Hahn, M. and Goyal, N. A theory of emergent in-context
+learning as implicit structure induction. arXiv preprint
+arXiv:2303.07971, 2023.
+
+Hamiélainen, P., Tavast, M., and Kunnari, A. Evaluating
+large language models in generating synthetic hci re-
+search data: a case study. In Proceedings of the 2023 CHI
+Conference on Human Factors in Computing Systems, pp.
+1-19, 2023.
+
+Harris, C. R., Millman, K. J., van der Walt, S. J., Gommers,
+R., Virtanen, P., Cournapeau, D., Wieser, E., Taylor, J.,
+Berg, S., Smith, N. J., et al. Array programming with
+NumPy. Nature, 585(7825):357—362, 2020.
+
+Hunter, J. D. Matplotlib: A 2D graphics environment. Com-
+puting in Science & Engineering, 9(3):90-95, 2007. doi:
+10.1109/MCSE.2007.55.
+
+Huszar, F. Implicit bayesian inference in large language
+models. _https://www.inference.vc/implicit-bayesian-
+inference-in-sequence-models/, 2022.
+
+Jiang, A. Q., Sablayrolles, A., Mensch, A., Bamford, C.,
+Chaplot, D. S., Casas, D. d.1., Bressand, F., Lengyel, G.,
+Lample, G., Saulnier, L., et al. Mistral 7b. arXiv preprint
+arXiv:2310.06825, 2023.
+
+Jiang, H. A latent space theory for emergent abilities in
+large language models. arXiv preprint arXiv:2304.09960,
+2023.
+
+Is In-Context Learning in Large Language Models Bayesian? A Martingale Perspective
+
+Jin, M., Wang, S., Ma, L., Chu, Z., Zhang, J. Y., Shi, X.,
+Chen, P.-Y., Liang, Y., Li, Y.-F., Pan, S., et al. Time-IIm:
+Time series forecasting by reprogramming large language
+models. arXiv preprint arXiv:2310.01728, 2023.
+
+Kalai, A. T. and Vempala, S. S. Calibrated language models
+must hallucinate. arXiv preprint arXiv:2311.14648, 2023.
+
+Kallenberg, O. Foundations of modern probability, vol-
+ume 2. Springer, 1997.
+
+Li, Z., Zhu, H., Lu, Z., and Yin, M. Synthetic data genera-
+tion with large language models for text classification: Po-
+tential and limitations. arXiv preprint arXiv:2310.07849,
+2023.
+
+Lu, Y., Bartolo, M., Moore, A., Riedel, S., and Stenetorp,
+P. Fantastically ordered prompts and where to find them:
+Overcoming few-shot prompt order sensitivity. arXiv
+preprint arXiv:2104.08786, 2021.
+
+Manikandan, H., Jiang, Y., and Kolter, J. Z. Language
+models are weak learners, June 2023. URL http: //
+arxiv.org/abs/2306.14101. arXiv:2306.14101
+[cs].
+
+Mei, Y., Song, S., Fang, C., Yang, H., Fang, J., and Long,
+J. Capturing semantics for imputation with pre-trained
+language models. In 2021 IEEE 37th International Con-
+ference on Data Engineering (ICDE), pp. 61-72. IEEE,
+2021.
+
+Min, S., Lewis, M., Zettlemoyer, L., and Hajishirzi, H.
+Metaicl: Learning to learn in context. arXiv preprint
+arXiv:2110.15943, 2021.
+
+OpenAI. Gpt-4 technical report, 2023.
+
+Ouyang, L., Wu, J., Jiang, X., Almeida, D., Wainwright, C.,
+Mishkin, P., Zhang, C., Agarwal, S., Slama, K., Ray, A.,
+et al. Training language models to follow instructions
+with human feedback. Advances in neural information
+processing systems, 35:27730-27744, 2022.
+
+Panwar, M., Ahuja, K., and Goyal, N. In-context learn-
+ing through the bayesian prism. In The Twelfth In-
+ternational Conference on Learning Representations,
+2024. URL https://openreview.net/forum?
+1d=HX5ujdsSon.
+
+Paszke, A., Gross, S., Massa, F., Lerer, A., Bradbury, J.,
+Chanan, G., Killeen, T., Lin, Z., Gimelshein, N., Antiga,
+L., Desmaison, A., Kopf, A., Yang, E., DeVito, Z., Raison,
+M., Tejani, A., Chilamkurthy, S., Steiner, B., Fang, L.,
+Bai, J., and Chintala, S. PyTorch: An imperative style,
+high-performance deep learning library. In Advances in
+Neural Information Processing Systems, pp. 8024-8035,
+2019.
+
+11
+
+Pedregosa, F., Varoquaux, G., Gramfort, A., Michel, V.,
+Thirion, B., Grisel, O., Blondel, M., Prettenhofer, P.,
+Weiss, R., Dubourg, V., Vanderplas, J., Passos, A., Cour-
+napeau, D., Brucher, M., Perrot, M., and Duchesnay, E.
+Scikit-learn: Machine learning in Python. Journal of
+Machine Learning Research, 12:2825—2830, 2011.
+
+Raventés, A., Paul, M., Chen, F., and Ganguli, S. Pretrain-
+ing task diversity and the emergence of non-bayesian
+in-context learning for regression. arXiv preprint
+arXiv:2306.15063, 2023.
+
+Shumailov, I., Shumaylov, Z., Zhao, Y., Gal, Y., Papernot,
+N., and Anderson, R. Model dementia: Generated data
+makes models forget. arXiv e-prints, pp. arXiv—2305,
+2023.
+
+Singh, A. K., Chan, S. C., Moskovitz, T., Grant, E.,
+Saxe, A. M., and Hill, F. The transient nature of emer-
+gent in-context learning in transformers. arXiv preprint
+arXiv:2311.08360, 2023.
+
+Tang, R., Han, X., Jiang, X., and Hu, X. Does synthetic
+data generation of Ilms help clinical text mining? arXiv
+preprint arXiv:2303.04360, 2023.
+
+Touvron, H., Martin, L., Stone, K., Albert, P., Almahairi,
+A., Babaei, Y., Bashlykov, N., Batra, S., Bhargava, P.,
+Bhosale, S., et al. Llama 2: Open foundation and fine-
+tuned chat models. arXiv preprint arXiv:2307.09288,
+2023.
+
+tqdm contributors. Imageio. https://github.com/tqdm/tqdm,
+2022.
+
+Van der Vaart, A. W. Asymptotic statistics, volume 3. Cam-
+bridge university press, 2000.
+
+Van Rossum, G. The Python Library Reference, release
+3.8.2. Python Software Foundation, 2020.
+
+Veselovsky, V., Ribeiro, M. H., Arora, A., Josifoski, M.,
+Anderson, A., and West, R. Generating faithful synthetic
+data with large language models: A case study in compu-
+tational social science. arXiv preprint arXiv:2305.15041,
+2023.
+
+Wang, X., Zhu, W., Saxon, M., Steyvers, M., and Wang,
+W. Y. Large language models are latent variable mod-
+els: Explaining and finding good demonstrations for in-
+context learning. In Thirty-seventh Conference on Neural
+Information Processing Systems, 2023.
+
+Wei, J., Wang, X., Schuurmans, D., Bosma, M., Xia, F.,,
+Chi, E., Le, Q. V., Zhou, D., et al. Chain-of-thought
+prompting elicits reasoning in large language models.
+Advances in Neural Information Processing Systems, 35:
+24824-24837, 2022.
+
+Is In-Context Learning in Large Language Models Bayesian? A Martingale Perspective
+
+Wes McKinney. Data Structures for Statistical Computing in
+Python. In Stéfan van der Walt and Jarrod Millman (eds.),
+Proceedings of the 9th Python in Science Conference, pp.
+56 — 61, 2010. doi: 10.25080/Majora-92bf1922-00a.
+
+Wolf, T., Debut, L., Sanh, V., Chaumond, J., Delangue, C.,
+Moi, A., Cistac, P., Rault, T., Louf, R., Funtowicz, M.,
+Davison, J., Shleifer, S., von Platen, P., Ma, C., Jernite,
+Y., Plu, J., Xu, C., Scao, T. L., Gugger, S., Drame, M.,
+Lhoest, Q., and Rush, A. M. Transformers: State-of-
+the-art natural language processing. In Proceedings of
+the 2020 Conference on Empirical Methods in Natural
+Language Processing: System Demonstrations, pp. 38—
+45, Online, October 2020. Association for Computational
+Linguistics.
+
+Xiao, Y., Liang, P. P., Bhatt, U., Neiswanger, W., Salakhut-
+dinov, R., and Morency, L.-P. Uncertainty quantification
+with pre-trained language models: A large-scale empiri-
+cal analysis. arXiv preprint arXiv:2210.04714, 2022.
+
+Xie, S. M., Raghunathan, A., Liang, P., and Ma, T. An
+explanation of in-context learning as implicit bayesian
+inference. arXiv preprint arXiv:2111.02080, 2021.
+
+Yan, J., Zheng, B., Xu, H., Zhu, Y., Chen, D., Sun, J., Wu,
+J., and Chen, J. Making pre-trained language models
+great on tabular prediction. In International Conference
+on Learning Representations, 2024.
+
+Ye, N., Yang, H., Siah, A., and Namkoong, H. Pre-
+training and in-context learning IS bayesian inference
+a la de finetti. In [CLR 2024 Workshop on Mathemati-
+cal and Empirical Understanding of Foundation Models,
+2024. URL https://openreview.net/forum?
+id=ttupfosvgx.
+
+Zellner, A. Optimal information processing and bayes’s the-
+orem. The American Statistician, 42(4):278—280, 1988.
+
+Zhang, L., McCoy, R. T., Sumers, T. R., Zhu, J.-Q., and
+Griffiths, T. L. Deep de finetti: Recovering topic dis-
+tributions from large language models. arXiv preprint
+arXiv:2312.14226, 2023a.
+
+Zhang, Y., Zhang, F., Yang, Z., and Wang, Z. What and how
+does in-context learning learn? bayesian model averag-
+ing, parameterization, and generalization. arXiv preprint
+arXiv:2305.19420, 2023b.
+
+Zhao, W. X., Zhou, K., Li, J., Tang, T., Wang, X., Hou, Y.,
+Min, Y., Zhang, B., Zhang, J., Dong, Z., et al. A survey of
+large language models. arXiv preprint arXiv:2303.18223,
+2023.
+
+Zhao, Z., Wallace, E., Feng, S., Klein, D., and Singh, S.
+Calibrate before use: Improving few-shot performance
+of language models. In International Conference on
+Machine Learning, pp. 12697-12706. PMLR, 2021.
+
+12
+
+Is In-Context Learning in Large Language Models Bayesian? A Martingale Perspective
+
+Appendix for Is In-Context Learning in
+Large Language Models Bayesian? A
+Martingale Perspective
+
+A. Proofs of Theoretical Statements in the
+Main Text
+
+Fact 2. Any exchangeable random sequence { Z;} must be
+conditionally identically distributed.
+
+Proof. See, e.g., Berti et al. (2004, p. 2030). O
+
+Proposition 1. A sequence {Zp4intm} ~ pu (-|Zin)
+satisfies the martingale property if and only if the following
+holds: for all n', k € N and integrable functions g, h:
+
+(8)
+
+Proof. It suffices to show the equivalence between the fol-
+lowing three statements:
+(i) Zntin+m|Zin satisfies Eq. (1)
+
+(ii) for all n’ > n,k > 1 and integrable function g we
+have "(9(Zns +k) a G(Zn'41)| Zins Zn4in’) =0
+
+(iii) for all n’ > n,k > 1 and integrable (g, h) we have
+0= "((9( Zn k) _ Zn 41) )h(Znszin’)|Zin)-
+
+The equivalence between (i) and (ii) is trivial. We have
+(ii) = (iii) because E((9(Zn +x) — g(Zn'41))h(Zntin’) |
+Zin) © 0. To show (iii) > (ii), for any o(Zpatn’)-
+measurable set A let h := 1, be the respective indicator
+function, so that E((g(Zp/4n) — 9(Znra1))La | Zin) =
+0 = E(O- 14 | Z.,). Since this holds for all A, it follows
+by the definition of conditional expectation (Kallenberg,
+1997) that U(g(Zns h k) _— G(Zn/41) | Zin’) =O0as.. O
+
+Corollary 1. Let {Z; : i © N} be a sequence of random
+variables satisfying the martingale property. Then for all
+integers n,n',k > Oand n' > nit holds that:
+
+(i) E(g(Zn41)|Zin) = E(g(Zn+k)|Zin) for all inte-
+grable functions g, and
+U((Znteta — Zn'41)Zr| Zim) = 0.
+
+(ti)
+
+Proof. (i) follows by setting h(zn4i:n7) = 1 in (8). Gi)
+follows by setting g(z) = z,h(Zn4i:n') = 2n'- Oo
+Fact 1. Let 7() and pys(Z|@) be the prior and likelihood
+of a Bayesian model, 6, := Eg.n(o|z,,,)9 the posterior
+mean given data 21.,,, and || - || be any vector norm. Then,
+
+Lenn (O|z1n) M9 — Onl?
+
+,
+400~T ,Z1:n~T(z|O0)
+
+(9)
+
+,
+400~T ,Z1:n~T(z|O0)
+
+13
+
+Proof. This holds because 6 and p are conditionally inde-
+pendent and identically distributed given z1.,,, and 6,, equals
+the conditional expectation of both random variables. OU
+
+B. Further Discussion of Theory and
+Methodology
+
+B.1. Additional Background on Martingale Posteriors
+
+In §2.3 we discussed the construction of martingale pos-
+teriors in the finite-support case. Here, we can con-
+struct the martingale posterior by sampling Z,41:n4m|Zin;
+which will determine a sample @n4:m|Zi:n as the param-
+eter that indexes the predictive distribution p(Zp4msi =
+‘|Zintm) = POn4m(*); and since On4m —> Poo a8 M —> Od,
+we can truncate the process at a large m >> n to obtain a
+good approximation for 0...
+
+The restriction to finite support is largely for expository
+simplicity as it allows us to avoid measure-theoretic consid-
+erations. More generally, it is always possible to view the
+distribution p(Z,41 = -|Zi:n) =: 6, as a random element
+in a suitable Banach space of measures and the condition in
+Eq. (1) as requiring {p(Zn41 = -|Z1-n) : n € N} to define
+a martingale in that space. When Doob’s theorem applies,
+the above construction provides a distribution over predic-
+tive distributions that quantifies the epistemic uncertainty.
+
+Nonetheless, for tractability and comparability to Bayesian
+parametric posteriors, it is useful to consider the following
+alternative, ‘model-based’ procedure:
+
+2. Compute 6, := arg maxpco ie log p(Zn+4319)-
+
+3. Return 6, as an approximate sample from the martin-
+gale posterior, defined as the conditional distribution
+of the pointwise limit lim; 9m given Z1:n.
+
+We repeat this procedure to obtain multiple samples Bn
+from the martingale posterior in order to approximate its
+distribution (see Fig. 1 [Centre]). In the above, p(Z;|0)
+is the likelihood in the Bayesian parametric model. If
+{pm (Zn+5 |Z1:n+j—1) }Fo1 corresponds to a certain poste-
+rior predictive defined by the same likelihood, and the model
+is such that maximum likelihood estimation is consistent, it
+follows from de Finetti’s theorem (applied to Z,,41:|Zi:n)
+and consistency that as m — oo, Bin will converge to a ran-
+dom variable Boe (w.r.t. the norm and notion of convergence
+in consistency), and the distribution 0, |Z .,, must equal the
+Bayesian posterior. Applying the same procedure to a more
+general pj, that satisfies Eq. (1) leads to the methodology
+in Fong et al. (2021).
+
+We adopted this ‘model-based’ approach in §3.3 and for
+computing the approximate martingale posterior in Fig. |
+
+Is In-Context Learning in Large Language Models Bayesian? A Martingale Perspective
+
+[centre]. Compared with the former approach, it is eas-
+ier to implement on ICL tasks where each sample Z; is
+represented with multiple tokens and a correctly specified
+likelihood for the true observations is available; the latter is
+always true in our synthetic experiments. More importantly,
+when m is finite (and not >> n), only with this approach can
+we compare the sampling distribution of 6,,|Z1., across dif-
+ferent pyz, as we explain in the following. This is important
+in our experiments where we find the LLMs (at best) follow
+the martingale property within a horizon of m = O(n).
+
+B.2. Approximate Martingale Posteriors with Finite
+Paths
+
+We have claimed that with a finite m, the spread of the
+approximate martingale posterior 0,,, defined as the MLE
+on m samples (see §3.3, or above) is comparable between
+different choices of jz. We now substantiate on this claim.
+
+Let us first restrict to exchangeable (i.e., Bayesian) choices
+of pyz. Consider de Finetti’s representation for the poste-
+rior predictive measure: Z,,41,..|Z1:n can be represented
+through
+vid
+
+where the measure 7(-|Z}.,,) equals the Bayesian posterior,
+which as discussed in §B.1 equals the exact martingale
+posterior. Combining the above representation and the fact
+that 0,,, is a function of Z,41-n4+m leads to Om L Z1-n|Aoo,
+and
+
+Cov (6m|Zi:n)
+
+= E(Cov(6m|Qc0)|Zi:n) + Cov(E(m Acc) |Z1:n)
+»(Cov (On |Osc)|Ziin) + Cov(Os6|Zin)s
+
+where we dropped the term E( Bin |050) — 050 which is the
+bias of MLE and thus a higher-order term for regular mod-
+els. Therefore, the (co)variance overhead Cov (6m|Z1:n) —
+Cov(8.0|Z1:n) is, up to the first order, the average-case er-
+ror of MLE on m i.i.d. samples when the true parameter is
+sampled from the posterior 7(-|Z1.,,). For regular models
+this is always O(d/m), where the coefficient hidden in the
+© notation is also comparable across different pj, as long
+as the Fisher information matrix evaluated at 0 ~ 1 (-|Z1:n)
+has a comparable value (e.g., across all choices of pj, that
+satisfy consistency). As the martingale posterior covariance
+Cov(8.0|Z1:n) has the same O(d/n) scaling across all reg-
+ular Bayesian models to which the Bernstein von-Mises
+theorem applies, with a choice of m = O(n), any devia-
+tion in the scaling of Cov(6,,)—from that of any regular
+Bayesian model—must be attributable to a different scaling
+of the exact MP covariance, and thus a deviation from all
+regular Bayesian models.
+
+14
+
+Lastly, we note that while we focus on ICL models that
+are approximately Bayesian, the above discussion may also
+apply to general models that only satisfy the martingale prop-
+erty, since for those models Z7,,41,...|Z1:, remains asymp-
+totically exchangeable (Berti et al., 2004). Moreover, the
+above discussion applies to inter-quantile range (IQR) as
+well, because for asymptotically normal posteriors the IQR
+is proportional to the posterior standard deviation; and even
+for non-normal posteriors, the IQR should still have the
+same order as the posterior contraction rate by definition.
+
+B.3. Acceptable Approximation Errors of Properties (i)
+and (ii) in Corollary 1
+
+Even when we restrict to a finite horizon m, there can still
+be expected deviations from Eq. (1), and thus those in
+Corollary 1, simply because Eq. (1) represents invariance
+conditions that are not “hard-wired” in the LLM’s architec-
+ture. Yet, small violations of these equalities should not
+have practical consequences. We now derive the order of
+what is an acceptable violation in the setting of Example 2.
+
+As discussed in this example, the equalities in Corollary 1
+guarantee the expressions for posterior mean and covari-
+ance for the parameter @ to have consistently defined values,
+regardless of the choices of (n’,k). The posterior mean
+has the order of O(1) and requires the violation of Corol-
+lary | (i) to be o(1). The posterior covariance is generally
+Q(1/n) and can be expressed through Example 2 as
+
+(Zn4+1Zn+k|Ziin) —
+
+Therefore, it can have an approximately consistent value if
+the equalities in Corollary 1 hold approximately up to an er-
+ror of o(1/n). Posterior mean and covariance are key quan-
+tities in the interpretation of predictive uncertainty, which in
+turn is a major benefit of the martingale property. Thus, we
+consider the above deviation to be acceptable as it already
+guarantees the approximately consistent interpretation of
+predictive uncertainty through the martingale property.
+
+C. Additional Experimental Details and
+Results
+
+C.1. Additional Experimental Details
+
+Test statistics of properties implied by the martingale
+property. We summarise and empirically measure proper-
+ties (i) and (ii) in Corollary | using the aggregated statistics
+
+m/2
+2 .
+Tig = 5 — YY (9(enta) — 9 Frits)» — AD)
+j=l i=l
+P24 0= Tm 2 a (204 i+1 — ze i4 eae i; (12)
+
+Is In-Context Learning in Large Language Models Bayesian? A Martingale Perspective
+
+The statistics T,,, and T>, are defined using samples
+
+{2} from J paths generated by an LLM via ICL and
+correspond to Monte-Carlo estimates of the expectations in
+properties (i) and (1). To be robust against the possible out-
+lier paths (§3.1), we remove sample paths with anomalous
+
+mean absolute values using the standard 1.5 xIQR rule.
+
+We compare the observed value of the statistics above evalu-
+ated on LLMs with bootstrap confidence intervals computed
+using a reference Bayesian model (§4.1). For the latter, we
+draw K = 300 sets of completions {{2e :l<i<
+m1l<j<J}:1<k < K} from the predictive dis-
+tribution of the reference Bayesian model, which provides
+& samples for the test statistics, and compute two-sided
+confidence intervals using the respective quantiles.
+
+Experimental setup. For the first two experiments we
+vary n € {20,50,100}, m € {n/2,2n} and sample
+J = 200 paths from the LLMs. For the natural language
+experiments we fix n = 100,m = 50,J = 80. As non-
+exchangeable models may demonstrate different behaviour
+on different permutations of the same dataset, for the experi-
+ments in §4.2 we permute the observations when generating
+each sample path, so that we can produce a single test statis-
+tic that summarises each experiment configuration. For the
+experiments in §4.3, however, we use a fixed ordering for
+the observations for all path samples within each run, and
+report the median inter-quartile range across 9 runs for each
+configuration. This change is made to avoid (possibly small)
+deviations from exchangeability from inflating the estimated
+spread of the posterior.
+
+For a proper test of the martingale property, it is vital that
+the model cannot distinguish between the ICL training data
+Zin and its own generations {Z,,4;}. This is trivially true
+if the LLM takes free-form text as inputs without addi-
+tional annotation, as with 1lama-2-7b, mistral-7b,
+and gpt-3.5 accessed through the Completion API
+from OpenAI. However, the gpt-—4 model is only acces-
+sible through a different API (Chat Completion) which
+includes annotation for user input and model generation
+in the prompt. To ensure a proper implementation of the
+checks, we hence call the API m times in generating each
+path sample. In each iteration we sample a single data point,
+and then append it to the user input part of the prompt. This
+is far less cost-efficient than our use of got—-3.5. There-
+fore, we only include gpt—4 for the Bernoulli experiment
+with n < 50, and the natural language experiment.
+
+We discuss prompt design and format in detail below. Here
+we emphasise that across all tasks, the prompt always in-
+cludes sufficient information about the true likelihood.
+
+Prompt design and format. We use the following
+prompt format <instruction> <observed data>
+
+15
+
+<sampled data>. <instruction> describes the dis-
+tribution (i.e. true likelihood) of the observed data and im-
+portantly states that the observed samples were drawn i.i.d.,
+i.e. from exchangeable random variables. <observed
+data> and <sampled data> lists the observed 2}.,,
+and sampled data 2,4, (if there exists any), respectively.
+Samples are represented depending on the experiment: as
+int values as 1-digit characters (e.g. ‘1’), float values
+with 1-digit of precision (e.g. ‘2.2’) or words for synthetic
+natural language. As a sanity check, we also consider re-
+placing integers with random words (e.g. ‘tiger’ for ‘1’,
+‘hedgehog’ for ‘0’), but did not notice important differences
+in the LLMs’ behaviour. Each sample is delineated by a
+separator (e.g. ‘;’).
+
+We present exemplary prompts for each dataset below:
+
+¢ A Bernoulli experiment with n = 5 and m = 2: “Pro-
+vided are independent, identically distributed tosses of a
+coin, which flips I with probability p where p is unknown:
+1;0,0,1,0,0;1”.
+
+e A Gaussian experiment with n = 2 and m = 3: “Pro-
+vided are independent, identically distributed draws from
+a Gaussian, with fixed but unknown mean and unit vari-
+ance: 1.1,0.8,1.3,1.0,0.9”.
+
+¢ The the natural language experiment: “You will make
+predictions for a novel disease. The observed dataset
+contains records for multiple subjects which are assumed
+to be independent and identically distributed. For each
+subject there are two binary variables, indicating fever
+and disease diagnosis, respectively. Output your predic-
+tion for the disease diagnosis of the next subject.\n Id:
+O\n Fever: Y\n Diagnosis: N...”
+
+Other work represents both int and float numbers as a
+space-separated string of digits with fixed precision, where
+each number is separated by a semi-colon. This guarantees
+a per-digit tokenisation that was observed to be beneficial in
+the context of time series forecasting and further minimises
+the required number of tokens per number as the decimal
+point is redundant (Gruver et al., 2023). We did not opt
+for this representation and corresponding tokenisation for
+two reasons: First, initial experiments with GPT-2 showed
+deteriorating sampling performance, where the model of-
+ten hallucinated unrelated content. Second, and related
+to the first point, this representation is somewhat ‘out-of-
+distribution’ and probably unseen in the training distribution,
+which could limit and constrain any conclusions made in our
+experiments. Note that because of the tokenisation, in $4,
+the Gaussian experiment is more difficult than the Bernoulli
+experiment (or any dataset with single-token samples) as the
+LLM is required to learn the correlation structure between
+consecutive tokens representing a real-valued number.
+
+Is In-Context Learning in Large Language Models Bayesian? A Martingale Perspective
+
+GPT-3-170B GPT-4 Llama-2-7B Mistral-7B GPT-3-170B GPT-4 Llama-2-7B Mistral-7B
+0.05 0.1
+0.00 —™, aN 0.0 a oo - = ——
+—0.05 0.1
+03 05 07 03 05 07 03 05 07 03 05 07 03 05 07 03 05 07 03 05 07 03 05 07
+8 8 8 8 8 8 8 8
+(a) Ti,9 for g(z) = z,n = 20,m = 10 (b) T,x fork € {2,3,4,5},n = 20,m = 10
+GPT-3-170B Llama-2-7B Mistral-7B GPT-3-170B Llama-2-7B Mistral-7B
+9.02 0.025
+0.00 _ ee ee 0.000 = = =,
+0.02 0.025
+03 05 07 03 05 07 03 05 07 03 05 07 03 05 07 03 05 07
+8 8 8 8 8 8
+(c) Ti,9 for g(z) = z,n = 100,m = 50 (d) T2,x fork € {2,3,4, 5},n = 100,m = 50
+GPT-3-170B GPT-4 Llama-2-7B Mistral-7B GPT-3-170B GPT-4 Llama-2-7B Mistral-7B
+0.05 0.05 IN 4
+0.00] ae 0.00 =S—=— ——+———3
+EE
+=0.05 0.05
+03 05 07 03 05 07 03 05 07 03 05 07 03 05 07 03 05 07 03 05 07 03 05 07
+8 8 8 8 8 8 8 8
+(e) Tig for g(z) = z,n = 20,m = 40 (f) To,% fork € {2,3,4,5},n = 20,m = 40
+GPT-3-170B Llama-2-7B Mistral-7B 002 GPT-3-170B Llama-2-7B Mistral-7B
+0.00
+0.02 — 0.00 _ a]
+0.04
+0.02
+03 05 07 03 05 07 03 05 07 03 05 07 03 05 07 03 05 07
+8 8 8 8 8 8
+
+(g) Ti, for g(z) = z,n = 100, m = 200
+
+Figure 7: Checking the martingale property: results for the Bernoulli experiments for all choices of (n,m) in the setting of
+
+(h) To,x for k € {2,3,4,5},n = 100, m = 200
+
+Fig. 3. Note that we drop gpt —4 for n = 100 due to API limitations (as discussed in App. C.1).
+
+16
+
+Is In-Context Learning in Large Language Models Bayesian? A Martingale Perspective
+
+GPT-3-2.7B GPT-3-170B GPT-3.5 GPT-3-2.7B GPT-3-170B GPT-3.5
+0.05
+.
+0.00 ——-, NU 0.0 ==> a,
+0.05 0.1
+03 05 07 03 05 07 03 05 07 03 05 07 03 05 07 03 05 07
+8 8 8 8 8 8
+(a) Ti,9 for g(z) = z,n = 20,m = 10 (b) T,x fork € {2,3,4,5},n = 20,m = 10
+GPT-3-2.7B GPT-3-170B GPT-3.5 GPT-3-2.7B GPT-3-170B GPT-3.5
+0.025 0.05
+0.000 ee 0.00 ae
+0.025 —
+0.05
+03 05 07 03 05 07 03 05 07 03 05 07 03 05 07 03 05 07
+8 8 8 8 8 8
+(c) Ti,9 for g(z) = z,n = 20,m = 10 (d) T2,x fork € {2,3,4,5},n = 20,m = 10
+GPT-3-2.7B GPT-3-170B GPT-3.5 GPT-3-2.7B GPT-3-170B GPT-3.5
+0.02 0.025
+0.00 ee 0.000 ——_
+0.02 ~~ 0.025
+0.050
+03 05 07 03 05 07 03 05 07 03 05 07 03 05 07 03 05 07
+8 8 8 8 8 8
+(e) Ti,9 for g(z) = z,n = 100,m = 50 (f) To, fork € {2,3,4,5},n = 100,m = 50
+GPT-3-2.7B GPT-3-170B GPT-3.5 GPT-3-2.7B GPT-3-170B GPT-3.5
+0.025 0.0
+0.000 PY == __ 0.00 Ss : SS =
+0.025 — os
+03 05 07 03 05 07 03 05 07 03 05 07 03 05 07 03 05 07
+8 8 8 8 8 8
+(g) Ti, for g(z) = z,n = 20,m = 40 (h) T2,x fork € {2,3,4,5},n = 20,m = 40
+GPT-3-2.7B GPT-3-170B GPT-3.5 0.050 GPT-3-2.7B GPT-3-170B GPT-3.5
+0.02 05
+0.00 0.025
+0.02 cee 0.000
+0.04 —__ 0.025 a ee
+03 05 07 03 05 07 03 05 07 03 05 07 03 05 07 03 05 07
+8 8 8 8 8 8
+(i) Ti,g for g(z) = z,n = 50,m = 100 (j) Ta,n fork € {2,3,4,5},n = 50,m = 100
+GPT-3-2.7B GPT-3-170B GPT-3.5 GPT-3-2.7B GPT-3-170B GPT-3.5
+0.05
+0.00
+ee =8 e
+0.02 —__ 0.00 = ——
+0.04
+03 05 07 03 05 07 03 05 07 03 05 07 03 05 07 03 05 07
+8 8 8 8 8 8
+
+(k) Ti, for g(z) = z,n = 100, m = 200
+
+(1) To,x for k € {2,3,4,5},n = 100,m = 200
+
+Figure 8: Checking the martingale property: results for gobt-3-2.7b and gpt—3.5 in the setting of Fig. 3.
+
+Is In-Context Learning in Large Language Models Bayesian? A Martingale Perspective
+
+Additional details for the natural language experiment.
+For the natural language experiment, we modify the scheme
+as follows: we split the ICL dataset and the imputations
+into two sequences ({Y¥i,,, bey” {Yin Hoey”) - based
+on the value of X;. Subsequently, either sequence con-
+tains 1.1.d. Bernoulli random variables with a different mean,
+and any Bayesian ICL model with a correctly specified
+likelihood must produce imputations following a separate
+Bayesian posterior for Bernoulli data. Thus, we can ap-
+ply our Bernoulli diagnostics separately to both sequence.
+This modification allows us to focus on LLMs’ conditional
+predictive distributions of the form pay (Yi41|Xi4i, 21:1),
+which is more relevant in practice.
+
+C.2. Further Experimental Results and Discussion
+
+Full results: Bernoulli experiments. Figs. 7 and 8 report
+the full results for the Bernoulli experiment in the setting
+of Fig. 3 (m € {n/2,2n}), where we also visualise the
+o(1/n) ‘acceptable deviation’ (§B.3) using a light shade
+with width 0.1/n. Consistent with the results in Fig. 3, for
+all models except the least capable got -3-2 . 7b, the mar-
+tingale property is generally satisfied in the short-horizon
+scheme (m = n/2), but increasingly violated as we move
+tom = 2n.
+
+The results for got-3-2.7b provide a sanity check of
+our experiment setup: Its unsatisfactory performance shows
+that our tasks require nontrivial ICL capabilities which are
+known to be absent in got -3-2 . 7b (Brown et al., 2020).
+As another sanity check we provide the results form = 10n
+in Fig. 11, where we drop all GPT models due to limita-
+tions with its API. As we can see, in this setting where the
+sampling horizon becomes even longer, deviation from the
+martingale property also becomes more severe. The con-
+sistently large negative value of T;,, indicates a continual
+upward bias towards 1, which demonstrates the ‘creation of
+new knowledge’ phenomenon discussed in §2.2.
+
+Full results: Gaussian experiments. We report addi-
+tional results for the Gaussian experiment in Fig. 9 (@ = 0)
+and Fig. 10 (9 = —1). As we can see, all models generally
+demonstrate a deviation from the martingale property when
+6 = —1, but with 6 = 0 they may often appear to satisfy the
+property within a shorter horizon (m = n/2). Results for
+@ = 1 are similar to the 9 = —1 case and thus omitted. We
+note that in many cases the predictive distribution cannot be
+matched to any Bayesian posterior with the correct likeli-
+hood: for the latter the sample variance should be greater
+than 1, the likelihood variance, but this is often not true for
+the LLMs. For example, for gpt—3.5 in the setting of
+Fig. 4 we find the sample variance to be 0.711 < 1 (95%
+CI: [0.680, 0.742}).
+
+18
+
+Additional results: Scaling of epistemic uncertainty. To
+avoid clutter, in Fig. 6 we have plotted the sample median of
+the test statistic 73 from various models, and in that aspect
+gpt-—3-170b appears to be close to the reference Bayesian
+model when n is smaller. Here we note that a deviation
+becomes more evident if we compare the individual samples
+of T3 (obtained from independent runs) against bootstrap
+Cls from the reference Bayesian model, as shown in Fig. 12.
+
+Additional results with fine-tuned models. Some previ-
+ous works (Zhang et al., 2023b; Jiang, 2023) studied ICL
+under the assumption that the LLM has been perfectly pre-
+trained on the ICL test distributions. While such assump-
+tions are somewhat unrealistic, it may still be interesting to
+investigate whether finetuning on datasets that are similar to
+the ICL test distribution could lead to a closer-to-Bayesian
+behaviour for ICL. To this end we finetune got—-3-2.7b
+models on Bernoulli and synthetic NLP datasets with ran-
+domly sampled parameters, and repeat the checks in §3.2 on
+the finetuned models.* The results are visualised in Fig. 13.
+We can see that the finetuned models may indeed demon-
+strate a better adherence to the martingale property, but they
+do not always pass the checks.
+
+Comparison of LLMs with and without instruction tun-
+ing. Among all LLMs evaluated, got-3.5 and gpt-4
+generally demonstrate the worst performance in our evalu-
+ations, and incidentally they are the only LLMs that have
+undergone instruction tuning. The comparison between
+gpt-—3-170b and gpt-3.5 (see Fig. 6 and Fig. 8) is
+particularly interesting since the two models are generally
+similar, with a main difference being the presence of in-
+struction tuning. These observations seem to suggest that
+instruction tuning may have exacerbated the non-Bayesian
+ICL behaviour. Such an explanation would be broadly con-
+sistent with the previous findings that instruction tuning
+generally causes the LLM to produce less calibrated uncer-
+tainty estimates (OpenAI, 2023; Gruver et al., 2023; Kalai
+& Vempala, 2023).
+
+Could the LLMs correspond to ‘unreasonable Bayesian
+models’? As discussed in the main text, our findings sug-
+gest that the behaviours of gopt-3.5 and llama-2-7b
+are highly unlikely to correspond to any ‘reasonable’
+Bayesian models in the Bernstein von-Mises sense. Gener-
+
+“We use OpenAl’s finetuning service which determines opti-
+misation hyperparameters by validation loss. For the Bernoulli
+dataset, we sampled 10* sequence for training, each with an ex-
+pected length of 75; the true parameter 0 is sampled from the
+uniform distribution on [0, 1]. For the NLP dataset, we sampled
+5000 sequences for training, each with an expected length of 85;
+the two Bernoulli parameters that determine the prompt distribu-
+tion are sampled from a Beta(0.5, 0.5) distribution.
+
+Is In-Context Learning in Large Language Models Bayesian? A Martingale Perspective
+
+ally speaking, to conduct any statistical test with a reason-
+able level of power it is necessary to impose some regularity
+restrictions on the null hypothesis to be tested. Moreover,
+it could be similarly concerning if the LLMs correspond
+to any ‘unreasonable’ Bayesian model that does not satisfy
+the regularity conditions in the Bernstein von-Mises theo-
+rem. Nonetheless, in the setting above we can also provide
+some informal discussion on why the LLMs are unlikely
+to be ‘unreasonable’ Bayesian models (e.g., one with an
+approximately degenerate prior), by comparing the results
+across different choices of n. Specifically, for gpt—3 - 5, its
+small-sample behaviour in Fig. 6 can only be explained as a
+Bayesian model with a very strong prior that has the bulk of
+its mass near the true parameter; yet this would contradict
+its larger-than-regular posterior spread when n is large. For
+llama-2-7b, its large-sample behaviour could only be
+explained with the exact opposite (e.g., a Beta(100, 100)
+prior); yet that should have led to a much larger IQR when
+n is small.
+
+D. Related Work
+
+In-context learning as Bayesian inference. Numerous
+papers have explained ICL as performing some form of
+Bayesian Inference. The hypothesis is likewise studied in
+Jiang (2023); Wang et al. (2023) and the concurrent work of
+Ye et al. (2024). It is also covered by Zhang et al. (2023b)
+if we restrict to exchangeable demonstrations. Closely re-
+lated are the works of Akyiirek et al. (2022); Panwar et al.
+(2024) which demonstrate that high-capacity transformers
+pretrained with square loss may recover the Bayes predictor.
+
+Xie et al. (2021) studied ICL in a setting where the the LLM
+is perfectly trained on a pretraining distribution defined by
+a Hidden Markov Model (HMM). Under this and further as-
+sumptions, they prove that the LLM must implicitly perform
+Bayesian inference to infer a latent concept of the prompt.
+Strictly speaking, their assumptions do not exactly match
+our hypothesis, because their Bayesian model employs a
+likelihood that is misspecified for ICL: it does not assume
+{Z;} is conditionally i.i.d. or exchangeable. However, their
+additional assumptions render the ICL behaviour similar to
+that of another Bayesian model that assumes conditionally
+i.i.d. observations: when considering Eq. (8-10) in their
+work, which imply that the log likelihood of their Bayesian
+model is well approximated by a Bayesian model assuming
+conditional i.i.d. observations. In this regard their analysis
+is connected to our hypothesis, as it applies to the Bayesian
+model we study. It is important to note that their assump-
+tions have been crucial in their proof for sample efficiency.
+More broadly, for any ICL predictor to be sample efficient
+on exchangeable {Z;}, it is perhaps reasonable to expect
+the predictor to (approximately) recognise the exchangeable
+nature of {Z;}, where our hypothesis would apply.
+
+19
+
+We review the other works in brief in the following. Huszar
+(2022) dicussed high-level connections between Xie et al.
+(2021) and various notions of exchangeability. Hahn &
+Goyal (2023)[Section 1.4] relates to (Xie et al., 2021) as
+it can similarly be understood in terms of Bayesian infer-
+ence, with the difference that they view the training tasks
+to be open-ended and compositional, in contrast to the fi-
+nite nature of an HMM. Wang et al. (2023) likewise takes
+a Bayesian viewpoint, which they utilise to select the ICL
+dataset optimally. Jiang (2023) explains various phenom-
+ena of the ‘emergent abilities’ of LLMs, such as in-context
+learning and chain-of-thought prompting, through Bayesian
+inference on the common distribution underlying natural
+languages. Zhang et al. (2023b) show that ICL implicitly
+uses a Bayesian model averaging. Griffiths & Tenenbaum
+(2006) recover the prior distributions in LLMs for everyday
+observations, such as the time of movies.
+
+Theories for in-context learning. Numerous theoretical
+models and frameworks beyond Bayesian inference exist
+which aim at understanding and formalising ICL. We refer
+to (Dong et al., 2022) for a detailed survey on in-context
+learning. Akyiirek et al. (2022) prove that transformer-based
+architectures can implement classical learning algorithms
+such as linear models and ridge regression. Bai et al. (2023)
+extend this work by demonstrating that ICL via transformers
+can implement and even braoder set of algorithms, including
+convex risk minimisation algorithms and gradient descent,
+where the model intrinsically selects a different learning
+algorithm based on the task at hand. Singh et al. (2023)
+shows that the ability of performing ICL algorithms such as
+Bayesian inference may be a transient phenomenon which
+produces highest accuracy during certain stages of pretrain-
+ing an LLM. Raventos et al. (2023) show that the ability
+of in-context learning to tasks unseen during training by
+picking the right learning algorithm depends on the task
+diversity during training.
+
+Input order dependence of Large language models. Pre-
+vious work has found a dependence of LLMs on the order
+in which an input sequence is presented. Lu et al. (2021)
+demonstrate that input order can significantly change the
+performance of an LLM in text classification tasks from
+“state-of-the-art” to “random guess”. In the context of few-
+shot learning, Zhao et al. (2021) show the prediction of
+an LLM can depend on many seemingly irrelevant items,
+such as the prompt format or the order in which input ex-
+amples are presented in a prompt, again with a sensititivity
+of performance to these factors. Zhang et al. (2023a) note
+that the topic structure of a document may be exchange-
+able, which motivates them to use Bayesian models, namely
+Latent Dirichlet Allocation, to analyse the representations
+of an LLM. Our discussion on exchangeability relates to
+this line of work, but has a novel perspective on it through
+
+Is In-Context Learning in Large Language Models Bayesian? A Martingale Perspective
+
+our focus on the martingale property, a necessary condition
+for exchangeability, among other implications of the mar-
+tingale property which we study (e.g. the decomposition
+of uncertainty and the resulting identification of epistemic
+uncertainty). Furthermore, in contrast to the related work,
+which shuffles the input data Z.,,, we analyse the effect of
+shuffling the imputed, generated sequence 7,41, ..., where
+we find non-exchangeable behaviour which deviates from
+any reasonable Bayesian model.
+
+Miscellaneous. Our work also relates a number of appli-
+cations of LLMs. As we are generating samples from an
+LLM with ICL, which as we demonstrate deviate from the
+distribution of the ICL dataset, this work relates to and has
+implications for a line of work on LLMs for synthetic data
+generation (Borisov et al., 2022; Hamaldinen et al., 2023;
+Tang et al., 2023; Veselovsky et al., 2023; Li et al., 2023).
+Furthermore, we show that the martingale property is vio-
+lated for long sampling paths, which may have implications
+for time series prediction with LLMs (Gruver et al., 2023;
+Jin et al., 2023), particularly over long horizons. We also
+demonstrate a dependence on the order in which missing
+values are imputed, which has direct implications for the
+machine learning task of missing value imputations with
+LLMs (Mei et al., 2021). Shumailov et al. (2023) demon-
+strate that models (including LLMs) which are recursively
+trained on data which they have previously generated shift
+in their distribution, where long tails disappear. While this
+work ‘conditions’ on synthetic data by retraining, our work
+analyses the conditioning via ICL. Lastly, as LLMs violate
+the martingale property in certain empirical regimes, they
+hence do not allow for a decomposed interpretation of their
+predictive uncertainty, which has important implications for
+uncertainty quantification with LLMs (Xiao et al., 2022).
+
+E. Negative Societal Impact
+
+This paper analyses and characterises the behaviour of
+LLMs. We try to understand whether ICL in LLMs fol-
+lows Bayesian principles. As we outlined in §2.3 this has
+important consequences for their potential use as trustwor-
+thy systems, which can be deployed in safety-critical, high-
+stakes applications such as healthcare. These systems often
+crucially rely on a principled notion of uncertainty. The
+evidence presented in this work cautions against the use
+of LLMs in such settings without further checks as they—
+under certain experimental settings—do not possess such
+a principled interpretation of uncertainty, rendering their
+uncertainty ‘black-box’. Furthermore, while LLMs have
+typically been trained in non-exchangeable scenarios (e.g.
+natural language where the order of words or tokens changes
+meaning), as we showed in §2.2, we caution against their
+use in exchangeable settings (e.g. i.i.d. in-context data) as
+their predictions can be rendered inconsistent.
+
+20
+
+The points noted above are potential negative societal im-
+pacts if Bayesian behaviour cannot be guaranteed by a
+model, as we argue in this work. While we do not see
+any direct negative consequences from our analysis, we
+believe this work provides ample pointers and reason for
+further investigation of these concerns, and shall point out
+and warn against (potentially intended) misuse of LLMs.
+
+F. Code, Computational Resources, Datasets,
+Existing Assets Used
+
+Code. We provide our code base on https: //github.
+com/meta-inf/bayes_icl under MIT License, to-
+gether with a README .md containing instructions on re-
+producing the key results in this paper.
+
+Datasets. We used three synthetic datasets for our exper-
+iments: a coin flip experiment, sampling from univariate
+Bernoulli distributions, a Gaussian experiment, sampling
+from univariate Gaussian distributions, and a synthetic nat-
+ural language experiment, sampling (conditionally) from
+Bernoulli distributions. We refer to §4 and App. C where
+they are introduced and discussed.
+
+Computational resources and APIs used. Referring to §4,
+we implemented 1lama-—2-7B and mistral-7B with
+the Huggingface Transformer library (Wolf et al., 2020),
+and implemented gpt-3, got-3.5 and gpt—4 using the
+OpenAI API (OpenAI, 2023). For all Huggingface models,
+we generated the sampling paths by performing inference
+on a single A100 Nvidia GPU for each run.
+
+Existing assets used. Our work uses the fol-
+lowing main software libraries and corresponding li-
+censes: PyTorch (Paszke et al., 2019) (custom license),
+numpy (Harris et al., 2020) (BSD 3-Clause License),
+Weights&Biases (Biewald, 2020) (MIT License), Hug-
+gingface transformers library (Wolf et al., 2020) (Apache
+License 2.0; model licenses see below), matplotlib
+(Hunter, 2007) (PSF License), t qdm (tqdm contributors,
+2022) (MPLv2.0 MIT License), scikit-learn and
+sklearn (Pedregosa et al., 2011) (BSD 3-Clause License),
+pandas (Wes McKinney, 2010) (BSD 3-Clause License),
+openai (Apache 2.0 License), tiktoken (MIT License),
+and pickle (Van Rossum, 2020) (License N/A). We use
+Github Copilot and ChatGPT (OpenAI, 2023) for code de-
+velopment and occasionally as a writing aid.
+
+The five pretrained large language models we used (see
+§4) have the following licenses: 1 lama-2-7B (Touvron
+et al., 2023) (custom license); mist ral—7B (Jiang et al.,
+2023) (Apache 2.0 License); got —3 (Brown et al., 2020),
+gpt-3.5, and gpt—4 (OpenAlI, 2023) (API; no code li-
+cense).
+
+Is In-Context Learning in Large Language Models Bayesian? A Martingale Perspective
+
+2
+
+Tig, G2) = 2 Tig (2) = 2 on Dr
+O1
+00 vy oo / > oo
+0.1
+0.2
+108 oped ga 8 oes gsB aw 1 egy tB
+pA REN 2 at RBBB nt yt ERB GPT ony
+
+(a) n = 20,m = 10
+
+Tig. I
+
+&
+
+j=z
+
+Tok
+
+O.1
+0.05
+
+0.00 0.0
+
+—_
+
+0.05
+
+0.1
+
+0.05,
+
+0.00
+
+0.05
+
+Sas
+
+08 35 18 18 10 35 18 18
+eB GEA Syn ys ERP REMY 98 gah
+
+(c) n = 50,m = 25
+
+ow ess?
+
+Cen
+syne yy
+
+gon
+
+Tig 9(2) = 2 op aw (2) = 2 Tre
+0.05 0s
+0.00 | | 00 0.00
+0.05
+Ol =0.05
+8 35 18 18 08 3d 1 18 8 35 18 eA
+gt OP ATF on a og sA TOP GBP gD Gah gant gyPO a gc
+(b) n = 20,m = 40
+’
+x)=e ») = 22
+os Tig. g(2) = 2 go Ln (2) = 2 Tox:
+0.025
+0.00 0.0 00
+0.05 02 0.025
+vy 35 18 18 08 3d 18 % 8 35 18 18
+oo PN gon ys eB GET AY Sy a oo GP gon gia
+
+(d) n = 50,m = 100
+
+Figure 9: Checking the martingale property: results for the Gaussian experiments with 6 = 0. See Fig. 4 for details.
+
+v=? y= 2?
+Tig. g(2) = 2 Tig, g(2) = 2 Tox:
+O41 0.25, ot
+0.0 — 0.00 _—_—™~ 0.0
+0.1 0.25
+08 35 185 to Bg 3D 18 s 08 3d 185 to
+3 oa owt yan rd a" ort ya xs ow" owt yan sa
+
+(a) n = 20,m = 10
+
+Tig, G2) = 2 aos Tig. G2) = 2 Dr
+0.05,
+0.0
+0.00 0.00
+0.1
+—0.05,
+
+703 3? BY eee aw 1 oe 3 8 aB
+pM REN 2 sat pT REN 8 sat pt GREN s8 giath
+(c) n = 50,m = 25
+
+~)=e ») = 2
+Tig G2) = 2 Tig, G(2) = 2 Tox
+0.0 0.00 0.00
+0.1 0.25 —0.05
+Bod ee Bog 3 ee) Bod wee)
+oo oot ayo ye" or oot gone se oo oot ay ye"
+
+(e) n = 100,m = 50
+
+0.05
+
+0.00
+
+0.05
+
+Tig. g(z) = 2 Tig. G2) = 2 Pox
+0.25, o4
+~S oa vn
+Bo gas Ba 8 pnd ey Bo gas E 8
+oo PN gon ys eB GET AY Sy a oo GP gon gia
+
+(b) n = 20,m = 40
+
+Tig, G2) = 2 Tig G(2) = 2 bos Dei
+0.0 .
+0.25,
+0.00
+02 0.00
+0B ig 89 By 08 3? Ba 4 og 3d B®
+owt RTP pa gists" owt RPT ya yt oo RSP peo yas"
+(d) n = 50,m = 100
+x)=e ») = 2
+Tig G(2) = 2 Tig G(2) = 2 noes Tox
+05 ~
+0.0
+0.000,
+0.0
+0.2
+—0.025
+B 3d Bas o® 3d Ba ® gad Ba
+ep tT Get? oo ga pth RFA san Oath pte PEON san Oya
+
+(f) n = 100,m = 200
+
+Figure 10: Checking the martingale property: results for the Gaussian experiments with 6 = —1. See Fig. 4 for details.
+
+21
+
+Is In-Context Learning in Large Language Models Bayesian? A Martingale Perspective
+
+Llama-2-7B Mistral-7B
+
+0.04
+
+—0.14
+
+(a) T1,9,9(2) =e
+
+Llama-2-7B Mistral-7B
+
+0.000
+
+—0.025
+
+(b) Tan, k € {2, 3,4, 5}
+
+Figure 11: Checking the martingale property on Bernoulli
+experiments: additional result with n = 100,m = 10n. See
+Fig. 3 for details.
+
+0.304 &
+
+x
+
+0.20 4% x
+x. x samples of 7; from GPT-3
+median(Z3) from GPT-3
+95% CI from ref. Bayes. model
+
+3
+x
+XOX
+x«K
+
+0.10 4
+
+xe
+CROOK
+
+0.06 4
+
+20 100 200 400
+
+Figure 12: Scaling of epistemic uncertainty: samples of the
+test statistic T3 evaluated on got -3-170b, compared with
+the 95% CI from the reference Bayesian model.
+
+22
+
+Tig T2,k
+0.05
+0.00 0.00
+-0.05 s — -0.05
+0 1 0 1
+x x
+
+(a) gpt-3-2.7b, NLP, pretrained
+
+Tig T2,k
+0.05
+0.025
+= — 0.00
+0.000
+-0.025 —0.05
+0 1 0 1
+x x
+(b) gpt-3-2.7b, NLP, finetuned
+Tig Tok
+0.025
+0.000
+—0.025 We"
+03 05 0.7 03 0.5 0.7
+0 0
+
+(c) gpt-3-2.7b, Bernoulli (n = 50,m = 100), pretrained
+
+Tig Tok
+0.025
+0.000 Jey
+—0.025
+T T T T T
+0.3 0.5 0.7 0.3 0.5 0.7
+6 6
+
+(d) gpt-3-2.7b, Bernoulli (n = 50, m = 100), finetuned
+
+Figure 13: Checking the martingale property: comparison
+of gpt—3 models before and after fine-tuning on the NLP
+(Fig. 5) and Bernoulli (Fig. 3) datasets.

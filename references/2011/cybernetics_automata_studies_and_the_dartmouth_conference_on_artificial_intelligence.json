@@ -1,0 +1,53 @@
+{
+  "stage": "zero_preprocessing_catalog",
+  "source_pdf": {
+    "file_name": "cybernetics_automata_studies_and_the_dartmouth_conference_on_artificial_intelligence.pdf",
+    "file_path": "/Users/mingli/Khex/uni-learning/references/2011/cybernetics_automata_studies_and_the_dartmouth_conference_on_artificial_intelligence.pdf",
+    "same_directory_output": true
+  },
+  "bibliography": {
+    "title": "Cybernetics, Automata Studies and the Dartmouth Conference on Artificial Intelligence",
+    "authors": [
+      "Unknown"
+    ],
+    "year": 2011,
+    "publication": "历史回顾文章",
+    "volume": "",
+    "pages": ""
+  },
+  "input_context_for_catalog": {
+    "abstract_brief": "文章回顾 cybernetics、automata studies 与 Dartmouth 会议之间的关系，强调 AI 早期问题场的形成、分叉与制度化路径。",
+    "toc_brief": [
+      "早期学术背景与问题群",
+      "关键会议与路线分叉",
+      "术语与学科边界的形成"
+    ],
+    "preface_or_intro_brief": "引言关注 AI 历史叙事中被遮蔽的共域结构，而非单一路线胜利史。"
+  },
+  "catalog_result": {
+    "document_type": "学科史",
+    "primary_route": "cybernetics / automata / Dartmouth",
+    "estimated_difficulty": {
+      "concept_density": "中",
+      "math_density": "低",
+      "historical_context_density": "高"
+    },
+    "reading_priority": "高",
+    "recommended_survey_chapters": [
+      "历史前奏"
+    ],
+    "misreading_risks": [
+      "将历史回顾读成线性胜利叙事",
+      "忽略制度性边界重划对技术路线的影响",
+      "以后来术语覆盖早期未分化问题场",
+      "只摘取事件时间线而忽略结构判断"
+    ]
+  },
+  "generation_notes": {
+    "methodology_file": "/Users/mingli/Khex/uni-learning/agents/reader/methodolgy.md",
+    "notes": [
+      "本 JSON 对应 methodolgy.md 第 5.1 节“零号预处理（编目与分流）”输出。",
+      "作者与出版元数据在本地文件中不完整，后续可在第一遍前补全。"
+    ]
+  }
+}

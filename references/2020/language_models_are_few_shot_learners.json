@@ -1,0 +1,53 @@
+{
+  "stage": "zero_preprocessing_catalog",
+  "source_pdf": {
+    "file_name": "language_models_are_few_shot_learners.pdf",
+    "file_path": "/Users/mingli/Khex/uni-learning/references/2020/language_models_are_few_shot_learners.pdf",
+    "same_directory_output": true
+  },
+  "bibliography": {
+    "title": "Language Models are Few-Shot Learners",
+    "authors": [
+      "Tom B. Brown et al."
+    ],
+    "year": 2020,
+    "publication": "NeurIPS",
+    "volume": "",
+    "pages": ""
+  },
+  "input_context_for_catalog": {
+    "abstract_brief": "论文展示大规模语言模型在少样本与零样本设定下的跨任务能力，推动 in-context learning 成为核心研究方向。",
+    "toc_brief": [
+      "大规模模型训练设定",
+      "few-shot 评估框架",
+      "多任务结果与局限分析"
+    ],
+    "preface_or_intro_brief": "引言强调通过规模化预训练获得任务条件下快速适应能力。"
+  },
+  "catalog_result": {
+    "document_type": "技术论文",
+    "primary_route": "LM / agent / AGI",
+    "estimated_difficulty": {
+      "concept_density": "中",
+      "math_density": "中",
+      "historical_context_density": "中"
+    },
+    "reading_priority": "高",
+    "recommended_survey_chapters": [
+      "LM / agent / AGI",
+      "Transformer / ICL / PFN"
+    ],
+    "misreading_risks": [
+      "将 few-shot 成果误读为通用可靠推理能力",
+      "忽略评测协议、数据污染与提示敏感性影响",
+      "把规模效应直接外推为稳态理论规律",
+      "只看平均分数而忽视失败模式与不确定性"
+    ]
+  },
+  "generation_notes": {
+    "methodology_file": "/Users/mingli/Khex/uni-learning/agents/reader/methodolgy.md",
+    "notes": [
+      "本 JSON 对应 methodolgy.md 第 5.1 节“零号预处理（编目与分流）”输出。"
+    ]
+  }
+}

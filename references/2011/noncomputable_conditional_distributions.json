@@ -1,0 +1,55 @@
+{
+  "stage": "zero_preprocessing_catalog",
+  "source_pdf": {
+    "file_name": "noncomputable_conditional_distributions.pdf",
+    "file_path": "/Users/mingli/Khex/uni-learning/references/2011/noncomputable_conditional_distributions.pdf",
+    "same_directory_output": true
+  },
+  "bibliography": {
+    "title": "Noncomputable Conditional Distributions",
+    "authors": [
+      "Nathanael L. Ackerman",
+      "Cameron E. Freer",
+      "Daniel M. Roy"
+    ],
+    "year": 2011,
+    "publication": "Logic in Computer Science / Related Proceedings",
+    "volume": "",
+    "pages": ""
+  },
+  "input_context_for_catalog": {
+    "abstract_brief": "论文展示在可计算联合分布下条件分布仍可能不可计算，揭示概率推断中的可计算性断裂与条件化操作边界。",
+    "toc_brief": [
+      "可计算概率背景",
+      "反例构造与不可计算性证明",
+      "对贝叶斯推断可实现性的影响"
+    ],
+    "preface_or_intro_brief": "引言将条件概率从统计对象提升为可计算对象来考察其可实现性。"
+  },
+  "catalog_result": {
+    "document_type": "技术论文",
+    "primary_route": "Bayes / probability",
+    "estimated_difficulty": {
+      "concept_density": "高",
+      "math_density": "高",
+      "historical_context_density": "中"
+    },
+    "reading_priority": "高",
+    "recommended_survey_chapters": [
+      "Bayes / uncertainty",
+      "open computation"
+    ],
+    "misreading_risks": [
+      "将不可计算条件分布误读为贝叶斯方法整体失效",
+      "忽略结论依赖的表示与可计算模型假设",
+      "把理论反例直接外推到全部工程场景",
+      "只看结论而忽视构造路径"
+    ]
+  },
+  "generation_notes": {
+    "methodology_file": "/Users/mingli/Khex/uni-learning/agents/reader/methodolgy.md",
+    "notes": [
+      "本 JSON 对应 methodolgy.md 第 5.1 节“零号预处理（编目与分流）”输出。"
+    ]
+  }
+}

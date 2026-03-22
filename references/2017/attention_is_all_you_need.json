@@ -1,0 +1,61 @@
+{
+  "stage": "zero_preprocessing_catalog",
+  "source_pdf": {
+    "file_name": "attention_is_all_you_need.pdf",
+    "file_path": "/Users/mingli/Khex/uni-learning/references/2017/attention_is_all_you_need.pdf",
+    "same_directory_output": true
+  },
+  "bibliography": {
+    "title": "Attention Is All You Need",
+    "authors": [
+      "Ashish Vaswani",
+      "Noam Shazeer",
+      "Niki Parmar",
+      "Jakob Uszkoreit",
+      "Llion Jones",
+      "Aidan N. Gomez",
+      "Łukasz Kaiser",
+      "Illia Polosukhin"
+    ],
+    "year": 2017,
+    "publication": "NeurIPS",
+    "volume": "",
+    "pages": "5998-6008"
+  },
+  "input_context_for_catalog": {
+    "abstract_brief": "论文提出 Transformer 架构，以自注意力替代循环与卷积主干，显著提升序列建模并开启大规模预训练模型路线。",
+    "toc_brief": [
+      "序列建模中的并行化问题",
+      "自注意力与多头机制",
+      "编码器-解码器结构与训练细节",
+      "机器翻译实验结果"
+    ],
+    "preface_or_intro_brief": "引言强调在保留长程依赖建模能力的同时提高训练并行效率。"
+  },
+  "catalog_result": {
+    "document_type": "技术论文",
+    "primary_route": "Transformer / ICL / PFN",
+    "estimated_difficulty": {
+      "concept_density": "中",
+      "math_density": "中",
+      "historical_context_density": "中"
+    },
+    "reading_priority": "高",
+    "recommended_survey_chapters": [
+      "Transformer / ICL / PFN",
+      "LM / agent / AGI"
+    ],
+    "misreading_risks": [
+      "将架构创新误读为无需数据与算力条件即可复现",
+      "忽略任务与训练设定对结论的边界影响",
+      "将翻译任务结果直接外推为所有推理能力",
+      "只看性能增益而忽略方法承诺变更"
+    ]
+  },
+  "generation_notes": {
+    "methodology_file": "/Users/mingli/Khex/uni-learning/agents/reader/methodolgy.md",
+    "notes": [
+      "本 JSON 对应 methodolgy.md 第 5.1 节“零号预处理（编目与分流）”输出。"
+    ]
+  }
+}

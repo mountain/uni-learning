@@ -1,0 +1,54 @@
+{
+  "stage": "zero_preprocessing_catalog",
+  "source_pdf": {
+    "file_name": "anytime_algorithms_for_non_ending_computations.pdf",
+    "file_path": "/Users/mingli/Khex/uni-learning/references/2015/anytime_algorithms_for_non_ending_computations.pdf",
+    "same_directory_output": true
+  },
+  "bibliography": {
+    "title": "Anytime Algorithms for Non-Ending Computations",
+    "authors": [
+      "Unknown"
+    ],
+    "year": 2015,
+    "publication": "Technical Article",
+    "volume": "",
+    "pages": ""
+  },
+  "input_context_for_catalog": {
+    "abstract_brief": "论文讨论 non-ending computation 下的 anytime 算法设计，强调在任意中断时刻输出可用近似结果的计算策略。",
+    "toc_brief": [
+      "non-ending 计算问题设定",
+      "anytime 质量度量",
+      "算法构造与性能讨论"
+    ],
+    "preface_or_intro_brief": "引言将计算任务从“终止即成功”重写为“持续改进且可随时交付”。"
+  },
+  "catalog_result": {
+    "document_type": "技术论文",
+    "primary_route": "open computation / limit / anytime",
+    "estimated_difficulty": {
+      "concept_density": "中",
+      "math_density": "中",
+      "historical_context_density": "中"
+    },
+    "reading_priority": "高",
+    "recommended_survey_chapters": [
+      "open computation",
+      "LM / agent / AGI"
+    ],
+    "misreading_risks": [
+      "把 anytime 输出误读为任意时刻都具同等可靠性",
+      "忽略中断策略与评价函数对结论的影响",
+      "将非终止计算框架简单套用到静态批处理任务",
+      "只看工程可用性而忽视其问题重写意义"
+    ]
+  },
+  "generation_notes": {
+    "methodology_file": "/Users/mingli/Khex/uni-learning/agents/reader/methodolgy.md",
+    "notes": [
+      "本 JSON 对应 methodolgy.md 第 5.1 节“零号预处理（编目与分流）”输出。",
+      "作者与出版元数据在本地文件中不完整，后续可在第一遍前补全。"
+    ]
+  }
+}

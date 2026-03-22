@@ -1,0 +1,54 @@
+{
+  "stage": "zero_preprocessing_catalog",
+  "source_pdf": {
+    "file_name": "on_the_computability_of_conditional_probability.pdf",
+    "file_path": "/Users/mingli/Khex/uni-learning/references/2019/on_the_computability_of_conditional_probability.pdf",
+    "same_directory_output": true
+  },
+  "bibliography": {
+    "title": "On the Computability of Conditional Probability",
+    "authors": [
+      "Unknown"
+    ],
+    "year": 2019,
+    "publication": "Technical Article",
+    "volume": "",
+    "pages": ""
+  },
+  "input_context_for_catalog": {
+    "abstract_brief": "论文系统讨论条件概率运算的可计算性条件与限制，延续可计算概率论中“条件化可实现性”核心议题。",
+    "toc_brief": [
+      "条件概率的可计算模型",
+      "可计算与不可计算情形划分",
+      "构造、反例与边界讨论"
+    ],
+    "preface_or_intro_brief": "引言强调条件化操作是概率推断从定义到实现的关键断点。"
+  },
+  "catalog_result": {
+    "document_type": "技术论文",
+    "primary_route": "Bayes / probability",
+    "estimated_difficulty": {
+      "concept_density": "高",
+      "math_density": "高",
+      "historical_context_density": "中"
+    },
+    "reading_priority": "高",
+    "recommended_survey_chapters": [
+      "Bayes / uncertainty",
+      "open computation"
+    ],
+    "misreading_risks": [
+      "把条件概率不可计算个例误读为贝叶斯推断整体失效",
+      "忽略表示与编码方式对可计算性的影响",
+      "将理论边界直接外推到全部工程任务",
+      "只看结论而忽略构造方法与假设"
+    ]
+  },
+  "generation_notes": {
+    "methodology_file": "/Users/mingli/Khex/uni-learning/agents/reader/methodolgy.md",
+    "notes": [
+      "本 JSON 对应 methodolgy.md 第 5.1 节“零号预处理（编目与分流）”输出。",
+      "作者与出版元数据在本地文件中不完整，后续可在第一遍前补全。"
+    ]
+  }
+}

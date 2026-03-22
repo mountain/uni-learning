@@ -1,0 +1,54 @@
+{
+  "stage": "zero_preprocessing_catalog",
+  "source_pdf": {
+    "file_name": "the_computational_power_of_dynamic_bayesian_networks.pdf",
+    "file_path": "/Users/mingli/Khex/uni-learning/references/2016/the_computational_power_of_dynamic_bayesian_networks.pdf",
+    "same_directory_output": true
+  },
+  "bibliography": {
+    "title": "The Computational Power of Dynamic Bayesian Networks",
+    "authors": [
+      "Unknown"
+    ],
+    "year": 2016,
+    "publication": "Technical Article",
+    "volume": "",
+    "pages": ""
+  },
+  "input_context_for_catalog": {
+    "abstract_brief": "论文讨论动态贝叶斯网络的计算表达能力，分析时序概率图模型在可计算性与表示能力上的理论边界。",
+    "toc_brief": [
+      "动态贝叶斯网络定义",
+      "表达能力与计算复杂度分析",
+      "与其他时序模型比较"
+    ],
+    "preface_or_intro_brief": "引言聚焦概率图模型作为动态计算机制的能力刻画。"
+  },
+  "catalog_result": {
+    "document_type": "技术论文",
+    "primary_route": "Bayes / probability",
+    "estimated_difficulty": {
+      "concept_density": "高",
+      "math_density": "高",
+      "historical_context_density": "中"
+    },
+    "reading_priority": "中",
+    "recommended_survey_chapters": [
+      "Bayes / uncertainty",
+      "open computation"
+    ],
+    "misreading_risks": [
+      "把表达能力分析误读为现实训练可行性保证",
+      "忽略模型假设与状态表示对结论的约束",
+      "将理论等价关系外推到工程效率比较",
+      "仅关注结论而忽略证明条件"
+    ]
+  },
+  "generation_notes": {
+    "methodology_file": "/Users/mingli/Khex/uni-learning/agents/reader/methodolgy.md",
+    "notes": [
+      "本 JSON 对应 methodolgy.md 第 5.1 节“零号预处理（编目与分流）”输出。",
+      "作者与出版元数据在本地文件中不完整，后续可在第一遍前补全。"
+    ]
+  }
+}

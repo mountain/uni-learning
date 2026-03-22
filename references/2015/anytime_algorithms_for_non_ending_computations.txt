@@ -1,0 +1,971 @@
+1508.01278v3 [stat.AP] 16 Aug 2015
+
+arXiv
+
+‘Teaching Statistics at Google Scale*
+
+Nicholas Chamandyt Omkar Muralidharan? Stefan Wager’
+
+August 18, 2015
+
+Abstract
+
+Modern data and applications pose very different challenges from those of the
+1950s or even the 1980s. Students contemplating a career in statistics or data science
+need to have the tools to tackle problems involving massive, heavy-tailed data, often
+interacting with live, complex systems. However, despite the deepening connections
+between engineering and modern data science, we argue that training in classical
+statistical concepts plays a central role in preparing students to solve Google-scale
+problems. To this end, we present three industrial applications where significant
+
+modern data challenges were overcome by statistical thinking.
+
+1 Introduction
+
+Technology companies like Google generate and consume data on a staggering scale.
+Massive, distributed data present novel and interesting challenges for the statistician,
+and have spurred much excitement among students, and even a new discipline: Data
+Science. Hal Varian famously quipped in 2009 that Statistician would be “the sexy job
+in the next 10 years” (Lohr, 2009), a claim seemingly backed up by the proliferation
+of job postings for data scientists in high-tech. The McKinsey Global Institute took a
+more urgent tone in their 2011 report examining the explosion of big data in industry
+(Manyika et al., 2011). While extolling the huge productivity gains that untapping such
+data would bring, they predicted a shortage of hundreds of thousand of “people with
+
+deep analytical skills”, and millions of data-savvy managers, over the next few years.
+
+“This article is derived from a talk presented at the Joint Statistical Meetings on August 5, 2013, in
+Montreal, during the session entitled Toward Big Data in Teaching Statistics.
+
+*N. C. is a Data Scientist at Lyft.
+
+40. M. is a Statistician in Ads Quality at Google.
+
+8S. W. is a Ph.D. Candidate in Statistics at Stanford University.
+
+Massive data present great opportunities for a statistician. Estimating tiny experimen-
+tal effect sizes becomes routine, and practical significance is often more elusive than
+mere statistical significance. Moreover, the power of approaches that pool data across
+observations can be fully realized. But these exciting opportunities come with strings
+attached. The data sources and structures that a graduating statistician (or data scien-
+tist) faces are unlike those of the 1950s, or even the 1980s. Statistical models we take for
+granted are sometimes out of reach: constructing a matrix of dimensions n by p can be
+pure fantasy, and outliers are the rule, not the exception. Moreover, powerful computing
+tools have become a prerequisite to even reading the data. Modern data are in general
+unwieldy and raw, often contaminated by ‘spammy’ or machine-generated observations.
+
+More than ever, data checking and sanitization are the domain of the statistician.
+
+In this context, some might think that the future of data science education lies in en-
+gineering departments, with a focus on building ever more sophisticated data-analysis
+systems. Indeed, the American Statistical Association Guidelines Workgroup noted the
+“increased importance of data science” as the leading Key Point of its 2014 Curriculum
+Guidelines (ASA, 2014). As Diane Lambert and others have commented, it is vital that
+today’s statisticians have the ability to “think with data” (Hardin et al., 2014). We agree
+wholeheartedly with the notion that students must be fluent in modern computational
+paradigms and data manipulation techniques. We present a counter-balance to this nar-
+rative, however, in the form of three data analysis challenges inspired by an industrial
+‘big data’ problem: click cost estimation. We illustrate how each example can be tack-
+led not with fancy computation, but with new twists on standard statistical methods,
+
+yielding solutions that are not only principled, but also practical.
+
+Our message is not at odds with the ASA’s recent recommendations; indeed, the guide-
+lines highlight statistical theory, “flexible problem solving skills”, and “problems with a
+substantive context” as core components of the curriculum (ASA, 2014). The method-
+ological tweaks presented in this article are not particularly advanced, touching on well-
+known results in the domains of resampling, shrinkage, randomization and causal in-
+ference. Their contributions are more conceptual than theoretical. As such, we believe
+that each example and solution would be accessible to an undergraduate student in a
+statistics or data science program. In relaying this message to such a student, it is not
+the specific examples or solutions presented here that should be stressed. Rather, we
+wish to emphasize the value of a solid understanding of classical statistical ideas as they
+apply to modern problems in preparing tomorrow’s students for large-scale data science
+
+challenges.
+
+In many cases, the modern statistician acts as an interface between the raw data and the
+
+consumer of those data. The term ‘consumer’ is used rather broadly here. Traditionally
+
+it would include the key decision-makers of a business, and perhaps the scientific research
+community at large. Increasingly, computerized ‘production’ systems—automated deci-
+sion engines that are critical to a company’s success—may also be counted among the
+consumers. Leaning on this framing, we see that difficulties may arise in all three phases
+
+of data science: the input phase, the inference phase, and the output phase.
+
+Section 2 highlights some challenges posed by the input or data retrieval phase. We
+describe a common paradigm for data reduction and some of the constraints it imposes,
+and then show how we can overcome the resulting engineering difficulties with a targeted
+use of the bootstrap. In Section 3 we present a concrete modeling problem made more
+difficult by the scale of the data, and discuss how to judiciously simplify the problem to
+alleviate the computational burden without needlessly reducing the quality of inference.
+Section 4 considers the output phase—specifically, the situation where the output of a
+statistical model is piped directly into a production system. We frame this in terms of a
+causal inference paradigm, highlight a problem which may result, and propose a remedy.
+In addition to providing evidence for the value of statistical analysis in modern data
+science, we also hope that these examples can provide students with an idea of the kind
+
+of problems that modern industrial statisticians may be confronted with.
+
+2 Sharding, MapReduce, and the Data Cube
+
+Many new challenges in statistics arise from the size and structure of modern data
+sources. Here we focus on difficulties caused by a sharded architecture, where pieces of
+the data are stored on many different machines (or shards), often in a manner determined
+by system efficiency rather than ease of analysis. Such architectures usually arise when
+we need to work with data sources that are too large to be practically handled on a
+single machine. In practice, the sharding happens far upstream of any data analysis;
+the statistician typically has no control over which pieces of data are stored on which
+
+machines.
+
+One common procedure for reducing massive data to a smaller form amenable to inference
+is the MapReduce framework (Dean and Ghemawat, 2004). A detailed description of
+MapReduce is beyond the scope of this paper; however we give a brief overview in Section
+2.1 below.
+
+At a high level, MapReduce lets us create (multi-way) histograms of our data. This
+computational architecture makes computing some functionals of the data easy, while
+other functionals are more difficult to get. For example, if x € R!°, then computing E[z]
+
+is easy, but computing the number of pairs of observations that are exact duplicates of
+
+User population
+
+queries
+
+Server 1
+
+Server logs
+(raw data)
+
+Map phase
+
+Reduce
+phase
+
+Figure 1: A stylized example of a Google data stream. Every user-generated query is
+processed by one of K servers, with different queries from the same user possibly hitting
+different servers. The servers write raw data to logs, one record per query. These records
+are first processed by M mapper machines, whose output is shuffled along the key of
+interest & and mapped in order to J reducer machines. The data are further processed
+by the reducers into a single summary tuple for each unique value of k. These data are
+finally analyzed by the statistician. Typically, K > M > J.
+
+each other is hard. As statisticians, we need to express the primitives on which we base
+
+our inferential procedures in terms of queries that are feasible with MapReduce.
+
+2.1 Computing with Map Reduce
+
+Here, we follow the exposition of Chamandy et al. (2012), who consider a basic instance
+of MapReduce; reproduction of a stylized diagram of the system is provided in Figure
+1. The internals of MapReduce are less important to this discussion than the sort of
+data that the program takes as input and spits out at the other end as output. The
+input can in general be petabytes (10!°B) of sharded, unstructured or hierarchical data
+objects (such as machine-generated log files). The output is typically a flattened table
+of key-value tuples of aggregated statistics.
+
+Most MapReduce jobs run in just a few hours (or less). In its simplest form, the MapRe-
+
+duce network consists of a single master machine, which coordinates the process, and
+
+many mapper and reducer machines. The system is fully parallel in that there is no
+communication among mappers nor among reducers (though there is some limited com-
+
+munication between the two groups, and both communicate with the master).
+
+During the map phase, each mapper processes its set of input records, which may them-
+selves be complex non-vector objects, and produces an intermediate tuple by applying
+some aggregation function. The tuples are different from the final output because they
+have been computed from only a subset of the data, and must be further combined.
+These intermediate data are then sorted by their key and sent as input to the reducers, a
+process known as shuffling. In the reduce phase, each reducer machine further aggregates
+its own input tuples to produce a final statistic for every unique key. The resulting data,
+which are of a manageable size, can then be downloaded from the MapReduce network
+and interrogated using R, SQL, and other such tools. Their final structure is what is
+known as a data cube: a set of key-value pairs where the key is a possibly high-cardinality
+categorical vector, and the value is a highly aggregated numeric vector. For example,
+in a Google Search application, the key might be the cartesian product of all countries,
+languages, web browser versions, types of computing device, and hours of day. The value
+
+might contain aggregated statistics like the number of queries and clicks in each bin.
+
+2.2 Example: Variance estimation with big data
+
+In the context of MapReduce, uncertainty estimation can be challenging, even for rela-
+tively rudimentary statistics. The reason is that the record used for sharding and storing
+the data rarely coincides with the unit of analysis, i.e., the smallest unit for which an in-
+dependence assumption can be made. Therefore, computing exact second-order statistics
+like sums of squares is impossible without expensive communication between machines
+
+in the network.
+
+Consider the following example. We work for a pay-per-click advertising platform (such
+as Google), and wish to estimate the average cost per ad click paid by advertisers over
+some collection of search queries in different countries. We get to measure the cost of
+clicks, each of which can be attributed to a user who is in one of the countries of interest.
+Specifically, let Yj. denote the cost of the i-th click of the u-th user in the country c.
+Finally, suppose that the “record units” are clicks, meaning that each click is stored
+separately, and there are no guarantees about whether any pair of clicks may or may not
+
+be on the same shard. All clicks are not, in general, independent.
+
+Although the data may be massive, obtaining a simple point estimator for the mean
+
+country-wise cost per click is easily accomplished using MapReduce, with sums as the
+
+aggregation functions, clicks and spend as the values, and country as the key. Writing
+N- for the total number of clicks in country c, we can estimate our parameter of interest
+as
+6.= Y.c/Ne, where Y.. = S— Yine- (1)
+i,u
+As statisticians, however, we are rarely satisfied with a simple point estimate 6, and also
+want a measure of the stability of this estimator. And this is where the details of the
+
+MapReduce implementation become important.
+
+Given that the data are stored at the click-level, we can easily compute a naive variance
+
+estimate using MapReduce,
+
+1 A
+s=+ (+yry2,-6), (2)
+
+1,U
+
+by simply tacking on a sum of squared click costs, Y2_., to the value tuple. More explicitly,
+
+que?
+when mapping over a given click, the MapReduce program first determines its country,
+
+say c, followed by its cost Yiue, and then emits the tuple (1, Yiuc, Y;,2,) to the entry of a
+summation aggregator with country key c. The variance estimator S$? would be justified
+
+under the assumption that all click records in the data are independent.
+
+In general, however, the estimator S? is biased, because the true “experimental unit” is
+something coarser than the click. In particular, S? will fail to account for the (usually
+positive) correlation between the cost of successive clicks from the same user. In a
+typical computing architecture, we can easily get around this issue by computing user-
+
+level variances:
+
+ya Me\" 1 Ze 627: where Zuc= SY; 3
+c ~ TV, No My | 2s Zie ] — 86 ps where w= DY (3)
+
+and M, is the number of unique users in country c. The problem is, the individual Yjx.
+
+comprising user u’s total cost Z,- are not usually on the same shard, and so we need
+to compute a separate MapReduce query to get each Z,,. (or key our aggregators by w).
+Thus, to compute (3), the size of the output returned by MapReduce would need to scale
+as the number of users in the system. As the number of users is almost as large as the
+
+number of clicks, this is computationally prohibitive.
+
+2.3. The Poisson bootstrap
+
+Perhaps surprisingly, however, it turns out that we can side-step the engineering problem
+of how to compute V2 with a statistical idea. Although V2 itself is difficult to compute,
+we can produce a MapReduce-friendly alternative to it using a variation of the bootstrap
+(Efron and Tibshirani, 1993). The key trick is to replace multinomial bootstrap sampling
+
+with Poisson sampling, which can be implemented while streaming over the data.
+
+More specifically, recall that bootstrap procedures draw a sequence of resamples which
+can be viewed as weighted versions of the original sample. The idea behind the Poisson
+bootstrap is to use Poisson weight vectors instead of multinomial weight vectors, since
+the former can be generated on-the-fly without knowing the sample size, while the latter
+cannot. The method works as follows. To construct B replicates of the output tuple
+from a MapReduce, B independent Poisson(1) random variables are drawn for each
+record in the data, as the record is processed. Given a record belonging to a statistical
+unit with the unique identifier u, the random number generator for replicate b is seeded
+with g(h(w) + b), where g and h are two fingerprint functions!. This procedure ensures
+that any two records originating from the same unit will have identical Poisson vectors.
+The b-th Poisson variable represents a count of how many times the unit is to appear in
+
+replicate b.
+
+If there are n total units, the sample size of any Poisson bootstrap replicate is not
+fixed, but rather a random variable distributed as Poisson(n). Nevertheless, the Poisson
+bootstrap is asymptotically equivalent to the traditional multinomial bootstrap, and to
+streaming analogues of related resampling techniques (Chamandy et al., 2012). These
+ideas have been studied by, among others, Hanley and MacGibbon (2006), Lee and Clyde
+(2004), and Politis et al. (1999).
+
+2.4 Illustration with Google data
+
+Figure 2 illustrates this problem with Google data, by showing standard errors for average
+click cost in 234 countries. The data are normalized so that estimates are displayed
+relative to V. (3), which is based on an i.i.d. user assumption.” As we might have feared,
+the naive variance estimates S? (2), which assume that clicks are ii.d., are badly biased
+
+downwards. We also include an intermediate estimator computed from an i.i.d. query
+
+‘A fingerprint function f, as used here, is a mapping of arbitrary data into the space of 64-bit
+integers. It is virtually 1-to-1, so that collisions are extremely rare (but not impossible). Moreover,
+knowing f(x1), f(x2),..., f(an), for some arbitrary collection of points 71, ..., @n, gives no information
+about the relationship between those data points.
+
+?Computing V. for this problem required using a very expensive data join, which would not be feasible
+as a part of a routine data-processing pipeline.
+
+V, (i.i-d. users)
+
+NX | e Se (i.i-d. clicks)
+— . i.i.d. queries
+A Poisson bootstrap
+
+mA
+A, 4 a “a A
+
+fo) AA, ad ay re VON
+RR ORON NTS toy rove ere ee
+= . aa au ve, Pat a ro ton Au
+Co) oon a smal ts 1 en
+ne) . 8 got Seer ta aw amu a a | uo
+Sa im . ne "T om” q . .
+sO | . tt} 2° aren” al s
+s a er ha] os" e a8
+2 a* 4° 0° cnece ° we
+® e °°? eo °o ond, %. e.°
+
+5 over, we oy g “ermre Se oP geme o & nee e
+oete ie eo. “oo ye se of 038% a e @ eco *
+=° e ee. ee e e Co cco e e, e e
+> e e° ©?¢ ° e e e @e * e
+fs) e ° e rad e
+
+= Py e °.
+es a ° % cS e
+xe} e
+
+o e
+£
+n
+
+0.2
+
+0.0
+
+Standard error, i.i.d. users (log scale)
+
+Figure 2: Estimated standard deviation of average click cost in 234 countries. Stan-
+dard errors are computed relative to the computationally prohibitive independent-user
+estimator V. (gold line and x-axis, on a log scale). Assuming that all clicks are i.i.d.
+leads to S., which underestimates uncertainty (green dots). So does, to a lesser extent,
+assuming that all queries are i.i.d. (pink squares). The gold standard V, is fairly well-
+approximated in this example by applying the Poisson bootstrap with 1000 replicates
+(purple triangles).
+
+model; in general, a query should be thought of as a set of actions comprising a single task
+that may include many clicks. Such a model is tractable in certain applications; query-
+level sharding, as depicted in Figure 1, is not uncommon. Accounting for the within-
+query correlation helps, but the i.i.d. query estimator still underestimates uncertainty
+
+on the standard error scale by about 10%.
+
+Poisson bootstrap standard errors using B = 1000 replicates are also displayed in Figure
+2. They are quite close, at least in expectation, to the gold standard V. computed from a
+“random user” model—that is, using between-user sums of squares. This is as expected,
+since the bootstrap procedure assumes that users are the independent units of analysis.
+
+Thus, the Poisson bootstrap has successfully provided us with a computationally efficient
+
+way of estimating the variance of 6. using MapReduce.
+
+3. The Long Tail
+
+Large data sets are notorious for having long-tailed occurrence distributions: many units
+occur infrequently, but together, these infrequent units account for a large fraction of
+total events. For example, Google advertisers have collectively input millions of keywords
+into their advertising campaigns. These keywords are a targeting mechanism—they allow
+the advertiser to indicate a desire to show an ad when the user’s search query contains
+the specified terms. But most Google ad keywords are only seen a small number of times.
+Because of this, when doing statistical analysis of such long-tailed data, the number of
+units of interest scales with the amount of data collected. This creates computational
+
+challenges for traditional statistical methods.
+
+3.1 Example: Cost per click modeling
+
+Suppose we are interested in predicting the average cost per ad click on each keyword.
+Such a prediction model might serve a number of purposes: classifying query strings into
+commerciality bins, estimating the revenue that will be generated by a new ad campaign,
+etc. Some of these uses may entail memory or computational constraints, for example if
+
+the model will be used as part of an online serving system.
+
+As a simple version of this, we might want to fit a linear mixed effects model of the form
+log (ad click cost) ~ country + query category + (1|keyword) ,
+
+where ‘query category’ refers to some coarse classification of query strings into topics
+like Home and Garden, Finance, Arts and Entertainment, and so on. Here we have
+expressed the model using an R 1me4-style model formula (Bates et al., 2014). The
+response variable is ad click cost on the log scale. The last term on the right-hand-side
+denotes a simple keyword random effect, i.e., a different mean 0 random offset for every
+keyword. The fixed effects of country and query category are assumed to be constant
+across all keywords. This may be overly simplistic if a query category encompasses a
+diverse set of products, but is a reasonable first attempt. More sophisticated random
+
+effects models are of course possible but don’t fundamentally change the problem.
+
+For convenience, we can fit the model in two stages: first, fit a coarse model without
+
+the keyword effect; and second, analyze the residuals to estimate keyword-level random
+
+effects. Fitting the coarse model is easy—a straightforward regression on categorical
+predictors with which any undergraduate statistician should be familiar. The sufficient
+statistics are also particularly simple: total clicks and log cost for each combination
+of country and query category. These statistics are not only easy to compute using
+MapReduce, but also easy to work with afterward, fitting nicely in memory (as long as
+
+there aren’t too many query categories).
+
+Next, we need to analyze the keyword-level residuals. This is where the challenge lies.
+There are many keywords, most of which are extremely rare. Intuitively, though, the
+rare keywords are not completely useless. Ideally, we would like to be able to ‘borrow
+strength’ from the distribution of keyword effects when estimating parameters for any
+given keyword. This is the key idea behind shrinkage estimators. In a second MapReduce
+step, one can easily apply the first stage model and even collect keyword-level residual
+
+statistics; for simplicity, a count, mean and sample variance.
+
+Ignoring the uncertainty in the variances, the random effects problem then reduces to
+that of estimating a vector of normal means. Suppose each keyword k has a true effect jug.
+We observe a noisy sample mean residual R;,,, with true variance o7 inversely proportional
+
+to its frequency:
+
+ue ~ N(0,n7)
+On, ™ G
+
+Ri\Mes ok ~ N (Mes oR)»
+
+where G is an unspecified prior on the keyword-level standard deviations. We want to
+
+estimate juz, based on Rg and ox.
+
+We could choose to treat all keywords equally. But for most applications, it is more
+important to perform well on frequent keywords. Therefore, our loss function must be
+weighted by frequency (or inverse variance). This is no different from treating every
+unique instance of a keyword as a separate observation. The appropriate squared-error
+loss is then
+
+L£(u, ft) = > Lx (uf) = D5 (ue — fix)? oR: (4)
+k
+
+k
+
+We wish to minimize risk, that is the expected loss E[L (, /«)] averaged over the priors.
+Assuming known 7 and o7’s, this is achieved by using the Bayes estimator (Lehmann
+
+and Casella, 1998), i.e. the posterior mean
+
+E (ux|Re, o%)
+
+10
+
+This estimator shrinks the observed average residuals towards 0 (the prior mean). For
+
+the k-th keyword, the Bayes estimator has risk
+
+(un — E (Wx|Re, on)” /on
+[ Var( Le| Ris on) /o%|
+[1° /(o% +07°)]
+
+[Te / (1+ 7e)],
+
+Reayes =
+
+E
+E
+E
+E
+
+where t = 77/ of is the signal to noise ratio, and the last expectation is taken over G.
+This estimator minimizes our loss function, but it is computationally expensive. Not
+only does it require computing statistics for all keywords, but more importantly storing
+a coefficient for each keyword if we wish to make predictions from the model. The latter
+would be especially problematic in an online setting, where speed and memory are at a
+premium. Nevertheless, this ‘long tail’ problem gives a hint as to how we might proceed.
+In practice, we often wish to make predictions for examples we have never before seen,
+corresponding to T, = 0 and therefore ji, = 0 (there is no signal, only noise). Intuitively,
+making a prediction for cases we have only observed once or twice, of which there may
+
+be millions, is a qualitatively similar task.
+
+3.2 Pruning rare units
+
+The Bayes-optimal approach described above spends its computational resources unwisely—
+it uses the same amount of memory (one coefficient) for each keyword. This is wasteful
+since the rare keywords are less important in the loss function, and their effects are
+harder to estimate anyway. Nevertheless, the Bayes estimator is a clear improvement on
+our prior knowledge. Compared to simply plugging f/ = E(yz,) = 0 into (4), it reduces
+the k-th term in our risk by
+
+E{L4(1,0)] — E [Le (ut, E(uex| Re-ox))] = E [Pere Ne eal)
+
+Oj
+
+a
+
+ao? \n? +02
+
+k\” k
+Tk
+
+=E .
+
+(5)
+
+Recall that 7, is proportional to the frequency of keyword k. For rare keywords, Ty, is
+
+small, so the Bayes estimator is only a small improvement over the prior in such cases.
+
+This suggests an obvious strategy: compute the Bayes estimate for common keywords,
+
+and use the prior for rare keywords. This can be implemented by running a MapReduce
+
+11
+
+to find keywords for which 7; is bigger than some threshold 7’, gathering data for these
+keywords (either in the same MapReduce or in another one), and using the truncated
+estimator
+
+2
+— SR, tT >T
+
+fix = 5 7 (5)
+0 Th <T
+
+A similar calculation shows that for keyword k, the risk of this estimator is
+
+Tk
+rune = E —— (1 1 T .
+Rane = E (7 (14nd (<P)
+
+The truncated estimator is often nearly as good as the Bayes estimator. Clearly, Rtpunc <
+(1+ T) Rpayes- If most keywords are rare and only a few occur frequently, 7 is concen-
+trated near 0, making 71 {7 <T} small and Rtjunc close to Rgayes- Also, since even a
+small T is usually enough to eliminate a huge number of keywords, the truncated esti-
+mator can perform nearly as well as the Bayes estimator while using a small fraction of
+the keywords. A nice side-benefit in online applications is that (5) provides us with an
+
+initial click cost estimate even for keywords that we have never before observed.
+
+Extensions of similar pruning ideas to more general contexts such as regression and
+optimization have been considered by, among others, Duchi et al. (2010), Langford et al.
+(2009), and McMahan et al. (2013). Of course, in a real application 7 and G, and even
+perhaps the prior mean, would be unknown. While a classical Bayesian might hazard an
+educated guess at these, perhaps bolstered by diagnostic checks, in the big data regime
+one can do better. Empirical Bayes provides a framework for estimating these parameters
+from the data (Casella, 1985; Efron, 2010). While these ideas are especially powerful
+in a big data setting, they are surprisingly underrepresented in typical undergraduate
+
+curricula.
+
+3.3. Simulation study
+
+Figure 3 illustrates with a simulation study how the truncated estimator described in the
+previous section can offer attractive performance-computation tradeoffs. We generated
+oj from a log-normal distribution G with sd (log (o,)) = 1.5, and set 7 = E (1/07) =1.
+The far right shows that if we keep all the data, the truncated and Bayes estimators
+are the same, SO Rtrunc/RBayes = 1. As we increase the threshold T’, we start filtering
+out keywords, and move left on the plot. Rtrunc/RBayes rises, but slowly—we can keep
+just 10% of the data and perform only 7.5% worse than the Bayes estimator. Finally, as
+
+we start discarding informative keywords, Rtrunc/RBayes explodes and we perform much
+
+12
+
+5+
+
+o &
+1 fl
+
+Loss / Bayes Loss
+
+Po
+1
+
+1 4
+0.001 0.010 0.100 1.000
+Fraction of data kept
+
+Figure 3: Simulated loss incurred by the truncated estimator in the rare keyword exam-
+ple, relative to Bayes loss, for different occurrence thresholds T. The x-axis indicates the
+fraction of all keyword effects estimated (i.e., P[7 > T]). By estimating only 10% of the
+random effects, and discarding the rest of the keywords, we perform about 7.5% worse
+than optimal while obtaining an order-of-magnitude computational savings.
+
+worse than the Bayes estimator.
+
+4 Statistical Feedback
+
+In traditional applications, both academic and industrial, statistical models or inference
+procedures tend to be of a ‘throw-away’ nature. A model is fit and a parameter estimated,
+or a decision is made under uncertainty, and the result is communicated to the relevant
+stakeholders. Typically, the statistician’s job ends there, and the model or inference is
+unlikely to be revisited except if improvements to the methodology are desired, or in
+
+rare follow-up or meta analyses.
+
+In this section we describe a scenario where the output of a sequentially-run statistical
+procedure is at risk of being used by one or more of its consumers in a way that could
+be damaging to the inference itself. Such use is typically not malicious, nor can it really
+
+be termed abuse; nonetheless it may have unintended side-effects.
+
+13
+
+4.1 Example: Query classification in ads serving
+
+Suppose that we have built a statistical classifier to predict whether a search query
+has commercial intent. Our goal is to use the predictions from our “commerciality”
+classifier for stratified data analysis, forecasting query growth, or some other such offline
+application. These predictions are updated by periodically collecting feature data over
+some time window, but not by retraining the model itself (or by retraining it only very
+rarely); the reason for this is that fitting our commerciality model is costly as it requires
+
+collecting hand-labeled training data and curation by a statistician.
+
+In this example, we chose to use expected click cost, i.e., the output from the model in
+Section 3, as a feature in our classifier. If we were operating in isolation, this choice would
+be completely innocuous. However, if we share the output of our classifier with other
+teams, feedback loops can emerge. For example, suppose that another team—the ads
+serving engineering team—hears of the existence of our model for predicting commercial
+intent, and wants to exploit that signal in their own algorithms. Perhaps, for example,
+they wish to search for more candidate ads on queries that they deem to be highly
+commercial. If our model is logistic regression and produces probabilities Y; = P [query
+i is commercial], this may correspond to situations where Y; > p, for some threshold p.
+Alternatively they may wish to fetch a set of candidates whose size is proportional to
+the odds of Y.
+
+On the surface, such uses of our model are entirely reasonable. The problem is, if the
+other engineering team uses our signal in a way that changes the expected click cost, then
+our model may get biased by feedback. For example, take a query for which our model
+predicts a large probability, either correctly or because of some prediction error. The
+serving system may suddenly begin to fetch more candidate ads for this query, increasing
+auction pressure and leading to higher average click costs. Since we haven’t retrained
+our classifier in the interim, this increase in click cost will be taken by the model as
+evidence that the query is even more likely to be commercial than previously thought.
+This effect can worsen in successive time periods. On the other hand, a query for which
+we erroneously predict a small Y may be disfavoured in serving, pushing down click cost
+
+and reinforcing our misguided belief that the query lacks commercial intent.
+
+4.2 Detecting feedback with noise injection
+Although feedback itself is an engineering problem, detecting feedback is a statistics
+
+problem. Perhaps the most difficult part of getting a handle on statistical feedback is
+
+to define precisely and quantitatively what we mean by feedback. Here, we follow the
+
+14
+
+approach of Wager et al. (2014), and frame the problem in terms of the Rubin Causal
+Model (Rubin, 2005) and counterfactual model predictions.
+
+More specifically, let Y;* (0) denote the predictions we would have made for the i-th item
+(query, say) in time period ¢ if there hadn’t been any feedback, i.e., the prediction that
+our model would make if the engineering team never began using it in production. Other
+counterfactual predictions are indexed by the prediction deployed in the previous period:
+Yi yy denotes the time t + 1 model prediction, in a system with feedback, given that
+y! was the prediction for item i produced at time ¢t. Given this notation, we define the
+
+feedback at time ¢+ 1 on item 7 as a difference in potential outcomes,
+feedbacki = Yi iy — Ya), (6)
+
+i.e., the difference between the prediction the system in fact made, and the prediction it
+
+would have made were there no feedback.
+
+In order to use the formalism (6) in practice, we need to restrict the kinds of feedback we
+seek to detect. Our first assumption is that feedback is Markovian, i.e., that feedback} is
+conditionally independent of Y;, wey yy, given Y}. Second, we assume that the feedback
+
+is additive, i.e., that it does not depend on y+ gy conditional on Yj.
+
+Given these two assumptions, we can define a feedback function
+
+fy) =E [Ys Ym | Yh = 9) (7)
+
+=E beeen -Y/"@|Y¥f=y, Yi", Yi... ¥ot}. (8)
+
+The goal of our analysis is to estimate this feedback function f(-). The principal challenge
+in doing so is that it is not possible to simultaneously observe the two sets of predictions
+represented by the two terms on the right-hand side of (7), namely Yi iy and YT).
+
+The solution we proposed in Wager et al. (2014) involves secretly injecting a noise term
+vi into the prediction at time ¢. The intuition behind this approach is that it creates
+a sort of synthetic randomized experiment, allowing us to estimate the average causal
+effect f(y) of feedback. Noise injection is related to the idea of instrumental variables
+(Angrist et al., 1996) in the sense that, once we have injected this artificial noise into
+the system, we analyze its effect on the system just like we would in an instrumental
+
+variables regression.
+
+For simplicity, consider the case where feedback enters into the model linearly
+
+Yi" = Yt! + OY, and so f(y) = Oy. (9)
+
+15
+
+This model is rather unlikely to hold in reality, but it admits a simple analysis. Note
+that the formulation (9) implicitly assumes that all the randomness in the system has
+been absorbed into Ya).
+
+Now, in order to detect the feedback, suppose that we start secretely deploying noisy
+predictions Y;! +! instead of Y; in serving at time ¢. In other words, we never tell other
+engineering teams what the raw value Y; produced by our predictor is, and only give
+them access to the noised-up quantity Y;} +v'. Any feedback mechanism must now act
+
+through these noisy predictions, and so the relationship (9) becomes
+
+Yi pte = Vio + f (VE + v1) (10)
+= V+) + OY! + ort. (11)
+
+Here, both the new model predictions y+ Y{+v‘] and the noise terms vj are observed.
+Thus, since v7 is independent of all other quantities on the right-hand side of (11) by
+construction, we can estimate 0 from (11) using simple linear regression of Yelp
+
+on v’.
+
+Under this recipe, the precision with which we estimate the feedback slope is a ratio of
+the variance of the noise we have injected to the variance of the noise inherent in our
+prediction model:
+
+nVar(0) = Var (V1) / Var(v). (12)
+
+There is a clear tradeoff. Adding more noise improves our ability to measure feedback,
+but of course it degrades the quality of the published predictions that will be used in
+production. More details pertaining to (12), and extensions of this idea to general non-
+
+linear feedback functions, are considered in Wager et al. (2014).
+
+Having an estimate of 6 or, more generally, f(-), can be useful in several ways. First,
+merely detecting non-zero feedback can alert us to emerging problems and help us identify
+“rogue” uses of our published signals Y;. More ambitiously, we could also try to do a
+post hoc feedback correction. For example, in the case of linear feedback, we could use
+an estimate 6 to generate sanitized predictions yt det Yi yesut] = a(t + v4); our
+
+simulation experiments below use this correction.
+
+4.3. Simulation study
+To illustrate this technique, we simulate from a simplistic setting: linear feedback in a
+
+linear model. This allows us to demonstrate concretely how the randomization procedure
+
+might be carried out in ideal circumstances, and even to approximately remove the
+
+16
+
+offending feedback once we’ve detected it.
+
+We start with the following true underlying model:
+Yj =a+6Xi+eé, & ~N(0,0°). (13)
+
+We assume that enough data is collected when we train the model at t = 0 so that a
+and 8 can be taken as known (since the interesting source of error is in the feedback,
+not in the estimation itself). We imagine that we must make n weekly predictions for a
+full year before our next opportunity to retrain the model; i.e., T = 52. The predictors
+
+X are generated as follows:
+XP = XP + 77, (14)
+
+where
+XP" = Xj) + OY + Gi, & ~ N(0,7"). (15)
+
+Thus the predictors vary across time even before the feedback occurs, in a way that
+may depend on the true value of Y. Combining (13) and (14), it can be seen that the
+feedback function is f(y) = 6y with 0 = ¥8.
+
+Given a set of simulated predictions Y; at time t, we first add noise v! ~ N(0,w7). We
+then generate a new set of Xs from (14), but with Y/ +? in place of Y#. Next we
+perform the regression of X'*!|yt4v+] on v'. The coefficient of v’ from this regression
+
+is our estimate of 7, call it 4“+!. We then compute the corrected prediction
+Yi} = 8 (xP ti — a +8), (16)
+
+again ‘deploy’ the noised-up version yj*t + yet and iterate until t = T.
+
+Note that in this example the variables and predictions grow in expectation across time.
+Therefore, in Figure 4 we plot the relative root-mean squared error of our estimator,
+defined as
+
+R(t) = (EU — NPE?) (17)
+
+as a function of time. We allowed the standard deviation of the injected noise, w, to
+
+vary, while fixing the remaining parameter values: 6 = 1,0 = 1, y = 0.8, 6 = 0.15,
+T=1,n=10°.
+
+The general effectiveness of the procedure, along with the tradeoff inherent in the choice
+of w, is evident from the curves in Figure 4. With w = 0.1, early predictions have about
+
+as much error as naive predictions; this error decays quickly but rather noisily. Noise
+
+17
+
+0.8
+
+— No adjustment
+
+\ — w-=0.1
+\ @=0.7
+- @=1.3
+\
+o
+ro) \
+Ww
+oO
+= jm ee eee eee ee ee ee oe
+ox
+Zo
+&
+o)
+ao
+N
+fo)
+
+Time
+
+Figure 4: Simulated relative root-mean square error across 52 time points for linear
+feedback in a 1-predictor linear model. If no adjustment to our predictor is made,
+feedback causes an asymptotically (in time) constant amount of error in our predictions
+(green dashed line). The remaining lines show the error obtained by injecting normal
+noise of different standard deviations w, and then using it to remove an estimate of the
+feedback from X before making a new prediction.
+
+with w = 0.7 seems about right for this problem. When we inject too much noise, e.g.
+w = 1.3, we begin with poor predictions and don’t really make up for it with more
+
+stability at larger t.
+
+5 Conclusions
+
+In this paper, we described three sub-problems within the broader context of click cost
+estimation for paid web search. By no means have we presented an exhaustive list
+of methodological challenges awaiting the modern industrial statistician. Rather, we
+have chosen the problems to highlight a few distinct ways in which modern data and
+applications differ from traditional statistical applications, yet can benefit from careful
+
+statistical analysis.
+
+In the first problem, uncertainty estimation was nontrivial because the types of second-
+
+18
+
+order statistics that statisticians normally take for granted can be prohibitively expensive
+in large data streams. The second problem, which centered around building a fine-
+grained prediction model, explored the gains that are possible by judiciously chopping
+off the long tail of a massive data set. Finally, Example 3 highlighted the importance
+of protecting one’s methods from unexpected uses, in an environment where product
+decisions driven by statistical models can feed back inconspicuously into the inference
+procedure. All three problems initially appeared to be straightforward and amenable
+to standard methods, until a technical wrinkle presented itself. In each case, it was
+primarily through careful statistical reasoning, and not by designing some heavyweight
+
+engineering machinery, that we were able to arrive at a solution.
+
+In doing so, we drew upon ideas that have been around for at least four decades—
+and in some cases much longer. Over that time, these methods have been taught to
+undergraduate students with an eye to small data problems. It is increasingly important,
+in light of the rapid growth of available data sources, to modernize classroom examples
+so that graduating students are not shell-shocked by their first encounter with big data.
+Likewise, data-based simulation techniques should be emphasized as a proving-ground
+for methodology before applying it naively to a billion data points. Early exposure to
+tools like MapReduce can help build confidence, but frankly, a newly-minted statistician
+with “deep analytical skills’ should have no trouble learning such things on the job.
+As we have argued, it remains as critical as ever that we continue to equip students
+with classical techniques, and that we teach each and every one of them to think like a
+
+statistician.
+
+Acknowledgements
+
+The authors are grateful to Amir Najmi, Hal Varian, and three anonymous reviewers
+for their many helpful suggestions. We would also like to thank Nick Horton, Jo Hardin
+
+and Tim Hesterberg for encouraging us to write the manuscript.
+
+References
+
+J. D. Angrist, G. W. Imbens, and D. B. Rubin. Identification of causal effects using
+instrumental variables. Journal of the American Statistical Association, 91(434):444—
+455, 1996.
+
+D. Bates, M. Machler, B. Bolker, and S. Walker. Fitting Linear Mixed-Effects Models
+using Ime4. ArXiv e-prints, June 2014.
+
+19
+
+G. Casella. An introduction to Empirical Bayes data analysis. The American Statistician,
+39(2):83-87, 1985.
+
+N. Chamandy, O. Muralidharan, A. Najmi, and S. Naidu. Estimating uncertainty for
+
+massive data streams. Internal technical report, Google, 2012. [link].
+
+J. Dean and S. Ghemawat. MapReduce: Simplified data processing on large clusters. In
+Proceedings of the 6th Symposium on Operating Systems Design & Implementation,
+pages 137-149, 2004.
+
+J. Duchi, S. Shalev-Shwartz, Y. Singer, and A. Tewari. Composite objective mirror
+
+descent. In Conference on Learning Theory, 2010.
+
+B. Efron. Large-Scale Inference: Empirical Bayes Methods for Estimation, Testing, and
+Prediction. Cambridge University Press, 2010.
+
+B. Efron and R. Tibshirani. An Introduction to the Bootstrap. CRC press, 1993.
+
+J. A. Hanley and B. MacGibbon. Creating non-parametric bootstrap samples using
+
+Poisson frequencies. Computer Methods and Programs in Biomedicine, 83:57-62, 2006.
+
+J. Hardin, R. Hoerl, N. J. Horton, and D. Nolan. Data Science in the Statistics Curricula:
+Preparing Students to “Think with Data”. ArXiv e-prints, October 2014.
+
+J. Langford, L. Li, and T. Zhang. Sparse online learning via truncated gradient. Journal
+of Machine Learning Research, 10:719-743, 2009.
+
+H. K. H. Lee and M. A. Clyde. Online Bayesian bagging. The Journal of Machine
+Learning Research, 5:143-151, 2004.
+
+E. Lehmann and G. Casella. Theory of Point Estimation. Springer Verlag, 1998. ISBN
+0387985026.
+
+S. Lohr. For today’s graduate, just one word: Statistics. The New York Times, 2009.
+link].
+
+J. Manyika, McKinsey Global Institute, M. Chui, B. Brown, J. Bughin, R. Dobbs,
+C. Roxburgh, and A.H. Byers. Big Data: The Next Frontier for Innovation, Com-
+petition, and Productivity. McKinsey Global Institute, 2011. URL https://books.
+google.com/books?id=vN1CYAAACAAJ.
+
+H. B. McMahan, G. Holt, D. Sculley, M. Young, D. Ebner, J. Grady, L. Nie, T. Phillips,
+E. Davydov, D. Golovin, et al. Ad click prediction: A view from the trenches. In Pro-
+ceedings of the 19th ACM SIGKDD international conference on Knowledge discovery
+and data mining, pages 1222-1230. ACM, 2013.
+
+20
+
+D.N. Politis, J. P. Romano, and M. Wolf. Subsampling. Springer Series in Statistics.
+Springer New York, 1999.
+
+D. B. Rubin. Causal inference using potential outcomes. Journal of the American
+Statistical Association, 100(469):322-331, 2005.
+
+S. Wager, N. Chamandy, O. Muralidharan, and A. Najmi. Feedback detection for live
+
+predictors. In Advances in Neural Information Processing Systems, 2014.
+
+American Statistical Association Undergraduate Guidelines Workgroup. 2014 curriculum
+guidelines for undergraduate programs in statistical science. Alexandria, VA: American
+Statistical Association, 2014. [link].
+
+21

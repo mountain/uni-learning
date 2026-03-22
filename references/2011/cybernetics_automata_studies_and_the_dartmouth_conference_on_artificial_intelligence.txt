@@ -1,0 +1,1662 @@
+Cybernetics, Automata Studies,
+and the Dartmouth Conference
+on Artificial Intelligence
+
+Ronald R. Kline
+
+Cornell University
+
+IEEE Annals of the History of Computing
+
+The Dartmouth Summer Research Project on Artificial Intelligence,
+held at Datrmouth College in 1956, is regarded as the official
+“birthplace” of Al. This article draws on unpublished archives to shed
+new light on the origins of the conference and the complex rela-
+tionships between cybernetics, automata studies, and Al in the 1950s.
+
+The Dartmouth Summer Research Project on
+Artificial Intelligence, held at Dartmouth
+College in Hanover, New Hampshire, in the
+summer of 1956, is generally regarded by his-
+torians and computer scientists as the “birth-
+place” of AI.’ Pamela McCorduck argued that
+two events mark its significance: the debut of
+the ‘‘new paradigm” of symbolic information
+processing, represented by Allen Newell and
+Herbert Simon’s Logic Theorist computer
+program, and the ‘‘social patterns” set by par-
+ticipants who founded the early AI programs
+at the Massachusetts Institute of Technology
+(MIT), Stanford University, Carnegie Mellon
+University, and the Stanford Research In-
+stitute.” These institutions promoted the
+approach that came to be called symbolic AI,
+rather than the earlier method of brain mod-
+eling, a neurophysiological approach associ-
+ated with cybernetics and neural nets.
+Participants at Dartmouth have disagreed
+about how to characterize the conference’s
+significance. Their interpretations range
+from viewing it as a milestone in the field
+of machine intelligence (Oliver Selfridge),
+to being deeply disappointed that it was
+not a collective research enterprise (John
+McCarthy), to seeing Dartmouth as a “‘piece
+of AI mythology” (Newell).*
+
+My aim here is not to adjudicate these
+varying interpretations, but to draw on
+unpublished archives to shed new light on
+the conference as well as the historical
+relationships among cybernetics, automata
+studies, and AI. I explore the disciplinary
+boundary work done by researchers and the
+Rockefeller foundation, which funded the
+conference, to separate brain modeling from
+
+Published by the IEEE Computer Society
+
+symbolic processing during the editing of
+the volume Automata Studies (1956) by
+McCarthy and Claude Shannon and the
+planning, funding, and conduct of the Dart-
+mouth conference. I argue that we gain a bet-
+ter understanding of the early history of Al,
+and of cybernetics, by placing Automata Stud-
+ies and the Dartmouth conference in the con-
+text of the variety of research done under the
+rubric of cybernetics at the time.
+
+Cybernetics
+
+One of the chief meanings of cybernetics
+in the 1950s, which MIT mathematician
+Norbert Wiener defined in Cybernetics
+(1948) as the science of control and commu-
+nication in the animal and machine,
+centered on machine intelligence.* In the
+book, Wiener dealt with the analogy between
+the new digital electronic computers and the
+supposed on/off characteristic of neurons in
+the human brain, which neurophysiologist
+Warren McCulloch and mathematician
+Walter Pitts had formally established in a
+1943 paper on the computability of neural
+nets. The analogy was explored extensively
+at the Macy Foundation conferences on
+cybernetics chaired by McCulloch and held
+from 1946 to 1953.° Wiener discussed the
+possibility of a chess-playing computer pro-
+gram in Cybernetics;° and several cybernetics
+robots, such as Wiener’s moth/bedbug,
+W. Ross Ashby’s homeostat, and W. Grey
+Walter’s tortoises, were built in the early
+1950s to simulate psychological and neuro-
+logical functions. (Ashby was a British psy-
+chiatrist and pathologist, and Grey Walter a
+British neurophysiologist.”)
+
+1058-6180/11/$26.00 © 2011 IEEE
+
+6
+
+Several participants at the Dartmouth con-
+ference had been influenced by cybernetics.
+Selfridge had proofread Wiener’s Cybernetics
+as a graduate student at MIT, Marvin Minsky
+had been ‘‘enamored” with McCulloch’s
+work on neural nets, and Simon had relied
+upon Ashby’s research, instead of Wiener’s,
+to develop the idea that humans and com-
+puters were adaptive information process-
+ors.8 Later recollections also note the
+importance of cybernetics in the early history
+of Al. Minsky claimed that the advent of the
+digital computer in the 1950s “‘made it prac-
+tical to be much more ambitious” in de-
+signing intelligent machines. As a result,
+cybernetics divided, in my view, into three
+chief avenues:’’ minimal self-organizing sys-
+tems (represented by Ashby), simulating
+human thought (represented by Newell and
+Simon), and AI (represented by Minsky and
+McCarthy).? Newell recalled that after the
+mid-1950s, cybernetics split with AI over
+the issues of “symbolic versus continuous
+systems” and “psychology versus neuro-
+physiology.” The break was not abrupt:
+
+Through the early 1960s, all the researchers
+concerned with mechanistic approaches to
+mental functions knew about each other’s
+work and attended the same conferences.
+It was one big, somewhat chaotic, scientific
+happening.!°
+
+Many historians have also seen cybernetics as
+an origin point for early AI."
+
+Shannon, a mathematician at Bell Tele-
+phone laboratories who founded the Ameri-
+can school of information theory,’* also had
+a strong interest in cybernetics and auto-
+mata. He wrote early articles on programming
+computers to play chess, corresponded on
+the subject with Wiener (his former professor
+at MIT), described his work in information
+theory to McCulloch in 1949 under the rubric
+of ‘Cybernetic’ questions,’”’ belonged to a cy-
+bernetics study group in New York City in
+1950, and built a relay-logic, maze-running
+“mouse.”!3 While attending three Macy con-
+ferences on cybernetics in the early 1950s,
+where he presented research on both infor-
+mation theory and automata, he got to
+know McCulloch; Pitts; Grey Walter; engi-
+neer Julian Bigelow, who coauthored a found-
+ing paper on cybernetics with Wiener and
+was John von Neumann’s chief engineer on
+the Institute for Advanced Study (IAS) com-
+puter project at Princeton; and Donald
+MacKay, a founder of the British school of
+
+IEEE Annals of the History of Computing
+
+Cybernetics, Automata Studies, and the Dartmouth Conference on Artificial Intelligence
+
+information theory who did research on
+automata.'*
+
+Although Shannon concentrated on infor-
+mation theory, he maintained his interest in
+cybernetics to the extent of writing the orig-
+inal article on the subject for the Encyclopedia
+Britannica. In that article, published in 1957,
+he said that cybernetics “overlaps” several
+fields, including information theory. Wiener
+had referred the Britannica editor to Shan-
+non to write the entry in his place.'®
+
+Automata Studies
+Shannon’s interest in cybernetics helps
+us understand McCarthy’s experience co-
+editing Automata Studies with Shannon
+in the early 1950s, which led directly to
+McCarthy organizing the 1956 Dartmouth
+conference. McCarthy, who had worked
+under Shannon at Bell Labs in the summer
+of 1952 after finishing his PhD in mathemat-
+ics at Princeton, recalled that he considered
+Shannon’s title for the proposed book to be
+too conservative and thus used the new
+term “artificial intelligence’ when he pro-
+posed a summer-long conference devoted to
+the subject. Correspondence related to the
+automata studies project gives us a glimpse
+of these tensions, but it also indicates that
+Shannon held a broader view of automata
+studies than did McCarthy.'°
+
+In line with Shannon’s interest in cyber-
+netics, in 1953 he and McCarthy invited sev-
+eral researchers who had attended the Macy
+conferences on cybernetics to contribute to
+the proposed volume, including Wiener,
+MacKay, Ashby, Grey Walter, and von Neu-
+mann. Familiar with Shannon’s theory of in-
+formation, von Neumann had begun a series
+of research on automata theory based on the
+McCulloch-Pitts logical model of neural nets
+and Turing machine theory.” Shannon and
+McCarthy invited other prominent research-
+ers in the theory of automata and neural
+nets, including Alan Turing himself, whom
+Shannon had met during World War II and
+had visited in England;!® S.C. Kleene at
+the University of Wisconsin-Madison, who
+had written a paper on neural nets while
+at RAND in 1951; and Albert Uttley, who
+was designing conditional-probability neural
+nets for pattern recognition for the British
+military.'!? Minsky, who had also been hired
+to work with Shannon at Bell Labs in the
+summer of 1952,7° agreed to submit some-
+thing from his doctoral dissertation on neu-
+ral nets and brain modeling that he was
+working on at Princeton. Wiener thought
+
+highly of Minsky’s research, saying in a 1954
+recommendation letter that it went ‘‘consid-
+erably further than the best work to date of
+such men as Ashby and Grey Walter.’”?
+
+The British researchers Turing, MacKay,
+Ashby, Grey Walter, and Uttley were regular
+members of the Ratio Club, a group of neuro-
+physiologists and mathematicians who had
+worked on cybernetics before Wiener pub-
+lished his book of that title. They held their
+first meeting on the occasion of McCulloch’s
+visit to England in 1949.7? In 1953, Turing re-
+ferred directly to the cybernetic aspect of the
+automata-studies enterprise in his response
+to the invitation from Shannon and Mc-
+Carthy to contribute a paper to the volume.
+Turing had to beg off because he had “‘been
+working on something quite different for
+the last two years; viz. the mathematics of
+morphogenesis, though I expect to get back
+to cybernetics very shortly.’’73
+
+McCarthy played a substantial role at the
+beginning of the project. Prospective authors
+corresponded with him in care of ‘‘Automata
+Studies, Fine Hall’’ at Princeton. The young
+McCarthy was not reticent in stating his
+views on how the papers fit into his vision
+of the field. MacKay’s paper discussed how
+automata could symbolically represent the
+external environment in a self-organizing,
+adaptive manner and proposed an analog
+electronic circuit, operating electromagnetic
+gates, to illustrate the principle of statistical
+negative feedback involved in his cybernetic
+scheme. McCarthy told Shannon,
+
+I think we should include it [the paper] with
+whatever changes he wishes to make. I don’t
+think that the eventual solution to this problem
+will be an extension of his ideas, but I have no
+very precise grounds for this opinion.”
+
+After criticizing MacKay for making question-
+able assumptions about sensory transforma-
+tions based on the McCulloch-Pitts neural-net
+model, McCarthy concluded, “Nevertheless,
+I think the paper has a number of good
+ideas and also represents a point of view
+which cannot be dismissed as unfruitful this
+early in the game.”**
+
+McCarthy had more trouble with Mac-
+Kay’s colleague Ross Ashby. Having gained
+some prominence with the publication of
+Design for a Brain (1952), which presented
+his homeostat and a theory of adaptive be-
+havior, Ashby interpreted the invitation
+from Shannon and McCarthy as being an au-
+tomatic acceptance for his paper, ‘‘Design of
+
+John McCarthy played
+a substantial role at
+the beginning of the
+
+Automata Studies
+project.
+
+an Intelligence Amplifier.’”” Ashby equated
+“intelligence’”’ with the capacity to make ap-
+propriate selections and extended his work
+on the homeostat, an electromechanical de-
+vice that adapted to changes in its ““environ-
+ment” through a process of self-organization,
+by randomly selecting states that would
+eventually lead to stability (homeostasis).
+Now, he presented the general principles for
+designing a “selection amplifier,” which
+would speed up the process and reach solu-
+tions not contemplated by the designer,
+resulting in an ‘‘amplification” of intelli-
+gence.”° Ashby told McCarthy,
+
+I am afraid I cannot consent to having it [his
+paper] “refereed,” as it is on a subject to
+which I have devoted a great deal of work,
+and on which I can now speak with some
+authority. Frankly, I know of no referee
+to whose opinion I would defer (though
+I would, of course, be prepared to answer
+specific objections).”°
+
+In contrast, MacKay welcomed referee reports
+on his paper. McCarthy and Shannon ended
+up accepting the Ashby and MacKay papers
+without refereeing them.”” The experience
+probably did nothing to improve McCarthy’s
+opinion of Ashby, the dean of the English
+cyberneticians.
+
+Shannon and McCarthy divided the
+articles into three categories: finite automata,
+Turing machines, and synthesis of automata.
+The categories were a subset of the subject
+headings Shannon had used in a comprehen-
+sive review of computers and automata re-
+search published in 1953. They were also
+part of his broad view, expressed in 1958,
+of automata theory as a recent, ill-defined
+“interdisciplinary science,’’ which spanned
+symbolic logic and Turing machine theory,
+nonnumerical (symbolic) programming
+of computers, and neural nets.?® The only
+category missing from the automata studies
+
+October-December 2011
+
+7
+
+8
+
+volume was that of symbol manipulation by
+computers. Cybernetics was well represented;
+almost half the papers (six of 13) were on the
+theory and practice of neural nets. The Brit-
+ish cyberneticians made up the entire section
+on the synthesis of automata.
+
+All in all, McCarthy was disappointed. He
+wrote Shannon in mid-1954, “The collection
+as a whole does not represent great progress
+but is certainly representative of current
+thought.””’ McCarthy’s expectations were
+high. He thought the papers by the Ratio
+Club group (Ashby, MacKay, and Uttley)
+“contribute heuristic ideas of some value
+but none lead directly to a solution of the
+problem of thinking automata.” The papers
+by Kleene and James Culbertson on neural
+networks ‘‘solve problems of mainly formal
+interest.’”” McCarthy thought his own paper
+on Turing machines introduced ‘‘concepts
+which may prove useful but does not get far
+off the ground.’”’ Shannon’s paper was a
+“short step in the direction of the theory of
+computing rate [of Turing machines].”’ Von
+Neumann’s paper on probabilistic, multi-
+plexed, neural-net automata made from
+unreliable components got the best mark:
+“An important result, perhaps slightly off
+the main track.””? Minsky’s paper had not
+yet arrived for comment.*° Not surprisingly,
+Shannon, who had praised Ashby’s homeo-
+stat in print ‘‘as a basis for learning machines
+and brain models,” had a better opinion of
+the collected papers.*!
+
+The tensions over editing Automata Studies
+recalled by McCarthy surface in a letter he
+wrote Shannon in late 1954. McCarthy had
+written a draft of a preface to the volume.
+“Tt consists mainly of a point of view on
+how the various lines of investigation repre-
+sented by the included papers may contrib-
+ute to the eventual design of intelligent
+machines.’’ The sentence is crossed out by a
+wavy line, perhaps by Shannon, in the origi-
+nal letter deposited at the Shannon Papers at
+the Library of Congress. McCarthy also asked
+some pointed questions of Shannon:
+
+1. Do you agree that the book should be
+regarded as a step in the direction of the
+design of intelligent automata? Or is this
+too presumptuous? Might it surprise the
+contributors?
+
+2. What about the title ‘Towards Intelligent
+Automata”? Is it too bombastic? Others??”
+
+Apparently Shannon did think Mc-
+Carthy’s interpretation of the volume was
+
+IEEE Annals of the History of Computing
+
+Cybernetics, Automata Studies, and the Dartmouth Conference on Artificial Intelligence
+
+“too presumptuous” and the proposed title
+“too bombastic.”” The preface to the pub-
+lished volume de-emphasized the goal of de-
+signing “intelligent automata’ and spoke,
+instead, in terms of the ‘‘analytic and syn-
+thetic problems” of automata.** The title
+remained the staid Automata Studies. Yet
+Shannon sympathized with McCarthy’s
+goal. He wrote his former high school science
+teacher in 1952, ‘““My fondest dream is to
+someday build a machine that really thinks,
+learns, communicates with humans and
+manipulates its environment in a fairly so-
+phisticated way.’”?* Shannon also approved
+the publication of papers by the Ratio Club
+group, representing the British cybernetics
+movement, on design principles of intelli-
+gent automata.
+
+McCarthy was not adverse to mentioning
+cybernetics in the book’s preface. In the letter
+to Shannon, he listed cybernetics as one of
+six areas toward which the preface could, per-
+haps, make ‘‘brief bows’’ (the others were
+mathematical logic, statistics, communica-
+tion theory, neurophysiology, and telephone
+engineering).*° The published preface, signed
+by McCarthy and Shannon, bowed toward all
+these areas or to their practitioners by
+name—except for cybernetics. The archives
+do not indicate who deleted the reference
+to cybernetics.
+
+Rockefeller Funding
+
+of the Dartmouth Seminar
+
+The period from completing Automata Studies
+to approaching the Rockefeller Foundation
+to fund a summer seminar on AI was
+short. Upon moving to Dartmouth College
+in February 1955 to take up an assistant pro-
+fessorship in mathematics, McCarthy sent
+Shannon the final version of his paper for
+the volume and said he was now free to do
+additional editing on it and to visit Shannon
+at Bell Labs.*° In early April, McCarthy had
+an interview with Warren Weaver, director
+of the Natural Sciences division of the Rock-
+efeller Foundation, about the possibility of
+funding a six-week summer seminar at Dart-
+mouth for about 10 participants to work
+together on brain theory and automata.
+Weaver recorded in his program officer’s
+diary, which was circulated within the foun-
+dation, that McCarthy was confident that
+Shannon and Nathaniel Rochester at IBM,
+an architect of the IBM 701, would attend
+and that their employers would pay their sal-
+aries while they were at Dartmouth. Weaver
+said he would think it over.?”
+
+Weaver came to have mixed feelings
+about the project and told McCarthy that
+Robert Morison, director of the Biological
+and Medical Research division of the founda-
+tion, should handle the proposal,*® probably
+because it dealt with brain models. Unable to
+attend the scheduled lunch in mid-June be-
+tween Morison, McCarthy, and Shannon,
+whom McCarthy had enlisted to promote
+the project, Weaver expressed his opinion
+on the matter to Morison. An applied math-
+ematician who had directed the foundation’s
+funding of early computer projects such
+as the Rockefeller Differential Analyzer,*?
+Weaver felt it was ‘‘rather a ‘personal’ project,
+in the sense that McC. [McCarthy] and two
+or three other people would enjoy spending
+some time together, talking about various
+aspects of information theory” at someone
+else’s expense. Weaver did not think the
+foundation should support it on that basis.
+On the other hand, Weaver had the highest
+regard for Shannon, whose theory of infor-
+mation he had popularized in the jointly
+authored Mathematical Theory of Communica-
+tion (1949) and thus worried about a conflict
+of interest. “I think it is on the whole rather
+better that I am not going to be at the lun-
+cheon. My personal connection with the sub-
+ject, especially since Claude Shannon is now
+going to be present, tends to remove the dis-
+cussion from the objective atmosphere in
+which we ought to approach it.’*°
+
+Shannon’s presence seems to have in-
+clined Morison toward the proposal. Morison
+recorded in his diary that McCarthy did al-
+most all the talking at the meeting, with
+Shannon only answering questions put to
+him. ‘‘McCarthy strikes one as enthusiastic
+and probably quite able in mathematics,”
+Morison wrote, ‘‘but young and a bit
+naive.” Participants suggested for the semi-
+nar were McCarthy, Shannon, Rochester,
+Minsky, von Neumann, Selfridge, and psy-
+chologist Donald Hebb, who was well
+known for his neural net theory of learning.
+Having funded, in conjunction with Wea-
+ver’s division the mathematical and neuro-
+physiological research of Wiener and Arturo
+Rosenblueth in the mid-1940s—which led
+Wiener to write Cybernetics—Morison appar-
+ently wanted to include someone from
+Wiener’s group at MIT in the Dartmouth
+conference. Morison said that Selfridge,
+who was now a group leader at MIT’s
+Lincoln Laboratory, ‘apparently strikes
+M. [McCarthy] and S. [Shannon] as the
+soundest and most amenable to group
+
+activity of the various younger men who
+have been associated with Norbert Wiener.”
+Morison was alluding to the difficulties Wie-
+ner and Rosenblueth had in obtaining consis-
+tent work from the erratic, but brilliant
+Walter Pitts during the Rockefeller-funded re-
+search.*! Minsky might also have recom-
+mended Selfridge, with whom he had
+organized a session on machine intelligence
+at the ACM’s Western Joint Computer Con-
+ference in 1955.”
+
+Two other prominent cybernetics re-
+searchers were considered at the luncheon.
+Despite their difficulties working with Ross
+Ashby during the Automata Studies venture,
+McCarthy and Shannon put forward Ashby
+as “the most attractive foreign name.”
+MacKay, whose research on information
+theory and analog automata had been
+funded by the Rockefeller Foundation since
+1951 and whose paper was accepted for Au-
+tomata Studies,** did not fare as well. Morison
+recorded that ‘‘S. [Shannon] worries a good
+deal about MacKay’s interest in theological
+metaphysics.” Although MacKay, who also
+wrote on the philosophy of science, main-
+tained that his research in neuroscience and
+his Christian faith were complementary,
+not antagonistic, Shannon was apparently
+concerned that MacKay’s religious views
+would create frictions in an informal six-
+week seminar. Morison suggested including
+two psychologists, one of whom was Hans
+Lukas Teuber at New York University, who
+had coedited the proceedings of the Macy
+conferences on cybernetics. Morison thought
+both men had “enough breadth of education
+and curiosity to have informed themselves,
+at least fairly well, about cybernetics and
+mathematical speculations’’**—one of the
+few direct references to cybernetics in regard
+to the Dartmouth conference.
+
+Encouraged by the luncheon, McCarthy
+organized a committee to prepare a proposal
+to fund the conference. McCarthy, Shannon,
+Minsky, and Rochester, with whom McCarthy
+had worked at IBM in the summer of 1955,*°
+finished their research sections of the pro-
+posal by late August, and McCarthy submitted
+it in early September 1955.*° As Paul Edwards
+argued, the “still-nascent split between the
+computer-brain and computer-mind meta-
+phors already appears clearly’’ in the pro-
+posal.4” Yet the proposal includes both
+approaches as different aspects of a common
+enterprise utilizing the computer as a research
+tool. The introduction, probably written by
+McCarthy, describes the “artificial intelligence
+
+October-December 2011
+
+9
+
+10
+
+problem” under seven headings: Automatic
+Computers, How Can a Computer Be Pro-
+grammed to Use a Language, Neuron Nets,
+Theory of the Size of a Calculation, Self-
+Improvement, Abstractions, and Randomness
+and Creativity. The section on computer lan-
+guages, McCarthy’s emergent research area,
+was Clearly in the camp of what came to be
+known as symbolic AI. The section on neural
+nets mentioned the research of McCulloch
+and Pitts; Uttley, who had contributed two
+articles to Automata Studies; and two of the
+organizers, Minsky and Rochester.*®
+
+The research statements of the organizers
+reveal the “nascent split’’ in more detail.
+Three of the four organizers were on the
+brain-modeling side. Shannon proposed
+to work on two topics: the ‘Application
+of information theory concepts to com-
+puting machines and brain models” and
+the “matched environment—brain model
+approach to automata.”’ The first project
+extended his previous work on computing
+with unreliable components, which could
+apply to computers and human brains. The
+second project would focus on mathematiz-
+ing the model of the brain’s “environment.”
+Shannon concluded by saying he proposed
+to “work up through a series of stages in
+the direction of these advanced activities [of
+human thought].” Minsky hoped to extend
+his dissertation research and complete a
+model of a trial-and-error learning neural
+network that could be programmed on a
+computer. Rochester wanted to continue
+the research of his group at IBM on program-
+ming neural nets on a computer to exhibit
+originality when faced with a new problem
+by inserting randomness into this type of
+brain modeling. Only McCarthy leaned to-
+ward symbolic processing by proposing to
+“study the relation of language to intelli-
+gence.” He criticized the brain-model
+approach: “It seems clear that the direct ap-
+plication of trial-and-error methods to the
+relation between sensory data and motor
+activity will not lead to any very complicated
+behavior.” He thought trial-and-error meth-
+ods should be applied at a “higher level of ab-
+straction,” for example, with an English-like
+“artificial language which a computer can
+be programmed to use on problems requiring
+conjecture and self-reference.’”*?
+
+The proposal did not sit well with Morison
+at the Rockefeller Foundation. He told
+McCarthy in late September that the “‘pro-
+posal is an unusual one and does not fall eas-
+ily into our program [in biological and
+
+IEEE Annals of the History of Computing
+
+Cybernetics, Automata Studies, and the Dartmouth Conference on Artificial Intelligence
+
+medical research] so I am afraid it will take
+us a little time before coming to a deci-
+sion.’’°° Not having heard from Morison by
+early November, McCarthy asked Shannon
+to approach Weaver and determine its sta-
+tus.°' In late November, Morison finally
+told McCarthy that the foundation could
+not grant the requested funding of $13,500
+for the seminar, but could support a smaller
+effort at $7,500. Morison wrote,
+
+I hope you won’t feel that we are being over-
+cautious, but the general feeling here is that
+this new field of mathematical models for
+thought, though very challenging for the
+long run, is still difficult to grasp very clearly.
+This suggests a modest gamble for exploring a
+new approach, but there is a great deal of hes-
+itancy about risking any very substantial
+amount at this stage.°?
+
+McCarthy and the other organizers acqui-
+esced and said they could get by with
+$7,500.°? In deciding whom to invite,
+McCarthy made what turned out to be a fate-
+ful trip to visit Newell and Simon at the Car-
+negie Institute of Technology (CIT, now
+Carnegie Mellon University) in February
+1956. By that date Newell and Simon, work-
+ing at RAND’s Systems Research Laboratory,
+had essentially completed the Logic Theorist,
+one of the earliest software programs in sym-
+bolic AI. Newell recalls that he was inspired
+to work in this direction after hearing Self-
+ridge give a talk on a pattern-recognition pro-
+gram at RAND in 1954.**
+
+During his visit to CIT, McCarthy showed
+Newell and Simon the Rockefeller proposal
+for the Dartmouth seminar. Simon wrote
+Shannon after the visit, reintroducing him-
+self by reminding Shannon of a RAND report
+Simon had sent him on a chess-playing pro-
+gram and enclosing a copy of an article of
+his that bore on the research Shannon pro-
+posed to do at Dartmouth. Then Simon
+took the liberty of critiquing Shannon’s pro-
+posed research. In light of the work he had
+been doing with Newell, Simon said Shan-
+non’s two separate projects—on using infor-
+mation theory to analyze computing with
+unreliable components, and modeling the
+brain’s simplest environments—were actu-
+ally one project. ‘‘Because of the rapid prog-
+ress we have made in the last two months,”
+Simon concluded, “we are inclined to reverse
+the strategy expressed in the last sentence of
+your proposal—we believe that we can start
+with some of the most advanced human
+activities—i.e., proving theorems—and work
+
+back to the ‘simplest’—e.g., learning non-
+sense syllables.’’ Newell planned to “spend
+part of the summer at Dartmouth, and
+I shall plan at least a week there at the begin-
+ning, if this is agreeable to the ‘proposers.’”°*
+McCarthy recommended Newell and Simon
+to the other proposers, and Newell and
+Simon wrote up their plans for doing re-
+search at Dartmouth.°°
+
+Shannon was slow to respond to Simon’s
+rather challenging letter. Two months later,
+in late April, Shannon wrote to Simon, apol-
+ogized for the delay, and admitted he had
+not done much research on learning
+machines in the past two years. Shannon
+was on the committee of a master’s student,
+Trenchard More, at MIT, where Shannon
+had recently been appointed a visiting pro-
+fessor. Shannon said that More “has been
+developing a program quite similar to that
+you speak of for proving theorems in the
+propositional calculus.’”’ Like the program
+developed by Newell and Simon, More’s
+could be simulated by hand. Perhaps to mol-
+lify Newell and Simon, Shannon included an
+announcement of the call for papers for the
+Symposium on Information Theory, spon-
+sored by the Institute of Radio Engineers’
+(IRE) Professional Group on Information
+Theory, to be held at MIT in September
+1956 and suggested ‘‘that perhaps some of
+the work you or Newell have been doing
+would be suitable for presentation” in a spe-
+cial session on learning machines.*”
+
+The invitation pleased Newell and Simon,
+but the implication that a master’s student of
+Shannon’s was doing work comparable to
+theirs irked them enough for Newell to
+bring up the letter with some passion in an
+interview conducted 35 years later:
+
+So we have a letter [from Shannon]. And in
+this letter there is some stuff about a guy by
+the name of Trench Moore [sic], Trench was
+a student of Shannon’s, and in fact Shannon
+thought that what Trench was doing was infi-
+nitely further ahead than what we were
+doing. So there’s this funny little exchange
+and counter exchange and so forth that
+relates to what Trench is doing and so forth.*8
+
+By May 1956, McCarthy had formalized
+the arrangements for the seminar, which
+was to be held from mid-June to mid-August
+at Dartmouth College. McCarthy told the
+Rockefeller Foundation that the participants
+for the full period would be himself, Minsky,
+MacKay, Ray Solomonoff, a colleague of
+
+Minsky’s at MIT, John Holland from Roches-
+ter’s group at IBM, and Jacob Bigelow. Shan-
+non, Rochester, and Selfridge planned to
+attend two weeks at the beginning of the
+summer and two weeks at the end. Newell
+and Simon would attend for two weeks at
+the beginning. To help make up the Rockefel-
+ler Foundation’s budget cut, IBM and Lincoln
+Labs would pay the salaries of their employees
+while they attended the seminar. McCarthy
+hoped the conference would focus on his
+area of research, telling Morison, “At present
+it looks as though we shall concentrate on a
+problem of devising a way of programming
+a calculator to form concepts and to form
+generalizations.”
+
+The conference did not work out as
+planned. Several of the participants listed by
+McCarthy did not attend. MacKay, who was
+probably added at the request of the Rock-
+efeller Foundation, and whose travel from
+Britain the foundation was funding from an-
+other account, cancelled at the last moment.
+He decided to stay with his wife who was or-
+dered by her doctor to remain in bed follow-
+ing a late delivery of their first child.°° That
+removed an outspoken advocate of the cyber-
+netic analog approach to brain modeling
+from the seminar. Holland at IBM decided
+not to attend because of previous commit-
+ments, a decision he later regretted.°' Shan-
+non did not make it either and probably
+sent his student Trench More in his place,
+most likely to continue the conversation
+with Newell and Simon. Bigelow does not ap-
+pear in accounts of the Dartmouth seminar.
+New attendees included Herb Gerlertner
+and Arthur Samuel, who wrote an early
+checkers program.
+
+The 10 official participants were thus
+Gerlertner, McCarthy, Minsky, More, Newell,
+Rochester, Samuel, Selfridge, Simon, and
+Solomonoff. Alex Bernstein from IBM was a
+visitor.°* Bernard Widrow (who received his
+PhD from MIT that summer) and a colleague
+heard about the conference, drove from
+Cambridge to Dartmouth on their own ini-
+tiative, and were welcomed by the group.
+Widrow recalls that the group also included
+W.A. Clark and B.G. Farley from Lincoln
+Labs, who were probably visitors. Widrow
+was “fascinated by the things I heard
+{at Dartmouth] about artificial intelligence,”
+which shaped his later research on adaptive
+neural nets.°?
+
+One reason there is uncertainty about
+who attended the event is that McCarthy
+did not prepare a report on it for the
+
+October-December 2011
+
+11
+
+12
+
+Rockefeller Foundation. He submitted only a
+long paper written by Solomonoff on induc-
+tive inference.®* In a letter promising to
+write a report, McCarthy told the foundation
+that at the session on automata at the IRE
+Symposium on Information Theory, to be
+held in September, “all of the speakers
+(Simon, Newell, Rochester, Minsky, Solo-
+monoff, and McCarthy] will be participants
+in our summer project.’ Because they had
+missed a deadline, only the papers by Newell
+and Simon (on the Logic Theorist) and by
+Rochester and his group (on neural net mod-
+eling) would appear in the symposium’s
+proceedings.®
+
+Simon recalls some ‘‘tough negotiations”
+about the session. McCarthy wanted to
+chair it and summarize the research done at
+Dartmouth. ‘‘And we [Simon and Newell]
+allowed as how that wasn’t going to happen
+and so poor Walter Rosenblith [a colleague
+of Wiener’s at MIT]... who was supposed to
+chair the session, walked around with us
+around the M.I.T. campus, we strolled down
+the Memorial Boulevard and so on, negotiat-
+ing this... And finally it was agreed that John
+McCarthy would get up and give a general
+speech about what went on and then Al
+[Newell] would present our work in particu-
+lar.” Newell and Simon were satisfied with
+the arrangements but felt the symposium’s
+audience was not ready to understand their
+information-processing approach to Al.
+McCarthy later admitted that Newell and
+Simon “felt, perhaps quite correctly, that
+the situation was anomalous.’’°° Shannon
+had stopped doing research on automata at
+this time and gave a paper at the symposium
+on coding for a noisy channel, which became
+a classic in the booming field of information
+theory.°”
+
+The Rockefeller Foundation was unsure at
+the time whether the Dartmouth conference
+had been a success. It probably liked the fiscal
+responsibility shown by the organizers and
+Dartmouth College, which returned almost
+$1,700 of the $7,500 grant as unspent
+funds.°® But the foundation was dissatisfied
+with the lack of a report. When Selfridge
+spoke to Morison in mid-1957 about the pos-
+sibility of the foundation providing travel
+money for US researchers to attend a confer-
+ence on AI at the National Physical Labora-
+tory in Teddington, Britain, with Selfridge
+and Minsky as the US organizers, Morison
+had misgivings. As recorded in his diary, he
+told Selfridge, ‘‘there has been a little feeling
+here that we were not entirely well informed
+
+IEEE Annals of the History of Computing
+
+Cybernetics, Automata Studies, and the Dartmouth Conference on Artificial Intelligence
+
+as to what went on at the conference held in
+Hanover [New Hampshire] last summer.” Yet
+Morison came away from the interview with
+an ‘‘excellent impression of S. [Selfridge], and
+there is no doubt about the qualifications of
+most of the other people who would be
+invited to the [Teddington] conference.”
+The list included Minsky and McCarthy, as
+well as such cybernetics researchers as Pitts
+and Jerome Lettvin from McCulloch’s labora-
+tory at MIT and Ashby and Uttley in Britain.
+Shannon and MacKay were on the advisory
+committee. Morison now acknowledged
+that the “field is an important one and [is]
+developing very rapidly.’ But a month
+later, in June 1957, the Foundation said it
+needed more information before funding
+the conference.”°
+
+Held in Teddington in late 1958, the
+conference on ‘‘Mechanisation of Thought
+Processes” marked a milestone in the history
+of AI.’! Organized by Uttley in Britain and
+Selfridge in the US, the conference gathered
+together proponents of the main approaches
+to machine intelligence of the day. Papers
+were given by Minsky, McCarthy, and Self-
+ridge on symbolic Al; by McCulloch, Uttley,
+and Frank Rosenblatt of Cornell University
+on neural nets; and by Ashby, MacKay, and
+British cybernetician Gordon Pask on non-
+neural-net self-organizing systems. Minsky
+alluded to his conversion to the symbolic
+method by noting that his proposed heuristic
+computer program for solving problems in
+plane geometry was based on notes he had
+circulated at the Dartmouth conference.’”
+
+Discussion
+
+What do we learn from this detailed history,
+based on unpublished archives, about the
+relationships among cybernetics, automata
+studies, and the Dartmouth conference
+on Al?
+
+First of all, the correspondence between
+Shannon and McCarthy shows that Shannon
+was not as conservative as McCarthy recalled.
+Shannon shared McCarthy’s goal of creating
+a science of intelligent machines, but he
+held a broader view of viable approaches in
+automata studies, which included neural
+nets, Turing machines, cybernetic mecha-
+nisms, and symbolic processing by computer.
+Yet it is clear from the correspondence that
+McCarthy’s dissatisfaction with the papers in
+Automata Studies \ed him to ask the Rockefeller
+Foundation to fund a conference on AI.
+
+Second, the exchange between Simon and
+Shannon reveals a sharp instance of how
+
+disciplinary boundaries were increasingly
+being drawn between brain modeling and
+what became known as symbolic AI. Shan-
+non pushed “non-numerical [i.e., symbolic]
+programming’’—by writing an early article
+on programming a computer to play chess
+and supervising a graduate student’s thesis
+on a theorem-proving program—but at Dart-
+mouth he proposed to apply his research on
+information theory to brain modeling and
+then work up to higher thought processes.
+Simon turned that research program upside
+down, or right side up from Simon’s point
+of view. Thus, even though Simon had
+drawn heavily on Ashby’s work on brain
+modeling, he contributed to the split in the
+machine intelligence field evident in the
+amended grant proposal sent to the Rockefel-
+ler Foundation: between Simon, Newell, and
+McCarthy on the symbolic side, and Shan-
+non, Minsky, and Rochester on the brain-
+modeling side.
+
+Third, we gain a better understanding of
+the Rockefeller Foundation’s role in funding
+the Dartmouth conference. Although the
+foundation had funded early computer proj-
+ects and the mathematical-biological research
+that inspired Wiener’s Cybernetics, it did not
+play a leading role in shaping the related
+new area of AI. Perhaps because Morison
+handled the Dartmouth grant rather than
+Weaver, who had managed the foundation’s
+computer projects, the foundation was not
+keen on funding the new field of ‘““mathemat-
+ical models for thought,’”’ to use Morison’s
+term. The foundation cut the requested fund-
+ing nearly in half and apparently did not
+fund travel to the Teddington conference in
+1958, though Morison now had a higher
+opinion of the field. The foundation unsuc-
+cessfully tried to influence the direction of re-
+search at Dartmouth by separately funding
+MacKay’s travel to the conference.
+
+One can only speculate how the presence
+of MacKay—an outspoken proponent of the
+analog, feedback approach to machine intel-
+ligence associated with cybernetics—would
+have changed the dynamics at Dartmouth
+and its subsequent “mythology,” to use
+Newell’s term. The question is especially apt
+because McCarthy has recalled that,
+
+As for myself, one of the reasons for inventing
+the term “artificial intelligence” was to escape
+association with ‘‘cybernetics.”’ Its association
+with analog feedback seemed misguided, and
+I wished to avoid having either to accept...
+Wiener as a guru or having to argue with
+him.”?
+
+MacKay got his chance to debate Mc-
+Carthy and Minsky at Teddington in 1958.
+But by then, McCarthy and Minsky had
+begun to gather ammunition from their re-
+search at MIT with which to fight the battle
+against brain modeling, especially Rose-
+nblatt’s perceptrons.’*
+
+More generally, the meaning of cybernet-
+ics, which initially applied to all approaches
+to machine intelligence, was increasingly
+reduced in the US to neural nets and brain
+modeling after the conference at Dartmouth.
+Furthermore, MacKay and Uttley even be-
+came wary of using the term in 1959 because
+of its use in Britain by an investment scheme
+involving research on artificial organisms.’*
+In 1968, when Minsky credited cybernetics
+with spawning three branches of machine in-
+telligence, he effectively limited ‘‘cybernet-
+ics’ to the brain-modeling work on self-
+organizing systems conducted by members
+of the Ratio Club in Britain and the Biological
+Computer Laboratory at the University of
+Illinois. Minsky’s genealogy helped mask
+the pervasiveness of cybernetics in these for-
+mative years, until the “revival’’ of neural
+nets in the 1980s renewed the interest of his-
+torians in the place of cybernetics in the early
+history of AI, and the place of AI in the his-
+tory of early cybernetics.”°
+
+Acknowledgments
+
+The research for this article was funded by
+the US National Science Foundation, under
+grant SES80689, and by the Bovay Program
+in History and Ethics of Engineering at Cor-
+nell University. I thank David Hounshell for
+sharing his copies of the Rockefeller Founda-
+tion file on the Dartmouth conference with
+me as well as Herbert Voelcker and the anon-
+ymous referees for their comments on earlier
+drafts.
+
+References and Notes
+
+1. See, for example, J. Moor, ‘The Dartmouth Col-
+lege Artificial Intelligence Conference: The Next
+Fifty Years,” Al Magazine, 27, no. 4, 2006,
+pp. 87-91; P. McCorduck, Machines Who
+Think, W.H. Freeman, 1979, ch. 5; P. Edwards,
+Closed World: Computers and the Politics of
+Discourse in Cold War America, MIT Press, 1996,
+p. 239; and R. Cordeschi, The Discovery of the
+Artificial: Behavior, Mind, and Machines Before
+and Beyond Cybernetics, Dordrecht, 2002,
+pp. 155, 174.
+
+2. McCorduck, Machines Who Think,pp. 96,
+109-110.
+
+October-December 2011
+
+13
+
+Cybernetics, Automata Studies, and the Dartmouth Conference on Artificial Intelligence
+
+COON
+
+10.
+
+11
+
+12.
+
+13.
+
+14.
+
+. McCorduck, Machines Who Think,pp. 95-96;
+and A.L. Norberg, ‘An Interview with Allen
+Newell,’” 10-12 June 1991, Oral History Collec-
+tion, Charles Babbage Inst., Univ. of Minnesota
+(hereafter CBI Oral History), p. 116.
+
+. R.R. Kline, “Where Are the Cyborgs in Cyber-
+netics?” Social Studies of Science, vol. 33, no. 3,
+2009, pp. 335-336.
+
+. S.J. Heims, The Cybernetics Group, MIT Press,
+1991.
+
+. N. Wiener, Cybernetics: Or Control and Commu-
+nication in the Animal and the Machine, Technol-
+ogy Press, 1948, pp. 193-194.
+
+. Cordeschi, Discovery of the Artificial,pp. 155-163.
+
+. F. Conway and J. Siegelman, Dark Hero of the
+Information Age: In Search of Norbert Wiener, the
+Father of Cybernetics, Basic Books, 2005, p. 175;
+McCorduck, Machines Who Think, p. 84; A.L.
+Norberg, ‘An Interview with Marvin L. Minsky,’
+1 Nov. 1989, CBI Oral History, pp. 10-12; H.
+Crowther-Heyck, Herbert A. Simon: The Bounds
+of Reason in Modern America, Johns Hopkins
+Univ. Press, 2005, pp. 189-192; and H.
+Crowther-Heyck, ‘Defining the Computer: Her-
+bert Simon and the Bureaucratic Mind—Part 2,”
+IEEE Annals of the History of Computing, vol. 30,
+no. 2, 2008, p. 53.
+
+. M. Minsky, ed., Semantic Information Processing,
+
+MIT Press, 1968, p. 7.
+
+A. Newell, ‘Intellectual Issues in the History
+
+of Artificial Intelligence,” The Study of Informa-
+
+tion: Interdisciplinary Messages,F. Machlup,
+
+and U. Mansfield, eds., John Wiley, 1983,
+
+pp. 191, 201.
+
+. See, for example, McCorduck, Machines Who
+
+Think, ch. 4; Edwards, Closed World, ch. 8; and
+
+Cordeschi, Discovery of the Artificial, ch. 5.
+
+W. Aspray, ‘The Scientific Conceptualization of
+
+Information: A Survey,” Annals of the History of
+
+Computing, vol. 7, no. 2, 1985, pp. 117-140.
+
+C. Shannon, ‘‘Programming a Computer for
+
+Playing Chess,’’ 1950, reprinted in Shannon,
+
+Collected Papers, N.J.A. Sloane, and A.D. Wyner,
+
+eds., IEEE Press, 1993, pp. 637-656; C. Shan-
+
+non, to N. Wiener, 13 Oct. 1948, Norbert Wie-
+ner Papers, Inst. Archives, MIT (hereafter Wiener
+
+Papers), box 6-85; C. Shannon, to N. Wiener,
+
+14 Feb. 1949, Wiener Papers, box 6-91;
+
+E. Coleman, to N. Wiener, 12 May 1950,
+
+Wiener Papers, box 8-117; C. Shannon, to
+
+W. McCulloch, 2 June 1949, Warren McCulloch
+
+Papers, Am. Philosophical Soc. (hereafter
+
+McCulloch Papers), Shannon correspondence;
+
+and C. Shannon, ‘Presentation of a Maze-
+
+Solving Machine,’’ 1952, reprinted in Shannon,
+
+Collected Papers, pp. 681-687.
+
+Heims, Cybernetics Group, especially pp. 11, 75,
+
+76, 78, 111-112, 221.
+
+IEEE Annals of the History of Computing
+
+15.
+
+16.
+17.
+
+18.
+
+19.
+
+20.
+
+21.
+
+22.
+
+23.
+
+24.
+
+25.
+
+26.
+
+27.
+
+28.
+
+C. Shannon, “Cybernetics,” Encyclopedia Bri-
+tannica, vol. 6, 1957, p. 916, and N. Wiener
+
+to W. Yust, 30 Aug. 1954, Wiener Papers, box
+14-199.
+
+McCorduck, Machines Who Think, pp. 94, 96-97.
+C. Shannon and J. McCarthy to N. Wiener,
+
+19 May 1953, Wiener Papers, box 12-173.
+
+D. MacKay to J. McCarthy, 9 Oct. 1953;
+
+W.G. Walter to C. Shannon and J. McCarthy,
+
+11 June 1953; J. von Neumann to C. Shannon
+and J. McCarthy, 15 June 1953; and W.R. Ashby
+to J. McCarthy, 16 June 1954—all in Claude
+Shannon Papers, Library of Congress (hereafter
+Shannon Papers), box 1. On von Neumann’s
+theory of automata, see W. Aspray, John von
+Neumann and the Origins of Modern Computing,
+MIT Press, 1990, ch. 8.
+
+A. Turing to C. Shannon, 3 June 1953, Shan-
+non Papers, box 1; and A. Hodges, Alan Turing:
+The Enigma, Simon and Shuster, 1983. For my
+research, | used the reprinted edition of Hodges’
+Alan Turing by Walker, 2000, pp. 249-251, 441.
+S.C. Kleene to C. Shannon and J. McCarthy,
+
+29 May 1954, and A. Uttley to J. McCarthy,
+
+20 Oct. 1953, both in Shannon Papers, box 1.
+McCorduck, Machines Who Think, p. 94.
+
+N. Wiener to C. Brinton, 4 Mar. 1954, Wiener
+Papers, box 13-189.
+
+P. Husbands and O. Holland, ‘‘The Ratio Club:
+A Hub of British Cybernetics,’” The Mechanical
+Mind in History, P. Husbands, O. Holland, and
+M. Wheeler, eds., MIT Press, 2008, ch. 6,
+
+p. 90, 93.
+
+A. Turing to C. Shannon, 3 June 1953, Shannon
+Papers, box 1.
+
+J. McCarthy to C. Shannon, 5 Apr. 1954, Shan-
+non Papers, box 1; and D. MacKay, “The Epis-
+temological Problem for Automata,” Automata
+Studies, C. Shannon and J. McCarthy, eds.,
+Princeton Univ. Press, 1956, pp. 235-251.
+
+W.R. Ashby, ‘Design for an Intelligence Ampli-
+fier,’ Automata Studies, pp. 215-234; P.M.
+Asaro, “From Mechanisms of Adaptation to In-
+telligent Amplifiers: The Philosophy of W. Ross
+Ashby,”’ Mechanical Mind in History, ch. 7; and
+A. Pickering, ‘‘Cybernetics and the Mangle:
+Ashby, Beer, and Pask,’’ Social Studies of Science,
+vol. 32, no. 3, 2002, pp. 413-437.
+
+W.R. Ashby to J. McCarthy, 16 June 1954, Shan-
+non Papers, box 1.
+
+D. MacKay to J. McCarthy, 9 Oct. 1953, and
+
+J. McCarthy, to C. Shannon, 11 Aug. 1954,
+both in Shannon Papers, box 1.
+
+C. Shannon, ‘“Computers and Automata,’’ 1953,
+reprinted in Shannon, Collected Papers, pp. 703-
+710; and C. Shannon, ‘‘Von Neumann’s Contri-
+butions to Automata Theory,’”’ 1958, reprinted
+in Shannon, Collected Papers, p. 831.
+
+29. J. McCarthy to C. Shannon, 11 Aug. 1954,
+Shannon Papers, box 1.
+
+30. M. Minsky, to C. Shannon, 18 Jan. 1954
+[1955], Shannon Papers, box 1.
+
+31. Shannon, “Computers and Automata,”’ p. 709.
+
+32. J. McCarthy to C. Shannon, 24 Nov. 1954,
+Shannon Papers, box 1.
+
+33. J. McCarthy to C. Shannon, “Preface,”” Autom-
+ata Studies, p. v.
+
+34. C. Shannon to I. Angus, 8 Aug. 1952, Shannon
+Papers, box 1.
+
+35. J. McCarthy to C. Shannon, 24 Nov. 1954,
+Shannon Papers, box 1.
+
+36. J. McCarthy to C. Shannon, 18 Feb. 1955,
+Shannon Papers, box 1.
+
+37. W. Weaver diary, 4 Apr. 1955, Rockefeller
+Foundation Archives (hereafter RF-Dartmouth
+File), record group 1.0002, series 200, box 26,
+folder 219.
+
+38. W. Weaver to John McCarthy, 7 June 1955,
+RF-Dartmouth File.
+
+39. D.A. Mindell, Between Human and Machine:
+
+Feedback, Control, and Computing before
+
+Cybernetics, Johns Hopkins Univ. Press, 2002,
+
+pp. 170-174.
+
+W. Weaver to Robert Morison, 14 June 1955, RF-
+
+Dartmouth File; and C. Shannon and W. Weaver,
+
+The Mathematical Theory of Communication,
+
+Univ. of Illinois Press, 1949, pp. 93-117.
+
+41.R. Morison diary, 17 June 1955, RF-Dartmouth
+File. On Selfridge and the other young research-
+ers in Wiener’s group, see Conway and Siegel-
+man, Dark Hero of the Information Age,
+pp. 142-143, 201-204.
+
+42. P. Husbands, ‘‘An Interview with Oliver Selfridge,”
+Mechanical Mind in History, ch. 17, p. 399.
+
+43. McCorduck, Machines Who Think, pp. 79-80; R.
+Morison, ‘Amendment of Grant in Aid GA NSA
+5416 and Extension GA BMR 5607 to the Uni-
+versity of London, King’s College, England,” 15
+Feb. 1957; and “Research Report, 1954:55 D.
+M. MacKay, Information Systems Group,”’
+attached to MacKay to Morison, 21 Nov. 1955.
+Both documents are in Rockefeller Foundation
+Archives (hereafter RF-MacKay), record group
+1.2, series 401, box 19, folder 179.
+
+44. R. Morison diary, 17 June 1955, RF-Dartmouth
+File.
+
+45. W. Aspray, ‘An Interview with John McCarthy,”
+
+2 Mar. 1989, CBI Oral History, p. 8.
+
+J. McCarthy to R. Morison, 2 Sept. 1955,
+
+RF-Dartmouth File.
+
+47. Edwards, Closed World, p. 253.
+
+48. J. McCarthy et al., “A Proposal for the Dart-
+mouth Summer Research Project on Artificial In-
+telligence,’’ 31 Aug. 1955, RF-Dartmouth File,
+pp. 1-3; introduction reprinted in Al Magazine,
+vol. 27, Winter 2006, pp. 12-14.
+
+40.
+
+46.
+
+49.
+
+50.
+
+51.
+
+52.
+
+53.
+
+54.
+
+55.
+
+56.
+
+57.
+
+58.
+
+59.
+
+60.
+
+61.
+
+62.
+
+63.
+
+64.
+
+65.
+
+66.
+
+67.
+
+68.
+
+McCarthy et al., ““A Proposal for the Dartmouth
+Summer Research Project on Artificial Intelli-
+gence,” pp. 6, 7, 16, 17.
+
+R. Morison to J. McCarthy, 22 Sept. 1955,
+RF-Dartmouth File.
+
+J. McCarthy to C. Shannon, 7 Nov. 1955,
+Shannon Papers, box 1.
+
+R. Morison to J. McCarthy, 30 Nov. 1955,
+RF-Dartmouth File.
+
+J. McCarthy to R. Morison, 8 Dec. 1955. On
+the revised budget, see D. Morrison to R.
+Morison, 19 Dec. 1955. Both letters are in
+RF-Dartmouth File.
+
+McCorduck, Machines Who Think, pp. 132-
+135, and Crowther-Heyck, Herbert A. Simon,
+ch. 10.
+
+H. Simon to C. Shannon, 21 Feb. 1956, Shan-
+non Papers, box 2.
+
+J. McCarthy to N. Rochester, C. Shannon, and
+M. Minsky, 23 Feb. 1956, Shannon Papers,
+box 2; and A. Newell and H. Simon, ‘Plans
+for the Dartmouth Summer Research Project
+on Artificial Intelligence,” 6 Mar. 1956, Simon
+Papers, box 38, CMU, Problem Solving
+
+Paper 9.
+
+C. Shannon to H. Simon, 24 Apr. 1956, Shan-
+non Papers, box 2.
+
+“An Interview with Allen Newell,” p. 12. | have
+found no documentation of these exchanges.
+J. McCarthy to R. Morison, 25 May 1955,
+RF-Dartmouth File.
+
+D. MacKay to W. McCulloch, 23 Jul. 1956,
+McCulloch Papers, MacKay Correspondence;
+and D. MacKay to W. Weaver, 26 June 1956,
+RF-MacKay.
+
+P. Husbands, ‘‘An Interview with John Holland,”’
+Mechanical Mind in History,p. 389.
+
+“An Interview with Allen Newell,” p. 12, and
+McCorduck, Machines Who Think, p. 94.
+“TInterview with] Bernard Widrow,”’ Talking
+Nets: An Oral History of Neural Networks, J.A.
+Anderson and E. Rosenfeld, eds., MIT Press,
+1998, ch. 3, p. 49.
+
+J. McCarthy to [R. Morison], 18 Nov. 1956,
+RF-Dartmouth File.
+
+J. McCarthy to R. Morison, 3 Sept. 1956,
+RF-Dartmouth File.
+
+H. Simon, interview by P. McCorduck, 6 Nov.
+1974, Simon Papers, box 79, transcript 2,
+
+p. 17; and McCorduck, Machines Who Think,
+p. 108.
+
+C. Shannon, ‘‘The Zero Capacity for a Noisy
+Channel,” 1956, reprinted in Shannon, Collected
+Papers, pp. 221-238.
+
+S. Welch, Dartmouth College, financial report
+to Rockefeller Foundation, 7 Feb. 1957; and
+
+R. Steel to S. Welch, 15 Feb. 1957. Both are in
+RF-Dartmouth File.
+
+October-December 2011. 15
+
+16
+
+Cybernetics, Automata Studies, and the Dartmouth Conference on Artificial Intelligence
+
+69
+
+70.
+
+71.
+72.
+
+73.
+
+74,
+
+75.
+
+76.
+
+. R. Morison diary, 8 May 1957, RF-Dartmouth
+File. On the conference proposal, see M. Minsky
+and O. Selfridge to P.M. Woodward, 11 Feb.
+1957, attached to R. Morison to W. Weaver,
+n.d., RF-Dartmouth File.
+
+R. Anderson to O. Selfridge, 10 June 1957,
+RF-Dartmouth File.
+
+Cordeschi, Discovery of the Artificial, p. 187.
+
+M. Minsky, ‘Some Methods of Artificial Intelli-
+gence and Heuristic Programming,’’ Mechanisa-
+tion of Thought Processes, proc. 1958 symp.
+held at the Nat’l Physical Lab., vol. 1, HMSO,
+1959, pp. 3-26.
+
+John McCarthy, “[Review of] Bloomfield, Brian, ed.
+The Question of Artificial Intelligence... ,’” Annals
+of the History of Computing, vol. 10, 1988, p. 227.
+M. Olazarin, ‘“A Sociological Study of the Offi-
+cial History of the Perceptrons Controversy, ’’
+Social Studies of Science, vol. 26, no. 3, 1996,
+pp. 611-659.
+
+Kline, “Where Are the Cyborgs in Cybernetics,’’
+p. 353.
+
+See, for example, Cordeschi, Discovery of the
+Artificial, Husbands, Holland, and Wheeler, eds.,
+
+Mechanical Mind in History; and A. Mueller and
+
+K. Mueller, eds., An Unfinished Revolution? Heinz
+von Foerster and the Biological Computer Labora-
+tory, BCL, 1958-1976, Echoraum, 2007.
+
+F) Ronald R. Kline is the
+Bovay Professor in History
+and Ethics of Engineering at
+Cornell University, holding a
+joint appointment between
+the Science and Technology
+Studies Department and the
+; School of Electrical and Com-
+puter Engineering. He is president of the Society
+for the History of Technology and is completing
+a book on the history of cybernetics and informa-
+tion theory in the US. Kline has a PhD in the his-
+tory of science from the University of Wisconsin-—
+Madison. Contact him at rrk1@cornell.edu.
+
+Selected CS articles and columns are also
+cn available for free at http://ComputingNow.
+computer.org.
+
+lll The MIT Press
+
+Re
+
+Eden Medina
+
+Cybernetic Revolutionaries
+Technology and Politics in Allende’s Chile
+
+“This wonderful book explores cybernetics in Allende’s Chile. In
+
+ig so doing, it blends social and technical issues with large scale
+7 CYBERNETIC economic planning and the dynamic politics of the time. It is a
+
+312 pp., 41 illus., $32 cloth
+
+Now in Paper
+
+Internet Alley
+
+Paul E. Ceruzzi
+
+a rival to Silicon Valley.”
+
+terested in the incorporation of science and technology studies
+into historical and political discourse”
+
+— Geoffrey C. Bowker, University of Pittsburgh
+
+@ REVOLUTIONARIES must-read for anyone interested in this era, and for anyone in-
+Ay
+a
+/g
+
+High Technology in Tysons Corner, 1945-2005
+
+“Rich in persuasive detail, Cerruzi’s /nternet Alley is a lively narra-
+tive and eye-opening account that tells the unheralded story of
+
+— Tom Hughes, author of Human-Built World
+
+Lemelson Center Studies in Invention and Innovation series + 256 pp., 24 illus., $14.95 paper
+
+To order call 800-405-1619 » http://mitpress.mit.edu - Visit our e-books store: http://mitpress-ebooks.mit.edu
+
+IEEE Annals of the History of Computing

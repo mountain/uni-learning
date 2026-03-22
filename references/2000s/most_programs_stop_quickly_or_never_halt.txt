@@ -1,0 +1,768 @@
+arXiv:cs/0610153v4 [cs.IT] 26 Jan 2007
+
+Most Programs Stop Quickly or Never Halt
+
+Cristian S$. Calude! and Michael A. Stay?
+
+‘Department of Computer Science
+University of Auckland, New Zealand
+Email: cristian@cs.auckland.ac.nz
+
+2Department of Mathematics
+University of California Riverside, USA
+Email: mike@math.ucr.edu
+
+Abstract
+
+The aim of this paper is to provide a probabilistic, but non-quantum, analysis
+of the Halting Problem. Our approach is to have the probability space extend over
+both space and time and to consider the probability that a random N-bit program
+has halted by a random time. We postulate an a priori computable probability
+distribution on all possible runtimes and we prove that given an integer k > 0, we
+can effectively compute a time bound T such that the probability that an N-bit
+program will eventually halt given that it has not halted by T is smaller than 2~*.
+
+We also show that the set of halting programs (which is computably enumerable,
+but not computable) can be written as a disjoint union of a computable set and a
+set of effectively vanishing probability.
+
+Finally, we show that “long” runtimes are effectively rare. More formally, the
+set of times at which an N-bit program can stop after the time 2+ Constant pas
+effectively zero density.
+
+1 Introduction
+
+The Halting Problem for Turing machines is to decide whether an arbitrary Turing
+machine M eventually halts on an arbitrary input x. As a Turing machine M can be
+coded by a finite string—say, code(M)—one can ask whether there is a Turing machine
+Mhatt Which, given code(M) and the input x, eventually stops and produces 1 if M(x)
+stops, and 0 if M(x) does not stop. Turing’s famous result states that this problem cannot
+be solved by any Turing machine, i.e. there is no such M;,,,. Halting computations can be
+recognised by simply running them; the main difficulty is to detect non-halting programs.
+In what follows time is discrete.
+
+Since many real-world problems arising in the fields of compiler optimisation, au-
+tomatised software engineering, formal proof systems, and so forth are equivalent to the
+Halting Problem, there is a strong interest—not merely academic!—in understanding the
+problem better and in providing alternative solutions.
+
+There are two approaches we can take to calculating the probability that an N-bit
+program will halt. The first approach, initiated by Chaitin [10], is to have the probability
+space range only over programs; this is the approach taken when computing the Omega
+number, [4) 2]. In that case, the probability is Proby = #{p € UN | p halts}/2%. For a
+self-delimiting machine, Proby goes to zero when N tends to infinity, since it becomes
+more and more likely that any given N-bit string is an extension of a shorter halting
+program. For a universal non-self-delimiting Turing machine, the probability is always
+nonzero for large enough N: after some point, the universal non-self-delimiting Turing
+machine will simulate a total Turing machine (one that halts on all inputs), so some
+fixed proportion of the space will always contribute. The probability in this case is
+uncomputable, machine-dependent; in general, 1 is the best computable upper bound
+one can find. In this approach it matters only whether a program halts or not; the time
+at which a halting program stops is irrelevant.
+
+Our approach is to have the probability space extend over both space and time, and
+to consider the probability that a random N-bit program—which hasn’t stopped by some
+given time—will halt by a random later time. In this approach, the stopping time of
+a halting program is paramount. The problem is that there is no uniform distribution
+on the integers, so we must choose some kind of distribution on times as well. Any
+distribution we choose must have that most long times are rare, so in the limit, which
+distribution we choose doesn’t matter very much.
+
+The new approach was proposed by Calude and Pavlov |7] (see also [I]) where a
+mathematical quantum “device” was constructed to probabilistically solve the Halting
+Problem. The procedure has two steps: a) based on the length of the program and
+an a priori admissible error 2~*, a finite time T is effectively computed, b) a quantum
+“device”, designed to work on a randomly chosen test-vector is run for the time 7; if the
+device produces a click, then the program halts; otherwise, the program probably does
+not halt, with probability higher than 1—27*. This result uses an unconventional model
+of quantum computing, an infinite dimensional Hilbert space. This quantum proposal
+has been discussed in Ziegler |17].
+
+It is natural to ask whether the quantum mechanics machinery is essential for ob-
+taining the result. In this paper we discuss a method to “de-quantize” the algorithm.
+We have been motivated by some recent approximate solutions to the Halting Problem
+obtained by Kohler, Schindelhauer and M. Ziegler [13] and experimental work [4, |14] fl
+Different approaches were proposed by Hamkins and Miasnikov [15], and D’Abramo |12}.
+
+Our working hypothesis, crucial for this approach, is to postulate an a priori com-
+putable probability distribution on all possible runtimes. Consequently, the probability
+space is the product of the space of programs of fixed length (or of all possible lengths),
+where programs are uniformly distributed, and the time space, which is discrete and has
+
+‘For example, Langdon and Poli [14] suggest that, for a specific universal machine that they describe,
+about N~!/? programs of length N halt.
+
+an a priori computable probability distribution. In this context we show that given an
+integer k > 0, we can effectively compute a time bound 7’ such that the probability on
+the product space that an N-bit program will eventually halt given that it not stopped
+by T is smaller than 2~*. This phenomenon is similar to the one described for proofs in
+formal axiomatic systems [5].
+
+We also show that for every integer k > 0, the set of halting programs (which is
+computably enumerable, but not computable) can be written as a disjoint union of a
+computable set and a set of probability effectively smaller than 2-*.
+
+Of course, an important question is to what extent the postulated hypothesis is
+acceptable/realistic. The next part of the paper deals with this question offering an
+argument in favor of the hypothesis. First we note that for any computable probability
+distribution most long times are effectively rare, so in the limit they all have the same
+behavior irrespective of the choice of the distribution. Our second argument is based
+on the common properties of the times when programs may stop. Our proof consists of
+three parts: a) the exact time a program stops is algorithmically not too complicated;
+it is (algorithmically) nonrandom because most programs either stop ‘quickly’ or never
+halt, b) an N-bit program which hasn’t stopped by time 2%*+ Constant Cannot halt at a
+later random time, c) since nonrandom times are (effectively) rare, the density of times
+an N-bit program can stop vanishes.
+
+We will start by examining a particular case in detail, the behavior of all programs of
+length 3 for a certain Turing machine. This case study will describe various possibilities
+of halting/non-halting programs, the difference between a program stopping exactly at
+a time and a program stopping by some time, as well as the corresponding probabilities
+for each such event.
+
+Finally, we show some differences between the halting probabilities for different types
+of universal machines.
+
+Some comments will be made about the “practicality” of the results presented in this
+paper: can we use them to approximately solve any mathematical problems?
+
+2 A case study
+
+We consider all programs of length N = 3 for a simple Turing machine WM whose domain
+is the finite set {000, 010,011, 100,110,111}. The halting “history” of these programs,
+presented in Table 1, shows the times at which the programs in the domain of M halt.
+The program M(p,) halts at time t = 1, so it is indicated by an “h” on the row corre-
+sponding to p; and time t = 1; the program M(p,) hasn’t halted at time t = 5, so on
+the row corresponding to p4 and time t = 4 there is a blank. Finally, programs which
+haven’t stopped by time t = 17 never stop.
+
+[Proganfime [T=T S25 STS = [Te wT TT]
+-m=o0 [h |b] nh] oh [hy
+
+m= ~ | | | | | —_
+
+=o
+
+Table 1: Halting “history” for 3-bit programs.
+
+Here are a few miscellaneous facts we can derive from Table 1:
+
+e the program M(p,) halts exactly at time t = 1,
+
+e the set of 3-bit programs which halt exactly at time t = 1 consists of {p,p7},
+so the ‘probability’ that a randomly chosen 3-bit program halts at time t = 1 is
+#-{3-bit programs halting at time 1}/#{3-bit programs} = #{pl, p7}/8 = 2/8 =
+1/4,
+
+e the set of 3-bit programs which halt by time t = 8 consists of {p1,p4,p7}, so the
+‘probability’ that a randomly picked 3-bit program halts by time t = 8 is #{3-bit
+programs halting by time 8}/#{3-bit programs} = #{pl, p4, p7}/8 = 3/8,
+
+e the ‘probability’ that a random 3-bit program eventually stops is #{3-bit programs
+that halt}/#{3-bit programs} = 6/8,
+
+e the program M(p,) hasn’t stopped by time t = 5, but stops at time t = 8,
+
+e the ‘probability’ that a 3-bit program does not stop by time t = 5 and that it
+eventually halts is #{3-bit programs that eventually halt that have not stopped
+
+by time t = 5}/#{3-bit programs} = #{p3, p4, p5, p8}/8 = 4/8 = 1/2,
+
+e the ‘probability’ that a 3-bit program eventually stops given that it has not halted
+by time t = 5 is #{3-bit programs that eventually halt that have not stopped by
+time t = 5}/#{3-bit programs that have not halted by time t = 5} = 4/(8 — 2) =
+2/3,
+
+e the ‘probability’ that a 3-bit program halts at time t = 8 given that it has not halted
+by time t = 5 is #{3-bit programs that halt by time t = 8 but not by time t =
+5}/#{3-bit programs that have not halted by time t = 5} = 1/6.
+
+We can express the above facts in a bit more formal way as follows. We fix a universal
+Turing machine U (see section 3 for a definition) and a pair (N,7'), where N represents
+the length of the program and T is the “time-window”, i.e. the interval {1,2,...,7'},
+where the computational time is observed. The probability space is thus
+
+Spacen.r = mY x {1,2,...,T}.
+
+4
+
+Both programs and times are assumed to be uniformly distributed. For A C Spacey r
+we define Proby,r(A) to be #(A)-2-% -T71,
+
+Define
+An.r = {(p,t) € Spaceyr | U(p) stops exactly at time t},
+
+and
+By r = {(p,t) € Spacey r | U(p) stops by time t}.
+
+Fact 1. We have: Proby,r(An,r) < z and Proby,r(By,r) < 1.
+
+Proof. It is easy to see that ##(A) < 2%, consequently,
+
+(Ayr) QN 1 #-(By.r) ON .T
+#HAna) - =F Probyr(By.r) < Sy S$ op
+
+= =1.
+QN.T ON Tp 7’
+
+Proby,r (An,r) =
+O
+
+Comment. The inequality Proby,r(By,r) < 1 does not seem to be very informa-
+tive. However, for all N, one can construct a universal Turing machine Uy such that
+Proby,r(B) = 1; Un cannot be self-delimiting (see, for a definition, section 4). There is
+no universal Turing machine U such that Proby,r(B) = 1, for all N, so can we do better
+than stated in Fact I?
+
+More precisely, we are interested in the following problem:
+
+We are given a universal Turing machine U and a randomly chosen program
+p of length N that we know not to stop by time t. Can we effectively evaluate
+the ‘probability’ that U(p) eventually stops?
+
+An obvious way to proceed is the following. Simply, run in parallel all programs of
+length N till the time Ty = max{t, | |p| = N,U(p) halts} = min{t | for all |p| = N,t, <
+t}, where t, is the exact time U(p) halts (if indeed it stops). In other words, get the
+analogue of the Table 1 for U and N, and then calculate directly all probabilities. This
+method, as simple as it may look, isn’t very useful, since the time Ty is not computable
+because of the undecidability of the Halting Problem.
+
+Can we overcome this serious difficulty?
+
+3 Notation
+
+All strings are binary and the set of strings is denoted by &*. The length of the string z is
+denoted by |x|. The logarithms are binary too. Let N = {1,2,...} and let bin: N > &*
+be the computable bijection which associates to every n > 1 its binary expansion without
+the leading 1,
+
+n
+1
+2
+3
+4
+
+100 00
+
+We will work with Turing machines M which process strings into strings. The domain
+of M, dom(M), is the set of strings on which M halts (is defined). The natural complexity
+[9] of the string x € &* (with respect to M) is Vis(x) = min{n > 1 | M(bin(n)) =
+x}. The Invariance Theorem [2] has the following form: we can effectively construct a
+machine U (called universal) such that for every machine M, there is a constant ¢ > 0
+(depending on U and M) such that Vy(x) < ¢- Vayz(2), for all strings x. For example,
+if U(O'lxz) = M,(x) (where (M;) is an effective enumeration of all Turing machines),
+then Vu(a) < (2+? +1)-Vaz,(x), because 0'1bin(m) = bin(2’tt+ Us) 4 m), for all
+m > 1. In what follows we will fix a universal Turing machine U and we will write V
+instead of Vy. There are some advantages in working with the complexity V instead
+of the classical complexity K (see [2]); for example, for every N > 0, the inequality
+#{x € &* : V(r) < N} < N is obvious; a better example appears in [8] where V is a
+more natural measure to investigate the relation between incompleteness and uncertainty.
+
+4 Halting according to a computable time distribu-
+tion
+
+We postulate an a priori computable probability distribution on all possible runtimes.
+Consequently, the probability space is the product of the space of programs—either taken
+to be all programs of a fixed length, where programs are uniformly distributed, or to be
+all programs of all possible lengths, where the distribution depends on the length—and
+the time space, which is discrete and has an a priori computable probability distribution.
+
+In what follows we randomly choose a time 7 from according to a probability distri-
+
+bution p(i) which effectively converges to 1, that is, there exists a computable function
+B such that for every n > B(k),
+
+= > (| < 2°
+=1
+
+How long does it take for an N-bit program p to run without halting on U to conclude
+that the probability that U(p) eventually stops is less than 2~*?
+
+It is not difficult to see that the probability that an N-bit program which hasn’t
+stopped on U by time t, (which can be effectively computed) will eventually halt is not
+larger than eS te p(i), which effectively converges to 0, that is, there is a computable
+function b(k) such that for n > b(k), 3,5, p(t) < 27°.
+
+The probability distribution p(i) may or may not be related to the computational
+runtime of a program for U. Here is an example of a probability distribution which
+effectively converges to 1 and relates the observer time to the computational runtime.
+This probability distribution is reminiscent of Chaitin’s halting probability [2], but in
+contrast, is computable.
+
+The idea is to define the distribution at moment i to be 2~* divided by the exact
+time it takes U(bin(2)) to halt, or to be 0 if U(bin(z)) does not halt. Recall that t, is the
+exact time U(p) halts (or tp = oo when U(p) does not halt).
+
+First we define the number
+
+Yu = 3 2" thing:
+
+i>1
+
+It is clear that 0 < Yy < 1. Moreover, Yy is computable. Indeed, we construct
+an algorithm computing, for every positive integer n, the nth digit of Ty. The proof
+is simple: only the terms 2~'/tpingy for which U(bin(i)) does not halt, ice. thing = ©
+produce ‘false’ information because at every finite step of the computation they appear to
+be non-zero when, in fact, they are zero! The solution is to run all non-stopping programs
+U(bin(i)) for enough time such that their cumulative contribution is too small to affect
+the nth digit of Ty: indeed, if n > 2, and thing) = 1, for i >n, then >>, 2: /thina) <
+27”.
+
+So, Ty induces a natural probability distribution on the runtime: to 2 we associate
+
+thing « Yu
+
+p(i) (1)
+
+The probability space is
+Space yf (i)} = DY x {1,2,...},
+
+where N-bit programs are assumed to be uniformly distributed, and we choose at random
+a runtime from distribution (fH).
+
+Theorem 2. Assume that U(p) has not stopped by time T > k — |logYu|. Then, the
+probability (according to the distribution ()) that U(p) eventually halts is smaller than
+Q-F,
+
+Proof. It is seen that
+
+1 Q-% c 1 ok
+To tan Yoo
+j=_T “bin(i) U
+
+for T > k — |log Ty |. The bound is computable because Ty is computable.
+
+2Of course, instead of 2~*/ty.,.. we can take r;/ty;,,.,, where }>.., ry < 00, effectively.
+bin() bin(i) i>1
+
+We now consider the probability space to be
+Spacesyi)} = 4" x {1,2,...},
+
+where N-bit programs are assumed to be uniformly distributed, and the runtime is chosen
+at random from the computable probability distribution {p(i)}.
+
+Theorem 3. Assume that U and Space,,j)} have been fixed. For every integer k > 0,
+the set of halting programs for U can be written as a disjoint union of a computable set
+and a set of probability effectively smaller than 2-*.
+
+Proof. Let b be a computable function such that for n > b(k) we have 3°... p(i) < 2~*.
+The set of halting programs for U can be written as a disjoint union of the computable
+set {(p, tp) | tp < 2>+lP+)} and the set {(p,tp) | 2°°+!?!+) < t, < co}. The last set has
+probability effectively less than
+
+SS ee
+N=1
+
+N=1 n=b(k+N+2)
+
+O
+
+Comment. A stronger (in the sense that the computable set is even polynomially de-
+cidable), but machine-dependent, decomposition theorem for the set of halting programs
+was proved in [15].
+
+5 How long does it take for a halting program to
+stop?
+
+The common wisdom says that it is possible to write short programs which stop after
+a very long time. However, it is less obvious that there are only a few such programs;
+these programs are “exceptions”.
+
+Working with self-delimiting Turing machines, Chaitin [II] has given the following
+estimation of the complexity of the runtime of a program which eventually halts: there
+is a constant c such that if U(bin(z)) halts in time t, then
+
+V(bin(t)) < 2Ol 6 <i-e. (2)
+
+Here t is the first time U(bin(i)) halts] The above relation puts a limit on the compleity
+of the time t a program bin(7), that eventually halts on U, has to run before it stops; this
+translates into a limit on the time t because only finitely many strings have complexity
+
+3Chaitin used program-size complexity.
+
+4Of course, if U(bin(i)) halts in time ¢, it stops also in time ¢’ > t, but only finitely many t’ satisfy
+the inequality (2). For the reader more familiar with the program-size complexity H—with repsect to a
+universal self-delimiting Turing machine |2]|—the inequality @) corresponds to H(bin(t)) < |bin(¢)|+ c.
+
+bounded by a constant. In view of (2), the bound depends only upon the length of the
+program; the program itself (i.e. bin(i)) does not matter.
+
+Because lim; ... V(bin(t)) = 00, there are only finitely many integers ¢t satisfying
+the inequality (2). That is, there exists a critical value Tyriticat (depending upon U and
+|bin(z)|) such that if for each t < Teriticat, U(bin(i)) does not stop in time t, then U(bin(7))
+never halts. In other words,
+
+if U(bin(z)) does not stop in time Tyriticat, then U(bin(z)) never halts.
+
+So, what prevents us from running the computation U(bin(7)) for the time Typ itical
+and deciding whether it halts or not? Obviously, the uncomputability of Toriticay. Neither
+the natural complexity V nor any other size complexity, like K or H, is computable (see
+[2]). Obviously, there are large integers t with small complexity V(bin(t)), but they
+cannot be effectively “separated” because we cannot effectively compute a bound b(k)
+such that V(bin(t)) > & whenever t > b(k).
+
+The above analysis suggests that a program that has not stopped after running for
+a long time has smaller and smaller chances to eventually stop. The bound (Q) is not
+computable. Still, can we “extract information” from the inequality (2) to derive a
+computable probabilistic description of this phenomenon?
+
+Without loss of generality, we assume that the universal Turing machine U has a
+built-in counting instruction. Based on this, there is an effective transformation which
+for each program p produces a new program time(p) such that there is a constant c > 0
+(depending upon U) for which the following three conditions are satisfied:
+
+1. U(p) halts iff U(time(p)) halts,
+2. |time(p)| < |p| +e,
+
+3. if U(p) halts, then it halts at the step tp = bin” '(U(time(p))).
+
+Intuitively, time(p) either calculates the number of steps t, till U(p) halts and prints
+bin(t,), or, if U(p) is not defined, never halts. The constant c can be taken to be less
+than or equal to 2, as the counting instruction is used only once, and we need one more
+instruction to print its value; however, we don’t need to print the value U(p).
+
+We continue with a proof of the inequality (2) for an arbitrary universal Turing
+machine.
+
+Theorem 4. Assume that U(p) stops at time t,, exactly. Then,
+
+V(bin(t,)) < 2er!, (3)
+
+Proof. First we note that for every program p of length at most N, bin~'(p) < 2'*!,
+Indeed, |p| = |bin(bin™'(p))| < N implies
+
+glPl < bin7*(p) < gPith < QN+1, (4)
+
+9
+
+Since U(p) = U(bin(bin™'(p))) we have:
+V(U(p)) = min{i > 1 : U(bin(?)) = U(p)} < bin” "(p),
+
+hence
+V(bin(t,)) = V(U(time(p))) < bin7*(time(p)) < 21,
+
+because |time(p)| < |p| + ¢ and (@). 0
+
+6 Cana program stop at an algorithmically random
+time?
+
+In this section we prove that no program of length N > 2 which has not stopped by time
+2?N+2c+1 will stop at an algorithmically random time. Consequently, since algorithmically
+nonrandom times are (effectively) rare, there are only a few times an N-bit program can
+stop in a suitably large range. As a consequence, the set of times at which an N-bit
+program can stop after the time 2N+Constant pas effectively zero density.
+
+A binary string z is “algorithmically random” if V(x) > 2!!/|2|. Most binary strings
+of a given length n are algorithmically random because they have high density: #{ax €
+o* : |x| =n, V(x) > 2"/n}-2-" > 1 —1/n which tends to 1 when n > oo
+
+A time t will be called “algorithmically random” if bin(t) is algorithmically random.
+
+Theorem 5. Assume that an N-bit program p has not stopped on U by time 2?N*2c+1
+where N > 2 and c comes from Theorem 4. Then, U(p) cannot exactly stop at any
+algorithmically random time t > 2?N+2c+1,
+
+g2n-1
+
+Proof. First we prove that for every n > 4 and t > , we have:
+
+gibin®l s 9”. |bin(t)]. (5)
+
+Indeed, the real function f(a) = 2*”/z is strictly increasing for x > 2 and tends to
+infinity when x — oo. Let m = |bin(t)|. As 22°71 < t < 2™*", it follows that m > 2n—1,
+hence 2™/m > 2?”-1/(2n — 1) > 2". The inequality is true for every |bin(t)| > 2n —1,
+that is, for every t > 2?"-1.
+
+Next we take n = N +c+ 1 in @) and we prove that every algorithmically random
+time t > 2?N+2c+l N > 2, does not satisfy the inequality @). Consequently, no program
+of length N which has not stopped by time 224+?¢+! will stop at an algorithmically
+random time.
+
+O
+
+A time t is called “exponential stopping time” if there is a program p which stops on
+U exactly at t = t, > 27l?/+e+!_ How large is the set of exponential stopping times? To
+answer this question we first need a technical result.
+
+°In the language of program-size complexity, x is “algorithmically random” if H(a) > |a| — log(|z|).
+
+10
+
+Lemma 6. Let m > 3,s >1. Then
+
+Ss .
+
+1 2° 5
+2° —1 nt m+s—1
+
+Proof. Let us denote by x” the left-hand side of the inequality below. It is easy to see
+
+that
+2°>-—1 gett gm 2
+
+m m Ss
+
+ts pt *s Tsp > 2) masdl
+Next we prove by induction (on s) the inequality in the statement of the lemma. For
+
+s=1 we have 2?’ = 1/m+2/(m+1) <5/m. Assume that 2” < 5/(m-+s5—1). Then:
+
+a 5 2 2 8
+str 9 ~m+stl1°%4m+s—1) m+s+17 mts
+
+O
+
+The density of times in the set {1,2,...,.N} satisfying the property P is the ratio
+#{t|1<t< N,P(t)}/N. A property P of times has “effective zero density” if the
+density of times satisfying the property P effectively converges to zero, that is, there is a
+computable function B(k) such that for every N > B(k), the density of times satisfying
+the property P is smaller than 2-*.
+
+Theorem 7. For every length N, we can effectively compute a threshold time 0y (which
+depends on U and N) such that if a program of length N runs for time 0x without halting,
+then the density of times greater than @y at which the program can stop has effective zero
+density. More precisely, if an N-bit program runs for time T > max{Oy,22+°?"}, then
+the density of times at which the program can stop is less than 2-*.
+
+Proof. We choose the bound 0y = 2?“+?¢+1+1, where c comes from @). Let T > Oy and
+put m= 2N+2c+1, and s = |log(Z’+1)|—m. Then, using Theorem § and Lemma [4}
+we have:
+
+: 2 T | V(b O_u
+os, mete in(t)) > ————
+Tommy ye Stst | V(b(O) 2 Toa
+1 . gmti met 1) ol g\bin(e)|
+-— Tama] d# ~ | (bin) = Ew
+~ ry arti <t <2" _1 | V(bin(t)) > a
+T2741 & 7 —~mt+i
+1 - . 1
+-— Ta Qm+] » ( a)
+1 s gmti
+>
+
+T= 241 emt i
+
+11
+
+| — ————__,
+m+s—1
+
+consequently, the density of algorithmically random times effectively converges to 1:
+
+lim #{t|t>On,t<T,t At», for all p with |p| = N}
+
+lim — ft Hf 2 T bin apnol =]
+> i : Mct< V(bin(t)) > =
+
+so the density of times greater than @y at which an N-bit program can stop effectively
+converges to zero. Oo
+
+The next result states that “almost any” time is not an exponential stopping time.
+Corollary 8. The set of exponential stopping times has effective zero density.
+
+Proof. It is seen that
+{t|t=t,, for some p with ¢ > 27PI2cH}
+
+C U t|t> [pl = N, V(bin(®) < ay
+
+a|bin(s)|
+
+| t > 27+! V(bin(t)) < TT
+
+IM
+
+which has effectively zero density in view of Theorem [1
+O
+
+7 Halting probabilities for different universal ma-
+chines
+
+In this section we show a significant difference between the halting probability of a pro-
+gram of a given length for a universal Turing machine and for a universal self-delimiting
+Turing machine: in the first case the probability is always positive, while in the second
+case the probability tends to zero when the length tends to infinity.
+
+The probability that an arbitrary string of length N belongs to A C b* is Proby(A) =
+#(AN DN) -2-%, where ©* is the set of N-bit strings.
+
+If U is a universal Turing machine, then the probability that an N-bit program p
+halts on U is Proby(dom(U)).
+
+12
+
+Fact 9. Let U be a universal Turing machine. Then, limys. Proby(dom(U)) > 0.
+
+Proof. We consider the universal Turing machine U(0‘r) = T;(x), described in section 3.
+If N is sufficiently large, then there exists an i < N such that 7; is a total function,
+ie. Tj; is defined on each input, so #(dom(U) 9 UX) > 2N~*1_ For all such N’s,
+Proby(dom(U)) > 2-*! > 0. The result extends to any universal Turing machine
+because of universality.
+
+O
+
+A convergent machine V is a Turing machine such that its ¢ number is finite:
+
+bin(n)edom(V)
+
+see [9]. The 2 number of V is Qy = D°yN_, Proby(dom(V)). Because ¢y < oo if and
+only if Qy < oo, see [9], we get:
+
+Fact 10. Let V be a convergent machine. Then, limy_,.. Proby(dom(V)) = 0.
+
+Recall that a self-delimiting Turing machine V is a machine with a prefix-free domain.
+For such a machine, Qy < 1, hence we have:
+
+Corollary 11. Let V be a universal self-delimiting Turing machine. Then
+limy-so0 Proby (dom(V)) = 0.
+
+The probability that an N-bit program never stops on a convergent Turing machine
+tends to one when N tends to infinity; this is not the case for a universal Turing machine.
+
+8 Final comments
+
+We studied the halting probability using a new approach, namely we considered the
+probability space extend over both space and time, and the probability that a ran-
+dom N-bit program will halt by a random later time given that it hasn’t stopped by
+some threshhold time. We postulated an a priori computable probability distribution on
+all possible runtimes. Consequently, the probability space is the product of the space
+of programs—either taken to be all programs of a fixed length, where programs are
+uniformly distributed, or to be all programs of all possible lengths, where the distribu-
+tion depends on the length—and the time space, which is discrete and has an a priori
+computable probability distribution. We proved that given an integer k > 0, we can
+effectively compute a time bound T' such that the probability that an N-bit program
+will eventually halt, given that it has not stopped by time 7’, is smaller than 2-*.
+
+We also proved that the set of halting programs (which is computably enumerable,
+but not computable) can be written as a disjoint union of a computable set and a set of
+probability effectively smaller than any fixed bound.
+
+13
+
+Finally we showed that runtimes much longer than the lengths of their respective
+halting programs are (effectively) rare. More formally, the set of times at which an
+N-bit program can stop after the time 2N+ Constant has effectively zero density.
+
+Can we use this type of analysis for developing a probabilistic approach for proving
+theorems?
+
+The class of problems which can be treated in this way are the “finitely refutable
+conjectures”. A conjecture is finitely refutable if verifying a finite number of instances
+suffices to disprove it [6]. The method seems simple: we choose a natural universal
+Turing machine U and to each such conjecture C' we can effectively associate a program
+Ig such that C is true iff U(IIc) never halts. Running U(IIc) for a time longer than the
+threshold will produce a good evidence of the likelihood validity of the conjecture. For
+example, it has been shown [3] that for a natural U, the length of the program validating
+the Riemann Hypothesis is 7,780 bits, while for the Goldbach’s Conjecture the length of
+the program is 3,484 bits.
+
+Of course, the choice of the probability distribution on the runtime is paramount.
+Further, there are at least two types of problems with this approach.
+
+First, the choice of the universal machine is essential. Pick a universal U and let p be
+a program such that U(p) never stops if and only if a fixed finitely refutable conjecture
+(say, the Riemann Hypothesis) is true. Define W such that W(1) = U(p) (tests the
+conjecture), and W (0a) = U(x). The Turing machine W is clearly universal, but working
+with W “artificially” makes the threshold @ very small. Going in the opposite direction,
+we can write our simulator program in such a way that it takes a huge number of steps
+to simulate the machine—say Ackermann’s function of the runtime given by the original
+machine. Then the new runtime will be very long, while the program is very short. Or
+we could choose very powerful instructions so that even a ridiculously long program on
+the original machine would have a very short runtime on the new one.
+
+The moral is that if we want to have some real idea about the probability that a
+conjecture has a counter-example, we should choose a simulator and program that are
+“honest”: they should not overcharge or undercharge for each time-step advancing the
+computation. This phenomenon is very similar to the fact that the complexity of a single
+string cannot be independent of the universal machine; here, the probability of halting
+cannot be independent of the machine whose steps we are counting.
+
+Secondly, the threshold T’ will increase exponentially with the length of the program
+IIc (of course, the length depends upon the chosen U). For most interesting conjectures
+the length is greater than 100, so it is hopeless to imagine that these computations can
+be effectively carried out (see [16] for an analysis of the maximum speed of dynami-
+cal evolution). It is an open question whether another type of computation (possibly,
+quantum) can be used to speed-up the initial run of the program.
+
+Acknowledgements
+
+We are grateful to M. Zimand for comments and suggestions which significantly improved
+the paper. We are indebted to E. Calude, G. Chaitin, M. Dinneen, M. Dumitrescu, N.
+
+14
+
+Hay, and K. Svozil for illuminating discussions on the topic of this paper.
+
+References
+
+W]
+
+[12]
+
+[13]
+
+[14]
+
+[15]
+
+V. A. Adamyan, C. S. Calude, B. S. Pavlov. Transcending the limits of Turing
+computability, in T. Hida, K. Saito, S. Si (ed.). Quantum Information Complexity.
+Proceedings of Meijo Winter School 2003, World Scientific, Singapore, 2004, 119-
+137.
+
+C. S. Calude. Information and Randomness: An Algorithmic Perspective, 2nd
+Edition, Revised and Extended, Springer-Verlag, Berlin, 2002.
+
+C. S. Calude, Elena Calude, M. J. Dinneen. A new measure of the difficulty of
+problems, J. Mult.-Valued Logic Soft Comput. 12 (2006), 285-307.
+
+C. S. Calude, M. J. Dinneen and C.-K. Shu. Computing a glimpse of randomness,
+Experiment. Math. 11, 2 (2002), 369-378.
+
+C. S. Calude, H. Jiirgensen. Is complexity a source of incompleteness? Adv. in
+Appl. Math. 35 (2005), 1-15.
+
+C. S. Calude, H. Jiirgensen, S. Legg. Solving finitely refutable mathematical prob-
+lems, in C. S. Calude, G. Paun (eds.). Finite Versus Infinite. Contributions to an
+Eternal Dilemma, Springer-Verlag, London, 2000, 39-52.
+
+C. 8. Calude, B. Pavlov. Coins, quantum measurements, and Turing’s barrier,
+Quantum Inf. Process. 1, 1-2 (2002), 107-127.
+
+C. S. Calude, M. A. Stay. From Heisenberg to Gédel via Chaitin, Internat. J.
+Theoret. Phys. 44, 7 (2005), 1053-1065.
+
+C. S. Calude, M. A. Stay. Natural halting probabilities, partial randomness, and
+zeta functions, Inform. and Comput. 204 (2006), 1718-1739.
+
+| G. J. Chaitin. A theory of program size formally identical to information theory,
+
+J. ACM 22 (1975), 329-340.
+
+| G. J. Chaitin. Computing the busy beaver function, in T. M. Cover, B. Gopinath
+
+(eds.). Open Problems in Communication and Computation, Springer-Verlag, Hei-
+delberg, 1987, 108-112.
+
+G. D’Abramo. Asymptotic behavior and halting probability of Turing Machines,
+math.HO/0512390, April 2006.
+
+S. Kohler, C. Schindelhauer, M. Ziegler. On approximating real-world halting prob-
+lems, in M. Liskiewicz, R. Reischuk (eds.). Proc. FCT 2005, Lectures Notes Com-
+put. Sci. 3623, Springer, Heidelberg, 2005, 454-466.
+
+W. B. Langdon, R. Poli. The halting probability in Von Neuamnn architectures, in
+P. Collet et a. (eds.). EuroGP 2006, Lectures Notes Comput. Sci. 3905, Springer,
+Heidelberg, 2006, 225-237.
+
+J. D. Hamkins, A. Miasnikov. The halting problem is decidable on a set of asymp-
+totic probability one, Notre Dame J. Formal Logic 47, 4 (2006), 515-524.
+
+15
+
+[16] N. Margolus, L. B. Levitin. The maximum speed of dynamical evolution, Phys. D
+120 (1998), 188-195.
+
+[17] M. Ziegler. Does quantum mechanics allow for infinite parallelism? Internat. J.
+Theoret. Phys. 44, 11 (2005), 2059-2071.
+
+16

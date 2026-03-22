@@ -1,0 +1,1375 @@
+INFORMATION AND ConTROL 10, 447-474 ‘(1967)
+
+Language Identification in the Limit
+
+E Marx Goip*
+
+The RAND Corporation
+
+Language learnability has been investigated. This refers to the fol-
+lowing situation: A class of possible languages is specified, together
+with a method of presenting information to the learner about an un-
+known language, which is to be chosen from the class. The question
+is now asked, ‘Is the information sufficient to determine which of the
+possible languages is the unknown language?”’ Many definitions of
+learnability are possible, but only the following is considered here:
+Time is quantized and has a finite starting time. At each time the
+learner receives a unit of information and is to make a guess as to the
+identity of the unknown language on the basis of the information
+received so far. This process continues forever. The class of languages
+will be considered learnable with respect to the specified method of
+information presentation if there is an algorithm that the learner can
+use to make his guesses, the algorithm having the following property:
+Given any language of the class, there is some finite time after which
+the guesses will all be the same and they will be correct.
+
+In this preliminary investigation, a language is taken to be a set of
+strings on some finite alphabet. The alphabet is the same for all lan-
+guages of the class. Several variations of each of the following two
+basic methods of information presentation are investigated: A text for
+a language generates the strings of the language in any order such that
+every string of the language occurs at least once. An informant for a
+language tells whether a string is in the language, and chooses the
+strings in some order such that every string occurs at least once.
+
+It was found that the class of context-sensitive languages is learn-
+able from an informant, but that not even the class of regular lan-
+guages is learnable from a text.
+
+1. MOTIVATION: TO SPEAK A LANGUAGE
+The study of language identification described here derives its motiva-
+tion from artificial intelligence. The results and the methods used also
+
+* Present address: Institute for Formal Studies, 1720 Pontius Ave., Los Ange-
+les, California 90025. Present sponsor: Air‘Force Office of Scientific Research.
+Contract F44620-67-C-0018.
+
+447
+Copyright © 1967 by Academie Press Inc.
+
+448 GOLD
+
+have implications in computational linguistics, in particular the eon.
+struction of discovery procedures, and in psycholinguistics, in particulay
+the study of child learning. These implications are discussed in Section 4,
+
+I wish to construct a precise model for the intuitive notion “able to
+speak a language” in order to be able to investigate theoretically how it
+can be achieved artificially. Since we cannot explicitly write down the
+rules of English which we require one to know before we say he can
+“speak English,” an artificial intelligence which is designed to speak
+English will have to learn its rules from implicit information. That ig,
+its information will consist of examples of the use of English and/or of
+an informant who can state whcther a given usage satisfies certain ruleg
+of English, but cannot state these rules explicitly.
+
+For the purpose of artificial intelligence, a model of the rules of usage
+of natural languages must be general enough to include the rules which
+do occur in existing natural languages. This is a lower bound on the
+generality of an acceptable linguistic theory. On the other hand, the con-
+siderations of the last paragraph impose an upper bound on generality;
+For any language which can be defined within the model there must
+be a training program, consisting of implicit information, such that it
+it possible to determine which of the definable languages is being pre-
+sented.
+
+Therefore this research program consists of the study of two subjects:
+Linguistic structure and the learnability of these structures. This re-
+port describes the first step of this program. A very naive model of
+language is assumed, namely, a language is taken to be a distinguished
+set of strings. Such a language is too simple to do anything with (for
+instance, to give information or to pose problems), but it has enough
+structure to allow its learnability to be investigated as follows: Models
+of information presentation are defined, and for each I ask “For which
+classes of languages does a learning algorithm exist?”
+
+In the second step of this program (Gold, 1966), which will not be
+discussed here, nontrivial models of the usages of language are col
+structed. The next step will be to return to learnability theory and de-
+termine whether reasonable training programs exist for linguistic struc
+tures of this type.
+
+2, LANGUAGE IDENTIFICATION MODELS
+
+Appendix IT lists intuitive definitions of some of the terminology of
+recursive theory used herein.
+Let A be a finite set (the alphabet of the languages to be considered)
+
+“ty
+om
+
+LANGUAGE IDENTIFICATION IN THE LIMIT 449
+
+and ZA represent the set of all finite strings of elements from A. A is
+to be considered fixed throughout this paper. The results presented in
+the next chapter are independent of the cardinality of A so long as it
+is not void. A language L will signify any subset of SA. In an actual
+language this may represent, for instance, the set of meaningful strings
+of words,
+
+A language learnability model will signify the following triple:
+
+1. A definition of learnability.
+
+2. A method of information presentation.
+
+3. A naming relation which assigns names (perhaps more than one) to
+languages. The “learner” identifies a language by stating one of its
+names. The names could be called grammars.
+
+Only one definition of learnability, which will be called identifiability
+in the limit, will be considered here. Six alternative methods of informa-
+tion presentation and two alternative naming relations will be considered,
+making a total of twelve models of language learnability. The definitions
+will now be given, and the results are stated in Section 3. The proofs
+are in Appendix I. The basic ideas behind the proofs are described in
+Sections 7 and 9. ;
+
+Time will be taken to be quantized and start at a finite time:
+
+t= 1,2,-:-
+
+At each time ¢ the learner is presented with a unit of information ay
+concerning the unknown language L. In any language learnability
+model, the method of information presentation consists of assigning to
+each L a set of allowable training sequences, 7%), 72, °*°
+
+LearnaBriiry. At each time ¢ the learner is to make a guess g; of a
+name of L based on the information it has received through time ¢.
+Thus the learner is a function G which takes strings of units of informa-
+tion into names:
+
+ge = Ga, vee Ui).
+
+L will be said to be identified in the limit if, after some finite time, the
+guesses are all the same and are a name of L. A class of languages will
+be called identifiable in the limit with respect to a given language learn-
+ability model if there is an effective learner, 1.e., an algorithm for making
+&esses, with the following property : Given any language of the class and
+glven any allowable training sequence for this language, the language will
+be identified in the limit.
+
+For each of the 12 models of language learnability the following ques-
+
+430 GOLD
+
+tion has been investigated (the results are in the next Section): Which
+classes of languages are identifiable in the limit? Note that identifiabil-
+ity (learnability) is a property of classes of languages, not of mdividual
+languages.
+
+In the case of identifiability in the limit the learner does not neces-
+sarily know when his guess is correct. He must go on processing informa-
+tion forever because there is always the possibility that information
+will appear which will force him to change his guess. If the learner were
+required to know when his answer is correct (this is equivalent to “finite
+identifiability” defined in Section 6), then none of the classes of lan-
+guages investigated in the next chapter would be learnable in any of the
+learnability models. My justification for studying identifiability in the
+limit is this: A person does not know when he is speaking a language
+correctly; there is always the possibility that he will find that his gram-
+mar contains an error. But we can guarantee that a child will eventually
+learn a natural language, even if it will not know when it is correct.
+
+INFORMATION PRESENTATION. Two basic methods of information
+presentation will be considered, ‘‘text” and “Gnformant.”? Three varia-
+tions of each will be defined.
+
+A text for L is a sequence of strings 21, t, °*° from L such that every
+string of L occurs at least once in the text. At time ¢ the learner is
+presented x, . Note that for any given language many texts are possible.
+The three variations of this method of information presentation to be
+considered are obtained by putting different restrictions on the class of
+allowed texts:
+
+1. Arbitrary Text: x, may be any function of t.
+
+2. Recursive Text: x, may be any recursive function of &.
+
+3. Primitive Recursive Text: x, may be any primitive recursive function
+of t.
+
+An informant for L can tell the learner whether any string is an ele-
+ment of L, and does so at each time ¢ for some string y, . Three types of
+informant will be considered; these differ in how the y, are chosen:
+1. Arbitrary Informant: y; may be any function of £ so long as every
+
+string of ZA occurs at least once.
+2. Methodical Informant: An enumeration is assigned a priori to the
+strings of DA, and yc is taken to be the ith string of the enumeration.
+3. Request Informant: At time ¢ the learner chooses y: on the basis of
+information received so far.
+Naming ReLation. Two naming relations will be considered, “tester”
+
+‘
+
+|
+|
+
+LANGUAGE IDENTIFICATION 1N THE LIMIT 451
+
+and ‘“‘generator.” In both cases a name of a language, ic., a grammar,
+will be a Turing machine: A fester for L is a Turing machine which is a
+decision procedure for L, that is, the Turing machine defines the func-
+tion from strings to natural numbers which has the value 1 for strings
+in L and 0 for strings not in L. A generator for L is a Turing machine
+which generates L, that is, it defines a function from positive integers to
+strings such that the range of this function is exactly L. A tester exists
+iff L is recursive and a generator exists iff L is recursively enumerable.
+
+Two language learnability models will be called equivalent if exactly
+the same classes of languages are identifiable in the limit with respect
+to either model. Two naming relations will be called equivalent if, for
+every method of information presentation, the two language learnability
+models obtained by using these naming relations are equivalent. Sim}-
+larly, two methods of information presentation will be called equivalent
+if every naming relation yields two equivalent language learnability
+models.
+
+Suppose two naming relations are effectively intertranslatable. That
+is, suppose there is an algorithm for each of the naming relations which,
+given a name of a language in this naming relation, would yield a name
+of the language in the other. Then these are equivalent naming relations.
+
+It is well known that. it is possible to effectively translate from testers
+to generators. Therefore, given any method of information presentation,
+any class of languages which is tester-identifiable in the limit must also
+be generator-identifiable in the limit. However, it is not possible to
+effectively translate from generators to testers, even if we restrict our-
+selves to recursive languages for which both are defined. Therefore,
+it is possible for a method of information presentation to exist such that
+a class of languages is generator identifiable in the limit but not tester
+identifiable in the limit. An example of this is given in the next Section.
+This subject is discussed further in Section 11.
+
+The three variations of information presentation by informant are
+equivalent. They are defined separately only in order to make this point.
+
+3. LANGUAGE IDENTIFICATION RESULTS
+
+For every pair consisting of one of the 12 learnability models together
+With one of the language classes listed in Table I it has been determined
+Whether the class of languages is identifiable in the limit. The language
+Classes are listed in descending order, i.e., each class is properly contained
+in the class above it. The dividing lines between identifiable in the limit
+
+452 GOLD
+
+TABLE I
+
+Divipineé LINES BETWEEN LeaRNABILITY AND
+NoONLEARNABILITY OF LANGUAGES
+
+Learnability model Class of languages
+
+_
+
+Anomalous text®
+Recursively enumerable
+recursive
+
+Informant >
+Primitive recursive
+Context-sensitive
+Context-free
+Regular
+Superfinite
+
+Text >
+Finite cardinality languages
+
+eee
+
+« Anomalous text refers to the use of the generator-naming
+relation and information presentation by means of primitive
+recursive text.
+
+and nonidentifiable in the limit are shown in the table. The classes of
+languages below the dividing line shown for a given model of language
+learnability are identifiable in the limit with respect to this model;
+those above the dividing line are not. It is possible to represent the
+results by means of dividing lines in this way because of the following
+obvious facts: If a class of languages is identifiable in the limit with
+respect to a given language learnability model, then the same holds
+for any subclass; if a class is not identifiable in the limit, then. the same
+holds for any superclass.
+
+In the table, “informant” refers to any of the three variations of in-
+formant together with either the generator- or tester-naming relation.
+That is, the same results have been obtained, so far, for each of the six
+language learnability models which utilize an informant. Of the six
+language learnability models which utilize a text for information presen-
+tation, five of them have given the same results, shown as “text” in the
+table. The remaining model, shown as “anomalous text,” is primitive
+recursive text with the generator-naming relation.
+
+A super-finite class of languages denotes any class which contains all
+languages of finite cardinality and at least one of infinite cardinality.
+
+The anomalous model using a text is of no practical interest, but
+three noteworthy conclusions can be drawn from it: (1) It shows that
+
+4
+
+LANGUAGE IDENTIFICATION IN THE LIMIT 453
+restrictions on the order of presentation of elements of the text can
+greatly increase the learnability power of this method of information
+presentation. (2) Note that the difference between a text and an in-
+formant is that a text only presents the learner with positive instances,
+namely, elements of the language, whereas an informant presents both
+positive and negative instances. Therefore, one would expect the in-
+formant to be more powerful. However, “anomalous text” is more
+powerful than any of the “informant” models, which shows that one
+must carefully consider the details of the learnability model. (8) ““Anom-
+alous text” shows that the choice of naming relation can make a dif-
+ference since, in this case, the generator-naming relation is far more
+powerful than tester.
+
+4. IMPLICATIONS OF LANGUAGE LEARNABILITY RESULTS
+
+To THE Stupy oF CHILD LEaRNING of LANGUAGE. Recently, psycho-
+linguists have begun to study the acquisition of grammar by children
+(e.g., McNeill, 1966). Those working in the field generally agree that
+most children are rarely informed when they make grammatical errors,
+and those that are informed take little heed. In other words, it is be-
+lieved that it is possible to learn the syntax of a natural language solely
+from positive instances, i.e., a “text.’? However, the results presented
+in the last Section show that only the most trivial class of languages
+considered is learnable (in the sense of identification in the limit) from
+text, neglecting “anomalous text.” If one accepts identification in the
+limit as a model of learnability, then this conflict must lead to at least
+one of the following conclusions:
+
+1. The class of possible natural languages is much smaller than one
+would expect from our present models of syntax. That is, even if Eng-
+lish is context-sensitive, it is not true that any context-sensitive Jan-
+guage can occur naturally. Equivalently, we may say that the child
+starts out with more information than that the language it will be pre-
+sented is context-sensitive. In particular, the results on learnability
+from text imply the following: The class of possible natural languages,
+if it contains languages of infinite cardinality, cannot contain all lan-
+guages of finite cardinality.
+
+2. The child receives negative instances by being corrected in a way
+We do not recognize. If we can assume that the child receives both posi-
+tive and negative instances, then it is being presented information by an
+“informant.” The class of primitive recursive languages, which includes
+
+454 GOLD
+
+the class of context-sensitive languages, is identifiable in the hmit from
+an informant. The child may receive the equivalent of negative in-
+stances for the purpose of grammar acquisition when it does not get
+the desired response to an utterance. It is difficult to interpret the actual
+training program of a child in terms of the naive model of a language
+assumed here.
+
+3. There is an a priori restriction on the class of texts which can occur,
+such as a restriction on the order of text presentation. The child may
+learn that a certain string is not acceptable by the fact that it never
+occurs in a certain context. This would constitute a negative instance.
+
+To ARTIFICIAL INTELLIGENCE. The training program of an artificial
+intelligence can certainly include an informant, whether or not children
+receive negative instances. Therefore, the results of Table I show that a
+learning algorithm can be constructed for the identification of primitive
+recursive predicates on strings, which probably include all the predi-
+cates children learn. However, for the purpose of efficiency it is still of
+significance to determine what additional information may be available
+to children, either in the form of an a priori restriction on the class of
+predicates which can oecur in natural languages, or in the form of in-
+formation which can be obtained from the order of presentation of
+naturally occurring texts.
+
+To THE CONSTRUCTION OF, Discovery Procepurss. Attempts have
+been made to construct an algorithm for automatically generating 4
+phrase structure grammar for a language solely by analyzing a text of
+the language. One approach (Lamb, 1961) uses the ‘distributional
+analysis” of Harris (1951, 1964) and Hockett (1958). Namely, one asso-
+ciates phrases which are found to occur in the same context, thereby
+defining phrase categories and simultaneously enlarging the set of con-
+texts which can be considered equivalent; then one records how phrase
+categories are constructed by concatenation of phrase categories.
+Another approach which has been proposed (Solomonoff, 1964) uses
+‘Gdentification by enumeration,” which is defined in Section 7.
+
+These attempts suggest the question, “Is there enough information in
+a text, even one of unlimited length, to allow the identification of a con-
+text-free language?” The results presented in Section 3 show that it 38
+impossible to construct a learning algorithm for the entire class of
+context-free languages if the only information is an arbitrary text. If
+one wishes to assume restrictions on the order of presentation of the
+text, then a successful learning algorithm must be sensitive to the order
+
+1
+
+LANGUAGE ‘IDENTIFICATION IN THE LIMIT 455
+
+of the text. Thus, statistical approaches such as distributional analysis
+are not suitable for this purpose. However, it would be useful to deter-
+mine if there are interesting subclasses of the class of context-free lan-
+guages which can be identified in the limit by either of these approaches.
+
+5. IDENTIFICATION OF FUNCTIONS AND BLACK BOXES
+
+This Section is a summary of the results of a previous paper (Gold,
+1965) which is devoted to the learnability of two types of objects other
+than languages:
+
+Time Function. At each time ¢, a time function produces an output, a
+positive integer, which depends only on ¢. Formally, a time function is a
+function of one variable which takes positive integers (time) into posi-
+tive integers (outputs).
+
+Back Box. A black box has provision for an input at each time, as
+well as an output. Each output is determined by the inputs that have
+previously been applied to the black box. More precisely, let an alphabet
+here signify either a finite set with at least two elements, or else the set
+of positive integers. Then a black box consists of the following triple:
+An input alphabet J; an output alphabet O; a black box function
+which takes input strings into the output alphabet, thereby determin-
+ing the output at time f: 0, = b(4@, +++ , a).
+
+Thus, a time function is a special case of a black box. In the case of a
+time function, 0; depends only on ¢ and not on a previous input string.
+A time function can be described as a black box with a degenerate input
+alphabet consisting of one element.
+
+Throughout the study of black box learnability, J and O are to be
+considered as fixed alphabets, i.e., J and O are chosen a priori, and all
+black boxes are to use these two alphabets.
+
+In the case of time function learnability the following situation is
+studied. The learner observes the successive outputs of a time function
+and is to guess what function it is observing; that is, the learner consists
+of an identity guessing algorithm G which yields a guess g, at each time
+tas to the identity of the time function, g; being determined by the out-
+puts which the time function has produced so far: g,; = G(01, +++ , 04).
+
+In the case of black box identification, the learner consists of an ex-
+Perimenting algorithm FE as well as an identity guessing algorithm G.
+E determines the input which the learner will apply to the unknown
+black box at any time as a function of the previous outputs of the black
+box: 7, = E(o., +++, 0-1). The identity guessing algorithm makes a
+
+456 GOLD
+
+TABLE II
+
+Divivinc LINES BETWEEN LEARNABILITY AND
+NonLEARNABILITY FOR TIME FUNCTIONS AND
+Buack Boxes
+
+Type of object Class of objects
+
+Recursive
+Time functions-——-—-———__—_—_?
+Primitive recursive
+Black boxes >”
+Finite automata
+
+a
+
+guess, at each time é, as to the identity of the black box: g, =
+G01, «++, 08)
+
+It is too much to require the learner to identify a black box in the
+sense of finding its identity at the beginning of the experiment, ¢ = 1.
+This is because, for instance, the black box may be such that the first
+input which the learner applies to it may trap the black box in a subset
+of its possible states, so that the learner will never be able to determine
+what the behavior of the black box would have been if its first input had
+been different. Therefore, only weak learnability will be considered;
+namely, the learner will be asked to predict, at each time, the future
+behavior of the black box. That is, the learner is to guess the present
+black box function, rather than that att = 1.
+
+Only one model of time function learnability and one of black box
+learnability will be considered. The method of information presentation
+for each model was described above. As in the models of language learn-
+ability, in both of these models ‘“Jeamability” will signify ‘§dentifica-
+tion in the limit.” The naming relation will be the following: The names
+of a time function, or of a black box (actually, its black box function),
+will be taken to be those Turing machines which compute it.
+
+Three classes each of time functions and of black boxes have been
+considered. Table II shows which of these are identifiable in the limit.
+As in Table J, the classes are listed in descending order in Table I.
+Finite automata time functions denote ultimately periodic functions.
+
+6. ABSTRACT MODEL OF IDENTIFICATION
+
+An identification situation consists of the following three items:
+
+1. A class & of objects. One of the objects will be chosen, the learner
+will be presented information about it, and the learner is to figure out
+which one it is.
+
+LANGUAGE IDENTIFICATION IN THE LIMIT 457
+
+2. A method of information pregentation. At each time ¢ the learner
+receives a unit of information 7, which is chosen from a set [ . The method
+of information presentation consists of specifying, for each w € 2, which
+sequences of units of information, 7 » 22, +++, are allowable. Let the set
+of allowable sequences be designated I°(w),
+
+3. A naming relation. The learner is to identify the unknown object
+by finding one of its names. A naming relation consists of a set N of
+names and a function f which assigns an object to each name, f: N—> Q.
+
+The identification problem is to determine whether there is a rule the
+learner can use to accomplish the following: For any object w € Q
+and for any information sequence from J “(w), on the basis of that in-
+formation sequence the rule will yield a name n of w, that is, f(n) = a.
+Three variations of the identification problem are the following, of
+which only the first is considered in this paper.
+
+Identification in the limit has made some appearances previously in
+the pattern recognition literature (e.g., Aizerman et al., 1964). In this
+case the learner is to guess a name of the unknown object at each time.
+It is required that there be a finite time after which the guesses are all
+the same and are correct. .
+
+Finite identification is the type of identification problem usually
+considered. It is best known in automata theory (e.g., Gill, 1961). In
+finite identification, the learner is to stop the presentation of information
+at some finite time when it thinks it has received enough, and state the
+identity of the unknown object. This is not possible unless there is some
+finite time at which the information distinguishes the unknown object.
+That is, no other object satisfies the information.
+
+Fixed-time identification. In this case the information sequence stops
+after some finite time which is specified a priori and which is independ-
+ent of the object being described. The learner is to then state the identity
+of the unknown object.
+
+Saying that a class of objects is identifiable in the limit implies not
+only that a suitable guessing function G exists, but that it is effective;
+that is, there exists an algorithm which computes it. The class of ob jects
+will be called meffectively identifiable in the limit if a suitable G exists,
+regardless of whether it is effective. Note that whether a class of objects
+'s ineffectively identifiable in the limit does not depend on the naming
+Telation go long as every object has at least one name. This is because any
+two naming relations are intertranslatable if we do not require translation
+to be effective.
+
+An identification situation will be said to satisfy the distinguishability
+
+458 GOLD
+
+condition if the I7(w) are disjoint; that is, if there is no information
+sequence which describes two different objects.
+
+An identification situation will be said to satisfy the collapsing un-
+certainty condition if the following holds: For any information string
+i, +++, tt, let &, denote the set of those objects which agree with the
+information received so far, i.e., those such that [°(w) contains an
+information sequence which begins 1, -**» i,. For any information
+sequence, the Q; will be a descending sequence. The collapsing uncer-
+tainty condition requires that, for any object » and any information
+sequence of [°(w), the limit set of the 2, contains only w. That is, for
+any w different from there is a time after which the information will
+eliminate w , namely w € Qa.
+
+7, METHODS OF IDENTIFICATION IN THE LIMIT
+
+Identification by enumeration refers to the following guessing rule:
+Enumerate the class of objects in any way, perhaps with repetitions.
+That is, choose a function from the positive integers to the class of ob-
+jects such that the range of the function is the entire class. At time t
+guess the unknown object to be the first ob ject of the enumeration which
+agrees with the information received so far, 1e., which is in Q;. This
+guessing rule will be effective if the following two conditions hold: (1)
+Given any information string 4, °"°, i, and any positive integer 2,
+there is an effective method for determining whether the nth object of
+the enumeration is in Q. (2) There is an effective method for finding 4
+name of the nth object of the enumeration.
+
+To be precise, ‘Gdentifieation by enumeration” refers to a class of
+guessing rules, since there are many possible enumerations.
+
+If we assume that I is countable, then any class of objects which is
+ineffectively identifiable in the limit must be countable. This is because
+the domain of the guessing function G, namely, finite strings of elements
+of I, is countable.
+
+Henceforth, it will be assumed that T and @ are countable, and that
+every object has at least one name.
+
+Turorem 7.1. For ineffective identifiability in the limit, the distinguish
+ability condition 1s necessary and the collapsing uncertainty condition
+sufficient. Indeed, the collapsing uncertainty condition implies thd
+identification by enumeration gives ineffective identification in the Limil
+for any enumeration. If I?(w) ts countable for every «, then the distinguis
+ability condition is sufficient for ineffective identifiability im the limit.
+
+Proor. Ineffective identifiability in the limit = distinguishabilit’
+
+ee
+
+LANGUAGE IDENTIFICATION IN THE LIMIT 459
+If the distinguishability condition does not hold, then there is an allow-
+able information sequence which describes two different objects, so that
+it is impossible to know which is the unknown object.
+
+Collapsing uncertainty = identification by enumeration gives ineffec-
+tive identification in the limit for any enumeration: The object to be
+identified must occur somewhere in the enumeration. Let its first occur-
+rence be at position n, There are at most n — 1 different objects before
+this position in the enumeration. The collapsing uncertainty condition
+implies that there is some finite time after which none of these prior
+objects will agree with the information presented to the learner. After
+that time the unknown object will be the first object of the enumeration
+which satisfies the information received, and will therefore be correctly
+guessed by the learner.
+
+I°(w) is countable for every w, together with distinguishability => in-
+effective identifiability in the limit. If we wish to identify the information
+sequence, then the collapsing uncertainty condition always holds. Say-
+ing that I°(w) is countable for every w is equivalent to saying that the
+set of allowable information sequences is countable. In this case, iden-
+tification by enumeration may be used to identify in the limit the in-
+formation sequence being presented to the learner. The distinguishability
+condition implies that one can translate (not necessarily effectively )
+from information sequences to objects, and therefore to names of ob-
+jects. Q.E.D.
+
+Returning to the specific case of language identification, note that in-
+formation presentation by informant satisfies the collapsing uncertainty
+condition no matter what class of languages is considered. That is why
+the class of primitive recursive languages is identifiable in the limit from
+an informant; namely, an effective enumeration of the characteristic
+functions of this class of languages exists thereby giving an effective
+identification-by-cnumeration guessing rule (see Theorem I.4, Ap-
+Pendix I),
+
+Information presentation by text satisfies the distinguishability con-
+dition for any class of languages, but it does not satisfy collapsing un-
+certainty for any class of languages which contains two languages such
+that one is a subset of the other.
+
+The following guessing algorithm shows that the class of languages of
+finite cardinality is identifiable in the limit from an arbitrary text:
+Guess the unknown language to consist solely of the strings generated so
+far by the text (see Theorem I.6).
+
+To see that the entire class of recursively enumerable languages is
+
+460 GOLD
+
+identifiable in the limit from primitive recursive text using the generator.
+naming relation (see Theorem I.7), note that the class of primitive ye.
+cursive texts is effectively enumerable. Therefore, the text can be effeg.
+tively identified in the limit using identification by enumeration. Since
+the text is a generator for the language, this is all that is needed. This jg
+an example of the method of identification described at the end of the
+proof of Theorem 7.1.
+
+8. INEFFECTIVE IDENTIFIABILITY IN THE LIMIT RESULTS
+
+LANGUAGE IDENTIFIABILITY. If information presentation is by inform.
+ant, then the collapsing uncertainty condition is satisfied, so that any
+countable class of languages is ineffectively identifiable in the limit using
+identification by enumeration. Of course, all the languages must have
+names.
+
+If information presentation is by recursive or primitive recursive text,
+then, again, any countable class of languages is ineffectively identifiable
+in the limit. This is because there are only a countable number of pos-
+sible texts, so that the text can be identified in the limit by means of
+identification by enumeration.
+
+If information presentation is by arbitrary text, then the results for
+ineffective identifiability in the limit are the same as for effective identi-
+fiability in the limit; namely, the class of languages of finite cardinality
+is ineffectively identifiable in the limit, but every proper superclass is
+not. This can be proved by the same methods used to prove Theorems
+1.6 and LS.
+
+Time Function IpentiFIABILITy. The method of information presen-
+tation in the model of time function learnability satisfies the collapsing
+uncertainty condition. Therefore, any countable class of time functions
+is ineffectively identifiable in the limit.
+
+Buack Box Inentiriapiity. Any countable class of black boxes is
+ineffectively (weak) identifiable in the limit. This can be proved by the
+same method used to prove Theorems 9 and 10 in Gold (1965).
+
+9. THE WEAKNESS OF TEXT
+
+It is of great interest to find why information presentation by text is
+so weak and under what circumstances it becomes stronger. Therefore,
+it is worthwhile to understand the method used in Theorems IS and
+1.9 to prove that any class of languages containing all finite languages
+and at least one infinite language is not identifiable in the limit from 8
+text in five out of six of the models using text.
+
+LANGUAGE IDENTIFICATION IN THE LIMIT 461
+
+The basic idea is proof by contradiction. Consider any proposed guess-
+ing algorithm. It must identify any finite language correctly after a
+finite amount of text. This makes it possible to construct a text for the
+infinite language which will fool the learner into making a wrong guess
+an infinite number of times as follows. The text ranges over successively
+larger, finite subsets of the infinite language. At each stage it repeats
+the elements of the current subset long enough to fool the learner.
+
+Thus, the method of proof of the negative results concerning text
+depends on the possibility of there being a huge amount of repetition
+in the text. Perhaps this can be prevented by some reasonable probabil-
+istic assumption concerning the generation of the text. In this case one
+would only require identification in the limit with probability one,
+rather than for every allowed text.
+
+I have been asked, “If information presentation is by means of text,
+why not guess the unknown language to be the simplest one which ac-
+cepts the text available?” This is identification by enumeration. It is
+instructive to see why it will not work for most interesting classes of
+languages: The universal language (if it is in the class) will have some
+finite complexity. If the unknown language is more complex, then the
+guessing procedure being considered will always guess wrong, since the
+universal language is consistent with any finite text. This follows from
+the fact that, if L is the unknown language and if L’ D L, then L’ is con-
+sistent with any finite segment of any text for L. The problem with text
+is that, if you guess too large a language, the text will never tell you that
+you are wrong.
+
+10. LEARNING TIME
+
+Consider an identification situation which satisfies the collapsing un-
+certainty condition. Choose an enumeration of the class of objects and
+let. Gp be the identification-by-enumeration guessing rule which uses this
+numeration. At first sight, identification by enumeration appears to be
+4 naive approach to learning. However, it will be shown that G is the
+Most efficient possible guessing rule with respect to learning time. This
+holds even if ineffective guessing rules are allowed and if the enumeration
+has duplications. This result is somewhat surprising in view of the fact
+that there are many different identification-by-enumeration guessing
+tules, obtained by using different enumerations. This means that none of
+them is uniformly better than any other, in the sense defined below, for
+the purpose of minimizing learning time.
+
+462 GOLD
+
+Let G be any guessing rule, » be any element of the class Q of objects
+and 7 any information sequence allowed for w. Define the learning time
+7(G, w, 7) to be the first time such that at that time and all following times
+all the guesses of G as to the identity of will be the same and correct,
+Define the learning time to be ~ if no such time exists.
+
+Let G and G’ be any two guessing rules. G will be said to be uniformly
+faster than G’ if the following two conditions hold: (1) Given any and
+any allowable 7 for w, then G will identify w at least as soon as G@ will
+identify w, that is,
+
+7(G, 0,1) < 7(G’, @, 7).
+
+(2) There is some wy and an allowable % for wo such that G will identify
+wy sooner that G:
+
+1(G, wy, TM) < 7(G@, wo, tr)
+
+Turorem 10.1. If Go is an identification-by-enumeralion guessing rule,
+then there is no guessing rule uniformly faster than GH.
+
+Proor. This is what has to be proved: Let G be any guessing rule. If
+there is an w and an allowable 7 for w such that @ is faster than Gp, ie.,
+7(G, w, T) < 7(G, @, 7), then there is an w and an allowable 7 for w
+such that G is faster than G, i.e., 7(Go , w,t) < r(G, w, 1).
+
+G, is constructed in such a way that, once it guesses correctly, its
+guesses never change. Therefore, if Gp is presented with the object » to
+identify, by being given information sequence 7, then 7(Go, w, 7) is the first
+time that Gp guesses the identity of the unknown object to be w. At the
+earlier time, 7(G, w, 7), Go must guess the name of some other object, say
+w'. At any time that Gp guesses the name of an object, that object must
+agree with the information received so far. That is, at the time that Go
+guesses w’ there must be an allowable 7’ for w such that 7’ is the same as
+Z up to this time. Thus, if w’ were the unknown object and 7’ the informa-
+tion sequence, then at that time, namely 7(G, w, 7 ), Gand Gp would make
+the same guesses as they would if presented w and 7: Gp would guess
+and G would guess w. That is, if presented with w and 7, Go would be
+correct before G. Q.E.D.
+
+Note that the proof of Theorem 9.1 remains valid even if Go does not
+identify every object of the class in the limit and G does. It is only neces-
+sary that, for every finite initial subsequence of every allowable informa-
+tion sequence, there exist an object in the enumeration which is consistent
+with it.
+
+LANGUAGE IDENTIFICATION IN THE LIMIT 463
+
+il. TRANSLATION FROM GENERATORS TO TESTERS
+
+The purpose of this Section is to use the results on language identifica-
+tion in the limit presented in Section 3 to solve a problem in recursive
+theory. In addition to the generator- and tester-naming relations, a third
+method of assigning names to recursive sets, called domain generators,
+ix defined below. Suzuki (1959) has shown that there is no effective
+method for going from recursive sets, described by domain generators,
+to their complements, described in the same way. This result will here be
+strengthened in two ways: It will be shown that there is no 2-recursive
+(defined below) translation of this type, and that, rather than the entire
+class of recursive sets, one can restrict one’s consideration to any class of
+sets which contains all finite sets and at least one infinite set without
+changing this result. It has been pointed out to me by Norman Shapiro
+that one can easily construct a 3-recursive translation from recursive
+scts to their complements, using the domain generator-naming relation,
+thus completely establishing the difficulty, in the Kleene hierarchy, of
+this type of translation.
+
+lor the purpose of this Section it is desirable to think of languages as
+sets of positive integers, rather than sets of strings. This may be accom-
+plished by means of any recursive one-to-one correspondence between
+the strings of 2A and the positive integers.
+
+Let Z,(x) be the number-theoretic function of one variable defined
+by the Turing machine whose Godel number is n. The two naming rela-
+tions for languages are defined formally as follows.
+
+Generator. A generator for L is a positive integer n such that L is the
+range of Z,(2).
+
+Tester. A tester for L is a positive integer n such that Z,(2) = x L(x),
+where xz is the characteristic function of L.
+
+Tt will be assumed in this Section that in all naming relations the
+haines are numbers.
+
+Translation. Given two naming relations, N; and N»,a translation from
+Ny to Ny isa partial, number-theoretic function f(m) such that, if n is a
+hame of an object in Ny, then f(n) is defined and is a name of that object
+in Ny,
+
+Limiting recursive function. A partial, number-theoretic function f( n)
+will be called limiting recursive if there is a total recursive “guessing
+function” g(n, ¢) such that
+
+f(n) = lim: g(n, 8), (10.1)
+
+464 GOLD
+
+where the limit of a sequence of positive integers is taken to be undefined
+if the sequence is not constant after some finite point; otherwise the
+limit is defined to be the value at which the sequence ultimately becomes
+constant.
+
+Turorem 10.1. If a class of objects 18 identifiable in limit using some
+method of information presentation and using naming relation N,, and af
+there is a limiting recursive translation from N, to naming relation Nz,
+then the class of objects 1s identifiable in the limit using the same method of
+information presentation and N2.
+
+Proor. Let f(m) be a limiting recursive translation from N, to No,
+and g(n, t) be a total recursive function such that Eq. (10.1) holds, and
+let G, be a suitable guessing rule using Ni. Then a suitable guessing rule
+using N2 is the following:
+
+For a given information sequence, suppose that at time t the guess made
+by Gi, is g:. Then, when using Nz, let the guess be g(g:, #). Call this
+guessing rule ( -
+
+To see that G2 is suitable note that, using Ni, there is a time &, after
+which all the g, will equal a fixed value go, which is correct in N, .By
+Eq. (10.1), there is a te such that, for allt 2 &,
+
+f(go) = 9(go, t)- (10.2)
+
+Therefore, for all times greater than 4 and t,, the guess of Ge will be
+f(go), which is correct in N,. Q.E.D.
+
+Consider language learnability with information presentation by
+means of primitive recursive text. The results shown in Table I differ for
+the two naming relations, generator and tester. This leads to the follow-
+ing conclusion:
+
+Corotiary 10.1. If C is a class of languages which contains all finite
+languages and at least one infinite recursive language, then there is no limil-
+ing recursive translation from testers for C to generators.
+
+In order to compare this result with that of Suzuki, it is necessary to
+define two more naming relations for recursive languages:
+
+Domain generator. A domain generator for Lisa positive integer 7 such
+that L is the domain of Z,(2).
+
+Anti-domain generator. n is an anti-domain generator for L if it 1s 4
+domain generator for the complement of L.
+
+Representing predicate. For any partial number-theoretic function
+f(n), its representing predicate P(n, m) will be defined to be true for just
+those pairs (n, m) such that f(n) is defined and f(n) = m.
+
+~
+
+LANGUAGE IDENTIFICATION IN THE LIMIT 465
+
+h-Recursive function. A partial, nimber-theoretic function will be called
+k-recursive if its representing predicate is k-r.e. (recursively enumerable)
+in the Kleene hierarchy.
+
+Note that the I-recursive functions are just the partial recursive
+functions.
+
+It is shown elsewhere (Gold, 1965) that the limiting recursive func-
+tions are the same as the 2-recursive functions.
+
+The strengthening of Suzuki’s result described at the beginning of this
+chapter can now be stated formally:
+
+THEOREM 10.2. If C is a class of languages which contains all finite
+languages and at least one infinite recursive language, then there is no 2-re-
+cursive translation from domain generators for C to anti-domain generators.
+
+Proor. Theorem 10.2 follows from Corollary 10.1 together with the
+following facts which can be proved by standard methods:
+
+There is a partial recursive translation from testers to domain gener-
+ators.
+
+Given both a domain generator and an anti-domain generator for a
+recursive set, there is an effective procedure for finding a generator for it.
+
+Composition of 2-recursive and recursive functions yields 2-recursive
+functions. Q.E.D.
+
+12. INDUCTIVE INFERENCE
+
+Concerning inductive inference, philosophers often occupy themselves
+with the following type of question: Suppose we are given a body of
+information and a set of possible conclusions, from which we are to
+choose one. Some of the conclusions are eliminated by the information.
+The question is, of the conclusions which are consistent with the in-
+formation, which is “correct???
+
+If some sort of probability distribution is imposed on the set of con-
+clusions, then the problem is meaningful. But if no basis for choosing
+between the consistent conclusions is postulated a priori, then inductive
+inference can do no more than state the set of consistent conclusions.
+
+The difficulty with the inductive inference problem, when it is stated
+this way, is that it asks, “What is the correct guess at a specific time
+with a fixed amount of information?” There is no basis for choosing
+between possible guesses at a specific time. However, it ts interesting
+to study a guessing strategy. Now one can investigate the limiting be-
+havior of the guesses as successively larger bodies of information are
+Considered. This report is an example of such a study. Namely, in in-
+
+466 GOLD
+
+teresting identification problems, a learner cannot help but make errors
+due to incomplete knowledge. But, using an “‘identification in the limit”
+guessing rule, a learner can guarantee that he will be wrong only a
+finite number of times.
+
+Recelvep: February 20, 1967
+
+REFERENCES
+
+AIzERMAN, M. A., BRAVERMAN, E. M., anp Rozonoer, L. I. (1964). Theoretical
+foundations of the potential function method in pattern recognition. Auloma-
+tion and Remote Control 25, 821-837 and 1175-1190.
+
+Git, A. (1961). State-identification experiments in finite automata. Information
+and Control 4, 182-154.
+
+Goup, E Marx (1965). Limiting recursion. J. Symb. Logic 30, 28-48.
+
+Gow, E Marx (1966). ‘‘Usages of Natural Language.” Informal report available
+from the author at Institute for Formal Studies, 1720 Pontius Ave., Los
+Angeles, California 90025.
+
+Harris, ZELLIG (1951). “Methods in Structural Linguistics.” Univ. of Chicago
+Press.
+
+Harris, ZELUIG (1964). Distributional structure. In ‘‘The Structure of Language”
+(J. A. Fodor and J. J. Katz, eds.). Prentice Hall, New York.
+
+Hocxert, C. F. (1958). ‘‘A Course in Modern Linguistics.”’ Macmillan, New York.
+
+Lamp, SypNEY, M. (1961). On the mechanization of syntactic analysis. In ‘1961
+Conference on Machine Translation of Languages and Applied Language
+Analysis’? (National Physical, Laboratory Symposium No. 18), Vol. II, pp.
+674-685. Her Majesty’s Stationery Office, London.
+
+McNeILL, Davin (1966). Developmental psycholinguistics. Part of the chapter
+“Psycholinguistics’”’ by George Miller and David McNeill to appear in the
+“Handbook of Social Psychology.”
+
+SoLomonoFr (1964). A formal theory of inductive inference. Information and
+Control 1, 1-22 and 224-254.
+
+Suzun1, Y. (1959). Enumeration of recursive sets. J. Symb. Logic 24, 311.
+
+APPENDIX I
+Proors oF LANGUAGE IDENTIFICATION RESULTS
+
+It ean be shown by standard methods that there is a recursive transla-
+tion from testers to generators. Thus, Theorem 10.1 gives
+
+Turorem I.1. Given any method of information presentation, if @ class
+of languages 1s identifiable in the limit using the tester-naming relation,
+then it is identifiable in the limit using the generator-naming relation.
+
+Corotnary 1.2. Given any method of information presentation, yf a
+
+class of languages 1s not identifiable in the limit using the generator-naming
+
+LANGUAGE IDENTIFICATION IN THE LIMIT 467
+relation, then it is not identifiable in the limit using the lester-naming rela-
+tion.
+
+Turorem 1.3. Arbitrary informant, methodical informant, and request
+informant are equivalent methods of information presentation.
+
+Proor. Identifiability from arbitrary informant > identifiability from
+methodical informant => identifiability from request informant: The first
+implication follows from the fact that an identity guessing algorithm
+which will work for any informant will obviously work for the special
+case of a methodical informant. The second follows from the fact that the
+learner can ask a request informant for methodical information.
+
+Identifiability from request informant => identifiability from arbitrary
+informant: Suppose we have an identity guessing algorithm suitable for a
+request informant and we are faced with an arbitrary informant. What-
+ever information our learner wishes to request at some time, an arbitrary
+informant is required to provide it eventually. We can modify our learner
+so that it will wait until it receives the information it currently desires be-
+fore it makes its next guess. Q.E.D.
+
+The previous five theorems and corollaries compare the methods of
+information presentation and the naming relations for language identifica-
+tion. These results, together with the following six theorems, yield the
+language learnability results presented in Table I.
+
+As in Section 10, it will be desirable to think of languages as sets of
+positive integers, rather than of strings. However, here it will be neces-
+sary to achieve this by means of a primitive recursive one-to-one cor-
+respondence, so that primitive recursive sets of strings will be taken into
+primitive recursive sets of positive integers and vice-versa.
+
+Treore 1.4. Using information presentation by methodical informant
+and the lester-naming relation, the class of primitive recursive languages IS
+identifiable in the limit.
+
+Proor. There is an effective enumeration of the primitive recursive
+functions of one variable, that is, a total recursive function Dalz) of two
+variables such that the class of pp is the class of primitive recursive func-
+tions. Define w(a) to be the function which takes 1 into 1 and all other
+values of x into 0. Then wp,(2) is an effective enumeration of the char-
+acteristic functions of the primitive recursive languages. Let L, be the
+language whose characteristic function is Wpn - It willnow be shown that
+identification by enumeration using this enumeration of the primitive
+Tecursive languages is effective. First it must be shown that, given any
+
+468 GOLD
+
+information sequence up to time t and any n, it can be effectively deter-
+mined whether L, satisfies this information sequence. The information
+sequence will tell us, for each x from 1 through f, whether z is an element
+of the unknown language L. The fact that wpa(a) isa recursive 2-place
+function implies that we can effectively determine the desired informa-
+tion, namely, whether or not each x from 1 through ¢ is an element of L, .
+Now it only remains to show that a tester can effectively be found for
+L,, . This follows from the well known result of recursive theory that, for
+any recursive 2-place function wpn(x), there is a total recursive function
+(n) such that
+
+Zem(&) = Wprl@); (1.1)
+
+that is, @(7) is a tester for Tn -
+
+THEOREM 1.5. Using information presentation by methodical informant
+and the generator-naming relation, the class of recursive languages IS NOT
+identifiable in the limit.
+
+Proor. Let G be an effective identity guessing rule for methodical
+informant which correctly identifies in the limit every finite language and
+the complement of every finite language. A recursive language L will be
+constructed for which the guesses of G will change an infinite number of
+times.
+
+The information sequence for L will be a semi-infinite sequence of 0’s
+and Vs: %1, 42, °°* » where = 1ifte Li, = Of 0 L. An effective
+rule will be given for constructing this sequence. The construction will
+proceed in steps. If at the beginning of a step of the construction the
+construction has so far produced 41, -°* > i, , then at the end of the step
+the information sequence will have been extended to be of the form
+
+iy -tt yin O71’, (1.2)
+
+where a’ denotes a b-long string of a’s. An effective procedure will be
+given for choosing © and y which will guarantee that the guess made by
+G at the end of string 1.2 will be different from the guess made earlier, at
+the end of the information string
+
+iy, ott yin, O- (1.3)
+
+It is only necessary to show that a pair (2, y) with this property exists,
+because then such a pair can be effectively found as follows: Meth-
+
+LANGUAGE IDENTIFICATION IN THE LIMIT 469
+
+od
+
+odically search all pairs of positive integers until such a pair is found.
+That one can effectively determine, for any pair, whether it has the de-
+sired property follows from the fact that G is effective.
+
+Let L, be the language whose information sequence is
+
+ty, +++ tn, 0°, (1.4)
+
+where a” denotes the semi-infinite string a, a, --- . Since Z, is a finite
+language, if G is presented with this information sequence it must, after
+some finite time, continually guess a generator g; for L,. Letn + x bea
+time at which G guesses g; .
+
+Let Ly be the language whose information sequence is
+
+ip, ++, tn, 0%, 1. (1.5)
+
+Since Ly is the complement of a finite language, if G is presented with
+this information sequence, there must be a time n + x + y at which G
+guesses a generator go for Ly . Since g; and gs must differ, this shows the
+existence of a pair (2, y) with the desired property. Q.H.D.
+
+THEOREM I.6. Using information presentation by arbitrary text and the
+tester-naming relation, the class of languages of finite cardinality IS identa-
+fiable in the limit.
+
+Proor. The information sequence 7, , %2, «++ will be a sequence of posi-
+tive integers, the range of which is the unknown language L. A suitable
+identity guessing algorithm is the following: At time ¢, guess L to consist
+solely of the numbers which have occurred so far in the information
+sequence. Since L is finite, there will be a finite time after which all ele-
+ments of L will have occurred in the information sequence, so that the
+guesses will be correct. It is a straightforward but tedious exercise to
+show that there is an effective method for finding a tester for the language
+which consists of 4%, --- , 7:. Q.E.D.
+
+TuHroreM 1.7. Using information presentation by primitive recursive
+text and the generator-naming relation, the entire class of r.e. languages IS
+identifiable in the limit.
+
+Proor. As in Theorem I.4, let p,(x) be an effective enumeration of the
+primitive recursive functions. The information sequence % , 72, --- will
+be the same as the sequence pn(1), pn(2), --- for some n. Such an n can
+be effectively identified in the limit by using identification by enumer-
+ation. That is, the text describing the unknown language L can be identi-
+fied in the limit. Since pu(v) is @ recursive function of two variables,
+
+470 GOLD
+
+there is a total recursive function ¢() such that
+Zem(t) = Pal®); (17)
+
+that is, ¢(n) is a generator for L. Q.E.D.
+
+Trrorem 18. Using information presentation by recursive text and the
+generator-naming relation, any class of languages which contains all finite
+languages and at lease one infinite language L 1S NOT identifiable in the
+limit.
+
+Proor. We may assume that L is r.e. since, otherwise, it would not
+have a generator and the theorem would follow immediately. It can be
+shown by straightforward methods that there is a recursive sequence of
+positive integers a1, d2,°"° which ranges over L without repetitions.
+Suppose Gis an effective identity guessing rule which identifies generators
+for all finite languages in the limit from recursive text. A recursive text
+for L will now be constructed which will cause G to change its guess an
+infinite number of times. This text will be of the form
+
+As in the proof of Theorem 1.5, this text will be constructed in steps. Let
+
+At the beginning of the nth step, the desired information sequence will
+have been constructed through time lon». During the nth step, Y=
+and to, will be effectively chosen in such a manner that the guess made
+by G at time tr will differ from that at time fn. AS in the proof of
+Theorem L.5, it is sufficient to show that such a pair (tena, an) exists.
+Let 7, signify the desired information sequence through time ¢, . The
+information sequence
+
+in, py 00+ = Tena) Gnt (1.10)
+is a recursive text for the finite language
+Ty = {a ,-** 5 Gn}. (1.11)
+
+Therefore, there is an L2n-1 such that at time én_1 the guess made by @
+Will be a generator for L, . Similarly, the information sequence
+
+on , te 7° Ven—1 , Gen (1.12)
+is a recursive text for the finite language
+Ly = {a1, +++ 5 Gan}, (1.13)
+
+LANGUAGE IDENTIFICATION IN THE LIMIT 471
+ed
+which is different from L, . For a layge enough ate, the guess made by G
+at time f, will be a generator for L,, which cannot be the same as a
+generator for Ly . Q.E.D.
+
+THEOREM 1.9. Using information presentation by primitive recursive
+text and the tester-naming relation, any class of languages which contains
+all finite languages and at least one infinite language L IS NOT identifiable
+in the limit.
+
+PROOF BY CONTRADICTION. An information sequence 71 , %, --- is here
+a sequence of positive integers. A guessing rule consists of a computable
+function G which determines the guess g; at time ¢ as a function of the
+information received by the learner through f:
+
+ge = Ga, +++, a). (1.14)
+
+In the terminology of Gold (1965), G determines a limiting recursive
+functional whose domain is information sequences. It is shown in
+Theorem 5 of that reference that any limiting recursive functional can
+be defined by means of a primitive recursive guessing function. It will be
+assumed that G' is primitive recursive. It will also be assumed that L
+is recursive since, otherwise, Z cannot be tester identified and the conelu-
+sion of the theorem is immediate. Let f(z) be a primitive recursive func-
+tion with a range equal to L.
+
+A primitive recursive text 7, will be constructed which contradicts the
+assumption that @ is a suitable guessing rule. A function X, will also be
+defined. Let P, and Q, signify the following predicates:
+
+P, = [f(X.) = dl --- vif(X.) = t] (1.15)
+Q: = (Ay S {Thee , (X), yl & [U(y) = O]}, (1.16)
+
+where 7'(a, x, y) is the primitive recursive predicate which says that the
+Turing machine with Gédel number a, if presented with x as an input,
+will stop after performing the computation with Gédel number y; and
+Uy) isa primitive recursive function such that, if y is the Gédel number,
+of a Turing machine computation, then U (y) is the number it produces
+at its end.
+
+; 7: and X, are simultaneously defined by course-of-values recursion as
+ollows:
+
+il
+
+Il
+
+X;=1 (1.17)
+f(1) (1.18)
+
+a
+
+472 GOLD
+
+Xen = X, +1 if Pr (1.19)
+= X, if AP; _ (1.20)
+leat = SCX) if AP, and Q, (1.21)
+= otherwise. (1.22)
+
+The idea behind the construction is this: 7, is designed to generate L,
+but very slowly. After a finite number of elements of L have been
+generated, v1, --- , 21, if 7, repeats z, long enough the guessing pro-
+cedure will have to guess a decision procedure for the set {a1 , --- , 2,,
+which must reject 2-41. As soon as g; is known to reject 241, % starts
+producing it. Q; implies Z,,(241) = 0, where 41 = f(X,). The details
+follow.
+
+Case I. 4 P, holds for only a finite number of ¢. It will be shown that this
+implies that Rng(f) is finite. Let P, hold for allt 2 a. Then, by in-
+duction,
+
+by (1.19)] t>a = X,=Xe+(t—a)
+[by (1.22)] ty = te
+
+[by (1.15)] f(Xe) © {tes th.
+
+Thus,
+
+Case II. -P, holds infinitely often, but Q; holds for only a finite
+number of . It will be shown that Rng(i,) is finite, but if g—> a, then there
+is an x € Rng(i,) such that Z,(%) ¥ 0. Choose a large enough so that
+4Q, holds for all £ = a. Induction on Eq. (1.22) gives
+
+t% = 7%, forall t = a. (1.28)
+Thus,
+Rng(t:) = {a , met, ta}.
+Let 8 be large enough that
+>
+pee (1.24)
+
+IV
+cos)
+
+gi =a forall ¢
+4P, holds. (1.25)
+
+LANGUAGE IDENTIFICATION IN THE LIMIT 473
+
+Induction on Eqs. (1.20) and (1.15) ‘gives, using (1.25) and (1.23),
+X, = Xs forall i = 6
+S(Xs) © {try +, tal.
+Let tc = f(Xg). Now (1.16). (1.24), and (1.26) give
+a(Ay S$ t){T(a,z,y) & Uly) = 0} forall ¢ = 8.
+Thus,
+
+(1.26)
+
+Zia(z) #0.
+
+Case ITT. Q, holds infinitely often. It will be shown that Rng(i;) =
+Rng(f); but if g: >a, then there is an x such that x € Rng(f) and
+Z.(2) = 0. Let a satisfy
+
+gc =a@ forall t 2a.
+Let 8 = « such that Q¢ holds. Set
+w= f( Xp).
+Then Qs gives Z.(2) = 0.
+Rng(t%) = Rng(f) will be shown by -contradiction. We know, by
+(£18) and (1.21), that
+
+fC) € Rng(is) © Rng(f).
+
+Let 2 be the lowest number such that
+
+J(X) € Rag(%)
+(1.19) and (1.20) show that X; is monotone increasing and either takes
+on all values, or is ultimately constant.
+
+Case IITA. X, = Xq for allt = a. Then (1.19) and (1.20) show that
+-P, holds for i 2 a. By the assumption in Case III, there is a B > a
+such that = Pg and Qs. (1.21) shows that zg. = f(X,). Then Ps41 holds,
+since Xg41 = Xg by the assumption of Case IIIA.
+
+Case IIIB. a is the last t such that X, = X. Then, by (1.19), P. must
+hold, ice.,
+
+f( Xa) € Rngli;). QED.
+
+APPENDIX II
+Derinrtions oF SoME OF THE TECHNICAL TERMINOLOGY
+
+Turing machines are a special class of algorithms which are precisely
+defined, so that they can be investigated mathematically, but are be-
+
+474 GOLD
+
+lieved to be perfectly general in the following sense. Given any compu-
+tational rule which we would intuitively accept as an effectively defined
+algorithm, the function defined by this algorithm is also defined by some
+Turing machine. The recursive functions are those functions which can
+be defined by Turing machines. The inputs to a Turing machine may be
+considered to be either strings or positive integers, and the same is true
+of its outputs.
+
+The primitive recursive algorithms are a special class of algorithms which
+are not general in the sense of Turing machines, but are general enough
+to include all algorithms ordinarily constructed. Primitive recursive
+functions are functions which can be defined by primitive recursive
+algorithms:
+
+A decision procedure for a language L is an algorithm defined on strings
+such that the result of using the algorithm is 1 or 0, depending on whether
+the string it starts with is an element of J or not. A generator for L is an
+algorithm which takes positive integers into strings such that the range of
+the function it determines is exactly L.
+
+L is called recursively enumerable (1.e.) if there is a generator for it,
+recursive if there is a decision procedure for it, primztive recursive if there
+is a primitive recursive decision procedure for it, and regular if there is a
+decision procedure for it which can be computed by a finite state
+automaton.

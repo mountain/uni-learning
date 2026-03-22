@@ -1,0 +1,1024 @@
+ARTIFICIAL INTELLIGENCE 189
+
+STRIPS: A New Approach to the
+Application of Theorem Proving to
+Problem Solving’
+
+Richard E, Fikes
+Nils J. Nilsson
+Stanford Research Institute, Menlo Park, California
+
+Recommended by B. Raphael
+
+Presented at the 2nd IJCAI, Imperial College, London, England, September
+1-3, 1971. .
+
+ABSTRACT
+
+We describe a new problem solver called STRIPS that attempts to find a sequence of operators
+in a spece of world modcls to transform a given initial world model into a model in which a
+given goal formula can be proven to be true. STRIPS represents a world model as an arbitrary
+collection of first-order predicate calculus formulas and is designed to work with models con-
+sisting of large numbers of formulas. It employs a resolution theorem prover to answer ques-
+tions of particular models and uses means-erds analysis to guide ii to the desired goal-satisfying
+model.
+
+DESCRIPTIVE TERMS
+Problem solving, theorem proving. robot planning, heuristic search.
+
+1. Introduction
+
+This paper describes a new problem-solving program called STRIPS
+(STanford Research Institute Problem Solver). An initial version of the
+program has been implemented in LISP on a PDP-10 and is being used in
+conjunction with robot xesearch at SRI. STRIPS is a inember of the class of
+problem solvers that search a space of “world models” to find one in which a
+given goal is achieved. For any world model, we assume that there exists a set
+
+1 The research reported herein was sponsored by the Advanced Research Projects
+
+Agency and the National Aeronautics and Space Administration under Contract NAS12Z-
+2221.
+
+Artificial Intelligence % (14971), 189-208
+Copyright © 1971 by North-Holland Publishing Company
+
+190 RICHARD E. FIKES AND NILS J. NILSSON
+
+of applicable operators, each of which transforms the world model to some
+other world model. The task of the problem solver is to find some composi-
+tion of operators that transforms a given initial world model into one that
+satisfies some stated goal condition.
+
+This framework for problem solving has been central to much of the
+research in artificial intelligence [1]. Our primary interest here is in the class
+‘of problems faced by a robo: in re-arranging objects and in navigating, i.e.,
+problems that require quite complex and general world models compared to
+those needed in the solution of puzzles and games. In puzzles and games, a
+simple matrix or list structure is usually adequate to represent a state of the
+problem. The world model for a robot problem solver, however, must in-
+clude a large number of facts and relations dealing with the position of the
+robot and the positions and attributes of various objects, open spaces, and
+boundaries. In STRIPS, a world model is r.presented by a set of well-
+formed formulas (wfis) of the first-order predicate calculus.
+
+Operators are the basic elements from which a solution is built. For robot
+problems, each operator corresponds to an action routine? whose execution
+causes a robot to take certain actions. For example, we might have a routine
+that causes it to go through a doorway, a routine that causes it to push a box,
+and perhaps dozens of others.
+
+Green [4] implemented a problem-solving system that depended exclus-
+ively on formal theorem-proving methods to search for the appropriate
+sequezce of operators. While Green’s formulation represented a significant
+step in the developmert of problem-solvers, it suffered some serious disad-
+vantages connected with the “frame problem’? that prevented it from
+solving nontrivial problems.
+
+In STRIPS, we surmount these difficulties by separating entirely the pro-
+cesses of theorem proving from those of searching through a space of world
+models. This separation allows us to employ separate strategies for these two
+activities and thereby improve the overall performance of the system. Theo-
+rem-proving methods are used only within a given world model to answer
+questions about it concerning which operators are applicable and whether or
+not goals have been satisfied. For searching through the space of worid
+models, STRIPS uses a GPS-like means-end analysis strategy [6]. This com-
+
+? The reader should keep in mind the distinction between an operator and its associated
+action routine. Execution of action routines actually causes the robot to take actions.
+Application of operators to world models occurs during the planning (i.e., problem solving)
+phase when an attempt is being made to find a sequence of operators whose associated
+action routines will produce a desired state of the world. (See the papers by Munson [2}
+
+and Fikes [3] for discussions of the relationships between STRIPS and the robot executive
+and monitoring functions.)
+
+3 Space does not alow a full discussion of the frame problem; for a thorough treatment,
+see [5].
+
+Artificial Intelligence 2 (1971), 189-208
+
+STRIPS 191
+
+bination of means-ends analysis and formal theorem-proving methods allows
+objects (world models) much more complex and general than any of those
+used in GPS and provides more powerful search heuristics than those found
+in theorem-proving programs.
+
+We proceed by describing the operation of STRIPS in terms of the con-
+ventions used to represent the search space for a problem and the search
+methods used to find a solution. We then discuss the details of implementa-
+tion and present some examples.
+
+2. The Operation of STRIPS
+
+2.1. The Problem Space
+
+The problem space for STRIPS is defined by the initial world model, the set
+of available operators and their effects on world models, and the geal state-
+ment.
+
+As already mentioned, STRIPS represents a world model by a set of well-
+formed formulas (wffs). For example, to describe a world model in which the
+robot is at location a and boxes B and C are at locations b and ¢ we would
+include the following wffs:
+
+ATR(a)
+AT(B, 6)
+AT(C, ec).
+We might also include the wif
+(Wu Vx Vy){[AT(u, x) a (x # y\] => ~ AT(u, y)}
+
+to state the general rule that an object in one place is not in a different place.
+Using first-order predicate calculus wffs, we can represent quite complex
+world models and can use existing theorem-proving programs to answer
+questions about a model.
+
+The available operators are grouped into families called schemata. Con-
+sider for example the operator goto for moving the robot from one point on
+the floor to another. Here there is really a distinct operator for each different
+pair of points, but it is convenient to group ali of these into a family goto
+(m, n) parameterized by the initial position*m and the final position n. We say
+that goto (m, n) is an operator schema whose members are obtained by sub-
+stituting specific constants for the parameters m and n. In STRIPS, when an
+operator is applied to a world model, specific constants will already have
+been chosen for the operator parameiers.
+
+Each operator is defined by an operator description consisting of two main
+
++ The parameters m and n are each really vector-valued, but we avoid vector m tation here
+for simplicity. In general, we denote constants by letters near the beginning of ‘he alphabet
+(a, 6, c,...), parameters by letters in the middle of the alphabet (m, m, . . .), 7nd quantified
+variables by letters near the end of the alphabet (x, y, z).
+
+Artificial Intelligence 2 (i971), 189-208
+
+192 RICHARD E. FIKES AND NILS J. NILSSON
+
+parts: a description of the effects of the operator, and the conditions under
+which the operator is applicable. The effects of an operator are simply
+defined by a list of wffs that must be added to the model and a list of wffs that
+are no longer true and therefore must be deleted. We shall discuss the process
+of calculating these effects in more detail later. It is convenient to state the
+applicability condition, or precondition, for an operator schema as 2 wff
+schenia. To determine whether or not there is an instance of an operator
+schema applicable to a world model, we must be able to prove that there is an
+instance of the corresponding wff schema that logically follows from the
+moécel.
+
+For example, consider the question of applying instances of the operator
+.subschema goto (m, b) to a world model containing the wif ATR(a), where a
+and b are constants. If the precondition wff schema of goto (m, n) is ATR(mm)},
+then we find that the instance ATR(a) can be proved from the world model.
+Thus, an applicable instance of goto(m, 5) is goto(a, 5).
+
+It is important to distinguish between the parameters appearing in wff
+schemata and ordinary existentially and universally quantified variables that
+may also appear. Certain modifications must be made to theorem-proving
+Programs to enable them to handle wff schemata; these are discussed later.
+
+Goal statements are also represented by wfis. For example, the task “‘Get
+Boxes B and C' to Location a” might be stated as the wff:
+
+AT(B, a) A AT(C, a).
+
+To summarize, the problem space for STRIPS is defined by three entities:
+
+(1) An initial world model, which is a set of wffs describing the preseni
+state of the world.
+(2) A set of operators, including a description of their effects and their
+precondition wff schemata.
+(3) A goal cendition stated as a wif.
+The problem is solved when STRIPS produces a world model that satisfies
+the goal wff.
+
+-
+
+2.2. The Search Strategy
+
+In a very simple problem-solving system, we might first apply all of the
+applicable operators to the initial world model to create a set of successor
+models, We would continue to apply all applicable operators to these suc-
+cessors and to their descendants (say in breadth-first fashion) until a model
+was produced in which the goal formula was a theorem. However, since we
+envision uses in which the number of operators applicable to any given world
+model might be quite large, such a simple system would generate an
+undesirably large tree of world models and would thus be impractical.
+Artificial Intelligence 2 (1971), 189-208
+
+STRIPS 193
+
+Instead, we have adopted the GPS strategy of extracting “differences”
+between the present world model and the goal and of identifying operators
+that are “relevant” to reducing these differences [6]. Once a relevant operator
+has been determined, we attempt to solve the subproblem of producing a
+world model to which it is applicable. If such a model is found, then we
+apply the relevant operator and reconsider the original goal in the resulting
+model. In this section, we review this basic GPS search strategy as employed
+by STRIPS.
+
+STRIPS begins by employing a theorem prover to attempt to prove that
+the goal wff G, follows from the set M, of wffs describing the initial world
+model. If Gy does follow from Mg, the task is trivially solved in the initial
+model. Otherwise, the theorem prover will fail to find a proof. In this case,
+the uncompleted proof is taken to be the “difference” between My and Go.
+Next, operators that might be relevant to “reducing” this difference are
+sought. These are the operators whose effects on world models would enable
+the proof to be continued. In determining relevance, the parameters of the
+operators may be partially or fully instantiated. The corresponding instanti-
+ated precondition wff schemata (of the relevant operators) are then taken to be
+new subgoals.
+
+Consider the trivially simple example in which the task is for the robot to
+go to location b. The goal wff is thus ATR(8), and unless the robot is already
+at location b, the initial pruof attempt will be unsuccessful. Now, certainly
+the instance goto(m, b) of the operator goto(m, n) is relevant to reducing the
+difference because its effect would allow the proof to be continued (in this
+case, completed). Accordingly, the corresponding precondition wf schema,
+say ATR(m), is used as a subgoal.
+
+STRIPS works on a subgoal using the same technique. Suppose the pre-
+condition wff schema G is selected as the first subgoal to be worked on.
+STRIPS again uses a theorem prover in an attempt to find instances of G
+that follow from the initial world model Mo. Here again, there are two possi-
+bilities. If no proof can be found, STRIPS uses the incomplete proof as a
+difference, and sets up (sub) subgoals corresponding to their precondition
+wffs. If STRIPS does find an instance of G that follows from Mo, then the
+corresponding operator instance is used to transform Mg into a new world
+model M,. In our previous simple example, the subgoal wif schema G was
+ATR(m). If the initial model contains the wff ATR(a), then an instance of G—
+namely ATR(a)—can be proved from Mo. In this case, the corresponding op-
+erator instance goto(a, b) is applied to My to produce the new model, Mj.
+STRIPS then continues by attempting to prove Gy from M,. In our example,
+Go trivially follows from M, and we are through. However, if no proof could
+be found, subgoals for this problem would be set up and the process would
+
+continue.
+Artificial Intelligence 2 (1971), 189-208
+
+194 RICHARD E. FIXES AND NILS J. NILSSON
+
+The hierarchy of goal, subgoals, and models generated by the search
+process is represented by a search tree. Each node of the search tree has the
+form (<world model), <goal list>), and represents the problem of trying to
+achieve the sub-goals on the goal list (in order) from the indicated world
+model.
+
+An example of such a search tree is shown in Fig. 1. The top node (Mo,
+(Go)) represents the main task of achieving goal Gy from world model M,.
+
+, OP
+
+e
+(tay)
+terminal
+
+Fic. i. A typical STRIPS search tree.
+
+In this case, two aiternative subgoals G, and G, are set up. These are added
+to the front of the goal lists in the two successor nodes. Pursuing one of these
+subgoals, suppose that in the node (Mo, (G,, Go)), goal G, is satisfied in My;
+the corresponding operator, say OP,, is then applied to Mo to yield M,. Thus,
+along this branch, the problem is now tv satisfy goal G, from M,, and this
+problem is represented by the node (4/;, (Go)). Along the other path, suppose
+G, is set up as a subgoal for achieving G, and thus the node (Mo, (G., Gs, Go))
+is created. Suppose G, is satisfied in My and thus OP, is applied to Mg yield-
+ing M2. Now STRIPS must still solve the subproblem G, before attempting
+the main goal Go. Thus, the result of applying OP, is to replace My by M,
+and to remove G, from the goal list to produce the node (M2, (Gp, Go)).
+Artificial Intelligence 2 (1971), 189-208
+
+STRIPS 195
+
+This process continues until STRIPS produces the node (M,, (G,)). Here
+suppose Go can be proved directly from M, so that this node is terminal. The
+solution sequence of operators is thus (OP,, OP;, OP-). .
+
+This example search tree indicates clearly that when an operator is found
+to be relevant, it is not known where it will occur in the completed plan; that
+is, it may be applicable to the initial model and therefore be the first operator
+applied, its effects may imply the goal so that it is the last operator applied,
+or it may be some intermediate step toward the goal. This flexible search
+strategy embodied in STRIPS combines many of the advantages of both
+forward search (from the initial model toward the goal) and backward
+search (from the goal toward the initial model).
+
+STARY
+Map INITIAL WOHLD MODEL
+GOAL-LIST@ (MAIN GOAL! | Creates Fontial Node
+NODE 1M, GOAL -LISTE
+Ga FIAST GOAL ON
+GOAL-LIST
+OOES m No
+
+SATISFY
+ATTACH OIFFERENCE TO
+NODE AND
+STORE NODE
+
+qs
+SELECT A STORED NODE HAVING No Such Wodes
+UNCOMPUTEO SUCCESSORS
+
+NONE THE NODE SELECTED
+
+MEPWORLO MODEL OF NODE
+DAL-LIST THE GOAL-LIST OF THE, NODE
+
+GENERATION OF &
+SUCCESEOR KODE
+Select an Operetor. OF. Rotors
+te Redyeng the Orifarance
+Attached 19 NODE
+
+GENERATION OF &
+SICCERSOR WODE
+
+Mab Wied Model Termed by
+
+GOAL-LIST S101 Formed ty
+gang the Precenéenn ot OP
+to the Ford of GOAL LIST
+
+GOAL -LIET <P Lat Formed ty
+G trom GOAL-LIST
+
+MOOR iM, GOAL-LIST! NODES MA, GOAL-LI57!
+
+Fic. 2. Flow chart for STRIPS.
+
+Whenever STRIPS generates a successor node, it immediately tests to see
+if the first goal on the goal list is satisfied in the new node’s model. If so, the
+corresponding operator is applied, generating a new successor node; if not,
+
+Artificial Intelligence 2 (1971), 189-208
+
+196 RICHARD E. FIKES AND NILS J. NILSSON
+
+the difference (i.e., the uncompleted proof) is stored with the node. Except
+for those successor nodes generated as a result of applying operators, the
+process of successor generation is as follows: STRIPS selects a node and
+uses the difference stored with the node to select a relevant operator. It uses
+the precondition of this operator to generate a new successor. (If all of the
+node’s successors have already been generated, STRIPS selects some oiher
+node still having uncompleted successors.) A flowchart summarizing the
+STRIPS search process is shown in Fig. 2.
+
+STRIPS has a heuristic mechanism to select nodes with uncompleted. suc-
+cessors to work on next. For this purpose we use an evaluation function that
+takes into account such factors as the number of remaining goals on the goal
+list, the number and types of predicates in the remaining goal formulas, and
+the complexity of the difference attached to the node.
+
+3. Implementation
+3.1. Theorem-Proving with Parameters
+
+In this section, we discuss the more important details of our implementation
+of STRIPS; we begin by describing the automatic theorem-proving com-
+ponent.
+
+STRIPS uses the resolution theorem-prover QA3.5 [7] when attempting
+to prove goal and sub-goal wffs. We assume that the reader is familiar with
+‘resolution proof techniques for the predicate calculus [1]. These techniques
+must be extended to handle the parameters occurring in wif schemas; we
+discuss these extensions next.
+
+The general situation is that we have some goal wff schema G(p), say, that
+is to be proved from a set M of clauses where p is a set of schema parameters.
+Following the general strategy of resolution theorem provers, we attempt to
+prove the inconsistency of the set {MU ~ G(p)}. That is, we attempt to
+find an instance p’ of p for which {M U ~ G(p’)} is inconsistent.
+
+We have been able to use the standard unification algorithm of the resolu-
+tion method to compute the appropriaie instances of schema variables during
+the search for a proof. This algorithm has the advantage that it finds the most
+general instances of parameters needed to effect unification. To use the unifi-
+cation algorithm we must specify how it is to treat parameters. The following
+substitution types are allowable components of the output of the modified
+unification algorithm:
+
+@ Terms that can be substituted for a variable: variables, constants, para-
+
+meters, and functional terms not containing the variable.
+
+@ Terms that can be substituted for a parameter: constants, parameters,
+and functional terms not containing Skolem functions, variables, or
+the parameter.
+
+Artificial Intelligence 2 (1971), 189-208
+
+STRIPS 197
+
+The fact that the same parameter may have multiple occurrences in a set of
+clauses demands another modification to the theorem prover. Suppose tw>
+clauses C, and C; resolve to form clause C and that in the process some term
+t is substituted for parameter p. Then we must make sure that p is replaced
+by ¢ in all of the clauses that are descendants of C.
+
+3.2. Operator Descriptions and Applications
+
+We have already mentioned that to define an operator, we must state the
+preconditions under which it is applicable and its effects on a world model
+schema. Precoiditions are stated as wif schemata. For example, suppose
+G(p) is the operator precondition schema of an operator O(p), p is a set of
+parameters, and M is a world model. Then if p’ is a constant instance of p
+for which {MU ~ G(p’)} is contradictory, then STRIPS can apply operator
+O(p’) to world model M.
+
+We next need a way to state the effects of operator application on world
+models. These effects are simply described by two lists. On the delete list we
+specify those clauses in the original model that might no longer be true in
+the new model. On the add list are those clauses that might not have been true
+in the original model but are true in the new model.
+
+For example, consider an operator push(k, :, 2) for pushing object k
+from m to n. Such an operator migiit be described as follows:
+
+push(k, m,n)
+Precondition: ATR(m)
+A AT(k, m)
+delete list
+ATR(m);
+AT(k, m)
+add list
+ATR(@®);
+AT(k, n)
+
+The parameters of an operator schema are instantiated by constants at
+the time of operator application. Some instantiations are made while de-
+ciding what instances of ai operator schema are relevant to reducing a
+difference, and the rest are made while deciding what instances of an oper-
+ator are applicable in a given world model. Thus, when the add and delete
+lists are used to create new world models, all paraiuvicrs occurring in them
+will have been replaced by constants.
+
+(We can make certain modifications to STRIPS to allow it to apply uper-
+ators with uninstantiated parameters. These applications will produce world
+model schemata. This generalization complicates somewhat the simple add
+and delete-list rules for computing new world models and needs further
+study.)
+
+Artificial Intelligence 7 (1971), 189-208
+
+198 RICHARD E. FIKES AND NILS J. NILSSON
+
+For certain operators it is convenient to be able merely to specify the form
+of clauses to be deleted. For example, one of the effects of a robot goto oper-
+ator must be to delete information about the direction that the robot was
+originally facing even though such information might not have been repre-
+sented by one of the parameters of the operator. In this case we would in-
+clude the atom FACING($) on the delete list of goto with the convention that
+any atom of the form FACING($), regardless of the value of $, would be
+deleted.
+
+When an operator description is written, it may not be possible to name
+explicitly all the atoms that should appear on the delete list. For example, it
+may be the case that a world model contains clauses that are derived from
+other clauses in the model. Thus, from AT(BI, a) and from AT(B2, a+ A),
+we might derive NEXTTO(B1, B2) and insert it into the model. Now, if one
+of the clauses on which the derived clause depends is deleted, then the derived
+clause must also be deleted.
+
+We deal with this problem by defining a set of primitive predicates (e.g.,
+AT, ATR) and relating all other predicates to this primitive set. In particular,
+we require the delete list of an operator description to indicate all the atoms
+containing primitive predicates that should be deleted when the operator is
+applied. Also, we require that any nonprimitive clause in the world model
+have associated with it those primitive clauses on which its validity depends.
+(A primitive clause is one which contains only primitive predicates.) For
+example, the clause NEXTTO(B1, B2) would have associated with it the
+clauses AT(B1, a) and AT(B2, a+ A).
+
+By using these conventions, we can be assured that primitive clauses will
+be correctly deleted during operator applications, and that the validity of
+nonprimitive clauses can be determined whenever they are used in a deduc-
+tion by checking to see if all of the primitive clauses on which the non-
+primitive clause depends are still in the world model.
+
+3.3. Computing Differences and Relevant Operators
+
+STRIPS uses the GPS strategy of attempting to apply those operators that
+are relevant to reducing a difference between a world model and a goal or
+subgoal. We use the theorem prover as a key part of this mechanism.
+
+Suppose we have just created a new node in the search tree represented by
+(M, {G;, Gis, .. ., Go)). The theorem prover is called to attempt to find a
+contradiction for the set {MU ~ G;}. If one can be found, the operator
+whose precondition was G; is applied to M and the process continues.
+
+Here, though, we are interested in the case in which no contradiction is
+obtained after investing some prespecified amount of theorem-proving effort.
+The uncompleted proof P is represented by the set of clauses that form the
+Artificial Intelligence 2 (1971), 189-208
+
+STRIPS 199
+
+negation of the goal wff, plus all of their descendants (if any), less any clauses
+eliminated by editing strategies (such as subsumption and predicate evalua-
+tion). We take P to be the difference between M and G, and attach P to the
+node.5 mes
+
+Later, in attempting to compute a successor to this node with incomplete
+proof P attached, we first must select a relevant operator. The quest for
+relevant operators proceeds in two steps. In the first. step an ordered list of
+candidate operators is created. The selection of candidate operators is based
+on a simple comparison of the predicates in the difference clauses with those
+on the add lists of the operator descriptions. For example, if the difference
+contained a clause having in it the negation of a position predicate AT, then
+the operator push would be considered as a candidate for this difference.
+
+The second step in finding an operator relevant to a given difference in-
+volves employing the theorem prover to determine if clauses on the add list of
+a candidate operator can be used to “resolve away” clauses in the difference
+(i.e., to see if the proof can be continued based on the effects of the operator).
+If the theorem prover can in fact produce new resolvents that are descen-
+dants of the add list clauses, then the candidate operator (properly instant-
+jated) is considered to be a relevant operator for the difference set.
+
+Note that the consideration of one candidate operator schema may pro-
+duce several relevant operator instances. For example, if the difference set
+contains the unit clauses ~ ATR(a) and ~ ATR(d), then there are two rele-
+vant instances of goto(m, n), namely goto(m, a) and goto(m, 5). Each new
+resolvent that is a descendant of the operator’s add list clauses is used to
+form a relevant instance of the operator by applying to the operator’s para-
+meters the same substitutions that were made during the production of the
+resolvent.
+
+3.4, Efficient Representation of World Models
+
+A primary design issue in the implementation of a system such as STRIPS
+is how to satisfy the storage requirements of a search tree in which each node
+may contain a different world model. We would like to use STRIPS in a
+robot or question-answering environment where the initial world model
+may consist of hundreds of wffs. For such applications it is infeasible to
+recopy completely a world model each time a new model is produced by
+application of an operator.
+
+We have dealt with this provlem in STRIPS by first assuming that most of the
+wfis in a problem’s initial world model will not be changed by the application
+of operators. This is certainly true for the class of robot problems with which
+we are currently concerned. For these problems most of the wfis in a model
+describe rooms, walls, doors, and objects, or specify general properties of the
+
+5 If P is very large we can heuristically select some part of P as the difference.
+Artificial Intelligence 2 (1971), 189-208
+
+200 RICHARD E. FIKES AND NILS J. NILSSON
+
+world, which are true in all models. The only wffs that might be changed in
+this robct environment are the ones that describe the status of the robot and
+any objects which it manipulates.
+
+Given this assumption, we have implemented the following scheme for
+handling multiple world models. All the wffs for all worid models are stored
+in a common memory structure. Associated with each wff (i.c., clause) is a
+visibility flag, and QA3.5 has been modified to consider only clauses from the
+memory structure that are marked as visible. Hence, we can “define” a par-
+ticular world model for QA3.5 by marking that model’s clauses visible and
+all other clauses invisible. When clauses are entered into the initial world
+model, they are all marked as visible. Clauses that are not changed remain
+visible throughout STRIPS’ search for a solution.
+
+Each world model produced by STRIPS is defined by two clause lists. The
+first list, DELETIONS, names all those clauses from the initial world model
+that are no longer present in the model being defined. The second list,
+ADDITIONS, names all those clauses in the model being defined that are
+not also in the initial model. These lists represent the changes in the initial
+model needed to form the model being defined, and our assumption implies
+they will contain only a small number of clauses.
+
+To specify a given world model to QA3.5, STRIPS marks visible the clauses
+on the model’s ADDITIONS list and marks invisible the clauses on the
+model’s DELETIONS list. When the call to QA3.5 is completed, the visi-
+bility markings of these clauses are returned to their previous settings.
+
+When an operator is applied to a world model, the DELETIONS list of the
+new world model is a copy of the DELETIONS list of the old model plus
+any clauses from the initial model that are deleted by the operator. The
+ADDITIONS list of the new model consists of the clauses from the old
+model’s ADDITIONS list, as transformed by the operator, plus the clauses’
+from the operator’s add list.
+
+3.5. An Example
+
+Tracing through the main points of a simple example helps to illustrate the
+various mechanisms in STRIPS. Suppose we wart a robot to gather together
+three objects and that the initial world model is given by:
+
+ATR(a)
+
+AT(BOXI], 5)
+
+AT(BOX2, c)
+
+AT(BOX3, d)
+The goal wff describing this tas‘: is
+
+Gy: x) [AT(ZOX1, x) A AT(BOX2, x)
+A AT(BOX3, x)].
+
+Artificial Intelligence 2 (1971), 189-208
+
+STRIPS 201
+
+Its negated form is
+~ Go: ~ AT(BOX]1, x) v ~ AT(BOX2, x)
+v ~ AT(BOX3, x).
+(in ~ Go, the term x is a universally quantified variable.)
+We admit the following operators:
+
+(1) push (k, m,n): Robot pushes object k from place 1 to place 7.
+Precondition: AT(k, m) A ATR(m)
+Negated precondition: ~ AT(k,m) v ~ ATR(m)
+Delete list: ATR(n)
+AT(k, m)
+Add list: AT(k,n)
+ATR(n)
+(2) goto(m, n): Robot goes from place m to place n.
+Precondition: ATR(m)
+Negated precondition: ~ ATR(m)
+Delete list: ATR(m)
+Add list: ATR{(n)
+Following the flow chart of Fig. 2, STRIPS first creates the initial node
+(Mo, (Go)) and attempts to find a contradiction to {MU ~ G,}. This
+attempt is unsuccessful; suppose the incomplete proof is:
+
+~ AT(BOXI, x) v ~ AT(BOX2, x) v ~ AT(BOX3, x)
+AT(BOX1, 5) \. AT(BOX2, ec) \ AT(BOX3, @)
+~ AT(BOXI,c) v ~ AT(BOX3, c)
+~ AT(BOX2, 5) v ~ AT(BOX3, b)
+~ AT(BOXI, d) v ~ AT(BOX2, d)
+
+We attach this incomplete proof to the node and then select the node to have
+a successor computed.
+
+The only candidate operator is push(k, m, »). Using the add list clause
+AT(k, n), we can continue the uncompleted proof in one of several ways
+depending on the substitutions made for k and n. Each of these substitutions
+produces a relevant instance of push. One of these is:
+
+OP,: push(BOX2, m, b)
+given by the substitutions BOX2 for k and 6 for n. Its associated precondi-
+tion (in negated form) is:
+~ Gi: ~ AT(BOX2, m) v ~ ATR(7).
+Artificial Intelligence 2 (1971), 189-208
+15
+
+202 RICHARD E. FIKES AND NILS J. NILSSON
+
+Suppose OP, is selected and used to create a successor node. (Later in the
+search process another successor using one of the other relevant instances of
+push might be computed if our original selection did not lead to a solution.)
+Selecting OP, leads to the computation of the successor node (Mo, (G,, Go)).
+
+STRIPS next attempts to find a contradiction for {M, U ~ G,}. The un-
+completed proof (difference) attached to the node contains:
+
+~ AT(BOX2, m)yv ~ ATR(m)
+AT(BOX2, c) ATR(a)
+
+~ ATR(c) ~ AT(BOX2, a)
+
+When this node is later selected to have a successor computed, one of the
+candidate operators is goto(m, n). The relevant instance is determined to be
+
+OP:: goto(m, c)
+with (negated) precondition
+~ G2: ATR(m).
+This relevant operator results in the successor node (Mo, (G2, G1, Go)).
+
+Nest STRIPS determines that (44, U ~ G:) is contradictory with m = a.
+Thus, STRIPS applies the operator goto(a, c) to Mo to yield
+
+ATR(c)
+AT(BOX1, 5)
+AT(BOX2, c)
+AT(BOX3, d)
+
+The successor node is (M,, (G,, Go)). Immediately, STRIPS determines that
+(M, U ~ G,) is contradictory with m = c. Thus, STRIPS applies the oper-
+ator push(BOX2, c, 8) to yield
+
+ATR()
+
+a: | AT(BOXI, b)
+AT(BOX2, 5)
+AT(BOX3, d)
+
+The resulting successor node is (M2, (Go)), and thus STRIPS reconsiders the
+original problem but now beginning with world model M2. The rest of the
+solution proceeds in similar fashion.
+
+Our implementaticn of STRIPS easily produces the solution {goto(a, c),
+push(BOX2, c, 5), goto{b, d), push(BOX3, d, b)}. (Incidentally, Green’s
+theorem-proving problem-solver [4] has not been able to obtain a solution
+to this version of the 3-Boxes problem. It did solve a simpler version of the
+problem designed to require only two operator applications.)
+
+Artificial Intelligence 2 (1971), 189-208
+
+STRIPS 203
+
+4. Example Problems Solved by STRIPS
+
+STRIPS has been designed to be a general-purpose problem solver for robot
+tasks, and thus must be able to work with a variety of operators and with a
+world model containing a large number of facts and relations. This section
+
+ROOMS
+
+i n
+« §
+
+om
+
+ROOM.
+. [ rox]
+. a
+LUGUTSH ITCH
+POOR: *
+
++[ son |
+<[ son |
+
+Fic. 3. Room plan for the robot tasks.
+Artificial Intelligence 2 (1971), 189-208
+
+204 RICHARD E. FIKES AND NILS 3. NILSSON
+
+describes its performance on three different tasks. The initial world model for
+all three tasks consists of a corridor with four rooms and doorways (see
+Fig. 3) and is described by the list of axioms in Table 1. Initially, the robot
+
+TABLE 1. Formulation for STRIPS Tasks.
+
+Initial World Model
+(Wx¥y¥VZ)ICONNECTS(x,y,z}=3CCNNECTS(x,z,y)}
+CONNECTS(DOOR1,ROOMI,ROOMS)
+CONNECTS(DOOR2,ROOM2,ROOMS)
+CONNECTS(DOOR3,ROOM3,ROOMS)
+CONNECTS(DOOR4,ROOM4,ROOMS)
+
+LOCINROOM(f,ROOM4) INROOM(BOX1,ROOMI)
+AT(BOX!I,a) INROOM(BOX2,ROOMI!)
+AT(BOX2,b) INROOM(BOX3,ROOM1)
+AT(BOX3,c) INROOM(ROBOT,ROOM1)
+AT(LIGHTSWITCHI,d) INROOM(LIGHTSWITCHI1,ROOMI)
+ATROBOT(e) PUSHABLE(BOX!1)
+TYPE(BOX1,BOX) PUSHABLE(BOX2)
+TYPE(BOX2,BOX) PUSHABLE(BOX3)
+TYPE(BOX3,BOX) ONFLOOR
+
+TYPE(D4,DOOR) STATUS(LIGHTSWITCHI,OFF)
+TYPE(D3,DOOR) TYPE(LIGHTSWITCHI,LIGHTSWITCH)
+TYPE(D2,DOOR)
+
+TYPE(D1,DOOR)
+
+Operators
+gotol(m): Robot goes to coordinate location mm.
+Preconditions:
+(ONFLOOR) A (3x) [INROOM(ROBOT,x) A LOCINROOM(n,x)]
+Delete list: ATROBOT($), NEXTTO(ROBOT,8$)
+Add list: ATROBOT(m)
+go‘o2m): Robot goes next to item m7.
+Preconditions:
+(ONFLOOR) A {(3x)[INROOM(ROBOT,x) A INROOM(m,x)] v (4x)(4y)
+(INROOM(ROBOT,x) A CONNECTS(m,x,y)]}
+Delete list: ATROBOT($), NEXTTO(ROBOT, $)
+Add list: NEXTTO(ROBOT,m)
+pushto(m,n): robot pushes object m nextSto item 7
+Precondition:
+PUSHABLE(m) A ONFLOOR A NEXTTO(ROBOT,m) A {(9x) INROOM(m,x)
+AINROOM(a,x)] v (3x,3y) IINROOM(n1,x) A CONNECTS(1,x,y)]}
+Delete list: AT ROBOT ($) NEXTTO (ROBOT $) NEXTTO (§,m)
+AT G@n$) NEXTTO (m$)
+Add list: NEXTTO(:m,”)
+NEXTTO(@,m)
+NEXTTO(ROBOT,m)
+
+Artificial Intelligence 2 (1971), 189-208
+
+STRIPS 205
+
+turnonlight(m): robot turns on lightswitch m.
+Precondition: {(4n)[TYPE(#,BOX) A ON(ROBOT,7) A NEXTO(@,7)]}
+A TYPE(n,LIGHTSWITCH)
+Delete list: STATUSQn,OFF)
+Add list: STATUS(m,ON)
+climbonbox(m): Robot climbs up on box m.
+Preconditions:
+ON): LOOR A TYPE(,BOX) A NEXTTO(ROBOT,m)
+Delete list: ATROBOT($), ONFLCOR
+Add list: ON(ROBOT,m)
+climboffbox(m): Robot climbs off box m.
+Preconditions:
+TYPE(m,BOX) A ON(ROBOT,m)
+Delete list: ON(ROBOT,m)
+Add list: ONFLOOR
+gothrudoor (k,i,m): Robot goes through door & from room / into room m.
+Preconditions:
+NEXTTO(ROBOT,4) A CONNECTS‘4,4,m) A INROOM(ROBOT,/) A ONFLOOR
+Delete list: ATROBOT($), NEXTTO(ROBOT,$), INROOM(ROBOT,$)
+Add list: INROOM(ROBOT,m)
+
+Tasks
+1. Turn on the lightswitch
+
+Goal wif: STATUS(LIGHTSWITCHI1,ON)
+
+STRIPS solution: {gotoZ(BOX!),climbonbox(BOX1),climboffbox(BOX1),
+pushto(BOX!,LIGHTSWITCH1),climbonbox(BOX]),
+turnonlight(LIGHTSWITCHI)}
+
+2. Push three boxes together
+
+Goal wif; NEXTTO(BOX1,BOX2) A NEXTTO(BOX2,BOX3)
+
+STRIPS solution: {goto2(BOX2),pushto(BOX2,BOX1),goto2(BOX3),nushto
+(BOX3,BOX2)}
+
+3. Go to a location in another room
+
+Goal wif; ATROBOT(f)
+
+STRIPS solution: {goto2DOOR 1), gothrudoor(DOORI,ROOMI,ROOMS),
+goto2(DOOR4),gothrudoor(DOOR4,ROOM5,ROOM4),
+gotol(f)}
+
+is in ROOM at location e. Also in ROOM! are three boxes and a lightswitch:
+BOX] at location a, BOX2 at location 2, and BOX3 at location c; and a light-
+switch, LIGHTSWITCHI at location d. The lightswitch is high on a wall out
+of normal reach of the -obot.
+
+The first task is to turn on the lightswitch. The robot can solve this problem
+by going to one of the three buxcs, pushing it to the lightswitch, climbing on
+the box® and turning on the lightswitch. The second task is to push the three
+boxes in ROOMI together. (This task is a more realistic elabozation of the
+
+§ This task is a robot version of the so-called “Monkey and Bananas” problem. STRIPS
+can solve the problem even though the curren: SRI robot is incapable of climbing boxes
+and turning on lightswitches.
+. Artificial Intelligence 2 (1971), 189-208
+
+206 RICHARD E. FIKES AND NILS J. NILSSON
+
+three-box problem used as an example in the last section.) The third task is for
+the robot to go to a designated locatior, f, in ROOM4.
+
+The operators that are given to STRIPS to solve these problems are
+described in Table 1. For convenience we define two “goto” operators, gotol
+and goto2. The operator gotol(m) takes the robot to any coordinate location
+m in the same room as the robot. The operator gcoto2(m) takes the robot next
+to any item m (e.g., lightswitch, door, or box) in the same room as ihe robot.
+The operator pushto(m, 1) pushes any pushable object m next to any item n
+(e.g., lightswitch, door or box) in the same room as the robot. Additionally,
+we have operators for turning on lightswitches, going through doorways, and
+climbing on and off boxes. The precise formulation of the preconditions and
+the effects of these operators is contained in Table 1.
+
+TABLE 2. Performance of STRIPS on Three Tasks.
+
+Number of operator
+Time taken Number of nodes applications
+(in seconds) On solution In search On solution In search
+Tota! Theorem-proving path tree path tree
+Turn on the
+lightswitch 113.1 83.0 13 21 6 6
+Push three
+boxes together 66.0 49.6 9 9 4 4
+Go to a locat’on
+
+in another room 123.0 104.9 11 12 5 5
+
+We also list in Table 1 the goal wffs for the three tasks and the solutions
+obtained by STRIPS. Some performance figures for these solutions are
+shown in Table 2. In Table 2, the figures in the “Time Taken” column repre-
+sent the CPU time (excluding garbage collection) used by STRIPS in finding
+a solution. Although some parts of our program are compiled, most of the
+time is spent running interpretive code; hence, we do not attach much
+importance to these times. We note that in all cases most of the time is spent
+doing theorem proving (in QA3.5).
+
+The next columns of Table 2 indicate uhe number of nodes generated and
+the number of operator applications both in the search tree and along the
+solution path. (Recall from Fig. 2 that some successor nodes do not corres-
+pond to operator applications.) We see from these figures that the general
+search heuristics built into STRIPS provide a highly directed search toward
+the goal. These heuristics presently give the search a iarge “depth-first”
+component, and for this reason STRIPS obtains an interesting but non-
+optimal solution to the “turn on the light-switch” problem.
+
+Artificial Intelligence 2 (1971), 189-208
+
+STRIPS 207
+
+5. Future Plans and Problems
+
+The current implementation of STRIPS can be extended in several directions.
+These extensions will be the subject of much of our problem-solving research
+activities in the immediate future. We mention some of these briefly.
+
+We have seen that STRIPS constructs a problem-solving tree whose nodes
+represent subproblems. In a problem-solving process of this sort, there must
+be a mechanism to decide which node to work on next. Currently, we use an
+evaluation function that incorporates such factors as the number and the
+estimated difficulty of the remaining subgoals, the cost of the operators
+applied so far, and the complexity of the current difference. We expect to
+devote a good deal of effort to devising and experimenting with various
+evaluation functions and other ordering techniques.
+
+Another area for future research concerns the synthesis of more complex
+procedures than those consisting of simple linear sequences of operators.
+Specifically, we want to be able to generate procedures involving iteration (or
+recursion) and conditional branching. In short, we would like STRIPS to be
+able to generate computer programs. Several researchers [4, 8,9] have
+already considered the problem of automatic program synthesis and we
+expect to be able to use some of their ideas in STRIPS.
+
+We are also interested ix getting STRIPS to “learn” by having it define
+new operators for itself on the basis of previous problem solutions. These new
+operators could then be used to solve even more difficult problems. It would
+be important to be able to generalize to parameters any constants appearing
+in a new operator; otherwise, the new operator{would not be general encugh
+to warrant saving. Ors: approach [10] that appears promising is to modify
+STRIPS so that it solves every problem presented to it in terms uf general-
+ized parameters rather than in terms of constants appearing in the specific
+problem statements. Hewitt [11] discusses a related process that he calls
+“procedural abstraction”. He suggests that, from a few instances of a pro-
+cedure, a general version can sometimes be synthesized.
+
+This type of learning provides part of our rationale for working on auto-
+matic problem solvers such as STRIPS. Some researchers have questioned the
+value of systems for automatically chaining together operators into higher-
+level procedures that themselves could have been “hand coded” quite easily
+in the first place. Their viewpoint seems to be that a robot system should be
+provided a priori with a repertoire of all of the operators and procedures that
+it will ever need.
+
+We agree that it is desirable to provide a priori a large number of specialized
+operators, but such a repertoire will nevertheless be finite. To accomplish
+tasks just outside the boundary of a priori abilities requires a process for
+chaining together existing operators into more complex ones. We are in-
+terested in a system whose operator repertoire van “grow” in this fashion.
+
+Artificial Intelligence 2 (4971), 189-208
+
+208 RICHARD E, FIKES AND NILS J. NILSSON
+
+Clearly one must not give such a system a problem too far away from the
+boundary of known abilities, because the combinatorics of search will then
+make a solution unlikely. However, a truly “intelligent” system ought
+always to be able to solve slightly more difficult problems than any it has
+solved before.
+
+ACKNOWLEDGEMENT
+
+The development of the ideas embodied in STRIPS has been the result of the combined
+efforts of the present authors, Bertram Raphael, Thomas Garvey, John Munson, ard
+Richard Waldinger, al! members of the Artificial Intelligence Group at SRI.
+
+‘The research reported herein was sponsored by the Advanced Research Projects Agency
+and the National Aeronautics and Space Administration under Contract NAS12-2221.
+
+REFERENCES
+
+1. Nilsson, N. J. Problem-Solving Methods in Artificial Intelligence. McGraw-Hill Book
+Company, New York, New York, 1971.
+
+2. Munson, J. H. Robot planning, execution, and monitoring in an uncertain environ-
+ment. Proc. 2nd Int'l. Joint Conf. Artificial Intelligence, London, England (September
+13, 1971).
+
+3. Fikes, R. E. Monitored execution of robot plans produced by STRIPS. Proc. IFIP 71,
+Ljubljana, Yugoslavia (August 1971).
+
+4. Green, C. Application of theorem proving to problem solving. Proc. Int’l. Joint Conf.
+Artificial Intelligence, Washington, D.C. (May 1969).
+
+5. Raphael, B. The frame problem in problem-solving systems. Proc. Adv. Study Inst. on
+Artificial Intelligence and Heuristic Programming, Menaggio, Italy (August 1970).
+
+6. Ernst, G. and Mewell, A. GPS: A Case Study in Generality and Problem Solving. ACM
+Monograph Series. Academic Press, New York, New York, 1969.
+
+7. Garvey, T. and Kling, R. User’s guide to QA3.5 Question-Answering System. Stanford
+Research Institute Artificial Intelligence Group Technical Note 15, Menlo Park,
+
+. California (December 1969).
+
+8. Waldinger, R. and Lee, R. PROW: A step toward automatic program writing. Proc.
+Int'l. Conf. Artificial Intelligence, Washington, D.C. (May 1969).
+
+9. Manna, Z. and Waldinger, R. Towards automatic program synthesis. Comm. ACM.
+14, No. 3 (March 1971).
+
+10. Hart, P. E. and Nilsson, N. J. The const. tion of generalized plans as an approach
+toward learning. Stanford Research instit.-. Artificial Intelligence Group Memo,
+Menlo Park, California (5 April 1971).
+
+11. Hewitt, C. PLANNER: A language for Manipulating models and proving theorems
+in a robot. Artificial Intelligence Memo No. 168 (Revised), Project MAC, Massa-
+chusetts Institute of Technology, Cambridge, Massachusetts (August 1970).
+
+Artificial Intelligence 2 (1971), 189-208

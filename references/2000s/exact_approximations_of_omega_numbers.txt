@@ -1,0 +1,1402 @@
+Exact Approximations of Omega Numbers
+
+Cristian S. Calude and Michael J. Dinneen
+Department of Computer Science, University of Auckland,
+Private Bag 92019, Auckland, New Zealand
+http://www.cs.auckland.ac.nz/~{cristian,mjd}
+
+Abstract
+
+A Chaitin Omega number is the halting probability of a universal prefix-free
+Turing machine. Every Omega number is simultaneously computably enumerable
+(the limit of a computable, increasing, converging sequence of rationals), and algo-
+rithmically random (its binary expansion is an algorithmic random sequence), hence
+uncomputable. The value of an Omega number is highly machine-dependent. In
+general, no more than finitely many scattered bits of the binary expansion of an
+Omega number can be exactly computed; but, in some cases, it is possible to prove
+that no bit can be computed.
+
+In this paper we will simplify and improve both the method and its correctness
+proof proposed in an earlier paper, and we will compute the exact approximations
+of two Omega numbers of the same prefix-free Turing machine, which is universal
+when used with data in base 16 or base 2: we compute 43 exact bits for the base 16
+machine and 40 exact bits for the base 2 machine.
+
+1 Introduction
+
+Chaitin Omega number, introduced in [Chaitin, 1975], is the halting probability of a
+universal prefix-free (self-delimiting) Turing machine (see [Chaitin, 2007] for a brief pre-
+sentation). Every Omega number is simultaneously computably enumerable (the limit of
+a computable, increasing, converging sequence of rationals), and algorithmically random
+(its binary expansion is an algorithmic random sequence). Any Omega number is more
+than uncomputable: no more than finitely many scattered bits of the binary expansion
+of an Omega number can be exactly computed. The value of an Omega number is highly
+machine-dependent; in some cases, it is possible to prove that no bit can be computed.
+
+This paper describes a simplification and improvement of the hybrid procedure pro-
+posed in [Calude, Dinneen & Shu, 2002] (which combines Java programming and math-
+ematical proofs) for computing exact approximations of Omega numbers. We will apply
+this technique to a compact prefix-free (Turing) machine which will be proved to be uni-
+versal when computing in base 16 and in base 2; we will compute exact approximations
+for the corresponding Omega numbers.
+
+Computing lower bounds is not difficult: we just generate more and more halting
+programs and add their contributions to Omega. Computing upper bounds is much
+more demanding. The idea is to systematically run more and more programs, filter out
+all non-halting programs and try to use this information to obtain better and better
+upper bounds. If the first bit of the approximation happens to be 1, then sure, it is
+
+exact. However, if the provisional bit given by an approximation is 0, then, due to
+possible overflows, this bit is uncertain. This situation extends to other bits as well.
+Only an initial run of 1’s gives exact values for some bits of the Omega number. Of
+course, we can compute exact 0 digits, but as a result of balancing the lower and upper
+bounds.
+
+The paper is structured as follows. Section 2 introduces the notation and the basic
+background in algorithmic information theory: computably enumerable (c.e.) reals,
+program-size complexity, random reals and c.e. random (Omega) reals. In Section 3 we
+present the simplified new prefix-free machine and in Section 4 we describe a simulator
+for it. In Section 5 we present and justify our procedure for obtaining approximations.
+In Section 6 we present the result justifying the computation of the first exact 43 bits of
+Omega for the case when the prefix-free machine works with data in base 16. In Section 7
+we present the results of approximation for the Omega for the same prefix-free machine,
+this time working with data in base 2. The last section includes some final comments.
+The appendix contains some details about the computation process and the data used
+for the computation.
+
+2 Notation and theoretical background
+
+We will use notation that is standard in algorithmic information theory; we will assume
+familiarity with Turing machine computations, computable and computably enumerable
+(c.e.) sets (see, for example, [Odifreddi, 1999, Soare, 1987]) and elementary algorithmic
+information theory (see, for example, [Calude, 2002a]).
+
+By N we denote the set of non-negative integers (natural numbers). Let © = {0,1}
+denote the binary alphabet. Let * be the set of (finite) binary strings, and %” the set
+of infinite binary sequences. The length of a string x is denoted by |x|. A subset A of
+“* is prefix-free if whenever s and ¢ are in A and s is a prefix of t, then s = t.
+
+For a sequence X = %9%1 ++: %n-++ € SY” and integer n > 1, x(n) denotes the prefix of
+length n of x and x; denotes the ith digit of x, ie. x(n) = 79% +++ p_-1 € d*.
+
+A prefix-free Turing machine, shortly, a machine, C is a Turing machine processing
+binary strings such that its program set (domain) PROGco = {x € &* | C(x) halts} is a
+prefix-free set of strings. Clearly, PROG is c.e.; conversely, every prefix-free c.e. set of
+strings is the domain of some machine. The program-size complexity of the string x € &*
+(relatively to C) is He(x) = min{|y| | y € &*, Cy) = x}, where min = oo. A major
+result in algorithmic information theory is the following universality theorem:
+
+Theorem 1 We can effectively construct a machine U (called universal) such that for
+every machine C, there is a constant c > 0 (depending upon U and C) such that for every
+x,y € &* with C(x) = y, there exists a string x’ € O* with U(2') = y and |zx"| < |x| +c.
+
+In complexity-theoretic terms, Hy(x) < Hc(x) +c. Note that PROGy is c.e. but
+not computable.
+
+If S C * is prefix-free, then Q5 = Yoscg 2-Is|. IfC is a machine, then Qc = OQPROG?
+represents its halting probability (see more detailed probability facts in [Calude, 2002a]).
+When C' = U is a universal prefix-free machine, then its halting probability Qy is called
+a Chaitin Omega number, shortly, Omega number, [Chaitin, 1975, Chaitin, 1987].
+
+There are many equivalent ways to define (algorithmic) random sequences, see
+[Calude, 2002a]. For our aim we will use the following complexity-theoretic definition
+(see [Chaitin, 1975]): an infinite sequence x is (algorithmically) random if there is a
+constant c such that H(x(n)) >n—c, for every integer n > 0. A real a is (algorithmic)
+random if its binary expansion x (i.e. a@ = 0.x) is random. The choice of the binary
+base does not play any role, cf. [Calude & Jiirgensen, 1994, Hertling & Weihrauch, 1998,
+Staiger, 1999]: randomness is a property of reals not of names of reals.
+
+A real a is called computably enumerable (c.e.) if there is a computable, increasing
+sequence of rationals which converges (not necessarily computably) to a.
+
+The following characterization of c.e. and random reals was proved in the following
+series of papers [Chaitin, 1975, Calude et al., 2001, Kucera & Slaman, 2001] (see also
+[Calude, 2002b]):
+
+Theorem 2 Let a € (0,1). The following conditions are equivalent:
+
+1. The real a is c.e. and random.
+
+2. There effectively exists a universal machine U such that a = Quy.
+
+In contrast with 7, for which, given enough computational resources, one can compute
+as many as we wish digits of its binary expansion, for any Omega number we cannot
+compute more than finitely many digits, [Chaitin, 1975]. We present this result in terms
+of provability capacity of ZFC (Zermelo-Fraenkel set theory with choice):
+
+Theorem 3 Assume that ZFC is arithmetically sound, that is, any theorem of arithmetic
+proved by ZFC is true. Then, for every universal machine U, ZFC can determine the
+value of only finitely many bits of Quy.
+
+As the value of an Omega number is highly machine-dependent, the difficulty of
+computing the initial bits of an Omega number varies considerably, from no bit to as
+many but finitely. To understand this phenomenon we need the following concept.
+
+A machine U for which Peano Arithmetic can prove its universality and ZFC cannot
+determine more than the initial block of 1 bits of the binary expansion of its halting
+probability, Qu, is called Solovay machine.! In [Calude, 2002c] the following result was
+proved:
+
+Theorem 4 Assume that ZFC is arithmetically sound. Then, every c.e. random real is
+the halting probability of a Solovay machine.
+
+For example, if a € (3/4,7/8) is c.e. and random, then in the worst case ZFC can
+determine its first two bits (11), but no more. For a € (0,1/2) we obtain Solovay’s
+famous result (which also motivates the name “Solovay machine” ) [Solovay, 2000}:
+
+Theorem 5 Assume that ZFC is arithmetically sound. Then, every c.e. random real
+a € (0,1/2) is the halting probability of a Solovay machine which cannot determine any
+single bit of a. No c.e. random real a € (1/2,1) has the above property.
+
+In general only the initial run of 1’s (if any) can be exactly computed.
+
+‘Clearly, U depends on ZFC.
+
+3 A simplified language for register machine programs
+
+The Omega numbers studied in this paper will be defined, following [Chaitin, 1987],
+using an implementation based on a register machine language.
+
+Any register machine has a finite number of registers, each of which may contain an
+arbitrarily large non-negative integer. The list of instructions is given below in two forms:
+our compact form and its corresponding Chaitin style version, [Chaitin, 1987]. The
+current model is “denser” than both models used in [Chaitin, 1987, Calude, Dinneen &
+Shu, 2002]. The main difference between the implementations in [Chaitin, 1987, Calude,
+Dinneen & Shu, 2002] and ours is in the encoding: we use 4 bits instead of 7 or 8 bits per
+character. The data will be given in two different formats: for the base 16, as a string of
+4-bit characters (that is, the read instruction reads 4 raw bits (1 character) at a time),
+for the base 2 as 1-bit strings (the read instruction reads 1 raw bit at a time).
+
+By default, all registers, labelled with a string of ‘a’ to ‘h’ characters, are initialized
+to 0. It is a syntax error if the first occurrence of register 7 appears before register 7 in
+a program, where 7 is lexicographic greater than 7. Also, all registers lexicographic less
+than 7 must have occurred in the program.
+
+To summarize, the alphabet of the machine instructions consists of 16 elements,
+Nie = {a,b, c,d, e, f,g,h,i, comma, =, &,!,%,0,1}. For the base 16 model the data uses
+the alphabet “46; for the base 2 model the data uses the alphabet “2 = {0,1}. The
+concatenation of strings x and y is denoted by x-y. The character length of a string x
+is denoted by ||. If w = x-d is a program consisting of string of instructions x followed
+by data d (also a string), then the program (bit) length of w, denoted by ||w|| is 4/w] and
+4|x| + |d| in the base 16 and base 2 models, respectively.
+
+The register machine instructions are listed below. Note that in all cases R2 denotes
+either a register or a binary constant of the form 1(0 + 1)* + 0, while R1 and R3 must
+be a register variable.
+
+= R1, R2, R3 (EQ R1 R2 R3)
+
+If the contents of Rl and R2 are equal, then the execution continues at the R3-th
+instruction, where R3 = 0 denotes the first instruction. If they are not equal, then
+execution continues with the next instruction in sequence. If the content of R3 is
+outside the scope of the program, then we have an illegal branch error.
+
+& R1, R2 (SET R1 R2)
+The contents of register R1 is replaced by the contents of register R2.
+
++ R1, R2 (ADD R1 R2)
+
+The contents of register R1 is replaced by the sum of the contents of registers R1
+and R2.
+
+!R1 (READ R1)
+
+For the base 6 model, b bits are read into the register R1, so the numerical value of
+R1 becomes at most b—1. Any attempt to read past the last data-bit results in a
+run-time error.
+
+% (HALT)
+
+This is the last instruction for each register machine program before the raw data.
+It halts the execution in two possible states: either successfully halts or it halts with
+an under-read error (i.e., not all data read).
+
+A register machine program consists of a finite list of labelled instructions from the
+above list, with the restriction that the HALT instruction appears only once, as the last
+instruction of the list. The data (a base 2 or base 16 string) follows immediately after
+the HALT instruction. A program not reading the whole data or attempting to read past
+the last data-bit results in a run-time error.
+
+A canonical program is a register machine program in which (1) labels appear in
+increasing numerical order starting with 0, (2) new register names appear in increasing
+lexicographical order starting from ‘a’, (3) there are no leading or trailing spaces, (4)
+operands are separated by a single space, (5) there is no space after labels or operators,
+(6) instructions are separated by a single space, (7) delete all labels as they implicitly
+appear in increasing order starting with 0, (8) delete spaces and the colon symbol with
+the first non-data instruction having an implicit label 0, (9) separate multiple operands
+by a single comma symbol.
+
+Note that for every register machine program there is a unique canonical program
+which is equivalent to it, that is, both programs have the same domain and produce the
+same output on a given input. If x is a program and y is its canonical program, then
+ly| < la.
+
+We next give an example of a canonical program that reads two 16 bit integers and
+computes the product by using a “subroutine” for multiplication.
+
+To aid the presentation and development of these programs (see [Calude, Calude &
+Dinneen, 2006] for more realistic examples) we use a consistent style for subroutines,
+using the following conventions:
+
+> is used
+
+1. The letter ‘L’ followed by characters (usually 1,...,9) and terminated by ‘:
+to mark line numbers. These are local within the subroutine. References to them
+
+are replaced with the binary constant in the final program.
+
+2. For unary subroutines, registers a = argument, b = return line, c = answer (a and
+b are unchanged on return). In our example, we have a subroutine READINT that
+takes an argument a denoting the number of binary bits to read and returns a
+register c that binary number.
+
+3. For binary subroutines, registers a = argumentl, b = argument2, c = return line,
+d = answer (a, b and c are unchanged on return). In our example, we have a
+subroutine MULT that takes registers a and b and multiplies them together and
+returns the product in register d.
+
+4. For Boolean data types, as expected, we use integers 0 = false and 1 = true.
+Also, the characters ‘0’ and ‘1’ are assumed to be encoded numerically as 0 and 1,
+in the 4-bit (base 16) data model,
+
+&a,Main
+=b,cC,a
+
+&d,O0
+=a,0,c
+=b,0,c
+
+&e, Li
+
+&t,1
+
+t+d,a
+
+Li: =f,b,c
++f ,1
+
+t+d,a
+=a,a,e
+
+&c,0
+&d,O0
+=a,0,b
+Li: t+c,c
+le
+
++c,e
+t+d,1
+=a,d,b
+&e, Li
+=a,a,e
+
+&a, 10000
+&b,Li
+
+&d, READINT
+=a,a,d
+
+Li: &f,c
+&b,L2
+
+&d, READINT
+=a,a,d
+
+L2: k&a,f
+&c,L3
+=a,a,MUL
+L3: &a,d
+
+//
+
+//
+
+//
+
+//
+
+//
+
+//
+//
+
+//
+
+//
+
+b=c=0 so jumps to line denoted by "Main".
+MUL(a,b) returns a*b
+
+if a or b is zero return current product
+
+keep adding a to our answer d for b times.
+
+READINT(a) return an a-bit positive integer b
+
+return if a is not at least i
+shift all c’s bits left and add next bit
+
+read bit into e and add toc
+
+Main: example multiplies two 16 bit integers
+
+// save first integer
+
+// recover argument ’a’ for MULT
+
+// move the answer to register a
+
+vA // halt
+1100001110111110
+
+The actual (non-commented) version of the previous example looks like this (where
+one reads the instructions down the columns then across the rows):
+
+&a,10110 +f,1 +d,1 &b,11110
+
+=b,c,a td,a =a,d,b &d,1100
+
+&d,0 =a,a,e &e,1111 =a,a,d
+
+=a,0,c &c,0 =a,a,e &a,f
+
+=b,0,c &d ,O &a, 10000 &c, 100001
+
+&e, 1000 =a,0,b &b,11010 =a,a,10
+
+&t,1 +c,c &d,1100 &a,d
+
+t+d,a le =a,a,d 4,
+
+=f,b,c +c,e &f ,c 1100001110111110
+
+Here the line address of Main is 22 (10110), MUL is 2 (10), and READINT is 12 (1100).
+Finally newlines and spaces are not part of a register machine program so we actually
+have the following (wrapped) string with data over the alphabet “46:
+
+&a,10110=b,c,a&d,0=a,0,c=b,0,cke,1000&f ,1+d,a=f,b,ctf,1+d,a=a,a,ekc,0kd,
+O=a,0,b+c,cletc,etd,1l=a,d,bke,111il=a,a,eka, 10000kb, 11010k&d, 1100=a,a,d&f,
+c&b,11110&d1100=a,a,d&a,fkc,100001=a,a, 10&a,d%1100001110111110
+
+Our register machine language can be used in two forms: (a) in base 2 or (b) in base
+16, depending on whether the READ instruction (!) reads the data 1 bit at a time or
+4-bit nibbles at a time, respectively. In the above example, we assumed the program
+encodes integers in a binary text string (either model). This is convenient, but not the
+most space efficient way, to represent integers if we are working in base 16 (i.e., we ignore
+3 bits out of every 4 data bits). The reader can easily modify the example to use all 4
+bits of data by modifying the subroutine READINT(a) to shift 4 bits to the left instead
+of 1 (see register c on line L1).
+
+It is easy to prove, using the standard technique from [Minsky, 1967, Chaitin, 1987],
+that, in both cases, the simplified register machine language implements a universal
+machine (working in base 16 or base 2).
+
+3.1 A simulator for register machine programs
+
+We have implemented a Java program Simulate(String p, int jtime) that reads in
+a register machine program p and an integer jtime and simulates the running of the
+program for at most jtime executions of an EQ instruction (branch). Here p consists of
+a program (base 16) + data (either base 2 or base 16) and jtime is an upper bound on
+the number of instruction jumps that occur in the simulation.
+
+The simulator first tests the program p for syntactical correctness. If the test is not
+passed, then it returns:
+
+5 — syntax error
+
+If the test was passed, then it simulates the computation of the program on the
+given data until one of the following conditions have been reached. It then returns:
+
+0 — underread (halts but not all data read)
+
+1 — overread (error as the result of trying to read past end of data)
+2 — illegal branch (error in the EQ instruction)
+
+3 — halt success
+
+4 — loop condition (exceeded jtime)
+
+4 The procedure to approximate Omega
+
+Our simulator was used to test the halting problem for all register machine programs
+of a certain length (in both bases). The results have been obtained according to the
+following procedure (which is adapted from [Calude, Dinneen & Shu, 2002]), elaborated
+here for the base 16 case:
+
+1. Start by generating all programs of 4 bits (1 character) and test which of them
+stops.”. All strings of length 4 which can be extended to programs are considered
+prefixes for possible halting programs of longer length; they will simply be called
+prefixes. In general, all strings of length n which can be extended to programs are
+prefixes for possible halting programs of length n+ 4 or longer. Canonical prefixes
+are prefixes of canonical programs.
+
+2. Testing the halting problem for programs of length n € {4,8,12,...,80} was done
+by running all candidates (that is, programs of length n which are extensions of
+prefixes of length n — 4) for up to jtime=1000.°
+
+The most important step of our procedure is to solve the halting problem for small-size
+programs. We establish that a program does not halt by using these three methods:
+
+1. Syntactically eliminate correct programs which contain “obvious” loops or correct
+programs which have a prefix which loops “onto itself” (that is, the loop does not
+involve other instructions than those in the prefix).
+
+2. Simulate any non-filtered program for jtime=1000; if the computation does not
+stop, then store the program for further analysis (a combination of special syntactic
+tests and eventually manual screening).
+
+3. Perform a global analysis of possible errors (mainly due to manual screening) to
+ensure that they do not affect the final result.
+
+A simple example of a prefix filter is =a,a,a. This filter could have been discovered
+“automatically” by observing, via the simulator, that the program =a,a,af exceeded
+our jtime limit. Thus, the filter pattern =a,a,a<SEQ>%, where <SEQ> is any sequence
+of instructions will also loop. In general, any program <LSEQ>%<DATA> (after human
+verification) that loops will imply that <LSEQ><SEQ>%<DATA> also loops. Here <LSEQ> is
+a sequence of instructions (which, in fact, will never be encountered) and <DATA> denotes
+the possible data that the program reads. Since we are mainly concerned about counting
+only the halting programs, we can also check for prefixes (when extended) that would
+always yield ‘overread’ case (e.g. the simulator returns 1).
+
+The simulation of remaining programs obtained by extending the set of canonical
+prefixes was done with the simulator described earlier. Note that a canonical prefix is
+one of two types: (a) a syntactically correct sequence of instructions without the HALT
+
+?In this trivial case only the program % halts.
+
+’Note that in the earlier work [Calude, Dinneen & Shu, 2002] we simulated each program up to an
+upper bound of 100 steps. In our case, if we encounter the return value of 5 from the simulator then this
+implies that we have executed at least jtime (and probably much more) steps.
+
+instruction (%) and (b) a syntactically correct program that the simulator returns 1
+(‘overread’ data case). The enumeration process is quite efficient since we know that
+only very few short programs stop after a very long time, see [Calude & Stay, 2006]. The
+main bottleneck in our approach is having to store all canonical prefixes (filtered) of a
+given length in preparation for counting the halting programs of the next length.
+
+Finally, the remaining programs, which have been considered “non-halting” have been
+screened for further signs of “looping-ness”. This screening was partially automated.
+Although the screening process was very thorough, due to the largeness of analyzed data
+some mistakes could have been introduced for large programs, i.e. for programs of length
+greater than 17. Is our analysis fatally flawed? To prove that this is not the case we
+assumed that for programs of length greater than 17 the proportion of mistakes was up
+to 5% of the corresponding counts (which implies a huge variation in our data, easy to
+be discounted); in this case we prove the values of the exact calculated bits (first 43)
+remain unchanged.
+
+We end this section with a result that is useful in proving upper bounds.
+
+Theorem 6 Let P denote the set of all canonical prefixes that are overreads of (program)
+length k. The contribution of halting extensions of P to Quy, using the base b data model,
+is at most b-|P|-2~*—l82() — |p| .2-*,
+
+Proof. Here is a short proof (suggested by [Tromp, 2006]). The set of halting suffixes
+extending some prefix « € P,{z | Ub(xz) halts}, is a prefix-free set itself, and thus, by
+virtue of Kraft’s inequality,
+
+So orl <1.
+
+{z|Ub(xz) halts}
+
+Accordingly, the contribution of all halting extensions of prefixes in P to Qyp, ex-
+pressed in base 2, is at most
+
+Q- (k+l2|I82(6)) — |p] .g-k. S- bl <|P}.2-*.
+{z|x€P, Ub(xz) halts} {z|Ub(xz) halts}
+
+Kraft’s inequality somehow obscures the computational phenomenon described in the
+theorem. For a better understanding we provide more details for the case 6 = 2, where
+the contribution is at most |P| -27*.
+
+We claim that the contribution to Qy2 is maximised when for all p € P both machines
+p:-O and p-1 halt. Here the contribution to Que with these length k+1 halting programs
+is 2|P|-2-@+) = |P|-2-". Assume this is not the largest case. Then there is some
+p © P such that either p-0 or p-1 does not halt. In this case, without loss of generality,
+if p- 1 does not halt (i.e. it’s still an overread), we would have a non-empty set
+
+X ={p'=p-1-x|ax€ {0,1}*, |x| > 1 and p’ halts} 4 0.
+
+By the prefix-free property of the domain, if we have p1,po € X and x, # %o, then
+neither p; or pg is a prefix of the other. Thus we can view X as a set of leaves of an
+enumeration binary tree {0,1}* rooted at r = p- 1 (possibly of infinite size).
+
+(1) The finite case: We prove our result by induction on the height of the tree. If the
+height is 1, then the worst case is two leaves at distance 1 from r (and strings of length
+
+k +2). The contribution to Qy2 is at most 2~(*+?) + 2-(h+2) — 2Q-k-1 which is the
+same contribution as if the machine r would have halted. Now consider the case when
+the height is t > 1. Let 7, and 75 be the subtrees rooted at the children of r. The
+contribution of each subtree to Qy2 is the same as 1/2 times the contribution if each tree
+T; had been rooted at r because of the distances to the leaves (i.e. program lengths are
+1 bit longer). Thus, adding together both cases yields a contribution to Qy2 that is at
+most as if we had subtrees of height at most t — 1.
+
+(2) The infinite case: First consider the situation where there is a halting extension for
+every length t > k+1. The tree looks like an infinite path with a single pendant hanging
+off each internal node (to either the left or right) of this path. The amount added to
+Qye is simply
+
+TS ppg? = Q-0RHY) . oe gt = go ko)
+
+Since this is the same contribution as if the prefix machine r would have halted, the
+statement of the lemma is not contradicted. To complete the proof we claim that any
+infinite enumeration tree rooted at r can also contribute at most this sum to Qy2. We
+assume that every internal node has two children, otherwise we can contract an edge
+and get a better tree with respect to a subtree’s contribution to Qy2. The idea is
+to successively modify the tree without decreasing it’s “halting” contribution to Qy2
+and end up with a tree isomorphic to the simple infinite caterpillar tree that we just
+investigated. Let t denote the smallest distance from r that have at least two leaves.
+If no such ¢ exists, then we are done. If two of these leaves are siblings, then assume
+their internal parent node represents a halting program. (It has length one less so the
+contribution to Qu2 is preserved.) Otherwise, consider the roots r; and r2 of two of these
+leaves at distance t from r. Swap the subtree (non-leaf child) rooted at r; with the leaf
+node child rooted at rg. All distances are still preserved in this new tree but now we can
+eliminate two leaf nodes (since they are now siblings). We can repeat this process until
+the caterpillar tree emerges. Oo
+
+5 The first 43 bits of Omega in base 16
+
+The distribution of programs of up to 80 bits for U16 is presented in Table 1 in Ap-
+pendix B. All binary strings representing programs have their length divisible by 4. In
+this table we do not include counts for all programs that loop, since this property was
+automatically detected (via a syntactical analysis) and filtered as mentioned earlier.
+
+As a concrete example (referring entries in Table 1 in Appendix B), we have these
+four extendable prefixes: !a, &a, ta and =a. The first overread (at the next level) is !a%
+and this string combined with the seven extendable strings !a!, !a&, !at+, !a=, &a,, ta,
+and =a, form a complete set of eight canonical prefixes of length 12 (= 3 x 4).
+
+At every stage we compute a lower bound and an upper bound for Qyj¢ in base 16.
+The lower bound is easy: we just add the contributions of halting programs generated
+at that stage. Let OF 16 be the approximation of Qyig given by the summation of all
+halting programs of up to k bits in length, that is,
+
+O16 = S° 167'1, (1)
+{||w||<k, U16(w) halts}
+
+10
+
+In Table 1 in Appendix B we summarize the numbers of halting, looping, overhead,
+illegal branch and extendable programs up to data string length 20 for the base 16 model.
+Using the halting counts, given in the table, we obtain the following approximations:
+
+Qi6 = 0-
+
+Qj 16 = 0.0001
+
+QF; 16 = 0.00010000
+
+Qi716 = 0.000100000000
+
+07%, = 0.0001000000010000
+
+QZ" = 0.00010000000100001000
+
+QF4,¢ = 9.000100000001000010000100
+
+07,6 = 0.0001000000010000101001001010
+
+077, = 0.00010000000100001010011011110100
+
+03%, = 0.000100000001000010100111000100010100
+
+Q7f\¢ = 0.0001000000010000101001110110010100111010
+
+Q#4,¢ = 9.00010000000100001010011101101111000110111001
+
+Q#8,¢ = 0.000100000001000010100111011011111100101011010101
+
+0776 = 0.0001000000010000101001110111000011010000111100110010
+
+07,6 = 0.00010000000100001010011101110000111111001100111010001101
+
+QP/¢ = 0.000100000001000010100111011100010000000011111101101011000011
+
+QF4,¢ = 9.0001000000010000101001110111000100000100110000010000100111000111
+
+QPF,¢ = 0.00010000000100001010011101110001000001011001010001011101000010111001
+
+Q77,6 = 0.000100000001000010100111011100010000010110101101110010000001011100101010
+
+QFf,¢ = 90.000100000001000010100111011100010000010110111110011000100011101010110111111
+1
+
+QF"¢ = 0.000100000001000010100111011100010000010111000010101001100101001100101011001
+1100
+
+To be able to compute the exact values of the first N bits of Quig we need to be
+able to prove upper bounds on the obtained approximations. Our strategy consists in
+showing that longer programs do not affect the first N bits of Quig. Due to our specific
+procedure for solving the halting problem, any halting program of length N has a prefix
+of length N —4. This gives an upper bound for the number of possible halting programs
+of length N.
+
+Note that each halting program with non-empty data has to have at least one READ
+instruction.
+
+With 0,16 from (1) we have:
+Qe= S16 =O + » 16-1,
+U16(w) halts {||a||>k, U16(w) halts}
+
+so to obtain an exact approximation of order k for Omega we need to find an upper
+bound for the series:
+
+S- 16-',
+
+{||a||>k, U16(w) halts}
+
+11
+
+The upper bound will be obtained by observing that each halting program of length
+greater than k has to extend an extendable prefix of length k. There are two types of
+extendable prefixes: those which contain HALT and those which do not contain HALT. The
+upper bound will be the sum between the number of halting programs extending these
+two types of extendable prefixes:
+
+e if x contains HALT and we have M, prefixes x of length k, then, in view of Theorem 6
+(for b = 16), the worst case scenario leading to a halting program is to add just
+one character and halt, i.e. the contribution is 16 - M;,-2~**-4 = M, - 16-*;
+
+e if y does not contain HALT, and we have N;, prefixes y of length k, then the worst
+case scenario leading to a halting program is to assume that all extensions halt
+with HALT, hence y-% contributes N;,-16~*~1.
+
+Consequently, our approximation of the tail series is:
+
+167"! < My: 16" + Ny 167"? = (Mg + 16-1 - Ny) - 16-*.
+{||a||>k, U16(2) halts}
+
+The “tail” contribution of all programs of length greater or equal to 84 (Mo; =
+75582618484 and Noi = 1386091346) is bounded by
+
+2P< S° 167 (2)
+{\|a||>20, U16(x) halts}
+
+< (75582618484 + 167! - 1386091346) - 16-79 < 2-48,
+
+consequently, using Table 1 in Appendix B, the lower bound is:
+
+0.000100000001000010100111011100010000010111000010101001100101001100101011001
+1100
+
+and, in view of (2), the upper bound is:
+
+0.000100000001000010100111011100010000010111010100010001001001000001001000010
+00101001
+
+In conclusion, the first 43 exact bits of Qyig6 are:
+00010 00000 01000 01010 01110 11100 01000 00101 110
+
+Comments. (a) Assume that the “screening process” for halting programs described
+in Section 4 has an unreasonable high number of mistakes at levels 18-20, say 5% of
+declared non-halting programs actually halt. With this “new data” the counts of halting
+programs in Table 1, in Appendix B, will be changed at the last levels as follows:
+
+Programs + data string length | Number of halting programs |
+18 426582153 |
+19 4506223687 |
+20 18329694665 |
+
+12
+
+Using the above approximation method we get a “new” lower bound for Omega whose
+first 48 are exactly the bits of Quie.
+
+(b) Comparing with the model in [Calude, Dinneen & Shu, 2002], for the present more
+compact machine we computed more bits of its Omega number: 43 «7/4 = 75.25 > 75 =
+64 « 7/4.
+
+6 The first bits of Omega in base 2
+
+For the base 2 model our task to compute the initial bits of Quy is a little harder. We have
+to consider all program lengths (including data) and not just those that are a multiple
+of 4. In Table 2, in Appendix B, we list the counts of the halting programs that we have
+discovered for various lengths. The bold entries (i.e. to length at most 61) in this table
+are exact while the other entries are just lower bounds.
+
+Let OF 5 be the approximation of Qy2 given by the summation of all halting programs
+of up to & bits in length, that is,
+
+{||w||<k, U2(w) halts}
+
+Recall that in this case if U2(w) halts, then w is of the form w = x -d, where z is
+a string of instructions (the last is HALT, denoted by %) and d is a sequence of raw bits.
+The program length of w is now ||w]|| = 4|z|+ |d|, where || is the number of characters
+in x and |d| is the length of the binary string d.
+
+Again using these counts, we can compute (for the base 2 model) an Omega lower
+bound of Qy2 at each stage. The successive approximations are:
+
+2°, = 0.
+QL, = 0.0
+02,, = 0.00
+03. = 0.000
+04, = 0.0001
+
+Q?-5 = 0.00010
+
+OF;2 = 0.000100
+
+Of. = 0.0001000
+
+0, = 0.00010000
+
+O25 = 0.000100000
+
+Q7!, = 0.0001000000
+
+Qt = 0.00010000000
+
+Qi = 0.000100000000
+
+013, = 0.0001000000010
+
+O74, = 0.00010000000100
+O77 = 0.000100000001000
+Qf, = 0.0001000000010000
+074, = 0.00010000000100000
+02%, = 0.000100000001000000
+Q7% = 0.0001000000010000000
+
+13
+
+07, = 0.00010000000100001000
+
+024, = 0.000100000001000010000
+
+072, = 0.0001000000010000101000
+
+073, = 0.00010000000100001010000
+
+074, = 0.000100000001000010100100
+
+02° = 0.0001000000010000101001000
+
+078, = 0.00010000000100001010010000
+
+027, = 0.000100000001000010100100000
+
+07%, = 0.0001000000010000101001001010
+
+07%, = 0.00010000000100001010011011100
+
+02", = 0.000100000001000010100110111000
+
+037, = 0.0001000000010000101001110011000
+
+022, = 0.00010000000100001010011101000100
+
+033, = 0.000100000001000010100111010101000
+
+034, = 0.0001000000010000101001110101010000
+
+03°, = 0.00010000000100001010011101010100000
+
+028, = 0.000100000001000010100111011000010100
+
+03%, = 0.0001000000010000101001110110010000010
+
+028, = 0.00010000000100001010011101101101100101
+
+023°, = 0.000100000001000010100111011011011010011
+
+QZ? = 0.0001000000010000101001110110111101111111
+
+QZ}, = 0.00010000000100001010011101101111110101111
+
+QZ = 0.000100000001000010100111011100000001010111
+
+QZ, = 0.0001000000010000101001110111000000010110111
+
+QM, = 0.00010000000100001010011101110000001111001000
+
+QF" = 0.000100000001000010100111011100001010101001001
+
+QZ8 = 0.0001000000010000101001110111000010110110001111
+
+04/5 = 0.00010000000100001010011101110000110111111101011
+
+QZ%, = 0.000100000001000010100111011100001110010111000111
+
+QZ%, = 0.0001000000010000101001110111000011101111001101011
+
+027%, = 0.00010000000100001010011101110000111100001101011011
+
+074, = 0.000100000001000010100111011100001111000111010101011
+
+072, = 0.0001000000010000101001110111000011110100000110101110
+
+07, = 0.00010000000100001010011101110000111101010100011100001
+074 = 0.000100000001000010100111011100001111100001010011100111
+07 = 0.0001000000010000101001110111000011111000100100011011001
+026, = 0.00010000000100001010011101110000111110011001000001101101
+02, = 0.000100000001000010100111011100001111100110111101010111101
+O28, = 0.0001000000010000101001110111000011111001111101100101000011
+(272, = 0.00010000000100001010011101110000111110011111111001010111111
+OPP, = 0.000100000001000010100111011100001111101000001110000001001011
+OF5 = 0.0001000000010000101001110111000011111010001010111001010001001
+
+The following lower bound approximations 053 incorporate the counts of those reg-
+ister machine programs of length 7 which we know that halt. Due to the large number
+of prefixes we did not extend some of the prefixes when the string length was more than
+30 or when the program+data length was more than 80.
+
+14
+
+ass? = 0.00010000000100001010011101110000111110100011010011101110110101
+
+ass? = 0.000100000001000010100111011100001111101001001001001011101100001
+
+asst = 0.0001000000010000101001110111000011111010010011010011001000111010
+
+ass? = 0.00010000000100001010011101110000111110100101001110001100111011100
+
+ass° = 0.000100000001000010100111011100001111101001010101001111000010100001
+
+ass’ = 0.0001000000010000101001110111000011111010010101101100110000100100001
+
+Q5$* = 0.00010000000100001010011101110000111110100101011110010000110011101000
+
+ass? = 0.000100000001000010100111011100001111101001011000001001111001000010011
+
+055° = 0.0001000000010000101001110111000011111010010110010111010100001011110110
+
+53" = 0.00010000000100001010011101110000111110100101100110111001000101111011101
+
+05° = 0.000100000001000010100111011100001111101001011010010110001011110101100001
+
+ss? = 0.0001000000010000101001110111000011111010010110101000011100111000011111010
+
+ss = 0.00010000000100001010011101110000111110100101101010110110101001100001010100
+
+os = 0.000100000001000010100111011100001111101001011010101111111100110011101110110
+
+055° = 0.000100000001000010100111011100001111101001011010110011100010110101010000011
+1
+
+oa = 0.000100000001000010100111011100001111101001011010110100010111011110101000101
+
+11
+
+os = 0.000100000001000010100111011100001111101001011010110100111100110000110111000
+000
+
+055° = 0.000100000001000010100111011100001111101001011010110101010100100011001111111
+1010
+
+ass? = 0.000100000001000010100111011100001111101001011010110101100101111101011011010
+10010
+
+Oss" = 0.000100000001000010100111011100001111101001011010110101101011100101110000100
+001101
+
+Oss? = 0.000100000001000010100111011100001111101001011010110101101011101101110111101
+1100111
+
+05§° = 0.000100000001000010100111011100001111101001011010110101101011110100100101010
+00011010
+
+ass = 0.000100000001000010100111011100001111101001011010110101101100001011011000011
+110010000
+
+We now explain how we calculated an upper bound for Qy2. We will slightly change
+the strategy used for the base 16 model because in the base 2 model there are too many
+programs to generate. To make the process feasible we will apply several times Theorem 6
+for various sets of canonical prefixes (grouped by program+data length sizes) which will
+be aggregated into a final upper bound.
+
+As in the base 16 model there are two types of extendable prefixes: those which
+contain HALT and those which do not contain HALT. The upper bound will be obtained
+by summing the potential halting programs that can occur by extending these two types
+of extendable prefixes. Using a similar analysis as in base 16 model, if we have M;,
+canonical prefixes of length k which contain HALT and N, prefixes of length k which do
+not contain HALT, then an upper bound for the tail series:
+
+27 Well = Og — Oy
+{|l2||>k, U2(w) halts}
+
+15
+
+is
+2-My,-2-* 14+1-N,-2-* 4 = My 2-* + MN, 27-84. (4)
+
+The computation is feasible for extendable prefixes that do not contain HALT till
+k = 80: we have obtained Ngo = 550974535, so these prefixes contribute with Ngo -2~*4 =
+550974535 - 2-54,
+
+Next we consider the overread prefixes, i.e. prefixes which contain HALT. Ideally, we
+would have computed Mgo, so the upper bound would have been Mgo - 278° + Ngo 2-84
+Unfortunately, in the base 2 case we did not reach Mgo, hence we have a set of non-
+extended prefixes of different program lengths. Still, by iterating Theorem 6, we still get
+an upper bound considering where the remaining prefixes have lengths 61, 67, 73, 76,
+79, 81 or 84. More precisely, instead of Mgo - 2~°° we use the bound Mé, -2~°! + Mé, -
+2-87 + Mt, 2-73 + Mtg - 2-78 + Mtg -2-7 + Mg, -2-§! + Mg, -2-**. Here Mi, represents
+the count of the non-extended prefixes of length 7. These counts are listed below:
+
+Program-+data length (j) M!
+61 10
+67 8745008
+73 891868952
+76 37749002
+79 2587456080
+81 921721461
+84 149028029
+
+A concrete example is Mé, representing just these 10 overread prefixes (pro-
+gram-+data lengths are 4 « 9 + 25 = 61 bits):
+
+!a=a,0,a/%00000000000000000000000000 la=a,b,c%00000000000000000000000000
+la=a,0,b%00000000000000000000000000 !a=b, a, a00000000000000000000000000
+la=a,1,b%11111111111111111111111111 !a=b,a,b%00000000000000000000000000
+la=a,b,a%00000000000000000000000000 !a=b, a, c400000000000000000000000000
+la=a,b,b%00000000000000000000000000 !a=b ,c,a400000000000000000000000000
+
+It is interesting to note that 9 of these 10 prefixes can extend to either a halt or an
+overread (repeatedly). These enumeration trees are isomorphic to the caterpillar trees
+discussed in the proof of Theorem 6. So we saved a bit of computation by not extending
+them (which we could have done much earlier). The other/last case always extends to a
+loop or an overread*.
+
+An upper bound for Qy2 is now obtained by adding a “tail” of potential halting
+programs, by iterating Theorem 6, to our best lower bound:
+
+1©.@)
+Que < G84 + Ngo - 2784 + S° M!.27*.
+i=1
+
+The value of M/ is 0 for all but a finite number of cases; moreover, the set of lengths
+{61, 67, 73, 76, 79, 81,84} accounts for all possible extensions (of data) of these prefixes
+that halt.
+
+“Thus, we could set Mé, = 9, since this particular prefix never extends to a halting program.
+
+16
+
+Indeed, we just look at the set of overread programs that we did not extend. The
+enumeration tree has a finite height, so from the definition of M/, the set of overread
+prefixes (that were not extended) fall into at most a finite number of M/ > 0 cases.
+
+If a program halts, then it must be in exactly one of these three cases:
+
+1. It has been enumerated and counted (i.e. its size is at most 80),
+
+2. It is an extension of one of the N; prefixes without HALT (i.e. its size is at least 84),
+or
+
+3. It has a prefix that is in (at most) one of the non-extended overread sets (i.e. its
+size is at least 62).
+
+There are no other cases. Let O; denote the overread set corresponding to Mj. We
+also know there does not exist x € O; and y € O;,i 4 j, such that & is a prefix of y: this
+follows from our lexicographic enumeration procedure over 416. Consequently, tallying
+the contribution of each of these three cases we have:
+
+Qu2 < NFS + Ngo - 2-84 + Mg, - 278! + Mg, 2787 + Mi, . 2778
++ Mtg -277 + Mfg - 277 4+ Mg, 278! 4+ Mg, 274.
+Thus evaluating this formula we get an upper bound. (Implicit in Theorem 6 we
+
+assume, for the worst, that all canonical prefixes extend to a halting program of length
+at most 85.)
+
+08°,(ub) = 0.0001000000010000101001110111000011111010100001111001000000001011000110100
+000001111000.
+
+After comparing with our earlier lower bound we conclude that we have calculated
+the 40 exact bits (underlined below):
+
+034, (1b) = 0.00010000000100001010011101110000111110100101101011010110110000101101100
+0011110010000.
+
+that is, the first exact 40 bits of Qy2 are
+
+00010 00000 01000 01010 01110 11100 00111 11010
+
+Finally, let us observe that stopping our computation at level 60 would give us
+Meo = 486283, Neo = 2764738. As expected, the resulting upper bound is less exact
+than the upper bound previously obtained, but using the formula (4) we still get 40
+exact bits of Qya.
+
+17
+
+7 Final comments
+
+From the results of two previous sections we can conclude, as expected, that the two
+models (base 16 and base 2) of our compact register machine yield different Omegas. We
+also observe that the semantics of the READ instruction getting 4 bits at a time (instead
+of 1) allows for more short programs to halt. However, we are not advocating the use
+of one particular model over the other. The base 2 model is more flexible in allowing
+any length of data—not just a multiple of 4 bits, which is more in line with modern
+computer architectures having bytes being the smallest unit of storage for a program.
+The encoding of data is paramount (base 2 vs. base 16): one can see that Quig 4 Que.
+
+In connection with our time-bounded simulation, one would naturally want to know
+the shortest program that halts with more than 1000 branches. Why? For example,
+if this program is larger than 80 bits, then all of our looping programs (in both base
+models) never halt. One such short program is given below, with instruction labels given
+above the operators:
+
+0 1 2 3. 4 5 6
+&a,111111111&b, 1&c ,110+d, 1=a,d,c=a,a,b/
+
+This program has length 156 bits (39 characters). We can reduce this by 12 bits if we
+are using the base 16 register machine (replace the instruction &c,110 with !c and add
+one character/nibble of data that has value 6). The authors are interested in knowing if
+there are any shorter programs.
+
+Finally, one method for improving our upper bound (and possibly an easy way to
+yield more exact bits known) is to consider more closely the tail of the N; prefixes that
+do not contain HALT. Our analysis ignored the syntactical properties of valid register
+machine programs and just assumed every prefix string can be extended to a halting
+program by appending 4 bits. However, the halt instruction % may only appear after a
+complete (preceding) instruction has been well specified with its operator and operand
+arguments. In fact, by a simple probabilistic observation, it is easy to see that at most
+1/4 of prefixes have their last instruction well-specified with all required operands. The
+authors suspect that a more detailed analysis of the syntax of valid programs might
+provide us one more known bit by lowering the contribution to Omega of this tail by a
+factor of 1/2.
+
+Acknowledgement
+
+We thank Ivy Jiang and Simona Mancas who helped us write (and debug) preliminary
+versions of the Java simulator for the register machine language(s) described here. We
+are grateful to Greg Chaitin and John Tromp for valuable criticism and comments which
+improved this paper.
+
+18
+
+References
+
+Calude, C. S. [2002a] Information and Randomness: An Algorithmic Perspective, 2nd
+Edition, Revised and Extended, Springer Verlag, Berlin.
+
+Calude, C. S. [2002b] “A characterization of c.e. random reals,” Theoret. Comput. Sci.
+271, 3-14.
+
+Calude C. S. [2002c] “Chaitin Q numbers, Solovay machines and incompleteness,” The-
+oret. Comput. Sci. 284, 269-277.
+
+Calude, C. S., Calude E. & Dinneen, M. J. [2006] “A new measure of the difficulty of
+problems,” Journal for Multiple- Valued Logic and Soft Computing 12, 285-307.
+
+Calude, C. S., Dinneen, M. J. & Shu, C-K [2002] “Computing a glimpse of randomness,”
+Experimental Mathematics 11, 2, 369-378.
+
+Calude, C. & Jiirgensen H. [1994] “Randomness as an invariant for number representa-
+tions,” in H. Maurer, J. Karhumaki, G. Rozenberg (eds.). Results and Trends in
+Theoretical Computer Science, Springer-Verlag, Berlin, 44-66.
+
+Calude, C. S., Hertling, P., Khoussainov, B. & Wang, Y. [2001] “Recursively enumerable
+reals and Chaitin Q numbers,” Theoret. Comput. Sci. 255, 125-149.
+
+Calude, C. S. & Stay, M. A. [2006] “Most Programs Stop Quickly or Never Halt,”
+CDMTCS Research Report 284, 2006.
+
+Chaitin, G. J. [1975] “A theory of program size formally identical to information theory,”
+J. Assoc. Comput. Mach. 22, 329-340.
+
+Chaitin, G. J. [1987] Algorithmic Information Theory, Cambridge University Press,
+Cambridge, (third printing 1990)
+
+Chaitin, G. J. [1997] The Limits of Mathematics, Springer-Verlag, Singapore, 1997.
+
+Chaitin, G. J. [2007] “How Much Information Can There Be in a Real Number? Int. J.
+of Bifurcation & Chaos 17, 6, pp—. in press.
+
+Hertling, P. & Weihrauch K. [1998] “Randomness spaces,” in K. G. Larsen, S. Skyum,
+and G. Winskel (eds.). Automata, Languages and Programming, Proceedings of the
+25th International Colloquium, ICALP’98 (Aalborg, Denmark), Springer-Verlag,
+Berlin, 796-807.
+
+Kuéera, A. & Slaman, T. A. [2001] “Randomness and recursive enumerability,” STAM
+J. Comput. 31, 1, 199-211.
+
+Minsky, M. [1967] Computation: Finite and Infinite Machines, Englewood Cliffs, N.J.,
+Prentice-Hall.
+
+Odifreddi, P. [1999] Classical Recursion Theory, North-Holland, Amsterdam, Vol.1,
+1989, Vol. 2.
+
+Soare, R. I. [1987] Recursively Enumerable Sets and Degrees, Springer-Verlag, Berlin.
+
+Solovay, R. M. [2000] “A version of Q for which ZFC can not predict a single bit,” in
+C.S. Calude, G. Paun (eds.). Finite Versus Infinite. Contributions to an Eternal
+Dilemma, Springer-Verlag, London, 323-334.
+
+Staiger, L. [1999] “The Kolmogorov complexity of real numbers,” in G. Ciobanu and
+Gh. Paun (eds.). Proc. Fundamentals of Computation Theory, Lecture Notes in
+Comput. Sci. No. 1684, Springer-Verlag, Berlin, 536-546.
+
+Tromp, J. [2006] Email to C. Calude, December 21.
+
+19
+
+Appendix
+
+A Some details about the computation process
+
+The source-code for our register machine simulator (written in Java) that we used to
+compute the first bits of the two Omegas is available for download at ftp://ftp.cs.
+auckland .ac.nz/pub/research/CDMTCS/Omega.
+
+Our computational process was pretty much automated with the use of shell scripts.
+For example, we used the following bash script to classify register machines at each new
+level.
+
+#!/bin/bash
+
+i=$*
+echo extending len=$i
+
+java -cp Java_Progs -Xmx2000M EnumOverread overread. $i
+
+rm runnable
+
+cp overread overread.$((i+1))
+
+mkdir -p $((i+1))/overread/*
+
+mv halt loop extendable underread overread illegalbranch $((it1))/overread
+gzip -f -q $((it+1))/overread/*
+
+java -cp Java_Progs -Xmx2000M Enumerate extendable. $i
+
+rm runnable
+
+cp extendable extendable.$((i+1))
+
+mkdir -p $((i+1))/extendable/*
+
+mv halt loop extendable underread overread illegalbranch $((i+1))/extendable
+gzip -f -q $((it+1))/extendable/*
+
+In the above script, we extend the two types of canonical prefixes, ones with halt
+(overread) and ones without (extendable), and store the compressed results of the sim-
+ulator in directories that are named to correspond to the current level 7. Both the
+programs Enumerate and EnumOverread call the register machine simulator on each of
+their generated strings. In the case of EnumOverread we do not need to (re)check the
+syntax of the generated strings since we are just adding more data.
+
+To extract register machine programs of a given length for the base 2 model we used
+the following simple perl script. (For the base 16 model we just multiply the string length
+by 4.)
+
+#!/usr/bin/perl
+
+$goal = $ARGV[O] ;
+
+while (<>) # this file is named in $ARGV[1]
+{
+
+20
+
+if (/(.*%)(.*)/) # program has data
+{
+$prog = $1;
+$data = $2;
+$pdlen = 4*length($prog)+length ($data) ;
+print $prog.$data,"\n" if ($pdlen == $goal);
+}
+else # program has no data
+{
+chomp $_;
+$prog = $_;
+$pdlen = 4*length($prog) ;
+print $prog,"\n" if ($pdlen == $goal);
+
+Finally, we used the following program to produce an Omega lower bound from a list
+of halting counts.
+
+import java.io.*;
+import java.util.*;
+import java.math.BigInteger;
+
+class approx
+
+{
+
+public static void main(String[] argv) throws IOException
+
+{
+BufferedReader in = new BufferedReader(new InputStreamReader (System. in)) ;
+PrintWriter out = new PrintWriter (System. out) ;
+
+int maxlen = Integer.parseInt( in.readLine() );
+BigInteger total = new BigInteger("1");
+
+for (int i=1; i<=maxlen; i++)
+
+{
+
+String line = in.readLine() ;
+
+StringTokenizer tokens = new StringTokenizer (line) ;
+
+int len = Integer.parseInt (tokens.nextToken()) ;
+System. out.print("Omega_"+tlen+" = 0.");
+
+BigInteger num = new BigInteger (tokens.nextToken()) ;
+total = total.shiftLeft(1);
+
+total = total.add(num) ;
+System.out.println(total.toString(2).substring(1));
+
+21
+
+B- Data
+
+Table 1: Distribution of programs into simulator categories (base 16 model)
+
+Program + | Number of | Number of | Number of Number of | Number of
+data length halting looping overread illegal branch | extendable
+0 0 0 0 0 0
+1 1 0 0 0 0
+2 0 0 0 0 4
+3 0 0 1 0 7
+4 16 0 0 0 20
+5 8 0 2 0 56
+6 4 0 32 0 158
+7 522 0 Al 0 358
+8 596 0 96 0 1162
+9 468 0 1507 0 3043
+10 21498 5 2925 52 10311
+11 40473 2052 7574 53 25746
+12 44869 18 79507 208 92901
+13 1073634 7932 219114 3070 245506
+14 2874221 2601 656188 7174 929279
+15 4387315 1242508 5108174 64750 2467020
+16 63135127 92453 18590195 270447 9829406
+17 221590601 6219247 71366861 1563562 27034182
+18 426445722 2728623 711343532 5358476 113105879
+19 4456593631 992601131 5887007185 83028791 315733989
+20 18322322348 | 147446347 | 75582618484 187451863 1386091346
+
+22
+
+Table 2: Number of halting register machine programs of a given length (base 2 model)
+
+Program + | Number | Program +
+data length | of halting | data length
+1 0 29
+2 0 30
+3 0 3l
+4 1 32
+5 0 33
+6 0 34
+7 0 35
+8 0 36
+9 0 37
+10 0 38
+11 0 39
+12 0 40
+13 2 Al
+14 0 42
+15 0 43
+16 0 44
+17 0 45
+18 0 46
+19 0 A7
+20 8 48
+21 0 49
+22 8 50
+23 0 51
+24 4 52
+25 0 53
+26 0 54
+27 0 55
+28 10 56
+
+Number
+
+of halting
+
+72
+
+40
+20
+32
+
+212
+90
+609
+
+473
+177
+249
+
+602
+3513
+765
+5325
+1521
+4829
+1669
+2037
+9304
+9605
+49957
+7947
+65211
+
+Program +
+data length
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+
+Number
+of halting
+23011
+58313
+16441
+64205
+242163
+153251
+663543
+263032
+832872
+441577
+819167
+805542
+1235011
+5463760
+2229745
+10462631
+6092344
+12432992
+4798158
+15074843
+6900489
+9773970
+12471418
+18254686
+11807337
+531661
+879692
+5976924
+
+23

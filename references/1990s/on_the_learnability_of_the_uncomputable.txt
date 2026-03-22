@@ -1,0 +1,965 @@
+On the Learnability of the Uncomputable
+
+Richard H. Lathrop
+Information and Computer Science Dept.
+University of California
+Irvine, CA 92717-3425
+
+rickl@ics.uci.edu
+
+In Proceedings of the 13th International Conference on Machine Learning, pp. 302-309,
+Bari, Italy, 3-6 July 1996, ed. Saitta, L., Morgan Kaufman Publishers, San Francisco.
+
+Abstract
+
+Within Valiant’s model of learning as formal-
+ized by Kearns, we show that computable to-
+tal predicates for two formally uncomputable
+problems (the classical Halting Problem, and
+the Halting Problem relative to a specified
+oracle) are formally learnable from examples,
+to arbitrarily high accuracy with arbitrarily
+high confidence, under any probability dis-
+tribution. The Halting Problem relative to
+the oracle is learnable in time polynomial in
+the measures of accuracy, confidence, and the
+length of the learned predicate. The classi-
+cal Halting Problem is learnable in expected
+time polynomial in the measures of accuracy,
+confidence, and the (1 — ¢/16)*" percentile
+length and run-time of programs which do
+halt on their inputs (these quantities are al-
+ways finite). Equivalently, the mean length
+and run-time may be substituted for the per-
+centile values in the time complexity state-
+ment. The proofs are constructive. While
+the problems are learnable, they are not poly-
+nomially learnable, even though we do derive
+polynomial time bounds on the learning algo-
+rithm.
+
+1 INTRODUCTION
+
+Can we learn what we cannot compute? We will show
+that in at least some cases the answer is “yes.” The
+widely accepted formal model for computation is the
+Turing machine (TM), and the Halting Problem is the
+canonical uncomputable task (Turing 1936). Valiant
+(Valiant 1984) proposed a formal analysis of learning
+as the phenomenon of knowledge acquisition in the
+
+absence of explicit programming. The methodology
+was systematically organized into a consistent and rig-
+orous framework by Kearns (Kearns 1990), which we
+follow. We consider two uncomputable problems and
+show that they are learnable within this formal model
+of learnability. While the problems are learnable, they
+are not polynomially learnable, even though we do de-
+rive polynomial time bounds on the learning algorithm.
+
+11 ORGANIZATION
+
+Section 2 introduces some mathematical preliminaries.
+Section 3 states a problem that incorporates an oracle
+and is uncomputable because the Halting Problem re-
+duces to it. We present a learning algorithm, and prove
+that it formally learns a predicate for this problem.
+The algorithm runs in time polynomial in the mea-
+sures of accuracy (1/e), confidence (1/6), and the size
+of the learned predicate. Section 4 presents a learn-
+ing algorithm for the classical Halting Problem. We
+prove that the learning algorithm always terminates,
+and with arbitrarily high confidence produces an ar-
+bitrarily accurate total predicate, under any probabil-
+ity distribution. The algorithm runs in expected time
+polynomial in the measures of accuracy, confidence,
+and the (1 — «/16)'" percentile length and run-time of
+programs which do halt on their inputs (these quan-
+tities are always finite). If desired, the mean length
+and run-time may be substituted for the percentile
+values in the time complexity statement. Finally, sec-
+tion 5 states some important limitations on our results.
+Major limitations are an impoverished knowledge rep-
+resentation capability, and the fact that positive in-
+stances are a priort known to be classified relative
+to the Halting Problem (these correspond to severe
+restrictions on what Kearns (Kearns 1990) terms the
+hypothesis class and the target class, respectively).
+
+12 BACKGROUND
+
+Let C' (the target class) and H (the hypothesis class)
+be representation classes over X (the domain, or in-
+stance space). Then C is learnable from examples by
+H (Kearns 1990, p. 11) if there is an algorithm A with
+access to POS and NEG, taking inputs ¢€ (the accu-
+racy parameter, 0 < € < 1) and 6 (the confidence
+parameter, 0 < 6 < 1), such that for any ¢ € C, any
+probability distributions D* and D-, and any inputs €
+and 4, algorithm A halts and outputs a representation
+ha © H that with probability greater than (1—6) has
+an accuracy greater than (1 —¢). C is learnable from
+examples if there exists a representation class H such
+that C is learnable from examples by H. In this paper,
+then, when we say that an uncomputatable problem
+(such as the Halting Problem) is learnable from exam-
+ples, we mean that there exists a representation class
+C' that is learnable from examples, and some c € C’
+represents the uncomputatable problem’s characteris-
+tic set. Thus the learned total predicate probably ap-
+proximates the uncomputable predicate.
+
+If, further, C’ and H are polynomially evaluatable,
+and if A runs in time polynomial in e~!, 671, and
+\c|, then C is polynomially learnable from examples
+by H. By separating the definition of learnabil-
+ity from statements about time complexity, Kearns
+is able to formally discuss and compare algorithms
+across a spectrum of complexities (for example, his
+analysis encompasses the super-polynomial but sub-
+exponential learning algorithm by Ehrenfeucht and
+Haussler (Ehrenfeucht and Haussler 1988) for deci-
+sion trees with at most a fixed polynomial number of
+nodes). Note that by definition no uncomputable prob-
+lem can possibly be polynomially learnable, because an
+uncomputable target representation cannot possibly be
+polynomially evaluatable.
+
+1.3 INTUITION
+
+How can something that is not even computable be
+learnable? Isn’t there a contradiction here?
+
+The key insight exploits the “probably approximately”
+aspect of the formal learning model. ‘The learned
+hypothesis need not compute the Halting Problem
+(which of ocurse would be impossible). Rather, it
+need compute only a total predicate that, with high
+likelihood, agrees with the Halting Problem on a high
+percentage of instances.
+
+For any distribution and any desired accuracy (1-6),
+there are infinitely many total predicates that agree
+
+with the Halting Problem on at least (1 — €) of
+the probability-weighted instances (program-instance
+pairs). In order to succeed, the learner need find only
+one of them, and the proofs below show that this is
+possible. Thus, the learner learns a computable hy-
+pothesis that only approrimates the Halting Problem.
+
+The basic proof strategy exploits the fact that the
+probability distribution D+ on positive instances in-
+duces a probability distribution on their run-times.
+For any distribution there is some (appropriately
+large) threshold such that at least (1 — ©) of the
+probability-weighted instances terminate before the
+threshold. The proofs below show how to estimate the
+threshold by sampling POS. Of course, the learner may
+be unlucky enough to draw short-running instances
+during training or long-running instances during test-
+ing. For any desired confidence (1 — 6), the threshold
+can be chosen high enough that the probability of such
+an unlucky case is at most 6. Thus, the learned com-
+putable hypothesis probably approximates the Halting
+Problem.
+
+14 RELATED WORK
+
+The literature in both computability and learnabil-
+ity spans decades (Blum and Blum 1975; Gold 1967;
+Herken 1988; Turing 1936). The reader is referred to
+references (Cutland 1980; Hopcroft and Ullman 1979;
+Lewis and Papadimitriou 1981; Minsky 1967) for the-
+ory of computation and to references (Angluin and
+Smith 1983; Kearns 1990; Valiant 1984; Pitt 1990)
+for formal machine learning, among others. The for-
+mal approach has been widely explored by the ma-
+chine learning community (Pitt 1990), and a great
+deal is known about necessary conditions, limitations,
+and bounds (Blumer et al. 1989; Blumer et al. 1987;
+Ehrenfeucht et al. 1989; Kearns and Valiant 1994;
+Linial et al. 1991; Pitt and Valiant 1988; Shvaytser
+1990). Amsterdam (Amsterdam 1988) discusses lim-
+itations of the framework. The problem of language
+identification in the limit differs from this work in
+finding an exact rather than probabilistic predicate,
+and in lacking polynomial time complexity bounds.
+Gold (Gold 1967) showed that even the class of all
+regular languages is not inferable from positive data.
+Gasarch and Smith (Garasch and Smith 1992) con-
+sider identification in the limit under a model in which
+the learner is permitted to ask undecidable questions.
+Cherniavsky and Smith (Cherniavsky and Smith 1987)
+investigate the relationship between recursive enu-
+merability, inductive inference and program testing
+(which includes infinite loops), but do not extend it to
+
+the probabilistic learning considered here. Fulk and
+Jain (Fulk and Jain 1994) consider approximate in-
+ference under which the class of recursive functions is
+identifiable in the limit, but do not establish polyno-
+mial time bounds. Benedek and Itai (Benedek and
+Itai 1991) consider learnability when the distribution
+is fixed and known. They mention the possibility that
+the target class may be uncomputable but do not ex-
+plicitly consider the case. The Halting Probability
+Problem (Machlin and Stout 1990), which uses the
+probability that a randomly drawn TM will halt to in-
+vestigate randomness in algorithmic information the-
+ory, is only distantly related to the present work.
+
+2 MATHEMATICAL
+PRELIMINARIES
+
+To be of interest, a learning system must perform bet-
+ter than a fair coin-flip. We assume throughout that ¢€
+and 6 are both less than 1/2.
+
+Notationally, let the data for learning be denoted by
+pairs (M,Z), where M is a TM program and Z is
+its input (“instance” and “example” are synonyms for
+such a pair). An instance is positive if MM halts on Z,
+otherwise negative. Let #((M,Z)) be the number of
+steps that M runs on Z (defined for positive examples,
+and undefined for negative examples), and let |(M, Z)|
+be the length of the instance as a string of symbols
+(defined for all examples).
+
+Let r be the inverse cumulative distribution of positive
+instance run-times induced on #(.) by the probability
+density function Dt, defined for 0 < x < 1 by
+
+#(
+
+k M,Z))<k
+
+Thus r(x) is the minimum number k such that the
+probability is at least x that a positive instance halts
+in k steps or less. For example, r(0.5) is the median
+run-time of positive instances, while 90% halt in (0.9)
+steps or less. r is completely determined by Dt, but
+is unknown to the learner because Dt is unknown.
+Let / be defined similarly as the inverse cumulative
+distribution of positive instance lengths induced on |.|
+by D*. Let p be the mean of #(.) on positive examples
+(their mean run-time) and let A be the mean of |.| on
+positive examples (their mean length). p and A are
+(possibly infinite) distribution-dependent parameters,
+unknown to the learner.
+
+2.1 IDENTITIES AND INEQUALITIES
+
+Fact 1 (1+a71)* <e , for 0 <a.
+Fact 2 (1—271)* <e! , for 0 <a.
+Fact 3 exp(—x7!) <2 , for 0< x.
+
+Fact 4 7/25 (Ti+) e = er
+
+for m a non-negative integer and 0 < «<1.
+
+Fact 5 Soo tim < 2™+ mm!
+
+for m a non-negative integer and 0 < # < 1/2.
+
+Fact 6 Oy, i" = ee ejnt
+
+where m and n are non-negative integers and the co-
+efficients c; are given by
+
+co = 0
+m+1
+m k ,
+oo Gi) »y «(2 ,) (3
+k=j+l1
+Fact 7 (Chernoff Bound (Chernoff 1952),
+
+(Valiant 1984)) In n independent trials, each with
+probability of success at least p, the probability that
+there are at most & successes, where k < np, is at most
+
+non nok n k
+(se) (2)
+2.2 LEMMAS
+
+Lemma 1 In Fact 7, if p = (1 — be) and k =
+n(1 — ce) where 0 < 6 < ¢ < 1, then the proba-
+bility that there are at most k successes is at most!
+
+[exp (c — Ine — (b— Ind))]"".
+
+Lemma 2 In Fact 7 above, if p = be and k =
+nce where 0 < ¢ < 6b < 1, then the probability
+that there are at most & successes is also at most
+[exp (c — Ine — (b— Ind))]"".
+
+Lemma 3 Let f((M,Z)) be any function from in-
+stances to non-negative numbers, let g be the inverse
+cumulative distribution induced on f(.) by Dt, and
+let y be the mean of f. Then for 0 < € < 1,
+
+g(l—€) <ye™*.
+Corollary r(1 —¢) < peut.
+Corollary I(1 — €) < AeT!.
+
+Lemma 4 Let f, g, and y be as in Lemma 3. Then
+g(1 — €) is finite for 0 < € < 1 (even if ¥ is infinite).
+
+Corollary r(1 — ¢) is finite for 0< ¢ <1.
+
+‘Throughout this paper In denotes the natural loga-
+rithm and log, the logarithm to the base 2.
+
+Corollary /(1 — ¢) is finite for 0 << ¢ < 1.
+
+3 THE HALTING PROBLEM
+RELATIVE TO AN ORACLE
+
+In this section we precisely state a computational prob-
+lem and prove that it is uncomputable. We then state
+an algorithm and prove that it learns a total predicate
+for the problem, achieving arbitrarily high accuracy
+with arbitrarily high confidence under any probabil-
+ity distribution. The time complexity of the learner
+is polynomial in the measures of accuracy, confidence,
+and the length of the learned predicate.
+
+The problem consists of the Halting Problem relative
+to an oracle. For input instance (M,Z), the task is to
+output a 1 if M halts when given Z as input and a 0
+otherwise, and then halt. The learner (but not the so-
+lution) may make use of a routine, ORACLE, that ac-
+cepts two arguments: an instance (M,Z), and an inte-
+ger S governing output format. If M fails to halt when
+given Z as input, then the call ORACLE((M,Z), 5S)
+never returns and so the caller fails to halt. However,
+if M halts on Z then the call ORACLE((M, TZ), S) re-
+turns in unit time, and the returned value is the num-
+ber of steps M takes before halting on Z. For technical
+reasons in the proof below, we assume that the input
+format for ORACLE is the same as is returned by calls
+to POS, and that the format of the returned value is
+a binary integer, written least significant bit first onto
+every S$’? square of the TM tape, starting at the head
+position at the time of the call.
+
+It is easy to see that the Halting Problem relative to
+ORACLE is uncomputable, because if some TM, say
+Mo, could compute it, then we could easily mod-
+ify Mo to solve the classical Halting Problem. Let
+NON-ORACLE be a TM with identical input/output
+behavior to ORACLE (but a longer run-time), and
+Myo be identical to Mo except that wherever Mo
+calls ORACLE, Myo calls NON-ORACLE. Conse-
+quently M wo will have identical input/output behav-
+ior to Mo (but a longer run-time). Then Mo com-
+putes the Halting Problem relative to ORACLE if and
+only if Maro computes the Halting Problem without
+an oracle, which we know to be impossible.
+
+3.1 THE LEARNING ALGORITHM
+
+Next we show that the Halting Problem relative to
+ORACLE is learnable, by exhibiting an algorithm that
+learns it.
+
+Let Ao be as follows:
+
+1. Input ¢ and 6.
+
+2. N& 1671571.
+
+3. CE [N(1-€/4)].
+
+4. Make N calls to ORACLE(POS(), NV).
+
+5. Compute K as the C’? smallest returned value.
+6. Output a program Lo that does:
+
+A. Input an instance (M,Z).
+
+B. Simulate M on Z for & steps.
+
+C. If M has halted then print 1, else print 0.
+D. Halt.
+
+7. Halt.
+
+3.2 PROOF THAT Ao LEARNS THE
+HALTING PROBLEM RELATIVE TO
+ORACLE.
+
+Theorem 1 Let Ao be as stated. Then:
+
+1.A £o has an error rate of 0 on negative examples;
+
+1.B with probability greater than (1 — 4), £o has an
+accuracy greater than (1—c) on positive examples;
+and
+
+1.C Ao halts in time polynomial in e~!, 671, and the
+size of the learned predicate.
+
+Proof:
+
+1.A Lo has an error rate of 0 on negative examples
+because it classifies as positive only those instances
+which do halt (in K or fewer steps). (1.A)
+
+1.B By definition of r, the learned predicate Lo has
+an accuracy on future positive examples greater than
+(1 — €) if and only if Ao terminates with AK > r(x)
+for some x > (1 —€). We show that with probability
+greater than (1 — 6), Ao terminates with K > r(1—
+Term a call to ORACLE(POS(), N’) a success when
+its returned value equals or exceeds the (unknown)
+value of r(1 — ¢/2). Then K > r(1 — €/2) if the C%
+smallest run-time was a success, which in turn is true
+if we have more than Ne/4 successes in our N calls.
+By definition of r the probability of a success is at
+least ¢€/2. Consequently, by Lemma 2 with b = 1/2,
+e = 1/4, and n = N = 16c¢7157!, the probability
+that this condition fails and there are at most Ne/4
+
+successes is less than exp (—1.227 x 6-1), and by Fact
+3 this is less than 6. (1.B)
+
+1.C Let LE be the length of the program that is to
+be output in step 6. Steps 1-4 and 6-7 are obviously
+polynomial-time in «~!, 6-', and L. However, in step
+5 we must compute the C’” smallest of the values re-
+turned by the N calls to ORACLE(POS(), 4), and
+
+these values may be arbitrarily huge.
+
+By making the N calls to ORACLE(POS(), N) with
+the tape head on consecutive adjacent squares of the
+tape, we may arrange that the bits of the N returned
+values are interdigitated in increasing order of signifi-
+cant bits:
+
+where p is the blank symbol initializing the tape and
+d;; is the i” least significant bit of the j*” call, or p
+if the j*” call returned fewer than # significant. bits.
+
+Now if K is the C'” smallest value, we can find K in
+time polynomial in N and log, K. First, start at di1
+and skip to the right in groups of N bits, at the i”
+stage examining the N tape squares d;j,1 <7 < N,
+until at least C' of the N squares are fb. This occurs
+at ip = [log, K| + 2. Eliminate all values for which
+d;,,; #, and find the C*” smallest value of the N or
+fewer remaining integers, each of size [log A |+ 1 bits
+or less. This can easily be done in time polynomial in
+
+N and |log, K |.
+
+Because |log, K| < L and N = 16€~1d7!, step 5 and
+consequently Ao runs in time polynomial in e«~!, 6~1,
+
+and L. (1.C)
+
+Consequently Ao formally learns the Halting Problem
+relative to ORACLE in time polynomial in ¢~!, 571,
+and the size of the learned predicate. (1)
+
+3.3. A BOOLEAN ORACLE
+
+Traditionally, an oracle returns only a YES/NO an-
+swer. The oracle we employed above returned a nu-
+meric answer. We can modify the algorithm to ac-
+commodate learning with a YES/NO oracle as fol-
+lows. Let ORACLE-P be defined the same as ORA-
+CLE, except that ORACLE-P((M, 7), S) returns YES
+if #((M,Z)) < S and NO if M halts on Z and
+#((M,Z)) > S. As with ORACLE, if M fails to
+halt on Z then ORACLE-P((M, Z), S) fails to return.
+Replace statements 4 and 5 of Ao with the following:
+
+4. For I! =1 to N do EXAMPLE[J] < POS().
+
+5a. KI.
+
+5.b. kK 2K.
+
+5.c. J 0.
+
+5.d. COUNT < 0.
+be. JOST+1.
+
+5.f. If ORACLE-P(EXAMPLE[J], K)
+then COUNT < COUNT +1.
+
+5.g. If J < N then go to 5.e.
+5.h. If COUNT < C then go to 5.b.
+
+We leave to the reader the proof that the Boolean
+version of Ao learns the Halting Problem relative to
+ORACLE-P in time polynomial in e~', d~', and the
+size of the learned predicate. Note that the output
+format of POS must be adjusted so that the results of
+successive calls do not over-write each other (for exam-
+ple, by interdigitation as in 1.C), and the input format
+of ORACLE-P must match.
+
+4 LEARNING TO SOLVE THE
+HALTING PROBLEM
+
+In this section we turn our attention to learning to
+solve the classical Halting Problem. ‘The problem
+statement is identical to that in the previous section,
+except that the learner is not permitted to use ORA-
+CLE. We state an algorithm and prove that it learns a
+total predicate for the Halting Problem, achieving ar-
+bitrarily high accuracy with arbitrarily high confidence
+under any probability distribution. The expected time
+complexity of the learner is polynomial in the measures
+of accuracy, confidence, and the mean length and run-
+time of programs which do halt on their inputs.
+
+We state our results in terms of the mean positive in-
+stance length and run-time, 4 and p, because it leads
+to a more intuitive and compact form. Alternatively,
+we could have phrased all claims and proofs below in
+terms of [(1 — €/16) and r(1 — €/16), both of which
+are always finite by Lemma 4. The proof actually uses
+these quantities internally, then converts to A and p in
+order to obtain a more compact final statement.
+
+4.1 THE LEARNING ALGORITHM
+
+Let Ax be as follows:
+
+1. Input ¢ and 6.
+
+2. No + 3271571,
+
+3. kK €0.
+
+4,.K eK+1.
+
+5. Ny «— K x No.
+
+6. Ch — [N, (1 — €/4)].
+
+7. COUNT € 0.
+
+8 Jeo.
+
+9 JeJ+i1.
+
+10. X — POS().
+
+11. If |X| > K then go to 14.
+
+12. Simulate X for K steps.
+
+13. If X halted then COUNT + COUNT +1.
+14. If J < Nx then go to 9.
+
+15. If COUNT < C, then go to 4.
+
+16. Output a program Ly that does:
+
+A. Input an instance (M,Z).
+
+B. Simulate M on Z for & steps.
+
+C. If M has halted then print 1, else print 0.
+D. Halt.
+
+17. Halt.
+
+4.2 PROOF THAT Az LEARNS THE
+
+HALTING PROBLEM.
+
+Theorem 2 Let Ax be as stated. Then:
+
+2.A £y has an error rate of 0 on negative examples;
+
+2.B with probability greater than (1 — 6), £y has an
+accuracy greater than (1—c) on positive examples;
+
+2.C with probability greater than (1—6), Ay executes
+in time polynomial in 6~!, e~', \ and p;
+
+2.D in the remaining less than 6 fraction of cases not
+bounded in (2.C), Ay executes in expected time
+polynomial in 6~', e~!, A and p; and
+
+Proof:
+
+2.A £y has an error rate of 0 on negative examples,
+as it will classify as positive only those instances which
+do halt (in K or fewer steps). (2.A)
+
+2.B We will use & to refer to the k*” iteration of the
+loop at instructions 4-15, and K to refer to the final
+value in instruction 16.B.
+
+By definition of r, the learned predicate £y has an
+accuracy on future positive examples greater than (1—
+€) if and only if Ay terminates with K > r(x) for some
+« > (1— 6). We show that with probability greater
+than (1 — 6), Ay terminates with K > r(1— €/2).
+
+Let P, be the probability of halting on the k*” itera-
+tion. ‘Term a success any instance which runs for more
+than k steps. Ay cannot possibly halt on the k’” iter-
+ation unless there are at most Ny — Cy = N,e/4 suc-
+cesses. When k < r(1—€/2) the probability of success
+is at least ¢/2, by definition of r. Therefore, by Lemma
+2 with n = Ny = 32ke—15-1, b= 1/2, and e = 1/4, for
+k < r(1—e€/2) we see P;, is at most [exp(—2.454571)]*.
+By Fact 8, this is less than (5/2.454)*.
+
+The probability that Ay, terminates with K < r(1—
+€/2) is less than
+
+r(1—e/2) k—-1
+So Pe (I: 1-PB )
+f=1
+
+k=1
+
+where the first factor is the probability of halting at
+iteration & and the second is the probability of not
+having halted before then. Dropping the second factor
+(which is less than 1) and substituting for P, shows
+that this is less than
+
+r(1-e/2)
+
+>
+
+k=1
+
+(5/2.454)*
+
+By Fact 4 above with m = 0 and noting the sum is
+from k = 1, this is less than (6/2.454)/(1 — 6/2.454),
+which is less than 6 for 0 <6 < 1/2. (2.B)
+
+2.C We show that:
+
+2.C.i with probability at least 1-6, Az terminates with
+K bounded by 16(\ + p)e7?;
+
+2.C.ii the run-time of the k*” iteration is bounded by a
+
+polynomial in 67!, e~!, and k;
+
+2.E the probability that Az fails to terminate is zero. 2.C.iii from which the result follows.
+
+2.C.i For use below (in 2.D,E) we will prove a stronger
+result, namely that if k > 16(A+ p)e~* then the prob-
+ability of terminating on the k'” iteration is at. least
+
+(1-6).
+
+On the &*? iteration for k > 16(A + p)e7!, term
+a success any instance which has length not greater
+than k, and halts in k or fewer steps. By Lemma
+3, r(1 — €/16) < 16pe~* and (1 — €/16) < 16A«€7?,
+so the probability of success is at least (1 — €/8).
+Ay fails to halt if and only if there are fewer than
+Cy = Nx (l1—€/4) successes. By Lemma 1 with
+n= Ny = 32ke—15-1, b= 1/8, and c = 1/4, this prob-
+ability is at most exp(—1.545d~'k). By Fact 3 this is
+less than 6. (2.C.i)
+
+2.C.ii Instructions 4 through 8, and 15, are executed
+once on the k*” iteration, and are clearly O(kd~'e7").
+Instructions 9 through 14 are each executed N; times
+on the k*” iteration, and except for instruction 12 are
+
+clearly also O(kd~'e7').
+
+Instruction 12 involves simulating the instance re-
+turned by POS for k steps. Ay encodes a UTM
+to perform this simulation. Because k bounds both
+the length of the instance and the number of steps
+simulated, each execution of instruction 12 requires
+time bounded by some polynomial Q(k) = 40 a;k/,
+where ¢ is the degree of Q and {a,} are its coefficients.
+Q is constant for Az, and depends only on the form of
+UTM employed. In turn Q is bounded by 6k? where
+b= yy la].
+
+Consequently for some positive constant c, the exe-
+cution time of each step 9 through 14 is bounded by
+ckié—'e-!. These are executed N, = 32ke—!d7! times
+on the k*” iteration. It follows that, for some positive
+constant d, the run-time of the k*” iteration is bounded
+
+by dk@t1§~2¢72, (2.C.ii)
+
+2.C.iii By (i) and (ii), with probability greater than
+(1 — 6), the total run-time of Ay is bounded by
+
+16(A+p)e7+
+
+dé~7¢~? S-
+
+k=1
+
+Ratt
+
+By Fact 6 with m = q+ 1 this equals
+
+q+2
+dé~7e~? Soe; (16(A + pye ty’
+
+j=o
+
+where the coefficients c; depend only on q, which is
+constant for Az. (2.C. iii)
+
+Consequently, with probability greater than (1 — 4),
+Ay executes in time polynomial in 6~!, e~', p and X.
+
+(2.0)
+
+2.D The proof of (2.C.iii) showed that the total run-
+time of Ay for iterations number 1 through 16(A +
+p)e—* is bounded by a polynomial in 5~!, e~', p and
+A. Call this D.
+
+The proof of (2.C.i) showed that if k > 16(A+ p)e7?
+then the probability of terminating on the k*” iteration
+is greater than (1 — 6). The proof of (2.C.ii) showed
+that the run-time of the k’? iteration is bounded by
+dkit+1§—-2e-?, Consequently, if Ay runs for more than
+16(A + p)e~' iterations then its expected run-time is
+
+bounded by
+
+D+ Sod (164 ple $i oe?
+
+t=1
+= D4 d67-*«7?
+qt1 q4+1 at co
+x S- ( j ) (16(A + pyewt) 22 Soa
+j=o t=1
+
+where we are justified in reversing the order of sum-
+mation because all terms are non-negative and so the
+series 1s absolutely convergent.
+
+Because j is bounded above by g + 1 this is less than
+D+d5~7«~?
+
+qt q4+1 p44 oo
+x > ( } ) (60+ pet)" SS oh
+
+j=o w=
+By Fact 5 with m = q+ 1 this is less than
+D+d5~7«~?
+we +1 j+1
+xy (' ) (16(A + ple) 7" 2¢42(q + 1)!
+which clearly is polynomial in J~', e~', p and A.
+
+(2.D)
+
+2.E Assume, to the contrary, that the probability with
+which Ay fails to halt were some positive number 7.
+The proof of (2.C.i) showed that for 7 > 0 the proba-
+bility that Ay fails to halt in i+16(A + p)e7! or fewer
+iterations is bounded above by 6’. Consequently for
+i > Inn/Iné the probability that Ay fails to halt is
+less than 7, contradicting the assumption that 7 was
+
+(2.E)
+
+that positive number.
+
+Consequently Az learns from examples a total predi-
+cate that probably approximates the Halting Problem,
+executes in time polynomial in 6~!, e~!, p and A with
+probability greater than (1 — 6) and in expected poly-
+nomial time otherwise, and always halts. (2)
+
+5 IMPORTANT LIMITATIONS.
+
+An important limitation of the proof approach used in
+this paper is the small size of the hypothesis class (sim-
+ulation to K) relative to (say) the space of all Boolean
+functions or all quantified first-order logic formulae.
+The learners presented in this paper do not have a
+rich space of learnable knowledge. Although they suf-
+fice to prove our main technical result, realistically any
+learner capable of learning general knowledge must
+have a richer knowledge representation scheme than
+appears above.
+
+Another important limitation is the fact that the posi-
+tive examples are a priori known to be generated rela-
+tive to the Halting Problem. Consequently, the target
+class has only one element. This fact does not affect
+the uncomputability of the problems we posed, but it
+would be an interesting restriction to remove.
+
+Yet another important limitation is the fact that all
+of our time complexity statements, while polynomial,
+contain distribution-dependent terms. Another impor-
+tant limitation is the fact that the hypothesis class
+(simulation to K) fails to be polynomially evaluatable.
+However, the fact that the underlying uncomputable
+problem is indeed learnable holds out the hope that
+other, cleverer, predicates and hypothesis classes may
+be devised that will satisfy this condition.
+
+In concluding this section, we point out that even if
+future research were to discover a polynomially evalu-
+atable hypothesis class and a distribution-independent
+polynomial-time learning algorithm for some uncom-
+putable problem, the test of polynomially learnability
+would still fail. This is because, by definition, no un-
+computable problem can have a polynomially evaluat-
+able target class. One might argue that the definition
+of polynomially learnable should be changed to drop
+that requirement on the target class. Alternatively,
+of course, one might view the learnability of any un-
+computable problem to be an undesirable consequence
+within a theory of learning. This viewpoint might lead
+one to argue that the definition of learnability should
+be changed to exclude such results.
+
+Acknowledgements
+
+The paper was much improved by helpful comments
+and discussion from Gary Borchardt, Clifford Brunk,
+Pedro Domingos, Christopher Merz, Ron Rivest,
+Lukas Ruecker, Lynn Stein, Patrick Winston and Za-
+kia Zerhouni. This paper describes research per-
+formed at the Artificial Intelligence Laboratory of the
+
+Massachusetts Institute of Technology sponsored by
+the National Science Foundation under grant DIR-
+9121548. Support for the Artificial Intelligence Labo-
+ratory’s research is provided in part by the Advanced
+Research Projects Agency of the Department of De-
+fense under Office of Naval Research contract N00014-
+91-J-4038.
+
+References
+
+Amsterdam, J. (1988). Some philosophical problems
+with formal learning theory. Proc. of the Seventh Natt.
+Conf. on Artificial Intelligence (AAAI’88), vol. (2),
+pp. 580-584.
+
+Angluin, D. (1987). Learning regular sets from queries
+and counterexamples. Information and Control 75,
+
+(2):87-106.
+
+Angluin, D., and Smith, C.H. (1983). Inductive infer-
+ence: theory and methods. ACM Computing Surveys
+15, (8):237-269.
+
+Benedek, G.M., and Itai, A. (1991). Learnability with
+respect to fixed distributions. Theoretical Computer
+
+Sei. 86, (2):377-389.
+
+Blum, L., and Blum, M. (1975). Toward a mathemat-
+ical theory of inductive inference. Information and
+
+Control 28, (2):125-155.
+
+Blumer, A., Ehrenfeucht, A., Haussler, D., and War-
+muth, M.K. (1989). Learnability and the Vapnik—
+Chervonenkis dimension. J. of the Assoc. Computing
+
+Mach. 36, (4):929-965.
+
+Blumer, A., Ehrenfeucht, A., Haussler, D., and War-
+muth, M.K. (1987). Occam’s razor. Information Pro-
+cessing Letters 24, (6):377-380.
+
+Cherniavsky, J.C., and Smith, C.H. (1987). A re
+cursion theoretic approach to program testing. [EEE
+Transactions on Software Engineering SE-13, (1):777-
+784.
+
+Chernoff, H. (1952). A measure of asymptotic effi-
+ciency for tests of a hypothesis based on the sum of
+observations. Ann. Math. Stat. 23, 493-509; see
+P. Erdds and J. Spencer, (1974), Probabilistic Methods
+in Combinatorics, Academic Press, New York, p. 18.
+
+Cutland, N. (1980). Computability: An Introduction
+to Recursive Function Theory, Cambridge University
+
+Press, Cambridge, UK.
+
+Ehrenfeucht, A., Haussler, D., Kearns, M., and
+Valiant, L. (1989). A general lower bound on the num-
+ber of examples needed for learning. Information and
+
+Control 82, (3):247-261. pp. 115-154, Raven Press, Hewlett, New York.
+
+Ehrenfeucht, A.,and Haussler, D. (1988). Learning de- Valiant, L. G. (1984). A theory of the learnable.
+cision trees from random examples. Proc. 1988 Work- Comm. of the Assoc. Computing Mach. — 27,
+shop on Computational Machine Learning, 182-194. (11):1184-1142.
+
+Garasch, W.I., and Smith, C.H. (1992). Learning
+via queries. J. of the Assoc. Computing Mach. 39,
+(3):649-674.
+
+Gold, E.M. (1967). Language identification in the
+limit. Information and Control 10, (5):447-474.
+
+Herken, R., Ed. (1988). The Universal Turing Ma-
+chine: a Half-Century Survey, Clarendon Press, Ox-
+ford University Press, New York.
+
+Hopcroft, J. and Ullman, J. (1979). Introduction
+to Automata Theory, Languages, and Computation,
+
+Addison-Wesley.
+
+Kearns, M. J. (1990). The Computational Complexity
+of Machine Learning, MIT Press, Cambridge, Mas-
+sachusetts, USA.
+
+Kearns, M. J., and Valiant, L. (1994). Cryptographic
+limitations on learning boolean formulae and finite au-
+tomata. J. of the Assoc. Computing Mach. 41, (1):67-
+95.
+
+Lewis, H.R., and Papadimitriou, C.H. (1981). Ele-
+ments of the Theory of Computation. Prentice-Hall,
+Englewood Cliffs, New Jersey, USA, (1981).
+
+Linial, N., Mansour, Y., and Rivest, R. (1991). Results
+on learnability and the Vapnik—Chervonenkis dimen-
+sion. Information and Computation 90, (1):33-49.
+
+Machlin, R., and Stout, Q.F. (1990). The complex
+behavior of complex machines. Physica D 42, 85-98.
+
+Minsky, M. (1967). Computation: Finite and Infinite
+Machines, (1967),.
+
+Pitt, L. (1990). Special issue on computational learn-
+ing theory — introduction. Machine Learning 5,
+
+(2):117-120.
+
+Pitt, L., and Valiant, L.G. (1988). Computational lim-
+itations on learning from examples. J. of the Assoc.
+
+Computing Mach. 35, (4):965-984.
+
+Shvaytser, H. (1990). A necessary condition for learn-
+ing from positive examples. Machine Learning 5,
+
+(1):101-113.
+
+Turing, A. M. (1936). On computable numbers, with
+an application to the Entscheidungsproblem. Proc.
+of the London Math. Soc., ser. 2, vol. 42:230-265;
+reprinted in M. Davis, ed., (1965), The Uncomputable

@@ -1,0 +1,1107 @@
+ADAPTIVE SWITCHING CIRCUITS
+
+Bernard Widrow
+
+and
+
+Marcian E. Hoff
+
+A. Introduction
+
+The -modern science of switching theory began
+with work by Shannon! in 1938. The field has de-
+veloped rapidly since then, and at present a wealth
+of literature exists<© concerning the analysis and
+synthesis of logical networks which might range
+from simple interlock systems to telephone switch-
+ing systems to large-scale digital computing systems,
+
+An. example illustrating the use of switching
+theory is that of the design of an interlock system
+for the control of traffic in a railroad switch
+yard. The first step is the preparation of a
+"truth table", an exhaustive Listing of all input
+possibilities (the positions of all incoming and
+outgoing trains), and what the desired system out-
+put should be (what the desired control signals
+should be) for each input situation. The next. step
+is the construction of a Boolean function, and the
+following steps are algebraic reduction and design
+of the logical control system.
+
+The design of the traffic control system is an
+example wherein the truth table must be followed
+precisely and reliably. Errors would be destructive,
+The design of the arithmetic element of a digital
+computer is another example wherein the truth table
+must be followed precisely. ;
+
+There are other situations in which some errors
+are inevitable, however,. and here errors are usually
+costly but not catastrophic. These situations call
+for statistically optimm switching circuits. A
+common performance objective is the minimization. of
+the average number of errors. An example is that
+of prediction of the next bit in a correlated stoch-
+astic binary number sequence. The predictor. output
+is to be a logical combination;of a finite. number ©
+of previous. input sequence bits. An optimm system
+is a sequential switching circuit that predicts
+with a minimum number of errors,
+
+Suppose that a record of the binary sequence is
+printed on tape and cut up into pieces (with indi-
+cation of the positive direction of time preserved) ,
+say. 25 bits long. Place all pieces where the most
+recent event is ONE in one pile, and the remainder
+in,another pile. Delete the most recent bit on
+each piece of tape. If the statistical scheme
+could be discovered. by which the pieces of tape are
+classified, this would lead to a prediction scheme.
+It is apparent that prediction is a certain kind of
+classification. . ;
+
+Assuming statistical regularity, a. reasonable
+way to. proceed might be to forma truth table, and
+let the data from each piece of tape be. an entry in
+the table. It might be expected that with the data
+of 100 pieces of tape, a fairly..good predictor.
+could be. developed. The truth table would have .
+only 100 entries however, out. of a total of 224,
+The "best" way to fill in the remainder of the truth
+
+tDepartment of Electrical Engineering, Stanford.
+University.
+
+_ tHpoetoral. student in the Department ‘of Electri-
+eal Engineering, Stanford University.
+
+table depends upon the nature of the sequence
+statistics and the error cost criteria. Filling
+in the table is a difficult and a crucial part of
+the problem. Even if the truth table were filled
+in, however, the designer would have the diffi- ;
+cult task of realizing a logical network to satisfy
+a truth table with 22" entries,
+
+An approach to such problems is taken in this
+paper which does not require an explicit use of
+the truth table. The design objective is the min-
+imization of the average number of errors, rather
+than a minimization of the mumber of logical com-
+ponents used. The nature of the logical elements
+is quite unconventional. The system design pro-
+cedure is adaptive, and is based upon an iterative
+search process. Performance feedback is used to
+achieve automatic system synthesis, f.e., the sel-
+ection of the "best" system from a restricted but
+useful class of possibilities. The designer "trains"
+the system to give the correct responses by "show-
+ing" it examples of inputs and respective desired
+outputs. The more examples."seen", the better is.
+the system performance. System competence will be
+directly and quantitatively related to amount of
+experience.
+
+B. A Neuron Element
+
+In Fig. 1, a combinatorial logieal circuit is
+shown which is a typical element.in the adaptive
+switching circuits to be considered. This element
+bears same resemblance to a "neuron" model intro-
+duced by von Neuman3, whence the name,
+
+The binary input signals on the individual Lines
+have values of +1 or -1, rather than the usual
+values of 1 or 0, Within the neuron, a linear com-
+bination of the input signals is formed. The weights
+are the gains aj,a2,..., which could have both pos-
+itive and negative values. The output signal is+1
+if this weighted sum is greater than a certain
+threshold, and -1 otherwise. The threshold level is
+determined by the setting of ao, whose input is
+permanently connected to a +1 source. Varying ag
+varies a constant added to the linear combination
+of input signals. :
+
+For fixed gain settings, each of the 2° possible
+input combinations would cause either a +l-or -1
+output. Thus, all possible inputs are classified
+into two categories. The input-output relationship
+is determined by choice of the. gains QO, +. +85. In
+the adaptive neuron, these gains. are. set during the
+"training" procedure. 5
+
+In general, there are 22° different input-output
+relationships or truth functions by which the five
+input variables can be mapped into the single. out.
+put variable. Only a subsgt of these, the linearly
+separated truth functions’, can be realized by all
+
+possible choices of the gains of the neuron of Fig.
+
+1, Although this subset is not all-inclusive*, it
+
+It becomes a vanishingly small fraction of
+all possible switching functions as the number of
+inputs gets large...
+
+is a useful subset, and it is "searchable", i.e.,
+the "best" function in many practical cases can be
+found iteratively without trying all functions with-
+in the subset.
+
+Application of this neuron in adaptive pattern
+classifiers was first made by Mattson.» He has
+shown that complete generality in choice of switch-
+ing function could be had by combining these néeu-
+rons. He devised an iterative digital computer
+routine for finding the best set of a's for the
+classification of noisy geometric patterns. An
+iterative procedure having similar objectives has
+been devised by these authors and is described in
+the next ‘section. The latter procedure is quite
+simple to implement, and can be analyzed by stat-
+istical methods that have already been developed
+for the analysis of adaptive sampled-data systems.
+
+Cc. An Adaptive Pattern Classifier .
+
+An adaptive pattern classification machine
+(called "Adaline", for adaptive linear) has been
+constructed for the purpose of illustrating adap-
+tive behavior and artificial learning. A photo-
+graph of this machine, which is about the size of
+a lunch pail, is shown in Fig. 2.
+
+During a training phase, crude geometric pat-
+terns are fed to the machine by setting the toggle
+switches in the 4x input switch array. Setting
+another toggle switch (the reference switch) tells
+the machine whether the desired output for the par-
+ticular input pattern is +1 or -1l. The system leams
+something from each pattern and accordingly ‘exper-
+dences a design change. The machine's total ex-
+perience is stored in the values of the weights
+aQ-++4]6- The machine can be trained on undistorted
+noise-free patterns by repeating them over and over
+until the itérative search process converges, or it
+can be trained on a sequence of noisy patterns on
+a one-pass basis such that the iterative process
+converges statistically, Combinations of these
+methods can be accommodated simultaneously. After
+training, the machine canbe used ‘to classify the
+original’ patterns and noisy or distorted versions
+of these-patterns. ;
+
+A block schematic of Adaline is shown in Fig. 3.
+In the actual machine, the quantizer is not built
+in as a device but is accomplished by the operator
+in viewing the output meter. Different quantizers
+(2-Level;: 3-level, 4-Tevel) are’ realized by using
+the appropriate meter scales (see Fig. 2). “Adaline
+Gan be tsed to classify patterns’ into. several’ cat-
+egories by using ‘wmulti-Lével quantizers and ‘by fal-
+lowing @xdctly thé satie adaptive procedure.
+
+‘The féliowing is-a description of the iterative
+searching routine. A pattern is’fed to the machine
+and the reférencte switch is: set -to- correspond to
+the desired output. ‘The error (sée°Fig.3)- is then
+read: (by switching’ the reference switch: ‘the error
+voltageappears on the meter, rather than the neu-
+ron. output: voltage). ALT gains including:=the level
+are to be changéadby the same absolute magnitude, —
+such that the error is’ brought to,zero. This is
+accomplished by changing-éach' gain (which could be
+positive’ or negative)-in the direction which will
+diminish the error by an amount which reduces the
+error magnitude by 1/17. The 17 gains may be
+changed in any: sequence, and after all changes are
+made, the error’ forthe present input pattern is
+zero. Switching the reference back, the meter. reads
+
+97
+
+exactly the desired output. The next pattern, and
+its desired output, is presented and the error is
+read. The same adjustment routine is followed and
+the error is brought to zero. If the first pattern
+were reapplied at this point, the error would be
+small but not necessarily zero. More patterns. are
+inserted in like manner. Convergence is indicated
+by small errors (before adaption), with small fluc-
+tuations about a stable root mean-square value. The
+iterative routine is purely ‘mechanical, and requires
+no thought on the part. of the operator. Electronic
+
+automation of this procedure will be discussed below
+
+“The results of a typical adaption on six noise-
+less patterns: is given in Figs. 4 and 5. The pat—
+terns were selected in a random sequence, and were
+classified into 3 categories. Each T was to be
+mapped to +60 on the meter dial, each G to 0, and
+each F to -60, As & measure of performance, after
+each adaptation, all six patterns were read in
+(without adaptation) and six errors were read. The
+sum of their squares denoted by Dee was computed,
+and plotted. Fig. 5 shows the learning curve forthe.
+case in which all gains were initially zero. —
+
+D... Statistical Theory of Adaption for Sampled-Data.
+Systems .
+
+This section is a summary of the portions of
+Widrow's statigtical theory of adaption for sampled-
+data systems !s° that is useful in the analysis of.
+adaptive switching circuits.
+
+Consider the general linear sampled-data system form-
+ed of atapped delay line, shown inFig, 6. This system is in-
+tended tobe a statistical predictor, The individual im-
+pulses of the impulse response may be adjusted in the fol- -
+Lowing manner. Apply amean square reading meter to e(m),
+the difference between the present input and the de-
+layed prediction. This meter will measure mean
+square error in prediction. Ad just h1,ho,h3, or)
+until the meter reading is minimized.
+
+The problem of adjusting the h's is not trivial,
+because their effects upon performance interact.
+Suppose that the predictor has only two impulses in
+its impulse response, hy and ho. The mean square
+error for any setting of hi and ho can be readily
+derived: —
+
+e(m) = f(m) - hyf(m-1) - hof(m-2)
+<@(m) = BeelOYnt + ee(O)bh - Bpe(1)h, - Bop (2h,
+
++ 2fee(1)hihe + Bee(0)
+© (2)
+The discrete autocorrelation function of the input
+is Bpp(5).
+
+The mean square error given by equations (1) is
+what the mean square meter would read if it were to
+average over very large sampled size. ‘The mean
+square error is a parabolic function of the pre-: °
+dictor adjustments hj and ho, and, in general, can
+easily be shown to be’ a quadratic function of such
+adjustments, regardless of how many there are.
+
+The optimim n-impulse predictor can be derived -
+analytically by setting the partial derivatives of
+
+-of equation (1) equal to zero. This is the dis.
+erete analogue of Wiener's optimization? of contin-
+uous filters. Finding the optimm system experi-
+mentally is the same as finding a minimm of a para-
+boloid in n dimensions. This could be done manually
+by having a human operator read the meter and set
+the adjustment, or it could be done automatically
+
+by making use of any one of several iterative grai-
+ient methods for surface-searching, as devised by
+numerical analysts. When either of these schemes
+is employed, an adaptive system results that con-
+sists essentially of.a "worker" and a: "boss". The
+worker in:this..case predicts, whereas the boss has
+the. job of adjusting the worker.
+
+Figure 7 is a block-diagram representation of
+such a basic adaptive unit. The boss continually
+seeks a better worker by trial and error experi-
+mentation with the structure of the worker. Adap-
+tion is a multidimensional performance feedback
+process, The "error" ‘signal in the feedback control
+sensé is the gradient of mean square error with ©
+respect to adjustment.
+
+Many of the commonly used gradient methods
+search surfaces for stationary points by making
+changes inthe indeperident variables: (starting with
+an initial guess) in proportion ‘to measuréd pavtial
+derivatives to obtain the next..guess, and so forth.
+These methods give rise to geometric (exponential)
+decays in the independent variables as they approach
+a stationary point for second-degreé or quadratic:
+surfaces. One-dimensional surface-searching is il-
+lustrated in Fig. 8
+
+The surface being explored in Fig. 8 is given by
+Eq. (2). The first and-second derivatives are giv-
+en by Eqs. (3) ana (4).
+
+y=a(x-d)? 4c
+dy
+
+(2)
+
+GY = 2a(x - d) (3)
+32
+fox 2 (4)
+
+A sampled-data | feedback model. of the iterative
+process is shown in Fig. 8(b). This flow-graph can
+be reduced, and the resulting characteristic equa-
+
+tion is 7
+-(2ak + ae “+ 2L=0 (5)
+
+The iterative process is stable when -1/a<k<o, and
+Tae decay completely in one step when, k=
+-1/2a.
+
+"Noise" in the measurements of the mean square
+error surface due to small sample size. causes noisy
+derivative measurements. These noises enter the
+adaption process, as indicated in Fig. 8(b), and
+-cause noisy system.adjustments..
+
+Variance in x about the optimum. value causes the ©
+average. of y to be greater than the minim value
+ce. The increase in y equals. the. variance in x mul -
+tiplied by a, as can be seen from Eq. (2). It is
+useful to define a dimensionless parameter M the
+"nisadjustment", as the ratio of the mean increase
+in.mean. square error to the minimm mean square
+error.. It. is, a measure of. how the system performs
+on, the average, after adapting transients have died
+out, compared with the fixed optimum system., With
+regard to the curve of Fig. 8,
+
+ae y = et :
+M= fe (6)
+More detailed derivations: of misadjustment
+formulas. covering’ several different methods of sur-
+face searching and. ‘derivative meastirement are pre-
+sented in Refs. 7 and 8.. The particular formas
+which can be applied to the analysis of ‘adaptive
+- switching circuits are the: following.
+
+98
+
+When derivatives are measured by data repeating,
+i.e., when the same system input data is applied
+for both N "forward" and N "backward" measurements
+of mean square error, the misadjustment is given by
+
+1.
+= DUNE) (7)
+
+T is the time constant of the iterative process
+of Fig. 8, and is equal to -1/2ak. A unit time
+constant means that the adjustment error decreases
+by a factor 1/e per iteration cycle. Equation(7 )
+is conservative, and appreciably so only for small
+values of T, less than 1. In the limiting case of
+one-step adaption, tT = O and the appropriate mis-
+adjustment formula is
+
+Mee (8)
+
+In deriving Formulas (7) and (8), it has been as-
+sumed that the error samples are Gaussian distri-
+buted, with zero mean, and are uncorrelated. It can
+be shown that these results are highly insensitive
+to this distribution density shape, and are appre-
+ciably affected by correlation only when it ex-
+ceeds 0,8, It is interesting to note that the
+quality of adaption.depends only on the number of
+samples "seen" by the system in adapting. ;
+
+The expressions (7) and (8) are based on the
+supposition that fresh data is brought in for each
+cycle of iteration. If the system adapts on a fix-
+ed body.of N error. samples the misadjustment is
+given by Formula (8), When there are m interacting
+adjustments instead of just one, Expressions (7)
+and (8) may be generalized by multiplication by m.
+
+E. Statistical Theory of Adaption for the Adaptive
+“Neuron Element
+
+The error signal measured and: used.in adaption
+of the neuron of Fig. 1.is the difference between
+the desired output and the sum before quantization.
+This error is. indicated by ¢ in Fig. 9. The actual
+neuron error,, indicated by en in Fig. 9, is the
+difference between the neuron output and the de-
+sired output.
+
+The objective of adaption is the following.
+Given a.collection of input patterns and the as-
+sociated desired outputs, find the best set of
+weights ap,a,,...ay to minimize the mean square of
+the neuron error, ¢4.. Individual neuron errors
+could only have the values of +2, 0, and =-2 with a
+two-level. quantizer. Minimization of, ee is. there-
+fore equivalent to minimizing the average number
+of neuron errors...
+
+The simple adaption procedure. described in this
+paper minimizes e¢ rather than ee The measured
+error. ¢ has Egr mean (a consequence of the mini-
+mization of ¢ €&) and. will be assumed to be Gaussian-
+distributed, By making use of certain geometric
+arguments or by using a statistical - ‘theory of ampli-
+tude quantization, 10 it can be shown that is a
+monotonic function of e, and that minimization of
+e- is equivalent to minimization of a and to min-
+imization of the probability of neuron error. The
+ratio of these mean squares has been calculated and
+is plotted in Fig. 9 as a function of the nevron
+error probability.
+
+Given any collection of input patterns and the
+associated desired outputs, the measured mean
+square error €© mst be a precisely ‘parabolic
+
+metion of. the gain settings, AQ, eeeay- Let the
+attern be indicated.as the vector S(k) = 6(k}
+SC, «s-Sy(k). The s's have values of +1 or -1,
+afid represent the n input components numbered in a
+fixed manner. The kth error is
+
+e(k) = A(k) - ap ~ a1s1(k) - agéa(k)-.---anén(K)(g)
+For simplicity, let the neuron have only two input
+lines anda: level: control. The square of the error
+
+is accordingly.
+e(k) ='a-(x) + abies P(x eats s(x) 02
+- 2a(k)a, ~2a(i)s, (x)a. 172ali)s(k)a,,
++ 25 (48, a, +28 sag a pts, (k)s,(k)aa, (10)
+
+The mean aguate error averaged over k is
+
+2 =a CC 8 acta s 99 8p) 5-da,
+
+oa d,s De, ala, 8)8, +28, 0,0, +25 8,8,
++28( Sy 8, 2%, AC a, a)
+
+The @'s are spetinl i eae B(8z5 62) =
+ete. Note that Bs 5 = S58 3 84-1,
+
+Adjusting the al 289) minim ze e& is equivalent
+to searching a parabolic stochastic surface (having
+as many dimensions as. there are a's) for a minimm,
+How well this surface canbe searched: will be limit-
+ed by sample size, i.e., by the number of patterns
+seen in the searching process.
+
+The method of searching that has proven most
+useful is the method of steepest descent. Vector _
+adjustment changes are made in the direction of the
+gradient. Transients consist of sums of geometric
+sequence components (there are as many natural "fre-
+quencies" -as the number of adjustments, as can be
+seen from generalization of the flow graph of Fig.
+Q-see Ref. 9). It can be shown that the method of
+steepest descent will be stable when the proportion-
+ality constant k between’partial derivative and size
+of change is less than the reciprocal of the second
+partial derivative. It can also be shown that when
+k is small, transients can be approximately. repre-
+sented as being of thé single time constant 1/2k.
+
+The method of adaption that has been used re-
+-quires an extremely small sample size per iteration
+cycle, namely one pattern. One-pattern-at-a-time
+adaption has the advantages that derivatives are
+very easy to ‘measure and that no storage is re-
+quired within the adaptive machinery except for the
+gain values (which. contain the‘ past experience of
+the vieuron).--"
+
+‘The square of the error for a single pattern
+(the mean squaré error for a sample size of one) is
+given by Eq: (10). The partial derivatives are.
+
+= 5182,
+
+ago) . [ral +2a,t26, (x)a, 428 o(k)ay] |
+ag) = 8, (x) [-2a(k)+29 428, ()a,+28,(ic)e, |
+
+ae = 64%) [-2a(x)+2aqi2a, (k)a, +28 axes] (12)
+
+(a)
+
+Comparison of the Eqs. (12) with Eq. (9) shows that
+the derivatives are simply related to the measured
+error, and suggest that the derivatives could be
+measured without. squaring and averaging and without
+actual differentiation. The jth partial derivative
+
+is given by
+de" (xk)
+J
+It. follows that all partial derivatives have the
+same magnitude, and have signs determined by the
+error sign and the respective input signal signs.
+
+The procedure described in Sec. C for bringing
+e(k) to zero with each successive input pattern
+
+== 28,() elt) (a3)
+
+‘gives the constant k a value of 1/2(nt+1). Fram the
+
+previous discussion we see that the time constant
+of the iterative process is therefore t=(n+1) pat-
+terns. On the 4x4 adaline, there are. n=16 input
+line gains plus a level control. Therefore, the
+time constant should be roughly 17 patterns (for
+verification, see the learning curve of Fig. 5).
+The séarch procedure could be readily modified to
+speed up or slow down the adaption process by ad-
+justing k.
+
+The misadjustment Formilas (7). and (8) when ap-
+plied to the adaptive neuron give the per unit in-
+crease in measured mean square error as a result
+of adapting on a finite number of patterns. Since
+the ratio of probability of neuron error to the
+mean square error «¢ is essentially constant over
+a wide range of error probabilities (Fig.9), the
+misadjustment as expressed by Formilas (7) and (8)
+may be interpreted in terms of the ratio of the in-
+crease in error probability to the minimm error
+prohability.
+
+-If adaption is accomplished by injection of a
+fresh pattern each iteration cycle, ‘the misad just-
+ment, as derived fram Eq. (7), is
+
+M = fae ay
+
+Following the procedure of bringing ei) to zero
+each iteration cycle, the mtisad justment is
+
+u- iat). ni+i)_i
+
+eat a(n +1 2
+If adaption is accomplished by. taking a . fixed
+
+(25)
+
+‘collection of N patterns and repeating them over
+
+and over for several time constants (where the time
+constant is long, several times N), the misadJjust-
+ment, as derived from Eq. (8), is
+
+me +) (6)
+
+Similation tests have shown that the misadjust-
+ment formas are highly accurate over a very wide
+range of pattern. and noise characteristics. A des-
+eription of a typical experiment and its results is
+given in Fig. 10.
+
+_ Noisy 3x3 patterns were. generated by randomly
+injecting errors in ten percent of the positions of
+the four "pure" patterns, X,1T,C,J.
+
+The best system, ‘arrived at by slow precise’
+adaption on the full body of 100 noisy patterns,
+was able to classify these patterns as desired ex-
+cept for twelve errors. The gains were then set to
+zero and ten patterns were chosen at random. The
+best system for these. patterns was arrived at and
+tested on the full body of 100 patterns. Twenty-
+
+‘five classification errors out of 100 were made.
+The misadjustment was 108 percent. The experiment
+was repeated three more times, and the misadjust-
+ments that resulted, in order, were 58 percent, 6T
+percent and 133 percent. Since N=10 patterns and
+n=9 input lines, the theoretical misadjustment was
+
+M= nt = 100. percent
+An average taken over the four experiments gives
+a measured misadjustment of 91.5 percent.
+
+The adaptive classifier can adapt after seeing
+remarkably few patterns. A misadjustment of 20
+percent should be acceptable in most applications.
+To achieve this, all one has to do is supply. the
+adaptive classifier with a number of patterns equal
+to five times the number of input lines, regardless
+of how noisy ‘the patterns are and how difficult the
+"pure" patterns are to separate. Although the mis-
+adjustment formulas have been derived for the
+specific classifier consisting of a single adaptive
+neuron, it is suspected that the following "rule of
+thumb" will apply fairly well. to all adaptive class-
+ifiers: the nunber of patterns required to trainan
+
+‘adaptive classifier is equal to several times the
+
+number of bits per pattern.
+
+F, Networks of Adaptive Neurons
+
+Linearly separable* pure patterns and noisy ver-
+sions of them are readily classified by the single
+neuron. Non-linearly separable pure patterns and
+their noisy equivalents can also be separated: by a
+single neuron, but absolute performance can be im-
+proved and the generality of the classification
+scheme can be greatly increased by using more than
+one neuron. ;
+
+Two Adalines were combined by using the following
+adaption procedure: if the desired output for a
+given input pattern applied to both machines was -1l,
+then both machines were adapted in the usual manner
+to ensure this; if the desired output was +1, the
+machine with the smallest measured error € was as-
+signed to adapt to give atl output while the other
+machine remained unchanged. If either or both
+machines gave outputs of +1, the pattern was clas-
+sified as +1. If both machines gave -1 outputs, the
+pattern was classified as ~-l.
+
+This procedure assigns specific "responsibility"
+to the neuron that can most easily assume it. If,
+at the begiming of adaption, a given neuron takes
+responsibility for producing a +1 with a certain
+input pattern, it will invariably take this res-
+
+' ponsibility each time the pattern is applied dur-
+
+ing training. Notice that itis not necessary for
+a teacher to assign responsibility. The combination
+does this automatically and requires only input
+patterns and the associated desired outputs, like
+the single neuron.
+
+Various classification problems could be solved
+simultaneously by multiplexing neurons or combin-
+ations of neurons. One neuron might be trained to
+decide whether the man in a given picture does or
+does not have a green tie, while another neuron or
+combination could be trained to decide whether or
+not the man has a checkered shirt, Each neuron or
+
+*
+A more complete discussion of linear separ-
+ability is given in references 4 and 5.
+
+combination has its own output line, and each is
+fed the appropriate desired output signal during
+training. The input signals are common to all neu-
+rons. In this manner, it is possible to form adap--
+tive classifiers that can separate with great ac-
+curacy large quantities of complicated patterns into
+many output categories. All that is needed is large
+quantities of adaptive neurons.
+
+G. Adaptive Microelectronic Systems
+
+The structure of the neuron described in this
+paper and its adaption procedure is sufficiently
+simple that an effort is under way to develop a
+physical device which is an all-electronic fully
+automatic Adaline. The objective is a self-con-
+tained device, like the one sketched in Fig. ll,
+that has a signal input line, a "desired output"
+input Line (actuated during training only), an out-
+put: line, and a power supply. The device itself
+should be suitable for mass production, should con-
+tain few parts, should be reliable, and probably
+should consist. of solid-state components.
+
+To have such an adaptive neuron, it is necessary
+to be able to store the gain values, which could be
+positive or negative, in such manner that these
+values could be changed electronically.
+
+Present efforts have been based on the use of
+muilti-aperature magnetic cores (MAD elements!1),
+The special characteristics of these cores permit
+multilevel storage with continuous, non-destructive
+read out. In addition, the stored levels are easily
+changed by small controlled amounts, with the di-
+rection of the change being determined by Logic per-
+formed by the MAD element. The results of this work
+have shown that macroscopic. adaptive neurons made
+of MAD elements will soon exist, and that with the
+use of thin ferromagnetic films, adaptive micro-
+electronic neurons will ultimately exist.
+
+H. Applications for Adaptive Logical Circuit Elements
+
+If a computer were built of adaptive neurons, de-
+tails of structure could be imparted by the designer
+by training (showing it examples of what he would
+like to do) rather than by direct. designing. This
+design concept becomes more significant.as size and
+complexity of digital systems increase. The. demands
+of modern technology are such that larger and more
+complex digital systems. are continually being con-
+templated, and in step with this, progress in micro-
+electronics makes such systems physically and econ-
+omically possible,
+
+The problem of reliability is greatly aggravated -
+by increase in size and complexity.
+
+Shannon and Moorel2 and von Neumann3 have pro-
+posed schemes for increasing the reliability of
+fixed digital systems by using redundancy. The re-
+liability of systems may be increased further by > ~
+combining adaption and redundancy. Consider a milti- .
+plex consisting of three machines solving the same
+problem with the same input data. Let the output
+of each machine be a single binary number, expres-
+sed as +1 or ~-l. If these machines were perfectly
+reliable, their outputs would always. agree. If not,
+then von Neumann proposed that the majority should
+rule. The neuron shown in Fig. 1 with ag set to
+zero, and the other gains set to +1 would give a
+majority output. Each machine has equal vote. Un-
+equal vote (higher vote going to the more reliable
+machine) is possible by making the a's adjustable, |
+
+100
+
+and causing these adjustments to be made automati-
+cally to optimize performance. The adaptive vote
+taker, identical.to the adaptive neuron, can be
+trained by periodically injecting a certain input
+when the desired output is known. The adaptive vote
+taker could ideally give the correct outcome with
+only a single correct machine by giving it a heavy
+vote and attenuating the votes of the unreliable
+machines. This is’ in effect an adaptive routing
+procedure for information flow, and allows systems
+in a small measure to be self-healing.
+
+One -of the most promising areas of research in
+computer system theory is that of problem-solving
+machines, theorem-proving machines, and artificially
+"intelligent" machines. The earliest proponents of
+this research were Turing and Shannon.13 Their sug-
+gestions were put to pracpice with some success by
+Newell, Simon, and Shaw,1* by Same1,1° and by others,
+
+An automatic problem-solving computer should have
+a memory system from which information could be ex-
+tracted according to classification rather than
+according to address mmber, The use of stored games,
+or “rote learning",*? would be considerably more
+powerful if it were possible to extract from the
+memory previous situations that are similar and not
+necessarily identical to the current situation. Far
+less experience and storage would be needed to
+adapt to a given level of competence. The extent of
+classification before storing should be slight (e.g,
+is the pattern of checkers or of chess?), and a con-
+sistent scheme for the arrangement of the pattern
+pits should ‘be established before storing. Final
+classification should be done within the memory it-
+self. Each storage register might contain an Adaline
+or a network of Adalines.
+
+A request from a “central control";for a certain
+type of information would be sent to évery register
+in the memory simultaneously. This has the effect
+of setting the adjustments of all. the Adalines.
+Only the registers whose classifiers. respond prop-
+erly (e.g., give +1 outputs) answer the request and
+transmit their information back to the "central
+control.”
+
+Very sophisticated learning procedures would be-
+eome possible if: one had such recall-by-association
+parallel-access memory: systems. The simplicity of
+_ Adaline and the progress being made in micro-
+electronics gives a strong indication that such
+memory systems will come into existence in the not
+
+too distant future.
+
+_ Acknowledgment
+
+This research was supported by the Office of Naval
+Research under contract with Stanford University.
+
+KR REE RHEE
+
+101
+
+LO.
+
+il.
+
+12.
+
+13.
+
+La,
+
+15.
+
+References
+
+C. E. Shannon, "A symbolic analysis. of relay
+and switching circuits,” Trans. of ATEE, Vol.
+
+37, 1938, pp. 713-723.
+
+S. H. Caldwell, Switching Circuits and Logical
+Design, Wiley, 1958.
+
+J. von Neuman, "Probabilistic Logic and Syn-
+thesis of Reliable Organisms from Unreliable
+Components", in Automata Studies, Princeton
+University Press, 1956.
+
+Robert McNaughton, "Unate truth functions", |
+Tech, Report No. 4, Appl. Math. and Stat. Lab.,
+Stanford University, October 21, 1957.
+
+R. L. Mattson, "The design and analysis of an
+adaptive system for statistical classification",
+S. M. Thesis, MIT, May 22, 1959.
+
+R. L. Mattson, "A self-organizing logical system}
+1959 Eastern Joint Computer Conference Conven-
+tion Record, Inst. of Radio Eng., N.Y.
+
+B. Widrow, "Adaptive sampled-data systems—a
+statistical theory of adaptation", 1959 WESCON
+Convention Record, Part 4.
+
+B. Widrow, "Adaptive sampled-data systems",
+IFAC Moscow Congress Record, Butterworth Pub-
+lications, London, 1960.
+
+Wiener, N., Extrapolation, Interpolation, and
+Smoothing of Stationary Time Series with
+Engineering Applications, New York, Wiley, 1949,
+
+B. Widrow, "A study of rough amplitude quan-
+tization by means of Nyquist sampling theory",
+IRE Transactions, PGCT, Vol. CT-3, Number 4,
+Dec. 1956,
+
+H. D. Crane, "A high-speed logic system using
+magnetic elements and connecting wire only",
+Proc. IRE, pp. 63-73, Jan. 1959.
+
+E. F. Moore and C, E. Shannon, "Reliable cir-
+cuits using less reliable relays", Bell Tele.-.
+phone System Technical Publications, Monograph
+2696, January 1957.
+
+C, E. Shannon, "Programming. a. computer for
+playing chess", Phil. Magn.,' J, p. 256,
+March 1950.
+
+A, Newell, J. C, Shaw, and H. A. Simon, "Chess-
+playing programs and the problem of complexity’
+
+‘TBM Journal of Res. and Dev., 2, p. 320, Oct.
+
+1958,
+
+A. I. Samel, "Same studies in machine learn-
+ing using the game of checkers", IBM Journal
+of Res. and Dev., Vol. 3, No. 3. -p. 211-229,
+
+July 1959.
+
++1,-1 0
+
+input
+lines
+
+Q's ore adjustoble Fig. 4. Patterns for classification experiment.
+
+Fig. 1. An adjustable neuron.
+
+21077 ADAPTIVE-ELEMENT PERFORMANCE
+T,G,F Classification Experiment.
+
+6 80 160
+Number of input Patterns
+
+Fig. 5. .Adaptive~element performance curve.
+
+, Fig. 2. Adaline. Predictor
+
++
+Correlated L
+input © Prediction i
+process :
+Oren gains summer ’ quantizer
+switches tt
+‘ reference
+switch
+(desired output)
+Fig. 3. Schematic of Adaline. Fig. 7.. An adaptive predictor.
+
+7 102
+
+y
+
+y= alx-b)*+c
+. Initial
+Unit
+delay ayess
+z xi)
+
+Present .
+adjustment
+guess
+
+2a
+
+Next — x(i+!)
+adjustment
+guess
+
+H i Initial
+t
+
+, ! guess -2a Stationary
+- x sags point
+- Derivative
+‘Stationary xt} x{0) measurement (reference)
+poin' noise
+(a) (b)
+
+Fig. 8. “One-dimensional:surface searching.
+
+Jn
+inputs
+H,-le— >
+desired output
+8
+3, .6
+pil ‘4
+(2) 5
+
+0 6 “207 30
+
+40
+% Probability of Neuron error
+
+Fig. 9. Relations between neuron errors and measured errors.
+
+103
+
+X—> +1
+
+SI T
+ee ee oe 8 @ eee
+ove ofc 00 0 3
+°oS 208 SoS Se? 3°
+ee ©6¢ @©8 @@ e
+ee e eo ee ooo
+efe o's o's @° °
+a: rr .
+
+lO% Noise
+
+a a a Sef
+SES wd
+oe ge eee 33° 2
+e eee eo 60 oe
+me ay 82 Ps
+C— +1
+
+Best neuron makes (2 errors out of
+
+70, 69, 52, 85, 32
+97, 30, 38, 87, 01
+
+2
+3 .
+a
+
+65, 12, 84, 83, 34
+38, 71, 66, 13, 80
+07, 42,85, 68,63
+35, 37, 92,79, 22
+
+PERIMENT | PATTERNS ADAPTED | NUMBER OF
+
+EX
+_ F.. ON
+? ? + 3% fy
+
+T— -!
+eco ese S60 00
+e e 3 e
+e e e
+ee ¢ @¢ 86 oo
+es e e
+e e e e
+eee 006 cee 60
+ee e e e
+e ee ee ee
+*3* 68° os” 88
+e e e
+ee @e8 090 eee
+e &° . Se
+e e e e
+ee 08@868 86 886
+eee 600 eee e006
+e e ee
+ee ee e286 e
+eee 600 C¢20 800
+4 e e e
+eee eee e
+eee «6600 «6608 6006
+ee ee e °
+e ees e
+eo ee e ee
+eo eee
+eee eee oe
+eee ee e080 o8
+100
+MISADJUST MENT
+
+lg-i2
+
+Mz 2052 = 67%
+
+ERRORS | _wisaoustment |
+95, 79, 07, 60 ~ 25-12 :
+[ratisemee | 28 | Me Higis100%e
+
+19
+20
+28
+
+Me 3 = 58% ;
+
+~
+
+Fig. 10.. Experimental adaption on 10 noisy 3x3 patterns.
+
+Input
+
+solid-state
+adaptive
+neuron
+
+desired
+output.
+
+power
+
+Fig. 11. Electronic automatically=adapted neuron.
+
+104. |
+va
+
+1960 IRE
+
+Reprinted from:
+WESCON CONVENTION RECORD
+Part

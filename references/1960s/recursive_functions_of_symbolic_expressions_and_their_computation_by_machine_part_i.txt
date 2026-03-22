@@ -1,0 +1,1315 @@
+Recursive Functions of Symbolic Expressions
+and Their Computation by Machine, Part |
+
+John McCarthy, Massachusetts Institute of Technology, Cambridge, Mass.
+
+April 1960
+
+1 Introduction
+
+A programming system called LISP (for LISt Processor) has been developed
+for the IBM 704 computer by the Artificial Intelligence group at M.I.T. The
+system was designed to facilitate experiments with a proposed system called
+the Advice Taker, whereby a machine could be instructed to handle declarative
+as well as imperative sentences and could exhibit “common sense” in carrying
+out its instructions. The original proposal [1] for the Advice Taker was made
+in November 1958. The main requirement was a programming system for
+manipulating expressions representing formalized declarative and imperative
+sentences so that the Advice Taker system could make deductions.
+
+In the course of its development the LISP system went through several
+stages of simplification and eventually came to be based on a scheme for rep-
+resenting the partial recursive functions of a certain class of symbolic expres-
+sions. This representation is independent of the IBM 704 computer, or of any
+other electronic computer, and it now seems expedient to expound the system
+by starting with the class of expressions called S-expressions and the functions
+called S-functions.
+
+“Putting this paper in ATpXpartly supported by ARPA (ONR) grant N00014-94-1-0775
+to Stanford University where John McCarthy has been since 1962. Copied with minor nota-
+tional changes from CACM, April 1960. If you want the exact typography, look there. Cur-
+
+rent address, John McCarthy, Computer Science Department, Stanford, CA 94305, (email:
+jmcQ@cs.stanford.edu), (URL: http://www-formal.stanford.edu/jmc/ )
+
+*
+
+In this article, we first describe a formalism for defining functions recur-
+sively. We believe this formalism has advantages both as a programming
+language and as a vehicle for developing a theory of computation. Next, we
+describe S-expressions and S-functions, give some examples, and then describe
+the universal S-function apply which plays the theoretical role of a universal
+Turing machine and the practical role of an interpreter. Then we describe the
+representation of S-expressions in the memory of the IBM 704 by list structures
+similar to those used by Newell, Shaw and Simon [2], and the representation
+of S-functions by program. Then we mention the main features of the LISP
+programming system for the IBM 704. Next comes another way of describ-
+ing computations with symbolic expressions, and finally we give a recursive
+function interpretation of flow charts.
+
+We hope to describe some of the symbolic computations for which LISP
+has been used in another paper, and also to give elsewhere some applications
+of our recursive function formalism to mathematical logic and to the problem
+of mechanical theorem proving.
+
+2 Functions and Function Definitions
+
+We shall need a number of mathematical ideas and notations concerning func-
+tions in general. Most of the ideas are well known, but the notion of conditional
+expression is believed to be new!, and the use of conditional expressions per-
+mits functions to be defined recursively in a new and convenient way.
+
+a. Partial Functions. A partial function is a function that is defined only
+on part of its domain. Partial functions necessarily arise when functions are
+defined by computations because for some values of the arguments the com-
+putation defining the value of the function may not terminate. However, some
+of our elementary functions will be defined as partial functions.
+
+b. Propositional Expressions and Predicates. A propositional expression is
+an expression whose possible values are T (for truth) and F (for falsity). We
+shall assume that the reader is familiar with the propositional connectives /A
+(“and”), V (“or”), and — (“not”). Typical propositional expressions are:
+
+lreference Kleene
+
+ur<y
+(x <y)A(b=c)
+
+xX is prime
+A predicate is a function whose range consists of the truth values T and F.
+
+c. Conditional Expressions. The dependence of truth values on the values
+of quantities of other kinds is expressed in mathematics by predicates, and the
+dependence of truth values on other truth values by logical connectives. How-
+ever, the notations for expressing symbolically the dependence of quantities of
+other kinds on truth values is inadequate, so that English words and phrases
+are generally used for expressing these dependences in texts that describe other
+dependences symbolically. For example, the function |x| is usually defined in
+words. Conditional expressions are a device for expressing the dependence of
+quantities on propositional quantities. A conditional expression has the form
+
+(pi — €1,°°*;Pn > En)
+
+where the p’s are propositional expressions and the e’s are expressions of any
+kind. It may be read, “If p, then e, otherwise if po then eg, --- , otherwise if
+Dn then e,,” or “p, yields €1,-++, Dn yields e,.” ?
+
+We now give the rules for determining whether the value of
+
+(p1 — €1,°°+,;Dn > Cn)
+
+is defined, and if so what its value is. Examine the p’s from left to right. If
+a p whose value is T’ is encountered before any p whose value is undefined is
+encountered then the value of the conditional expression is the value of the
+corresponding e (if this is defined). If any undefined p is encountered before
+
+?T sent a proposal for conditional expressions to a CACM forum on what should be
+included in Algol 60. Because the item was short, the editor demoted it to a letter to the
+editor, for which CACM subsequently apologized. The notation given here was rejected for
+Algol 60, because it had been decided that no new mathematical notation should be allowed
+in Algol 60, and everything new had to be English. The if...then...else that Algol 60
+adopted was suggested by John Backus.
+
+a true p, or if all p’s are false, or if the e corresponding to the first true p is
+undefined, then the value of the conditional expression is undefined. We now
+give examples.
+
+(1<2>541>2—-3)=4
+(2<154,2>1-53,2>1—-2)=3
+(2<134,7 33) =3
+Q<1+5,.7T3)=3
+Q<1+3T7) is undefined
+
+(2<1-—3,4< 1-4) is undefined
+
+Some of the simplest applications of conditional expressions are in giving
+such definitions as
+
+|| = (a <0 -2,T > x)
+
+sgn(xz) = («4 <0 -1,x=0—-0,T — 1)
+
+d. Recursive Function Definitions. By using conditional expressions we
+can, without circularity, define functions by formulas in which the defined
+function occurs. For example, we write
+
+nl =(n=0-1,T —n-(n—-1)!)
+When we use this formula to evaluate 0! we get the answer 1; because of the
+
+way in which the value of a conditional expression was defined, the meaningless
+
+4
+
+expression 0 - (0 - 1)! does not arise. The evaluation of 2! according to this
+definition proceeds as follows:
+
+Y= (2=0 51,7 >2-(2—1)!)
+= 2-1!
+= 2-(1=0 17 >-(1-1)!)
+= 2-1-0!
+= 2-1-(0=0-1,T 0: (0-1)!)
+= 2-1-1
+= 2
+
+We now give two other applications of recursive function definitions. The
+greatest common divisor, gcd(m,n), of two positive integers m and n is com-
+puted by means of the Euclidean algorithm. This algorithm is expressed by
+the recursive function definition:
+
+gcd(m,n) = (m > n = gced(n,m), rem(n,m) = 0 — m,T — gcd(rem(n, m),m))
+
+where rem(n,m) denotes the remainder left when n is divided by m.
+
+The Newtonian algorithm for obtaining an approximate square root of a
+number a, starting with an initial approximation x and requiring that an
+acceptable approximation y satisfy |y? — a] < €, may be written as
+
+sqrt(a, x, €)
+
+= (|x? —a| <¢ > x,T = sqrt (a, $(a + £),€))
+
+The simultaneous recursive definition of several functions is also possible,
+and we shall use such definitions if they are required.
+
+There is no guarantee that the computation determined by a recursive
+definition will ever terminate and, for example, an attempt to compute n!
+from our definition will only succeed if n is a non-negative integer. If the
+computation does not terminate, the function must be regarded as undefined
+for the given arguments.
+
+The propositional connectives themselves can be defined by conditional
+expressions. We write
+
+p\q = (p>g,T — F)
+pVq = (poT,T>4@q)
+=p = (po F,T-T)
+
+po¢ = (pogT-T)
+
+It is readily seen that the right-hand sides of the equations have the correct
+truth tables. If we consider situations in which p or gq may be undefined, the
+connectives A and V are seen to be noncommutative. For example if p is false
+and q is undefined, we see that according to the definitions given above p A q
+is false, but q A p is undefined. For our applications this noncommutativity is
+desirable, since p/q is computed by first computing p, and if p is false q is not
+computed. If the computation for p does not terminate, we never get around
+to computing g. We shall use propositional connectives in this sense hereafter.
+
+e. Functions and Forms. It is usual in mathematics—outside of mathe-
+matical logic—to use the word “function” imprecisely and to apply it to forms
+such as y2+2. Because we shall later compute with expressions for functions,
+we need a distinction between functions and forms and a notation for express-
+ing this distinction. This distinction and a notation for describing it, from
+which we deviate trivially, is given by Church [3].
+
+Let f be an expression that stands for a function of two integer variables.
+It should make sense to write f (3,4) and the value of this expression should be
+determined. The expression y+ does not meet this requirement; y? + (3, 4)
+is not a conventional notation, and if we attempted to define it we would be
+uncertain whether its value would turn out to be 13 or 19. Church calls an
+expression like y? + 2, a form. A form can be converted into a function if we
+can determine the correspondence between the variables occurring in the form
+and the ordered list of arguments of the desired function. This is accomplished
+by Church’s A-notation.
+
+If € is a form in variables x,---,%,, then A((r71,---, Xn), E) will be taken
+to be the function of n variables whose value is determined by substituting
+the arguments for the variables 71,---,2, in that order in € and evaluating
+
+the resulting expression. For example, \((x,y),y? +2) is a function of two
+variables, and \((z,y), y? + x)(3,4) = 19.
+
+The variables occurring in the list of variables of a \-expression are dummy
+or bound, like variables of integration in a definite integral. That is, we may
+
+change the names of the bound variables in a function expression without
+changing the value of the expression, provided that we make the same change
+for each occurrence of the variable and do not make two variables the same
+that previously were different. Thus A((z,y),y? + x), A((u,v), v2 + u) and
+A((y, x), x? + y) denote the same function.
+
+We shall frequently use expressions in which some of the variables are
+bound by ’s and others are not. Such an expression may be regarded as
+defining a function with parameters. The unbound variables are called free
+variables.
+
+An adequate notation that distinguishes functions from forms allows an
+unambiguous treatment of functions of functions. It would involve too much
+of a digression to give examples here, but we shall use functions with functions
+as arguments later in this report.
+
+Difficulties arise in combining functions described by A-expressions, or by
+any other notation involving variables, because different bound variables may
+be represented by the same symbol. This is called collision of bound variables.
+There is a notation involving operators that are called combinators for com-
+bining functions without the use of variables. Unfortunately, the combinatory
+expressions for interesting combinations of functions tend to be lengthy and
+unreadable.
+
+f. Expressions for Recursive Functions. The A-notation is inadequate for
+naming functions defined recursively. For example, using \’s, we can convert
+the definition
+
+1
+sqrt(a,v,€) = (|x? — al <e—> 2,T — sqrt(a, g(@ + °), €))
+x
+
+into
+
+1
+sqrt = A (a,x,€),(|2® = al <¢ > 2, T sart(a, s(x + =),6))),
+Xx
+
+but the right-hand side cannot serve as an expression for the function be-
+cause there would be nothing to indicate that the reference to sqrt within the
+expression stood for the expression as a whole.
+
+In order to be able to write expressions for recursive functions, we intro-
+duce another notation. label(a,€) denotes the expression €, provided that
+occurrences of a within € are to be interpreted as referring to the expression
+
+7
+
+as a whole. Thus we can write
+label(sqrt, A((a, x, €), (la? — a] < e+ x, T — sqrt(a, $(x + £),€))))
+as a name for our sqrt function.
+
+The symbol a in label (a,€) is also bound, that is, it may be altered
+systematically without changing the meaning of the expression. It behaves
+differently from a variable bound by a A, however.
+
+3 Recursive Functions of Symbolic Expressions
+
+We shall first define a class of symbolic expressions in terms of ordered pairs
+and lists. Then we shall define five elementary functions and predicates, and
+build from them by composition, conditional expressions, and recursive def-
+initions an extensive class of functions of which we shall give a number of
+examples. We shall then show how these functions themselves can be ex-
+pressed as symbolic expressions, and we shall define a universal function apply
+that allows us to compute from the expression for a given function its value
+for given arguments. Finally, we shall define some functions with functions as
+arguments and give some useful examples.
+
+a. A Class of Symbolic Expressions. We shall now define the S-expressions
+(S stands for symbolic). They are formed by using the special characters
+
+)
+(
+
+and an infinite set of distinguishable atomic symbols. For atomic symbols,
+we shall use strings of capital Latin letters and digits with single imbedded
+
+blanks.? Examples of atomic symbols are
+
+A
+ABA
+APPLE PIE NUMBER 3
+
+There is a twofold reason for departing from the usual mathematical prac-
+tice of using single letters for atomic symbols. First, computer programs fre-
+quently require hundreds of distinguishable symbols that must be formed from
+the 47 characters that are printable by the IBM 704 computer. Second, it is
+convenient to allow English words and phrases to stand for atomic entities for
+mnemonic reasons. The symbols are atomic in the sense that any substructure
+they may have as sequences of characters is ignored. We assume only that dif-
+ferent symbols can be distinguished. S-expressions are then defined as follows:
+
+1. Atomic symbols are S-expressions.
+2. If e; and eg are S-expressions, so is (€] - €2).
+Examples of S-expressions are
+
+AB
+(A- B)
+((AB-C)-D)
+
+An S-expression is then simply an ordered pair, the terms of which may be
+atomic symbols or simpler S-expressions. We can can represent a list of arbi-
+trary length in terms of S-expressions as follows. The list
+
+(m1, Ma, uc , Mn)
+
+is represented by the S-expression
+
+Here NIL is an atomic symbol used to terminate lists. Since many of the
+symbolic expressions with which we deal are conveniently expressed as lists,
+we shall introduce a list notation to abbreviate certain S-expressions. We have
+
+31995 remark: Imbedded blanks could be allowed within symbols, because lists were then
+written with commas between elements.
+
+l. (m) stands for (m -NJL).
+2. (m1,+++,™Mn) stands for (m,- (+--+ (mp + NIL)---)).
+3. (mM1,°°+,Mn- x) stands for (m1: («++ (my +x) ---)).
+Subexpressions can be similarly abbreviated. Some examples of these ab-
+breviations are
+((AB,C), D) for ((AB-(C-NIL))-(D- NIL))
+((A, B),C,D-E) for ((A-(B- NIL))-(C-(D- B£)))
+
+Since we regard the expressions with commas as abbreviations for those
+not involving commas, we shall refer to them all as S-expressions.
+
+b. Functions of S-expressions and the Expressions That Represent Them.
+We now define a class of functions of S-expressions. The expressions represent-
+ing these functions are written in a conventional functional notation. However,
+in order to clearly distinguish the expressions representing functions from S-
+expressions, we shall use sequences of lower-case letters for function names
+and variables ranging over the set of S-expressions. We also use brackets and
+semicolons, instead of parentheses and commas, for denoting the application
+of functions to their arguments. Thus we write
+
+car|a]
+car|cons|{(A - B); a]]
+
+In these M-expressions (meta-expressions) any S-expression that occur stand
+for themselves.
+
+c. The Elementary S-functions and Predicates. We introduce the following
+functions and predicates:
+
+1. atom. atom[x] has the value of T or F according to whether x is an
+atomic symbol. Thus
+
+atom [X] = T
+atom |(X - A)| =F
+
+2. eq. eq [x;y] is defined if and only if both x and y are atomic. eq [x; y]
+= T if x and y are the same symbol, and eq [x; y] = F otherwise. Thus
+
+10
+
+eq [X; (X - A)] is undefined.
+
+3. car. car[x] is defined if and only if x is not atomic. car [(e1 - e2)] = e1.
+Thus car [X] is undefined.
+
+car |[(X -A)] =X
+car [((X + A) -Y)] = (X +A)
+
+4. cdr. cdr [x] is also defined when x is not atomic. We have cdr
+[(e1 - €2)] = eg. Thus cdr [X] is undefined.
+
+cdr [(X- A)] = A cdr [((X-A)-Y)] = Y
+
+5. cons. cons |x; y] is defined for any x and y. We have cons |e; e2] =
+(ey : €2). Thus
+
+cons [X; A] = (X A)
+cons [(X - A); Y] = ((X - A)Y)
+
+car, cdr, and cons are easily seen to satisfy the relations
+
+car [cons [x; y]] = x
+cdr [cons [x; y]] = y
+cons [car [x]; cdr [x]] = x, provided that x is not atomic.
+
+The names “car” and “cons” will come to have mnemonic significance only
+when we discuss the representation of the system in the computer. Composi-
+tions of car and cdr give the subexpressions of a given expression in a given
+position. Compositions of cons form expressions of a given structure out of
+parts. The class of functions which can be formed in this way is quite limited
+and not very interesting.
+
+d. Recursive S-functions. We get a much larger class of functions (in fact,
+
+all computable functions) when we allow ourselves to form new functions of
+S-expressions by conditional expressions and recursive definition. We now give
+
+11
+
+some examples of functions that are definable in this way.
+1. ff[x]. The value of ff[z] is the first atomic symbol of the S-expression x
+with the parentheses ignored. Thus
+ff[((A-B)-C)] =A
+We have
+
+ff|z] = |atom|x| — x«;T — f£[car|a]]|
+
+We now trace in detail the steps in the evaluation of
+
+= |atom|((A- B)-C)] — ((A- B)-C);T — ff[car[((A- B)C-)]]]
+
+= |F > ((A-B)-C);T = fi[car[((A- B) - C)]]}
+
+= [P ~fflear(((A- B)- C)])
+= filear(((A- B)-C)]
+
+= f[(A-B)]
+
+= [atom[(A- B)] + (A+ B)sT = filear((A- B)]]
+
+= [F >(A-B);T = filcar|(A- B)]]]
+
+= |T — ff[car[(A- B)|]]
+= fflear[(A- B)]
+= fA]
+
+12
+
+latom|A] — A;T — ff[car|A]]]
+= |T — A;T — ff[car|Al]]
+
+=A
+
+2. subst |x;y;z]. This function gives the result of substituting the S-
+expression x for all occurrences of the atomic symbol y in the S-expression z.
+It is defined by
+
+subst [x; y; z] = [atom |z] — [eq |z; y] > x; T — gj;
+T — cons [subst [x; y; car |z]]; subst [x; y; cdr [z]]]]
+
+As an example, we have
+
+subst|(X - A); B;((A- B) -@)] = ((A- (X- A)) - ©)
+
+3. equal [x; y]. This is a predicate that has the value T if x and y are the
+same S-expression, and has the value F otherwise. We have
+
+equal |x; y] = [atom [x] A atom |[y] A eq [x; y]|
+V[= atom [x] A7 atom ly] A equal [car [x]; car [y]]
+
+A equal [cdr [x]; cdr [y]]]
+
+It is convenient to see how the elementary functions look in the abbreviated
+list notation. The reader will easily verify that
+
+(i) car{(m1,Me2,+++,™Mn)} = m4
+
+(ii) cdr|(ms,, M2,+++,™Mn)] = (Mea, +++, Mn)
+
+(iii) edr[(m)] = NIL
+
+(iv) cons|my; (ma, a) Mn) = (mi, Ma2,°°*, Mn)
+(v) cons[m; NIL] = (m)
+
+We define
+
+13
+
+null|az] = atom|a] A eq|x; NIL]
+This predicate is useful in dealing with lists.
+
+Compositions of car and cdr arise so frequently that many expressions can
+be written more concisely if we abbreviate
+
+cadr |x| for car[cdr|a]],
+caddr|x] for car|cdr|cdr|x]]], ete.
+
+Another useful abbreviation is to write list [e1; e2;---;en|
+for cons|e1; cons|e2;---;conslen; NIL] ---]].
+This function gives the list, (e1,---,en), as a function of its elements.
+
+The following functions are useful when S-expressions are regarded as lists.
+1. append [x;y].
+
+append [x; y] = [null[x] + y; T — cons [car [x]; append [cdr [x}; y]]]
+An example is
+
+append [(A, B); (C, D, E)] = (A, B, C, D, E)
+
+2. among [x;y]. This predicate is true if the S-expression x occurs among
+the elements of the list y. We have
+
+among|x; y] = anull[y] A [equal|x; car|y]| V among|ax; cdr{y]}]
+
+3. pair [x;y]. This function gives the list of pairs of corresponding elements
+of the lists x and y. We have
+pair(x; y| = [null[a|Anull[y] — NIL; 7atom|x|Asatom|y| — cons|list|car|x]; car|y]]; pair |cdr |x]; cdr[y]]]
+An example is
+
+pair (A, B,C); (X, (¥, Z),U)] = (A, X), (BZ), (G, U)).
+
+4. assoc [x;y]. If y is a list of the form ((u1,v1),---, (Un, Un)) and x is one
+of the u’s, then assoc |; y| is the corresponding v. We have
+
+assoc|x; y] = eq|caar[y]; x] > cadar|y]; T — assoc|x; cdr|y]]]
+
+An example is
+assoc|X ; ((W, (A, B)), (X,(C, D)), (Y (E, F)))] = (CG, D).
+
+5. sublis|x;y]. Here x is assumed to have the form of a list of pairs
+((u1, U1),°°+, (Un; Un)), where the wu’s are atomic, and y may be any S-expression.
+The value of sublis|x; y] is the result of substituting each v for the correspond-
+ing u in y. In order to define sublis, we first define an auxiliary function. We
+have
+
+sub2|x; z] = [null|az] — z; eq|caar|x]; z] — cadar|x];T — sub2{cdr |x]; z]]
+and
+sublis|x; y] = |atom|y] — sub2[x; y];T — cons|sublis[x; car|y]]; sublis[x; cdr|y]]|
+We have
+sublis [((X, (A, B)), (Y, (B, C))); (A, X - Y)] = (A, (A, B), B, C)
+
+e. Representation of S-Functions by S-Expressions. S-functions have been
+described by M-expressions. We now give a rule for translating M-expressions
+into S-expressions, in order to be able to use S-functions for making certain
+computations with S-functions and for answering certain questions about S-
+functions.
+
+The translation is determined by the following rules in rich we denote the
+translation of an M-expression € by &*.
+
+1. If € is an S-expression €* is (QUOTE, &€).
+
+2. Variables and function names that were represented by strings of lower-
+case letters are translated to the corresponding strings of the corresponding
+uppercase letters. Thus car* is CAR, and subst* is SUBST.
+
+3. A form f[e1;---;e,] is translated to (f*,e]---,e%). Thus cons [car [x];
+cdr [x]]* is (CONS, (CAR, X), (CDR, X)).
+
+4. {[pi > €15+++3 Pn — en] f* is (COND, (pj, ef), +++, Dn * en):
+
+15
+
+5. {Al[ai3-+ +5 Un]; E]}* is (LAMBDA, (2j,---, 2%), €*).
+
+6. {label[a; E|}* is (LABEL, a*, E*).
+
+With these conventions the substitution function whose M-expression is
+label [subst; A [[x; y; z]; [atom |z] — [eq [y; z] — x; T — z]; T — cons [subst
+[x; y; car |z]]; subst [x; y; cdr [z]]}]]] has the S-expression
+
+(LABEL, SUBST, (LAMBDA, (X, Y, Z), (COND ((ATOM, Z), (COND,
+(EQ, Y, Z), X), ((QUOTE, T), Z))), (QUOTE, T), (CONS, (SUBST, X, Y,
+(CAR Z)), (SUBST, X, Y, (CDR, Z)))))))
+
+This notation is writable and somewhat readable. It can be made easier
+to read and write at the cost of making its structure less regular. If more
+characters were available on the computer, it could be improved considerably.*
+
+f. The Universal S-Function apply. There is an S-function apply with the
+property that if f is an S-expression for an S-function f’ and args is a list of
+arguments of the form (arg,,---,a7gn), where argi,--+-,a7rg, are arbitrary S-
+expressions, then apply|f; args] and f"{argi;---;argn]| are defined for the same
+values of arg,,-++,@’gn, and are equal when defined. For example,
+
+Allx; y]; cons[car[2]; ylJ[(A, B); (C, D)]
+
+= apply|(LAM BDA, (X,Y), (CONS, (CAR, X), Y)); ((A, B), (C, D))] = (A, C, D)
+
+The S-function apply is defined by
+
+apply|f; args] = eval|cons[f; appg|args||; NIL},
+
+where
+
+appq|m] = [null[m] — NIL;T — cons|list|\ QUOT E; car|m|]; appq|cdr{m)]]]
+and
+
+evalle; a] = [
+
+41995: More characters were made available on SAIL and later on the Lisp machines.
+Alas, the world went back to inferior character sets again—though not as far back as when
+this paper was written in early 1959.
+
+16
+
+atom |e] — assoc [e; al;
+
+atom |car [e]] > [
+
+eq
+
+eq
+
+eq
+
+eq
+
+eq
+
+eq
+
+eq
+
+[car
+
+icar |
+
+[car
+
+icar |
+
+icar |
+
+[car
+
+[car
+
+[€}
+
+[€}
+
+[€}
+
+; QUOTE] — cadr [e];
+
+|; ATOM] — atom |eval [cadr [e]; al];
+
+; EQ] — [eval |cadr |e]; a] = eval [caddr |e]; al];
+
+|; COND] — evcon [cdr |e]; al;
+
+|; CAR] — car [eval [cadr |e]; al];
+
+; CDR] — cdr [eval |cadr [e]; al];
+
+; CONS] — cons [eval |cadr |e]; a]; eval [caddr |e];
+
+al]; T. — eval [cons [assoc [car [e]; al;
+
+evlis {cdr [e]; al]; al];
+
+eq [caar [e]; LABEL] — eval [cons [caddar [e]; cdr |e]];
+
+cons [list [cadar |e]; car |e]; al];
+
+eq [caar [e]; LAMBDA] — eval [caddar |[e];
+
+append [pair [cadar |e]; evlis [cdr |e]; aj; al]]
+
+and
+
+evcon|c; a] = |eval|caar|[c}|; a] — eval|cadar|c|; a];T — evcon|cdr|cj; al]
+
+and
+
+evlis[(m; a] = [null[m] — NIL;T — cons|eval|car[{m]; al; evlis{cdr|m|; al]]
+
+17
+
+We now explain a number of points about these definitions. °
+
+1. apply itself forms an expression representing the value of the function
+applied to the arguments, and puts the work of evaluating this expression onto
+a function eval. It uses appg to put quotes around each of the arguments, so
+that eval will regard them as standing for themselves.
+
+2. evalle; a] has two arguments, an expression e to be evaluated, and a list
+of pairs a. The first item of each pair is an atomic symbol, and the second is
+the expression for which the symbol stands.
+
+3. If the expression to be evaluated is atomic, eval evaluates whatever is
+paired with it first on the list a.
+
+4. Ife is not atomic but car|e] is atomic, then the expression has one of the
+forms (QUOTE, e) or (ATOM, e) or (EQ, €1, €2) or (COND, (pi, €1), +++, (Dn; Cn));
+or (CAR,e) or (CDR,e) or (CONS, e1,e2) or (f,€1,-++,€n) where f is an
+atomic symbol.
+
+In the case (QUOTE, e) the expression e, itself, is taken. In the case of
+(ATOM, e) or (CAR,e) or (CDR,e) the expression e is evaluated and the
+appropriate function taken. In the case of (EQ, e1,e2) or (CONS, €1, 2) two
+expressions have to be evaluated. In the case of (COND, (pi, €1),° ++ (Pn; €n))
+the p’s have to be evaluated in order until a true p is found, and then the
+corresponding e must be evaluated. This is accomplished by evcon. Finally, in
+the case of (f, €1,-+-, €n) we evaluate the expression that results from replacing
+f in this expression by whatever it is paired with in the list a.
+
+5. The evaluation of ((LABEL, f,€),e1,---,€n) is accomplished by eval-
+uating (€,e1,---,e,) with the pairing (f, (LABEL, f,€)) put on the front of
+the previous list a of pairs.
+
+6. Finally, the evaluation of ((LAM BDA, (a1,---,%n),€),e1,°++€n) is ac-
+complished by evaluating € with the list of pairs ((11,e1),---,((@n,€n)) put
+on the front of the previous list a.
+
+The list a could be eliminated, and LAMBDA and LABEL expressions
+evaluated by substituting the arguments for the variables in the expressions
+€. Unfortunately, difficulties involving collisions of bound variables arise, but
+they are avoided by using the list a.
+
+51995: This version isn’t quite right. A comparison of this and other versions of eval
+including what was actually implemented (and debugged) is given in “The Influence of the
+Designer on the Design” by Herbert Stoyan and included in Artificial Intelligence and Math-
+ematical Theory of Computation: Papers in Honor of John McCarthy, Vladimir Lifschitz
+(ed.), Academic Press, 1991
+
+18
+
+Calculating the values of functions by using apply is an activity better
+suited to electronic computers than to people. As an illustration, however, we
+now give some of the steps for calculating
+apply [(LABEL, FF, (LAMBDA, (X), (COND, (ATOM, X), X), ((QUOTE,
+T),(FF, (CAR, X))))))s((A- B))] = A
+The first argument is the S-expression that represents the function ff defined
+in section 3d. We shall abbreviate it by using the letter ¢. We have
+
+apply [¢; ( (A-B) )]
+= eval [((LABEL, FF, w), (QUOTE, (A-B))); NIL]
+
+where w is the part of ¢ beginning (LAMBDA
+
+= eval|((LAMBDA, (X), w), (QUOTE, (A-B)));((FF, ¢))]
+
+where w is the part of w beginning (COND
+
+Denoting ((X, (QUOTE, (A-B))), (FF, ¢)) by a, we obtain
+
+= evcon [((771, €1), (72, €2)); a
+
+This involves eval |71; a]
+
+= eval [( ATOM, X); aj
+
+= atom
+
+= atom
+
+= atom
+
+= atom
+
+=F
+
+[eval [X; al]
+foval [assoc [X; ((X, (QUOTE, (A-B))), (FF.¢))]:a]
+
+[eval [((QUOTE, (A-B)); a]j
+
+Our main calulation continues with
+
+19
+
+apply [¢; ((A-B))|
+= evcon [((7, €2, )); al,
+
+which involves eval |72; a] = eval |(QUOTE, T); a] = T
+
+Our main calculation again continues with
+apply [¢; ((A-B))]
+
+= eval [e2; a]
+
+= eval |(FF, (CAR, X));a]
+
+= eval [Cons [¢; evlis [((CAR, X)); a]]; a]
+
+Evaluating evlis [|((CAR, X)); a] involves
+eval [(CAR, X); a]
+
+= car [eval [X; al]
+
+= car [(A-B)], where we took steps from the earlier computation of atom |eval [X; aj] = A,
+and so evlis |((CAR, X)); a] then becomes
+
+list [list (QUOTE; AJ] = ((QUOTE, A)),
+
+and our main quantity becomes
+
+= eval [(¢, (QUOTE, A)); a]
+
+The subsequent steps are made as in the beginning of the calculation. The
+LABEL and LAMBDA cause new pairs to be added to a, which gives a new
+list of pairs a;. The 7 term of the conditional eval |((ATOM, X); a;] has the
+
+20
+
+value T because X is paired with (QUOTE, A) first in a), rather than with
+(QUOTE, (A-B)) as in a.
+Therefore we end up with eval [X; a] from the evcon, and this is just A.
+
+g. Functions with Functions as Arguments. There are a number of useful
+functions some of whose arguments are functions. They are especially useful
+in defining other functions. One such function is maplist|x; f] with an S-
+expression argument x and an argument f that is a function from S-expressions
+to S-expressions. We define
+
+maplist[x; f] = |[null[z] — NIL;T — cons|f [x]; maplist{cdr|z]; f]]]
+
+The usefulness of maplist is illustrated by formulas for the partial derivative
+with respect to x of expressions involving sums and products of x and other
+variables. The S-expressions that we shall differentiate are formed as follows.
+
+1. An atomic symbol is an allowed expression.
+
+2. Ife), €2,-+-, €, are allowed expressions, ( PLUS, e1,---,e,) and (TIMES,
+€1,°**,€n) are also, and represent the sum and product, respectively, of €1,---,€n.
+
+This is, essentially, the Polish notation for functions, except that the in-
+clusion of parentheses and commas allows functions of variable numbers of
+arguments. An example of an allowed expression is (TIMES, X, (PLUS, X,
+A), Y), the conventional algebraic notation for which is X(X + A)Y.
+
+Our differentiation formula, which gives the derivative of y with respect to
+x, is
+
+diff [y; x] = [atom [y] — [eq [y; x] ~ ONE; T — ZERO]; eq [car [Y]; PLUS]
+— cons [PLUS; maplist [cdr [y]; A||z]; diff [car [z]; x]]]]; eq{car [y]; TIMES] —
+cons[PLUS; maplist{cdr[y]; A[[z]; cons [TIMES; maplist/edr [y]; A[[w]; > eq [z;
+w] — car [w]; T — diff [car [[w]; x]]]]]]]
+
+The derivative of the expression (TIMES, X, (PLUS, X, A), Y), as com-
+puted by this formula, is
+
+(PLUS, (TIMES, ONE, (PLUS, X, A), Y), (TIMES, X, (PLUS, ONE,
+ZERO), Y), (TIMES, X, (PLUS, X, A), ZERO))
+
+Besides maplist, another useful function with functional arguments is search,
+which is defined as
+
+search|x; p; f;u] = [null[x] — u; pla] — fla]; T — search|cdr |x]; p; f; ul
+
+21
+
+The function search is used to search a list for an element that has the property
+p, and if such an element is found, f of that element is taken. If there is no
+such element, the function u of no arguments is computed.
+
+4 The LISP Programming System
+
+The LISP programming system is a system for using the IBM 704 computer to
+compute with symbolic information in the form of S-expressions. It has been
+or will be used for the following purposes:
+
+l. Writing a compiler to compile LISP programs into machine language.
+
+2. Writing a program to check proofs in a class of formal logical systems.
+
+3. Writing programs for formal differentiation and integration.
+
+4. Writing programs to realize various algorithms for generating proofs in
+predicate calculus.
+
+5. Making certain engineering calculations whose results are formulas
+rather than numbers.
+
+6. Programming the Advice Taker system.
+
+The basis of the system is a way of writing computer programs to evaluate
+S-functions. This will be described in the following sections.
+
+In addition to the facilities for describing S-functions, there are facilities
+for using S-functions in programs written as sequences of statements along the
+lines of FORTRAN (4) or ALGOL (5). These features will not be described
+in this article.
+
+a. Representation of S-Expressions by List Structure. A list structure is a
+collection of computer words arranged as in figure la or 1b. Each word of the
+list structure is represented by one of the subdivided rectangles in the figure.
+The left box of a rectangle represents the address field of the word and the
+right box represents the decrement field. An arrow from a box to another
+rectangle means that the field corresponding to the box contains the location
+of the word corresponding to the other rectangle.
+
+22
+
+es
+
+It is permitted for a substructure to occur in more than one place in a list
+structure, as in figure 1b, but it is not permitted for a structure to have cycles,
+as in figure 1c. An atomic symbol is represented in the computer by a list
+structure of special form called the association list of the symbol. The address
+field of the first word contains a special constant which enables the program to
+tell that this word represents an atomic symbol. We shall describe association
+lists in section 4b.
+
+An S-expression x that is not atomic is represented by a word, the address
+and decrement parts of which contain the locations of the subexpressions car [2]
+and cdr|z], respectively. If we use the symbols A, B, etc. to denote the
+locations of the association list of these symbols, then the S-expression ((A -
+B).(C.-(E- F))) is represented by the list structure a of figure 2. Turning
+to the list form of S-expressions, we see that the S-expression (A, (B,C), D),
+which is an abbreviation for (A-((B-(C- NIL))-(D- NIL))), is represented
+by the list structure of figure 2b.
+
+23
+
+Figure 2
+
+When a list structure is regarded as representing a list, we see that each term
+of the list occupies the address part of a word, the decrement part of which
+points to the word containing the next term, while the last word has NIL in
+its decrement.
+
+An expression that has a given subexpression occurring more than once
+can be represented in more than one way. Whether the list structure for
+the subexpression is or is not repeated depends upon the history of the pro-
+gram. Whether or not a subexpression is repeated will make no difference
+in the results of a program as they appear outside the machine, although it
+will affect the time and storage requirements. For example, the S-expression
+((A-B)-(A-B)) can be represented by either the list structure of figure 3a or
+3b.
+
+Figure 3
+
+The prohibition against circular list structures is essentially a prohibition
+
+24
+
+against an expression being a subexpression of itself. Such an expression could
+not exist on paper in a world with our topology. Circular list structures would
+have some advantages in the machine, for example, for representing recursive
+functions, but difficulties in printing them, and in certain other operations,
+make it seem advisable not to use them for the present.
+
+The advantages of list structures for the storage of symbolic expressions
+are:
+
+1. The size and even the number of expressions with which the program
+will have to deal cannot be predicted in advance. Therefore, it is difficult to
+arrange blocks of storage of fixed length to contain them.
+
+2. Registers can be put back on the free-storage list when they are no longer
+needed. Even one register returned to the list is of value, but if expressions
+are stored linearly, it is difficult to make use of blocks of registers of odd sizes
+that may become available.
+
+3. An expression that occurs as a subexpression of several expressions need
+be represented in storage only once.
+
+b. Association Lists® . In the LISP programming system we put more in
+the association list of a symbol than is required by the mathematical system
+described in the previous sections. In fact, any information that we desire to
+associate with the symbol may be put on the association list. This information
+may include: the print name, that is, the string of letters and digits which
+represents the symbol outside the machine; a numerical value if the symbol
+represents a number; another S-expression if the symbol, in some way, serves
+as a name for it; or the location of a routine if the symbol represents a function
+for which there is a machine-language subroutine. All this implies that in the
+machine system there are more primitive entities than have been described in
+the sections on the mathematical system.
+
+For the present, we shall only describe how print names are represented
+on association lists so that in reading or printing the program can establish
+a correspondence between information on punched cards, magnetic tape or
+printed page and the list structure inside the machine. The association list of
+the symbol DIFFERENTIATE has a segment of the form shown in figure 4.
+Here pname is a symbol that indicates that the structure for the print name
+of the symbol whose association list this is hanging from the next word on
+the association list. In the second row of the figure we have a list of three
+words. The address part of each of these words points to a Word containing
+
+61995: These were later called property lists.
+
+25
+
+six 6-bit characters. The last word is filled out with a 6-bit combination that
+does not represent a character printable by the computer. (Recall that the
+IBM 704 has a 36-bit word and that printable characters are each represented
+by 6 bits.) The presence of the words with character information means that
+the association lists do not themselves represent S-expressions, and that only
+some of the functions for dealing with S-expressions make sense within an
+association list.
+
+Figure 4
+
+c. Free-Storage List. At any given time only a part of the memory reserved
+for list structures will actually be in use for storing S-expressions. The remain-
+ing registers (in our system the number, initially, is approximately 15,000) are
+arranged in a single list called the free-storage list. A certain register, FREE,
+in the program contains the location of the first register in this list. When
+a word is required to form some additional list structure, the first word on
+the free-storage list is taken and the number in register FREE is changed to
+become the location of the second word on the free-storage list. No provision
+need be made for the user to program the return of registers to the free-storage
+list.
+
+This return takes place automatically, approximately as follows (it is nec-
+essary to give a simplified description of this process in this report): There is
+a fixed set of base registers in the program which contains the locations of list
+structures that are accessible to the program. Of course, because list struc-
+tures branch, an arbitrary number of registers may be involved. Each register
+that is accessible to the program is accessible because it can be reached from
+one or more of the base registers by a chain of car and cdr operations. When
+
+26
+
+the contents of a base register are changed, it may happen that the register
+to which the base register formerly pointed cannot be reached by a car — cdr
+chain from any base register. Such a register may be considered abandoned
+by the program because its contents can no longer be found by any possible
+program; hence its contents are no longer of interest, and so we would like to
+have it back on the free-storage list. This comes about in the following way.
+
+Nothing happens until the program runs out of free storage. When a free
+register is wanted, and there is none left on the free-storage list, a reclamation’
+cycle starts.
+
+First, the program finds all registers accessible from the base registers and
+makes their signs negative. This is accomplished by starting from each of the
+base registers and changing the sign of every register that can be reached from
+it by a car — cdr chain. If the program encounters a register in this process
+which already has a negative sign, it assumes that this register has already
+been reached.
+
+After all of the accessible registers have had their signs changed, the pro-
+gram goes through the area of memory reserved for the storage of list structures
+and puts all the registers whose signs were not changed in the previous step
+back on the free-storage list, and makes the signs of the accessible registers
+positive again.
+
+This process, because it is entirely automatic, is more convenient for the
+programmer than a system in which he has to keep track of and erase un-
+wanted lists. Its efficiency depends upon not coming close to exhausting the
+available memory with accessible lists. This is because the reclamation process
+requires several seconds to execute, and therefore must result in the addition
+of at least several thousand registers to the free-storage list if the program is
+not to spend most of its time in reclamation.
+
+d. Elementary S-Functions in the Computer. We shall now describe the
+computer representations of atom, = , car, cdr, and cons. An S-expression
+is communicated to the program that represents a function as the location of
+the word representing it, and the programs give S-expression answers in the
+same form.
+
+atom. As stated above, a word representing an atomic symbol has a special
+
+"We already called this process “garbage collection”, but I guess I chickened out of using
+
+it in the paper—or else the Research Laboratory of Electronics grammar ladies wouldn’t let
+me.
+
+27
+
+constant in its address part: atom is programmed as an open subroutine that
+tests this part. Unless the M-expression atom[e] occurs as a condition in a
+conditional expression, the symbol 7’ or F' is generated as the result of the
+test. In case of a conditional expression, a conditional transfer is used and the
+symbol T' or F is not generated.
+
+eq. The program for eg|e; f] involves testing for the numerical equality of
+the locations of the words. This works because each atomic symbol has only
+one association list. As with atom, the result is either a conditional transfer
+or one of the symbols JT or F’.
+
+car. Computing car|a] involves getting the contents of the address part of
+register x. This is essentially accomplished by the single instruction CLA 0, i,
+where the argument is in index register, and the result appears in the address
+part of the accumulator. (We take the view that the places from which a
+function takes its arguments and into which it puts its results are prescribed
+in the definition of the function, and it is the responsibility of the programmer
+or the compiler to insert the required datamoving instructions to get the results
+of one calculation in position for the next.) (“car” is a mnemonic for “contents
+of the address part of register.” )
+
+cdr. cdr is handled in the same way as car, except that the result appears
+in the decrement part of the accumulator (“cdr” stands for “contents of the
+decrement part of register.” )
+
+cons. The value of cons|x; y] must be the location of a register that has x
+and y in its address and decrement parts, respectively. There may not be such
+a register in the computer and, even if there were, it would be time-consuming
+to find it. Actually, what we do is to take the first available register from the
+free-storage list, put x and y in the address and decrement parts, respectively,
+and make the value of the function the location of the register taken. (“cons”
+is an abbreviation for “construct.” )
+
+It is the subroutine for cons that initiates the reclamation when the free-
+storage list is exhausted. In the version of the system that is used at present
+cons is represented by a closed subroutine. In the compiled version, cons is
+open.
+
+e. Representation of S-Functions by Programs. The compilation of func-
+tions that are compositions of car, cdr, and cons, either by hand or by a
+compiler program, is straightforward. Conditional expressions give no trouble
+except that they must be so compiled that only the p’s and e’s that are re-
+
+28
+
+quired are computed. However, problems arise in the compilation of recursive
+functions.
+
+In general (we shall discuss an exception), the routine for a recursive func-
+tion uses itself as a subroutine. For example, the program for subst; y; z] uses
+itself as a subroutine to evaluate the result of substituting into the subexpres-
+sions car|z| and cdr|z]. While subst|; y; cdr|z]] is being evaluated, the result
+of the previous evaluation of subst|x; y; car|z]] must be saved in a temporary
+storage register. However, subst may need the same register for evaluating
+subst|x; y; cdr|z]|.. This possible conflict is resolved by the SAVE and UN-
+SAVE routines that use the public push-down list ®°. The SAVE routine is
+entered at the beginning of the routine for the recursive function with a re-
+quest to save a given set of consecutive registers. A block of registers called
+the public push-down list is reserved for this purpose. The SAVE routine has
+an index that tells it how many registers in the push-down list are already
+in use. It moves the contents of the registers which are to be saved to the
+first unused registers in the push-down list, advances the index of the list, and
+returns to the program from which control came. This program may then
+freely use these registers for temporary storage. Before the routine exits it
+uses UNSAVE, which restores the contents of the temporary registers from
+the push-down list and moves back the index of this list. The result of these
+conventions is described, in programming terminology, by saying that the re-
+cursive subroutine is transparent to the temporary storage registers.
+
+f. Status of the LISP Programming System (February 1960). A variant of
+the function apply described in section 5f has been translated into a program
+APPLY for the IBM 704. Since this routine can compute values of S-functions
+given their descriptions as S-expressions and their arguments, it serves as an
+interpreter for the LISP programming language which describes computation
+processes in this way.
+
+The program APPLY has been imbedded in the LISP programming system
+which has the following features:
+
+1. The programmer may define any number of S-functions by S-expressions.
+these functions may refer to each other or to certain S-functions represented
+by machine language program.
+
+2. The values of defined functions may be computed.
+
+3. S-expressions may be read and printed (directly or via magnetic tape).
+
+81995: now called a stack
+
+29
+
+4. Some error diagnostic and selective tracing facilities are included.
+
+5. The programmer may have selected S-functions compiled into machine
+language programs put into the core memory. Values of compiled functions
+are computed about 60 times as fast as they would if interpreted. Compilation
+is fast enough so that it is not necessary to punch compiled program for future
+use.
+
+6. A “program feature” allows programs containing assignment and go to
+statements in the style of ALGOL.
+
+7. Computation with floating point numbers is possible in the system, but
+this is inefficient.
+
+8. A programmer’s manual is being prepared. The LISP programming
+system is appropriate for computations where the data can conveniently be
+represented as symbolic expressions allowing expressions of the same kind as
+subexpressions. A version of the system for the IBM 709 is being prepared.
+
+5 Another Formalism for Functions of Sym-
+bolic Expressions
+
+There are a number of ways of defining functions of symbolic expressions which
+are quite similar to the system we have adopted. Each of them involves three
+basic functions, conditional expressions, and recursive function definitions, but
+the class of expressions corresponding to S-expressions is different, and so are
+the precise definitions of the functions. We shall describe one of these variants
+called linear LISP.
+
+The L-expressions are defined as follows:
+
+1. A finite list of characters is admitted.
+
+2. Any string of admitted characters in an L-expression. This includes the
+null string denoted by A.
+
+There are three functions of strings:
+
+1. first] is the first character of the string «.
+
+first|A] is undefined. For example: first; ABC] = A
+
+2. rest|x] is the string of characters which remains when the first character
+of the string is deleted.
+
+rest|A] is undefined. For example: rest|ABC] = BC.
+
+3. combine|x; y| is the string formed by prefixing the character x to the
+string y. For example: combine|A; BC] = ABC
+
+30
+
+There are three predicates on strings:
+
+1. char[x], x is a single character.
+
+2. null|x], x is the null string.
+
+3. « = y, defined for x and y characters.
+
+The advantage of linear LISP is that no characters are given special roles,
+as are parentheses, dots, and commas in LISP. This permits computations
+with all expressions that can be written linearly. The disadvantage of linear
+LISP is that the extraction of subexpressions is a fairly involved, rather than
+an elementary, operation. It is not hard to write, in linear LISP, functions that
+correspond to the basic functions of LISP, so that, mathematically, linear LISP
+includes LISP. This turns out to be the most convenient way of programming,
+in linear LISP, the more complicated manipulations. However, if the functions
+are to be represented by computer routines, LISP is essentially faster.
+
+6 Flowcharts and Recursion
+
+Since both the usual form of computer program and recursive function defi-
+nitions are universal computationally, it is interesting to display the relation
+between them. The translation of recursive symbolic functions into computer
+programs was the subject of the rest of this report. In this section we show
+how to go the other way, at least in principle.
+
+The state of the machine at any time during a computation is given by the
+values of a number of variables. Let these variables be combined into a vector
+€. Consider a program block with one entrance and one exit. It defines and is
+essentially defined by a certain function f that takes one machine configuration
+into another, that is, f has the form ¢’ = f(€). Let us call f the associated
+function of the program block. Now let a number of such blocks be combined
+into a program by decision elements 7 that decide after each block is completed
+which block will be entered next. Nevertheless, let the whole program still have
+one entrance and one exit.
+
+ol
+
+Figure 5
+
+We give as an example the flowcart of figure 5. Let us describe the function
+r{€] that gives the transformation of the vector € between entrance and exit
+of the whole block. We shall define it in conjunction with the functions s(§),
+and t|é], which give the transformations that € undergoes between the points
+S and T, respectively, and the exit. We have
+
+rg) = [mllé) > STAI; T > STALE
+Sg] = [mol lg] > rl€];T — tL fale]
+te) = [w3l|g] > falghs 732[§] > rif); T — tL fs ley)
+
+Given a flowchart with a single entrance and a single exit, it is easy to
+write down the recursive function that gives the transformation of the state
+vector from entrance to exit in terms of the corresponding functions for the
+computation blocks and the predicates of the branch. In general, we proceed
+as follows.
+
+In figure 6, let @ be an n-way branch point, and let fi,---, fn, be the
+computations leading to branch points (1, 95,---,G,. Let @ be the function
+
+32
+
+that transforms € between ( and the exit of the chart, and let @1,---,@n be
+the corresponding functions for 3,,---,3,. We then write
+
+PE] = [pilE] > Oi [fAilE]]s «+ -3 Prl€] > Onl]
+
+Figure 6
+
+7 Acknowledgments
+
+The inadequacy of the A-notation for naming recursive functions was noticed
+by N. Rochester, and he discovered an alternative to the solution involving
+label which has been used here. The form of subroutine for cons which per-
+mits its composition with other functions was invented, in connection with
+another programming system, by C. Gerberick and H. L. Gelernter, of IBM
+Corporation. The LISP programming system was developed by a group in-
+cluding R. Brayton, D. Edwards, P. Fox, L. Hodes, D. Luckham, K. Maling,
+J. McCarthy, D. Park, 5S. Russell.
+
+The group was supported by the M.I.T. Computation Center, and by the
+M.I.T. Research Laboratory of Electronics (which is supported in part by the
+the U.S. Army (Signal Corps), the U.S. Air Force (Office of Scientific Research,
+Air Research and Development Command), and the U.S. Navy (Office of Naval
+Research)). The author also wishes to acknowledge the personal financial sup-
+
+33
+
+port of the Alfred P. Sloan Foundation.
+
+REFERENCES
+
+1. J. McCARTHY, Programs with common sense, Paper presented at the
+Symposium on the Mechanization of Thought Processes, National Physical
+Laboratory, Teddington, England, Nov. 24-27, 1958. (Published in Proceed-
+ings of the Symposium by H. M. Stationery Office).
+
+2. A. NEWELL AND J. C. SHAW, Programming the logic theory machine,
+Proc. Western Joint Computer Conference, Feb. 1957.
+
+3. A. CHURCH, The Calculi of Lambda-Conversion (Princeton University
+Press, Princeton, N. J., 1941).
+
+4. FORTRAN Programmer’s Reference Manual, IBM Corporation, New
+York, Oct. 15, 1956.
+
+5. A. J. PERLIS AND K. SAMELSON, International algebraic language,
+Preliminary Report, Comm. Assoc. Comp. Mach., Dec. 1958.
+
+34

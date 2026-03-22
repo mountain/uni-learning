@@ -1,0 +1,1330 @@
+math/0212192v1 [math.QA] 14 Dec 2002
+
+arXiv
+
+direct sum @
+
+DOUBLE CONSTRUCTION FOR CROSSED HOPF
+COALGEBRAS
+
+MARCO ZUNINO
+
+ABSTRACT. We provide an analog of the Drinfeld quantum double construction
+in the context of crossed Hopf group coalgebras introduced by Turaev. We
+prove that, provided the base group is finite, the double of a semisimple crossed
+Hopf group coalgebra is both modular and unimodular.
+
+CONTENTS
+1
+1. ‘T-coalgebra: 3
+. T-algebrag 5)
+6
+7
+8
+15
+16
+18
+R 21
+
+INTRODUCTION
+
+Recently, Turaev [[9, Bd| (see also Le and Turaev {J and Virelizier [R¥j) gen-
+eralized the notion of a TQFT and Reshetikhin-Turaev invariants to the case of
+3-manifolds endowed with a homotopy classes of maps to K(z,1), where 7 is a
+group. One of the key points in (Lg is the notion of a crossed Hopf 1-coalge-
+bra, here called a Turaev coalgebra or, briefly, a T-coalgebra (see Section fil). As
+one can use categories of representations of modular Hopf algebras to construct
+Reshetikhin-Turaev invariants of 3-manifolds, one can use categories of represen-
+tations of modular T-coalgebras to construct homotopy invariants of maps from
+3-manifolds to K(z,1). Similarly, to construct Virelizier Hennings-like homotopy
+invariants (pa), we need a ribbon T-coalgebra H such that the neutral component
+Hy, is unimodular [[U5.
+
+Roughly speaking, a T-coalgebra Hf is a family {Ha}aeq of algebras endowed
+with a comultiplication Ag.g: Hag + Hay ® Hg, a counit ¢: k > Hy (where 1 is the
+neutral element of 7), and an antipode s4: Hy — H,-1. It is also required that
+H is endowed with a family of algebra isomorphisms 93 = yg: Ha + Hgag-1, the
+conjugation, compatible with the above structures and such that yey = yg ° yy.
+When 7 = {1}, we recover the definition of a Hopf algebra. A T-coalgebra H is
+of finite type when every H,, is finite-dimensional. H is totally-finite when the
+
+aen Ha is finite-dimensional. A universal R-matriz and a twist
+
+Date: Friday, 13 September 2002.
+2000 Mathematics Subject Classification. 81R50,16W30,57R56.
+1
+
+2 MARCO ZUNINO
+
+for a T-coalgebra H are, respectively, families R = {E(a) @ Ca) = Rae € Ha ®
+H Bh a, Ben and 0 = {@. © Hoahoaen satisfying axioms that explicitly involve the
+conjugation (see, respectively, Sections i and ff). H is modular when it is ribbon
+and its component H; is modular (see Section [q). Properties of T-coalgebras are
+studied in [PJ
+
+Starting from a finite-dimensional Hopf algebra H, Drinfeld | showed how to
+obtain a quasitriangular Hopf algebra D(H), the quantum double of H, such that
+the following conditions are satisfied (for details, see, e.g., ff).
+
+e There are embeddings of Hopf algebras i: H < D(H) and j: H**°P
+
+e The linear map H @ H*» “23 D(H) @ D(H) “ D(A) is bijective, where
+pis the multiplication in D(H).
+
+e The universal R-matrix of D(H) is the image of the canonical element of
+H ® H*? under the embedding i ®@ 7: H @ H*°? — D(H) ® D(A).
+
+In this paper we provide an analog of the quantum double for T-coalgebra H.
+We start (Section f], Theorem f.1}) with an abstract definition of D(H), as a solution
+of a universal problem, analogous to the above definition of the standard quantum
+double. The notion of a T-coalgebra in not self-dual, i.e., given a T-coalgebra
+H = {Hahaen, the family H* = {Hx}aen does not have a natural structure of a
+T-coalgebra. However, when H is of finite type, we introduce a T-coalgebra H****,
+the inner dual of H, that, in many aspects, in particular in the construction of
+D(#), plays the role of a dual for H (see Section f]). The components of H**** are
+all isomorphic as algebras. In particular, as a vector space, Hz*°* = Deen Hj for
+any @€ 7.
+
+An explicit description of D(H) is given in Theorems 6.9 and 6.4. In particular,
+every component Do(H) of D(/) is, as a vector space, Hy-1 ® @ge, Hj. So, in
+general, D(/Z) is of finite type if and only if H is totally-finite and, in that case,
+D(#) is also totally-finite. The product in D.(#) is obtained by setting
+
+(lg-1 @ f)(h@®e)=hef and
+(h ®e) (1q-1 ® f) = h(y-1) ® (F851) -Palh(a-1ya))):
+
+for any f € @ge, Hj, and h € H,-1. When 7 = {1}, we recover the standard
+definition of the quantum double of a Hopf algebra. We will see that both the
+product and the coproduct in D(H) explicitly depend on the conjugation y of H.
+
+The quantum double D(#) of a semisimple Hopf algebra H over a field of charac-
+teristic 0 is both semisimple [[f, [LJ and modular [pj]. Here we prove that the double
+D(f) of a semisimple T-coalgebra H over a field of characteristic 0 is semisimple
+if and only if A is totally-finite, and, in that case, D(H) is also modular (Theo-
+rem (7.1). The key point in the proof is that, when H is totally finite, it gives rise to
+a graded Hopf algebra Hpk = Bac, Ha, the packed form of H. The Hopf algebras
+D(Hpx) and (D(H )) ok are different, but it is always possible to embed D,(H) in
+D(Hpx) as an algebra.
+
+Last section is devoted to the generalization of the Reshetikhin-Turaev ribbon
+construction. Given a quasitriangular Hopf algebra H, Reshetikhin and Turaev fa
+embedded it into a ribbon Hopf algebra RT(#) that is a quotient of the polynomial
+algebra H|@]. Starting from a quasitriangular T-coalgebra H (not necessarily of
+finite type), we construct a ribbon T-coalgebra RT(H) such that, when 7 = {1},
+we recover the Reshetikhin-Turaev construction for Hopf algebras. As a corollary,
+for any T-coalgebra H of finite type (but not necessarily totally-finite), we obtain
+a ribbon T-coalgebra RT (D(H)).
+
+DOUBLE CONSTRUCTION FOR CROSSED HOPF COALGEBRAS 3
+
+The quantum double and the ribbon extension have categorical counterparts LER
+A, iq. In P74, we provide a generalization of these constructions. In particular, the
+generalization of the center construction (corresponding to the quantum double in
+the algebraic case) looks very natural and as the simplest way to adapt the standard
+construction to the crossed case. Both the definition of D(H) and the definition of
+RT(#) introduced here are coherent to the categorical constructions as we briefly
+explain. In the standard case, starting from a tensor category C, we obtain a braided
+tensor category Z(C) via the center construction [Hl]. Now, take C = Rep(#), the
+category of representations of a finite-dimensional Hopf algebra H. Both Z(C) and
+Rep(D(H )) are canonically isomorphic to the category of Yetter-Drinfeld modules
+over H (see [[[0, B4]). The corresponding result is still true when we consider a
+T-coalgebra H instead of an Hopf algebra, that is, also in the crossed case, we have
+a commutative diagram
+
+Rep(H) > 2(Rep(H)) ——= YD (H) Rep(D(H))
+rol [eee
+H D > D(H)
+
+(where, of course, we also need to generalize the notions of a tensor category and of
+a Yetter-Drinfeld module). Similar results are obtained for the ribbon construction.
+
+ACKNOWLEDGMENTS. The author wants to thank his adviser V. Turaev for his
+stimulating and constructive direction in the research. The author also wants to
+thank A. Bruguiéres, B. Enriquez, Ch. Kassel, H.J. Schneider, L. Vainerman, and
+A. Virelizier for their useful remarks.
+
+The author was partially supported by the INDAM, ISTITUTO NAZIONALE DI
+ALTA MATEMATICA, Rome.
+
+1. T-COALGEBRAS
+
+We recall the notion of a T-coalgebra as in (Pd). T-coalgebras are a generalization
+of standard notion Hopf algebras (for a general reference to Hopf algebras, see (4, fi]
+or, for a modern introduction, (5). A generalization of the Heynemann-Sweedler
+notation (7 is also provided. At the end of this section, we study some properties
+of the antipode of a T-coalgebra.
+
+BASIC DEFINITIONS. Let k be a commutative field and let 7 be a group. A T-coal-
+gebra H (over 7 and k) is given by the following data.
+
+e For any a € 7, an associative k-algebra H,, called the a-th component
+of H. The multiplication is denoted wa: Hy ® Hy - He and the unit is
+denoted nav: k > Ha, with la = no(1).
+
+e A family of algebra morphisms A = {Aq,g: Hag + Ha @ Hz}, Ben? called
+comultiplication, that is coassociative in the sense that, for any Q, B,Y eT,
+we have (Hy @ Ag,y) 0 Ao,ay = (Aa,a ® Hy) 0 Ang,»
+
+e An algebra morphism ¢: H, > k, called counit, such that, for any a € 7,
+we have (¢ ®@ Hy) 0 Aig = Id and (Hy ®¢) 0 Ag, = Id.
+
+e A set of algebra isomorphisms y = {p3: Hy > Agap-1 called con-
+
+ba eT
+jugation. When not strictly necessary, the upper index will ive omitted. We
+require that y satisfies the following conditions.
+— vis multiplicative, ie., pg op, = Ypy, for any B,y € 7. It follows that
+py =Id, for any a € 7.
+— y is compatible with A, i.e, Ayay-1,48y-1 ° Py = (Py @ Py) 0 Aa,g, for
+any a, 8,y € 7.
+
+4 MARCO ZUNINO
+
+— gis compatible with €, ie., €o py, =e for any 7 € 7.
+e Finally, a set of k-linear morphisms s = {sy: Ha 7 Hy-1}aen, the an-
+tipode, such that, for any a € 7,
+
+(1) Ha ° (Sg-1 ® Hy) 0 Ag-t.4 = Na 9 € = Ma 0 (Ha ® S8g-1) 0 Ag a-t-
+
+(The compatibility of the antipode with the conjugation isomorphisms is a con-
+sequence of the axioms.) In (20 a T-coalgebra is called a crossed group Hopf
+coalgebra.
+
+We say that H is of finite-type when any component H, (with a € 7) is a finite-
+dimensional k-vector space. We say that H is totally-finite when dim, @yc, Ha <
+co, ie., when H is of finite-type and almost all the Hy are zero. It was proved
+in | that the antipode of a finite-type T-coalgebra is always bijective.
+
+We observe that the component H of a T-coalgebra H is a Hopf algebra in the
+usual sense. We also observe that, for 7 = {1}, we recover the usual notion of a
+Hopf algebra.
+
+Example 1.1 (TH-coalgebras). Let H; be a Hopf algebra, with comultiplication
+Aj, counit €;, and antipode s,, endowed with a group morphism
+
+y': 7 > Aut(H)): a oh,
+
+where Aut(H}) is the group of Hopf algebra automorphisms of H,. We obtain a
+T-coalgebra H by setting (for any a,8 € 7) Hy = Hj as algebra, Ag.g = Ad,
+€ = €1, Sq = $1, and 3 = Pp: Hy — Hgag-1. The T-coalgebra # is called the
+TH-coalgebra based on H, (the H stand for Hopf, since H is also an Hopf algebra).
+
+COOPPOSITE T-COALGEBRA. Let H be a T-coalgebra with invertible antipode. The
+coopposite T-coalgebra H°°? is the T-coalgebra defined as follows.
+
+For any @ € 7, we set H°°? = H,-1 as an algebra.
+The comultiplication A°°? is obtained by setting, for any a, € 7,
+
+Aj-1.-
+Aer; _ (4183 _ Hg-19-1 aeThe*", g-1 @®Ag-1 2, Ay-1 @Hg-1 = He" @H3").
+Ae? has a counit e°°? =e.
+
+The antipode s°’? is obtained by setting sce? = s,!: , for any a € 7.
+
+cop
+
+e The conjugation yp”? is obtained by setting yz” = ya, for any 8 € 7.
+
+In particular, when H is a TH-coalgebra, H°°? is the TH-coalgebra based on H7°”.
+HEYNEMANN-SWEEDLER NOTATION. The coassociativity of H allows us to intro-
+duce an analog of the Heynemann-Sweedler notation, see (7). Given Q1,...,Qn €7
+and defining
+
+A
+
+@1,0Q°On ag,03°"an
+Q1,02,-+., Qn ( 102°" An a, ® 2° An
+
+Hy @ Hz @ Hog-nay “+ + Hoy @ Hag @*** @ How);
+for any h € Hajyas--a, We set
+(a1) @ Nas) @---@ Won) = Aaron pene On (h).
+
+Let M be a vector space over k and suppose that f: Ha, x Ha, X-+: X Ha, + M
+is a k-multilinear map. Let f denote the linear map Hy, ® Ha, ®-::® Ha, -— M
+induced by f. We introduce the notation
+
+r( (ox)? fon)?” a) Man) = f (Aer ,a2 geeey an (h)).
+
+For simplicity, we also suppress the subscript (a;) when a; = 1.
+
+DOUBLE CONSTRUCTION FOR CROSSED HOPF COALGEBRAS 5
+
+PROPERTIES OF THE ANTIPODE. Let H be a T-coalgebra and let A be an algebra
+with multiplication w4 and unit 74. We define a convolution algebra Conv(H, A)
+(see (24) in the following way. As a vector space, Conv(H, A) = @,-, Homx(Hg, A).
+The multiplication in Conv(H,A) is obtained by setting, for any §1,82 € 7,
+fi € Hom, (H,,, A), feo€ Hom, (Hg, , A), and h € Hg, 6,,
+
+With this multiplication, Conv(H, A) becomes an associative algebra.
+
+For any @ € 7, we introduce the notation Conv,(H) = Conv(H,H,). It is
+clear that (i) is equivalent to say that s,-1 is a two-sided inverse of the identity
+morphism of Hq in the convolution algebra Conv,(H). Thus, we can reformulate
+the axiom for the antipode of H by requiring that, for any a € 7, the identity
+morphism of H, is invertible in Convg(H). This also proves that the antipode of
+a T-coalgebra is unique.
+
+Lemma 1.2. Let H be a T-coalgebra. The antipode s of H is both antimultiplicative
+and anticomultiplicative, 1.e.,
+
+(2) 8o(hk) = 8a(k)Sa(h)
+for anyae€en,h,k € Hy, and
+(3) Sa(h(ay) @ 8a(hi's)) = (Sas(h)) (1) @ (8as(h)) og)
+
+for any h € Hag.
+
+The proof can be obtained as in the standard case (i.e., for 7 = {1}).
+
+2. 'T-ALGEBRAS
+
+When we dualize the axioms of a T-coalgebra, we obtain the notion of a T-alge-
+bra. A T-algebra H can be equivalently described as a Hopf algebra endowed with
+a family of automorphisms, the packed form of H. In this section, we present both
+approaches.
+
+BASIC DEFINITIONS. A T-algebra H is a family {(Ha, Aa, Mo) }
+endowed with the following data.
+
+aen Of k-coalgebras,
+
+e A family of coalgebra morphisms py = {fla,3: He®Hg > Hasha,pen, called
+multiplication, that is associative, in the sense that, for any a, 6,7 € 7,
+
+(4) Hop, ° (Hap ® Hy) = fa,py ° (Ha ® Me,y)-
+
+Given h € H, and k € Hg, with a, 8 € 7, we set hk = fa,g(h,k). With
+this notation, (f) can be simply rewritten as (hk) = h(kl) for any h € Ha,
+k € Hg,le Hy, anda,$,y€o.
+An algebra morphism 7: k > Hy, called unit, such that, if we set 1 = n(1x),
+then, for any h € Hy (with a € 7), we have lh =h=hl.
+A set of coalgebra isomorphism 7 = {p$: Ha > Hoop} a.g6m? called
+conjugation. Also in this case, when not strictly necessary, the upper index
+will be omitted. We require that ~ satisfies the following conditions.
+— wis multiplicative, i.e., for any a, 8, and y € 7, we have wgow, = wey.
+It follows that, for any a € 7, we have wf = Id.
+— wis compatible with 1, i.e, for any 6 € 7, we have we(hk) = wa(h)wa(k).
+— w is compatible with n, i.e., for any 6 € 7, we have (1) = 1.
+e Finally, a set of linear isomorphisms S = {S.: Ha + Hy-1}aen, the an-
+tipode, such that, for any a € 7, we have flg-1 9° (Sa @Ha)o Ag = 0Eq =
+Ha,a-1 ° (Ha ® Sa) ° Ag.
+For any a € 7, the coalgebra Hy is called the a-th component of H.
+
+6 MARCO ZUNINO
+
+PACKED FORM OF A T-ALGEBRA. Let H be a T-algebra. We define a Hopf algebra
+Hx, that we call the packed form of H, as follows. As a coalgebra, Hpx is the direct
+sum of the components of H. For any a € 7, we denote by 7, the inclusion of H,, in
+Hyy. The multiplication up, of Hp, is the colimit, in the category of vector spaces,
+lim gentoo © fla,8), i.e., the only k-linear map from Hp, ® Hp, to Hp, such that
+the restriction on Hy, ® Hg C Ap, ® Hpx coincides with pe,¢,
+
+Ha ® Hg —> @ (Hy ® Hs) = (4. ) 0 (Bm) = mot
+
+7,0En yer oer
+
+Ha,B |?
+
+Hop® > Hpk
+
+The unit px of Hp, is given by 71 ° ny, ie., Ipk = 1 € Ay C Apx. Finally,
+the antipode S,, of Hp, is given by the sum )},-, Sa. The Hopf algebra Hpx is
+endowed with a group morphism w: 7 > Aut(Hpx): @ + Up, Where pra =
+
+Conversely, let Hio, be a Hopf algebra with multiplication pop, unit 1, and
+antipode Si.¢, endowed with a group homomorphism ¢tor: 7 > Aut(Atot): a
+Ytot,a. Suppose that the following conditions are satisfied.
+
+e There exists a family of sub-coalgebras {Ha}aen Of Atot such that Ayor =
+Baer Hq.
+
+Hy: Hg C Hoag for any a, 8 € 7.
+
+le Ay.
+
+For any a, B ET, Ptot,B sends Ay Cc Atot to Hgap-2 Cc Atot-
+
+For any a € 7, we have Stot(Ha) = Hy-1
+
+Then, we obtain, in the obvious way, a T-algebra H such that Hp, = Atot-
+
+3. THE OUTER DUAL AND THE INNER DUAL OF A T-COALGEBRA
+
+We study how to provide a convenient notion of a dual for a finite-type T-coalge-
+bra H. The easiest way is to define a T-algebra H*, the outer dual of H. However,
+for many purposes, in particular in the construction of the quantum double of H,
+it is convenient to introduce a TH-coalgebra H**** based on the packed form H>),
+of H*, the inner dual of H.
+
+THE OUTER DUAL. Let H be a finite-type T-coalgebra. The outer dual of H is the
+T-algebra H* defined as follows. For any a € 7, the a-th component of H™ is the
+dual coalgebra H% of the algebra H,. The multiplication of H* is given by
+
+(5) (Ha,a(f.9):h) = (f @ 9, Aa,a(h))
+for any f € Hj, 9 © Hj andhe Hoo, with a, € w. The unit of H* is given by
+e € H} C H*. The antipode S* of H* is given by SZ = s*_,, for any a € 7. Finally,
+for any 8 € 7, the conjugation isomorphism 73 of H™ is given by ~3 = Pei:
+THE INNER DUAL. Since (H*)px is a Hopf algebra endowed with a group homo-
+morphism q(7+),,,: 7 — Aut((H*)px), we can construct the TH-coalgebra based
+on (H*),_.. We call this TH-coalgebra the inner dual of H and we denote it H****.
+Explicitly, Hj*** = (H*)px is obtained as follows.
+
+e As a coalgebra, Hy** = @yc, HG.
+
+e The multiplication is obtained by i extending by linearity. The unit is
+
+given by e*** =e € HY C @ye, AS
+e The antipode is given by sper = Yc St & = Deaen 8-1
+e Finally, bus, = igen Pe-1:
+
+DOUBLE CONSTRUCTION FOR CROSSED HOPF COALGEBRAS 7
+
+THE COOPPOSITE INNER DUAL. Given any T-coalgebra H, then ((H*)pk)°” is the
+Hopf algebra obtained from (H*),, by replacing its comultiplication with the new
+one A, = A**"<°P given by
+
+(6) (A.(f),h @®k) = (f, kh)
+
+for any f € Hc Daen Hy and h,k € Ha, with a € 7. We also need to replace
+the antipode with the new one given by s, = S*°°? = (S*)~!. In particular, we
+have (s.(f),h) = (f,sql(h)), for any f € HX and h € H,-1, with a € r. The
+TH-coalgebra based on ((H*)px)°” is called the coopposite inner dual of H and is
+denoted H***""". Notice that pyystot.cop,g = PH*t.a = igen Pg-1» for any a € 7.
+
+4. QUASITRIANGULAR T-COALGEBRAS
+
+The notion of a quasitriangular Hopf algebra 2 is generalized to the case of a
+T-coalgebra in Pd). A quasitriangular T-coalgebras is a T-coalgebra H endowed
+with a family R = {Rae = €a)i @ G@).i € Ha @ Hehapen, called universal
+R-matriz, such that Rg,g is invertible for any a, 8 € 7 and the following conditions
+are satisfied.
+
+e For any a, 6 € 7 andh€ Hog,
+
+(7a) Ra,pAa,p (h) = (o ° (Part & Hw) ° Aaga-t,a) (h)Ra,e-
+e For any a, 6,7 € 7,
+(7b) (Ha ® Ag,y)(Ra,by) = (Ra,y)163(Ra,6)1275
+
+where, given two vector spaces P and Q over k, for any x = pj ®q; € P@Q
+we set 2163 = pj @1g @q, and x27 = pj @U@1y.
+e For any a, 6,7 € 7,
+
+(7c) (Aa,6 @ H,)(Rog,y) = ((¥p ® H,)(Rg-108,7)) 1g3(Ra,7)a23>
+
+where, given two vector spaces P and Q, for any x = pj ®q; € P®Q we
+set £a23 = la @ Pj © G.-
+e Ris compatible with vy, in the sense that, for any a, 8,7 € 7, we have
+(7d) (Qa ® Ya)(Re,-) = Repar-l,ayo-!
+Notice that (H1, Ri,1) is a quasitriangular Hopf algebra in the usual sense.
+For any a, 3 € 7, we introduce the notation Ea) @ C(a).1 = Rog = (R7)a.p-
+
+Remark 4.1 (Yang-Baxter equation). It is proved in di that, for any a,8,y € 7
+we have
+
+(8) (Rg,7)a23(Ra,7)183(Re,3) 12
+= (Ra,g)12y ((Ha ® 96-1)(Ra,s18-»)) 143(Rp,7)a23-
+This is an analog of the standard Yang-Baxter equation (see, e.g., [f]).
+
+THE MIRROR T-COALGEBRA. Let H = (H, R) be a quasitriangular Hopf algebra
+(with R = € @G and R“! = R= €,@G). By replacing R with R = o(R) = 6, @&,
+we obtain another quasitriangular structure H = (H,R). This means that, in the
+category of representations of H, we replace the braiding cr provided by R by
+the braiding cp’ provided by R. When H is a T-coalgebra, the family {Ra 3 =
+ui ® €3.i}0,6en i8 not a universal R-matrix for H. Nevertheless, it is still possible
+to generalize the definition of Hf in the following way 2d.
+
+Let H be a T-coalgebra. The T-coalgebra H, called the mirror of H Pq. is
+defined as follows.
+
+e For any a € 7, we set Hy = Hy-1.
+
+8 MARCO ZUNINO
+
+e For any a,@ € 7, the component A, g of the comultiplication A of H is
+given by
+
+(9) Aaa (h) = ((¢e ® Hg-1) ° Ag-1a,3-1) (Rh) E Ay-1 ® Hg-1 = Ha @ Ha,
+
+for any h € Hg-1,-1 = Hag. If we set ha® ho = A,.(h), then (f) can
+
+be written in the form ha @ hoy = yp (hig-14-1g)) @ Nig-1): The counit
+
+of Hf is given by ¢ € Hf = Hy.
+e For any a € 7, the a-th component of the antipode 3 of H is given by
+Sa = Pa ° Sq-1.
+e Finally, for any a € 7, we set Py = Ya.
+If H is quasitriangular, then H is also quasitriangular with universal R-matrix
+R given by
+
+(10) Ras = (0(Rg-1,o-1)) € Ha-1 ®@ Hg-1 = Ha ® Hg
+
+for any a, 8 € 7. _ _ _
+If, for any a, 6 € 7, we introduce the notation €(,) ; ® Cg); = Ra,g, then we can
+
+write ({td) in the form Eva). @ Cp). = Ca-1)4 ® (6-1).
+Notice that H = H. Notice also that, due to the definition of A, the mirror of
+
+a TH-coalgebra is not, in general, a TH-coalgebra. In particular, the mirror of the
+inner dual of a finite-type T-coalgebra is not a TH-coalgebra.
+
+5. THE QUANTUM DOUBLE OF A FINITE-TYPE T-COALGEBRA
+
+Theorem 5.1. Let H be a finite-type T-coalgebra. There exists a unique quasi-
+triangular T-coalgebra D(H), the quantum double of H, such that the following
+conditions are satisfied.
+
+e The T-coalgebras H and H**°*°? can be embedded into D(H), i.e, there
+are two morphisms of T-coalgebras i: H + D(H) andj: H**°%°°? + D(H)
+such that ig and ja are injective for any a € 7.
+
+e For any a € 7, the linear map
+
+(1) a= (use 2H, #2) D(H) @ Da(H) 22 Daitt))
+
+is bijective (where D.(H) is the a-th component of D(H) and pa is the
+multiplication in Da(H)).
+e For any a,8 € 7, the component Rag of the R-matric R of D(H) is the
+
+image of the canonical element of H,-1 ® Hy; under the embedding
+ja @ ig: HY?” @ Hy 3 Da(H) ® D(A).
+
+To prove Theorem firstly construct a quasitriangular T-coalgebra D(H).
+Then, we will see that D(H) is a solution of the above universal problem.
+
+Remark 5.2. Notice that, when 7 = {1}, both D(H) and D(H) coincide with the
+standard definition of the quantum double of H. The reason of the convention
+that takes the mirror of H in the above description is that we want to be coherent
+with the conventions in (Hl. However, often in the standard case p, is defined as
+[11 0 (41 @ ji), reversing the position of i; and 7;. Moreover, some authors identify
+D,(#) with the vector space Hy} ® H. However, since on that point it seems there
+is no standard convention, here we also follows the notations in i. apart for the
+detail that we reversed the order of the factors in the tensor product.
+
+DOUBLE CONSTRUCTION FOR CROSSED HOPF COALGEBRAS 9
+
+CONSTRUCTION OF D(H). Let H be a finite-type T-coalgebra. We realize D(H)
+as follows.
+e For any a € a, the a-th component of D(H), denoted D.(#), is, as a
+vector space,
+
+Ha-1 @ Hie"? = Hy @ HY"? = Hy ® PD Hj.
+Ber
+
+The multiplication in D.(#) is not obtained by tensor product of alge-
+bras of H,-1 and H**°*°? In the sequel, given h € H,-1 and F € Hx,
+the element in D(H) corresponding to h®@ F in D(H) will be denoted h@ F.
+
+In view of the role played by H****°? in the construction of the quan-
+tum double, the Heynemann-Sweedler notation will be reserved for the
+comultiplication of H**°<°?, not of H***, ie., given F € So) AZ, we set
+F'@F"=A,(F).
+
+Let f be in H% and let h and k be in Hq, with a € 7. By (f,h_k) we
+denote the linear functional on H, that evaluated at x € Hy gives (f, hak).
+D.(H) is an algebra under the multiplication obtained by setting, for any
+h,ke Hy, f € Hy, and g € Hj, with 7,6 € 7,
+
+(12) (h® f)(k@ g) =H ® £9851 (Wh-2)) Pa (Massa) )
+
+The unit of D.(H) is given by 1,-1 ®¢. It follows that the canonical
+embeddings H,-1, Hx*°"°°? — D(H) are algebra morphisms and that, for
+any h € H,-1 and f € Hy, we have
+
+(13a) (1g. ®f)\(h@®e)=h@f and
+(13b) (h ®€) (La-1 ® f) = hiy-1) ® (fF, 85 (hE -1y) Pa (Rfg-1ya)))*
+
+e The comultiplication is given by
+(14) Mae(h®F) = (valHis-raniy)) @F”) @ (ign @F"),
+
+for any a,8 € 7, h € Hog = Hg-19-1, and F € Hx3"°? (We recall that
+F’ @F" =A,(F), see (ff). The counit is obtained by setting (c,h ® f) =
+(e,h) (f, 1), for any h € Hy and f € HY, with y € 7.
+
+e For any a € 7, the a-th component of the antipode of D(#) is given by
+
+(15) sa(h® F) = (3a(h) ®e) (1 ® s,(F)) = ((Ga © 8y-1)(h) ® €) (la ® s.(F)),
+
+for any h € Hy, = H,-1 and F € H*°*°?, where s, is the antipode of
+A***<0r and Sa = Ya 0 Sq-1 is the antipode of H.
+e Finally, for any a € 7, we set
+
+(16) pa(h® f) = pa(h) ® puercor.a(f) = palh) ® 93-1(f),
+for any h € H,-1 and f € Ayo”, with 7 € 7.
+
+act
+
+Theorem 5.3. D(H) is a T-coalgebra. Moreover, the multiplication in D(H) is
+uniquely defined by ({L3) and the condition that the embeddings H, H**°°°? — D(H)
+are T-coalgebra morphisms.
+
+Proof. Firstly, for any a € 7, we will show that D(#) is an associative algebra
+with unit. Then we will show that A, defined as above, is multiplicative, i.e., that
+any Ag,g is an algebra morphism. After that, we will show that ¢ is an algebra
+morphism. Finally, we will check axioms for the antipode and that the conjugation
+isomorphisms are compatible with the multiplication.
+
+10 MARCO ZUNINO
+
+ASSOCIATIVITY. Let a be in 7. The multiplication defined in (([J) is associative
+if and only if, for any h,k,l € Hy-1, p € H3,q € Hy, andr € Hj, with 8,7,6 € 7,
+
+(17) ((h ® p)(k®a))(L@r) = (h@p)((k @ gl @r))
+By computing the left-hand side of (4), we obtain
+((h® p)(k ® q))(LOr) = hE ay hy @ CG, 851 (Rs)) Pa (Mla-tya)))
+(7.951 (HL Riba) a (Ian) hfamts0)))
+(by the antimultiplicativity of s and the multiplicativity of y)
+fay ayl @ P4853 (ME) 20 (Marya)))
+(r, Ss *(k5- 1) 85" (his 1)) Pa (A(y-16a)) Pa (F{a-t60)) )s
+while, by computing the right-hand side, we obtain
+
+(h i) p)((k ® qy(l i) r)) = No-1)k(q-1y! i) (alr 85 1(R(-1)) Pa (I{a-t50)) )»
+
+A (Mba) (Manyéay))
+(by the anticomultiplicativity of s and the comultiplicativity of y)
+= May kl, 1h PCa 85 "(1 Es)) a (Ifa14a)) )
+(7,85 (Bay) 85 (Gy) Pa (Marsa) 2a (Mar40)) )-
+Unit. Let a be in 7. For any h € H,-1 and f € Hy, with 7 € 7, we have
+(1a-1 @®é€) (h®@ f) =1l,h@cef=hef
+and
+(h® f)(1a ®e) = (a-1) La -1 ® fe(e, sy hl") (e, ~alh’)) =h@ f,
+
+where the fact that both s; and yg commute with e.
+
+MULTIPLICATIVITY OF A. Let us prove that Ag,g is an algebra morphism for
+any a, € 7. Since Ag,g obviously preserves the unit, we only need to prove that,
+for any h,k € Hg-1,-1, f € Hy and g € Hj, with 7,6 € 7, we have
+(18) Aa, ((h® f)(k ® 9) = Aa,a(h ® f)Aa,a(k ® g)-
+
+This is proved by evaluating both terms in ({L§) against the general term p@r@q@y
+(p € HZ1,q € H3-1, and x,y € Hye).
+
+MULTIPLICATIVITY OF €. For any h,k € A, f € HY}, andg € Hj, with 7,6 € 7,
+we have
+
+(e,h@® f) (e,k ® f) = (e,h) (f, Ly) (e,k) (Ff, 1a)
+and
+(c,(h@® f)(k®g)) = veer (9,851 (Ws) o})
+- ek , a an 1) on
+= (
+
+f, "
+
+DOUBLE CONSTRUCTION FOR CROSSED HOPF COALGEBRAS 11
+This proves that € is multiplicative. Moreover, since ¢ is obviously unitary, it is an
+algebra homomorphism.
+ANTIPODE. Let h be in Hj and let f be in Hy, with 7 € 7. We have
+(h@f)()8a-4 ((h® Yay)
+= (Ga-1(Riq-1)) ® f "\((Ga-1 ° 8a) (hay) ® e) (1g-2 ® Sx (f"))
+= (vo- (ha Sahay) ® 1") (la-1 ® s.(f”))
+= (e,h)(1o-1 ® f') (1@ 5x (f")) = (6, h)1@ f'se(f")
+= (e,h)(f, ly))1la-1 ®e = (€,h @ f)lg-1 WE
+and
+S91 ((h® far) (h® f)(q) = 80-1 (Palhfay) ® f) (ary ® f”)
+= (sa(hy) ®€) (la ® 84(f/)) (h(a-1) ® f”)
+= (f, 14) (Sa(h(a)) @e)( (a-1) ® €) = (f,14)80( (a) R(a-1) ® (e,h')(e, h" )e
+= (e,h)(f, 1y)lo ® E= (e,h ® fle WE.
+
+CONJUGATION. Let us check that y% is an algebra isomorphism for any a, € 7.
+Since y% is obviously bijective and preserve the unit, we only need to show that it
+is compatible with the multiplication, ie., that, for any h,k € H,-1, f © Hy, and
+g © Hj, with 7,6 € 7, we have
+
+(19) ya(h® f)ea(k ® 9) = va ((h@® f)(k @Q)).
+
+This is proved by evaluating both sides in ([[9) against the general term p @ x
+(a E Ag458-1 and Dp € Fj ,-18-1)-
+This concludes the proof that D(H) is a T-coalgebra.
+
+EMBEDDINGS. It only remains to show that (([9), together with the request
+that the canonical embeddings H, H**°°? — D(H) are T-coalgebra morphisms,
+uniquely determinates the multiplication in D(H). Let a be in m. For any h,k €
+H,-1, f © Hy and g € Hj we have
+
+(nef) (k® 9) =
+(by (BD)
+= (1,-1 ® f) (h@¢€) (1q-1 ® g) (k ®€)
+(by (3d)
+= (Laat © F) (Ma-2 @ (85 "(lelh-2))-Palltfar5a)))) (k ® e)
+(by (BA)
+= (lat ® f) (Las ® (9,85 (hf-2))-Palltfat5ay))) (Mos) ® €) (k ® e)
+
+(since the canonical embedding of both H,-1 and Hx*%<°? in Do(#) are algebra
+morphisms)
+
+= (1 1 @ f(g,85 *(Als- 1))- Pa(Ma-15a)))) (h(q-1)k ® €)
+(again by ([3a))
+
+= Plank @ (9.55 (MG-1)) Pe (Moa-r5a)) )
+
+12 MARCO ZUNINO
+
+This concludes the proof of the theorem.
+
+Coassociativity, compatibility between the comultiplication and the counit, com-
+patibility between the comultiplication and the conjugation, and, finally, the fact
+that y is a group homomorphism follow by observing that D(H) has the same
+comultiplication, counit, and The omitted computations are the same needed con-
+jugation of the tensor product of T-coalgebras H @ H**°*°?.
+
+QUASITRIANGULAR STRUCTURE OF THE QUANTUM DOUBLE. To prove that D(H
+is quasitriangular, we need some preliminary results. For any a € 7, we set ng =
+ng be a basis of Hq as a vector space and let (e%*)i-1,. ng
+na. We set
+
+peeey
+
+peeey
+
+(20) Rag = €o-14 ®@E@ lps ®E* 7 € Da(H) @ Dg (H)
+and Rag = Sa(€ai) ®E@1g-1 ® ent,
+
+Lemma 5.4. For any a,8 € 1, both Ro,g and Ra,g are independent of the choice
+
+of the bases. Moreover, Rag is the inverse of Ra,g in the algebra Da(H) ® Dg(H).
+
+Proof. Let €a,8(H) be the subspace of Da (H) ® Dg(H) generated by the elements
+h@®e@1g1.@F with he H,-1 and F € Hx. Clearly, €4,(H) is a subalgebra
+of Da(H) ® Dg(H). Moreover, we have an equivalence of algebras Conv,-1(H) >
+Co e(H): h@F + (h @e) ® (1g-1 ® F), for any h € Hy-1 and F € Hx,
+In particular, Rog is the image of the identity morphism e,-1,; ® et of Hy-1
+under this isomorphism. Since the a-th component of the antipode s of H is the
+inverse, in the algebra Convg—1(H), of e,-1,,;@e° “*, also Ra,g is invertible. Since
+Sq can be represented as s(€q.;) @ e** and Ra, g is the image of sq under the above
+isomorphism, we conclude that Rag is the inverse of Ra,g-
+
+Remark 5.5. Let h be in Hyg, with a € 7, and suppose a1a2---Q, = a for certain
+Q1,Q2...,Qn € 7. By observing that h = h'eg.; = (e%", h)eo.; and by the linearity
+of A we have
+
+(21) Pfayy @ Magy OM any = (Ch) (Ca.i)(ar) @ (Ca-i)(ag) @ 11+ ® (Cari) Can):
+
+Theorem 5.6. D(H) is quasitriangular with universal R-matrix given by (Rd) for
+any a,b ET.
+
+Proof. Ro,g is well defined and invertible by Lemma 6.4, We still need to check the
+four relations ().
+
+RELATION (7d). Let a, 8, and y be 7. Given h € Hg-1,-1 and f € Hy, we have
+
+-1.
+Ra,gAa,a(h ® f) = ((€a-14 ®€) ® (1p-1 ®e* —“)) ((Ya(AEg—1q-1)) ® Ff”) @ (hig-1) ® F”))
+= (€a-1.1)(o-1) 08 (h(g-14))®
+-1.
+@ ( ‘ 851((ea-na)y ry) Pa ((Ca-La)fa-*ya)) ) 34) Nig-1) ® e* an
+Since the action of (< © (Ya ® Da(H)) © Aosa-La) (_) on h @ f is given by
+Av pa-la a-18Da(H)
+PS va(hig-1)) ® f@ hry ® f"
+hig—ry ® Pal f!) @ hfg-ry ® fY A> Wry ® FY @ hig-r) ® GAL)»
+
+hef
+
+DOUBLE CONSTRUCTION FOR CROSSED HOPF COALGEBRAS 13
+
+we have
+((c0(¢0 @ DalHt)) ° Anson) (0 f) Ros
+= (hia) ® fF” @hig-r ® VS(F')) (Ca-1., ®E@ 1g @e*_*)
+
+* anti oH
+= Wy ea-14 @ fl" @Niig-r) @ PAF) (e* "8421 (M4) a(M(p-10-19)))*
+
+Relation (a) is proved by observing that evaluating the two expressions above
+against the tensor H,-1 ® HY ® Hg-1 @ (-,x) (for a generic € H,-1,) we found
+the same result.
+
+RELATION (7). For any a, 3, y € 7, we have
+
+(Ra,»)193 = (Ca-1.4 ® €) ® (1g-1 ®€) @ (1-1 ®e*™*)
+(Ra,g)127 = (€Co-1.4 ® €) @ (1g-1 Be® *)@ (1,-1 ®e)
+
+and so we have (Ra,+)183(Ra,g)127 = €a-1.1€a-1.j BE® 1 g-1 ee? Jel awe,
+Since Rasy = €a-1, ®€ @ ligyy-1 ®e* 4, we have (Da(H) @ Ag,,)(Ra,ey) =
+€q-14 ®E@l1g1®@ (er **)'@ 1,-1® (e® *-*)”, So, we only need to prove
+
+(22) Cq-14€q-1j ® ce I @er ta €q-14,@ (ew *) @ (ew *)",
+
+If we evaluate both sides of (PJ) against the tensor f @ H*_, @ H*_, (for a generic
+f € Hx), then, by (BI), we found the same result.
+
+RELATION (7d). Let a, 8, and y be in 7. Observing that Rg-19¢,y = €g-10-14.1®
+€@l,1® ef ‘a "84 we obtain
+
+((¥® Dy(H))(Rpr109,9)) sag = P9(€8-20-18.1) BES lp EOL 1 @ cP NBA,
+
+Observing that (Rg,)a23 = lg-1 ® € @ eg-1; ®E @ 1,-1 ® e8 ‘4 we obtain
+((vs ®D(H),) (Rs-109.7)) 1938-7 )023 = Palep-ra-18.1) ®€@ eg-1j BE@1, 1B
+ec 'o'841e8 "J, Finally, observing that Rag = €(ap)-1,; ®@€ @1,-1 @e®)_*, we
+obtain (Aas ® D,(H))(Rag,y) = 98 ((€(8)-1.)(g-1a-18)) ®€ ® (€(ap)-1.)(g-1) ®
+€@l1,1@ e(8)""-4, So, to prove (7d), we only need to show the equality
+
+€g-1q-18 48 g-1,; @ eh ta *B-1gB 5
+3) y " (a8)~*.4
+
+= (€(ag)-1.1)(8-148) @ (€(ag)-1.4)(g-1) @e :
+
+If we evaluate both sides of (29) against the tensor Hg-1,-1g ® Hg-1 @ (-, x) (for
+a generic x € Hg-1,-1), then by (P]]) we found the same result.
+
+RELATION (7d). Given a, 8,7 € 7, we have (y,@y7)(Ra,s) = (¥y@¥y)(€a-14®
+£@1g18e* '*) = yy (qi) ®E@1g-1@y,(e* *). Now, yy is a linear isomorphism,
+80 (()(€a-1.4)) <1. »,, 8 a basis of Hy,-1,-1, and (ys. (e*)) _ n, 38 its dual
+basis. So, by Lemma 64, Ryay-1,y8y-! = (Py ® Gy) (Ra,g)-
+
+This concludes the proof of the theorem.
+
+PROOF OF THEOREM 5.1]. We need a preliminary lemma.
+
+Lemma 5.7. Let T be any quasitriangular T-coalgebra with R-matrix R. For any
+a,b Een and any x € Ty, we have
+
+(24) 83 (5-1) )&(8).1€ (8) @ C(a-1a8) 8 (-18) = &(8).i @ Pa-()C(g-108):
+
+14 MARCO ZUNINO
+
+Proof. By (fd), we have £(a).12(g) ® G(B-108).i8(g-10,8) @ B(g-1) = T(g-1)£(a).i ®
+Yp-1(X(qy)6(B-208).4 @ (g-1)- If, on both sides, we apply Tg ® T3-198 ® 83" and
+exchange the first and the third factors, then we obtain 53 (@(4-1)) @ €(8).iX(g) ®
+C(a-108).i€(g-taa) = 89 (#(4-1)) @2 (gy :£(8)4 @ Pa (@(q) )6(6-208).1- Applying 1g ®
+Tg-1¢¢ on both sides, and observing that 83 (@(5-1)) (4) @Pe-1 (#(q)) = €(2(g))1.@
+¥p-1(2(4)) = 1g @ ya-1(a), we obtain (4).
+
+Proof of Theorem b.4. By Theorem 6.4, the T-coalgebra D(H) defined as in The-
+orem 54 satisfies the three conditions of Theorem 6-1]. We still have to check that
+these three conditions determinate the T-coalgebra structure on D(H), i.e., that
+the multiplication and the comultiplication we gave in the definition of D(H) are
+uniquely defined by the requirements of Theorem 6-1}
+
+PRODUCT. Suppose that D(H) satisfies the three conditions in Theorem 6.1].
+Let us check, that, given a € a, the multiplication on Dg = Hy-1 ® H***°°P
+must satisfy the relations ([). Let pa be defined as in ([I]]). The bijectivity of
+Po. implies ([L3q). Let h be in Hy and let f € HX C Hy°°*?, with y € a. By
+Lemma P4, we have
+
+= (€y4 ®€) @ py(h @ €) (lyay-1 ® €7").
+By observing that hy ® hoaay® he = Pya(Mg-14a)) @ Py(ha-1y) @hM,, if
+we compute the left-hand side in 2), then we obtain
+
+sy21((h@® e)Cy) (Cy. @E) (h® E)(y-1) @ (Lyq-ty-1 ® €7") (h® EN gy)
+= ((gy-1 ° sy) *( (y-1)) ® é) (ey.i ® €) (Yya(hfa-10)) ® e)®
+® (Lyq-ty-1 ® 7) (Yy(h(g-1)) ® €)
+= ((Hy 0877) (AG -1) )ey4Pya(h(g-140)) ® €) @ (Gy(Mg—1)) ® 7"),
+where, in the last passage, we used both the fact that the immersion of H in D(H)
+
+is a morphism of T-coalgebras and ({13d). So, if we apply Y-1 ®Yy-1 on both sides
+of (B3), then we get
+
+(25)
+
+(26) (85 *(hG)-1) )ey.iPa(h(a-14a)) ®€) ® (Aly) ® €7")
+= (€)., ® €) ® (h@®e)(1y-1 ®e™").
+
+If we evaluate both terms of (24) against (f @11,-) ® Da(H), then on the left-hand
+side we get (f, 87 'ey.1Pa(h(g—14q))) May BET" = hay @( f, 85 'Pa(h(a-144)))+ While
+on the right-hand side we get (f,e,.)(Rh ® €) (la-1 ® e”") = (h ®E) (1,-1 @ f).
+
+COMULTIPLICATION. Let us check that the comultiplication on D(H) is also
+unique. Given a, 6,y € 7, h € Hag, and f € HY, we have
+
+Aa,a(h® f) = Naa ((le-1 ® f) (h® €))
+
+= (La ® f1) (fas @e) @ (Lar @ £") (Wi @ €)
+
+= (va (hierasp)) ®f") @ (Rs) @ f”).
+
+Remark 5.8. The quantum double of a Hopf algebra can be obtained also via the
+Majid bicrossproduct fl. This is true also in the crossed case (Pa. Recently,
+
+DOUBLE CONSTRUCTION FOR CROSSED HOPF COALGEBRAS 15
+
+Vainerman [Pi] constructed some examples of nontrivial T-coalgebras with non-
+isomorphic components. These examples can also be interpreted —and, eventually,
+enlarged— as bicrossproducts of T-coalgebras.
+
+Remark 5.9. Street (4) has proved that, starting from any (not necessarily finite-
+dimensional) Hopf algebra H, it is possible to construct, via Tannaka Theory, a
+coquasitriangular Hopf algebra D*(H) such that, when H is finite-dimensional,
+D*(H) = (D(H))". Tannaka Theory for T-algebras was developed by the author
+in [26] where, contextually, it is provided an analog for the co-double construc-
+ae in the case of a T-algebra.
+
+6. RIBBON T-COALGEBRAS
+
+The notion of a ribbon Hopf algebra (3) is generalized to the case of a T-coal-
+gebra in (Pq).
+DRINFELD ELEMENTS. Following [RJj, we set uo = (Sq-1 © Pa) (C(a-1).1)E(a).1 and
+u = {uahaen- The ua are called Drinfeld elements of H. When 7 = {1}, we recover
+the usual definition of Drinfeld element of a quasitriangular Hopf algebra.
+
+The following properties of u are proved in bq. Let a and @ be in z and let h
+be in Hy.
+
+(27a) uw = 81(C ay a)&(a).1-
+(27b) ug is invertible with inverse uz! = 831 (Cai) Kai Moreover we have
+
+ug! = (sy! ° 5-1) (G(a).1 )E(a) 1 == §(a).i(8a-1 ° 8a)(C(a).i)-
+(27c) (Uas)(g) ® (as) (s) = &(a).iG(a).j ta ® 6(8).iPa-1 (E(aBa-1).j UB:
+(27d) e(ui1) = 1.
+( ) Sq-1 (Ug-1 Ue = UaSq-1 (ug-1).
+(27f) ~e(ta) = Upap-:
+(279) (Sq-1 9 Sa ° Ya)(h) = Ughug".
+(27h) UaSa—1(Ua-1)h = Ya2(h)UaSa-1(Ua-1):
+Notice that, by (R7q), we have (sy-1 © Sa)(h) = Ya-1(Ua)Po-1(h)Yea-1 (ug!) =
+Uaa-1(h)u;'. In particular, for h = ua we obtain
+(27%) (Sg-1 © Sq) (Ua) = Ua-
+DEFINITION OF A RIBBON T-COALGEBRA (FIRST VERSION). Let H be a quasitri-
+angular T-coalgebra. According to (edi, we say that H is a ribbon T-coalgebra_ if
+it is endowed with a family 0 = {60|0a € Ha}aen, the twist, such that @, is invert-
+ible for any a € 7 and the following conditions are satisfied for any a, @ € a and
+he Hy.
+(28a) Qal(h) = 05 'hOa.
+(286) 8a(@a) = 9q-1.
+(28¢) (Ba)(q) ® (Aap )(3) = PaS(a).i€(a).j @ OB Pa-1 (E(asa-1).i)6(8).3:
+(28d) yp(9a) = 9gap--
+Notice that (Hj), R11, 61) is a ribbon Hopf algebra in the usual sense.
+If H = (H,R,6) is a ribbon T-coalgebra, then, for any a € 7, we obtain the
+following properties.
+(29a) a-1(h) = O.hOz' for any h € Hy (this follows by B8d).
+(29b) ¢(61;) =1 (this is because Hy is a ribbon Hopf algebra).
+(29c) 6, is central (by the same reason).
+(29d) Oava(h) = hOq for any h € Ha (this follows by B8d).
+Moreover, it is proved in [Rj that we have
+(29e) Oqtta = UaIq and
+(29f) 0,7 = Sg-1(Ug-1)Ua = UaSa-1(Ue-t)-
+
+16 MARCO ZUNINO
+
+If for any a, 0 € 7, we introduce the notation
+
+(30a) Qa,g = (o ° (Part & Ha))(Raga-',a)Ra,g =
+= C(a).i§(a).j @ Part (E(aBa-1).1)6(8).55
+then (B8q) can be written in the form (9x8 )(q)® (Pap )(g) = (Aa 8 s)Qa,e- Moreover,
+
+if we set Qa.p = Qa5 = Ea) s6(a) 9 ® (8) sPa-1 (E(aBa-1).3)s we can rewrite (B74) in
+the form
+
+(30b) (tos )(a) ® (Wass) = Qa,6(ta ® ug).
+
+We observe that the conjugation preserves Q, i.e., that, for any a, 3, y € 7, we have
+(Qa ® Ya)(Qe,~) = QaBe-},aya-!
+
+DEFINITION OF A RIBBON T-COALGEBRA (SECOND VERSION). We can define a rib-
+bon T-coalgebra in an equivalent way as a quasitriangular T-coalgebra H endowed
+with a family v = {valve € Ha}aen satisfying the following conditions.
+
+(31a) hva = VaPa-1(h) for any h € Ay.
+(310) ve = UaSgq-1(Ug-1). .
+(31c) (Vag)(a) @ (as)(y = Ga,8(Va ® vg).
+(31d) Sa(va) = Va-1.
+(3le) ys(va) = Ugag--
+The proof of the equivalence of the two definitions can be easily obtained by
+modifying the analogous easy proof for Hopf algebras.
+
+7. ‘THE QUANTUM DOUBLE OF A SEMISIMPLE 'T-COALGEBRA
+
+The quantum double of a semisimple Hopf algebra over a field of characteristic
+
+zero is both semisimple and modular (see [f]). We start this section by recalling
+the definition of a semisimple T-coalgebra [24], a modular Hopf algebra (4. and
+a modular T-coalgebra (ed, pq. After that, given any totally-finite T-coalgebra H,
+we discuss the relation between D(H) and the quantum double of H,,. Finally,
+we discuss the semisimplicity and the modularity of the quantum double D(H) of
+a semisimple T-coalgebra H over a field of characteristic zero. In particular, we
+prove that D(H) is semisimple if and only if H is totally-finite. Moreover, when H
+is totally-finite, D(H) is also modular.
+BASIC DEFINITIONS. Let H be a T-coalgebra. We say that H is semisimple when
+any algebra H,, (with a € 7) is semisimple. It is proved in || that H is semisimple
+if and only if H; is semisimple. Further, by [ER infinite-dimensional Hopf algebras
+over a field are never semisimple. It follows that a necessary condition for H to be
+semisimple is that H, is finite-dimensional.
+
+Let Ay = (M1, Ri = £14 @ G1i4,01) be a ribbon Hopf algebra. Given a finite-
+dimensional representation V of H,, and a H-linear endomorphism f: V > V, the
+quantum trace trq(f) of f is defined as trq(f) = tr(wi0if), where wi = $1(¢1.4)€1.4
+and tr(-) is the usual trace of endomorphisms. V is said to be negligible when
+trq(Idv) = 0.
+
+A modular Hopf algebra H, is aribbon Hopf algebra endowed with a finite family
+of simple finite-dimensional H)-modules {V;};e7 satisfying the following conditions.
+
+e There exists 0 € I such that Vo = k (with the structure of Hi-module given
+by the comultiplication).
+
+e For any 7 € J, there exists 7* € I such that V;« is isomorphic to V;*.
+
+e For any j,k € I, the H,-module V; ® Vz is isomorphic to a finite sum
+of certain elements of {V;}ier, possibly with repetitions, and a negligible
+A-module.
+
+DOUBLE CONSTRUCTION FOR CROSSED HOPF COALGEBRAS 17
+
+e Let (5;,;)i,j;er denote the square matrix whose entry S;,; is the quantum
+trace of the endomorphism @ +> ¢1.461.1 @ €1.rG11% of Vi ® Vj*. Then S[H]
+is invertible.
+
+A modular T-coalgebra bd) is a ribbon T-coalgebra H such that its component
+A, is a modular Hopf algebra.
+
+Theorem 7.1. The quantum double D(H) of a T-coalgebra H over a field of
+characteristic 0 is semisimple if and only if H is totally-finite, and, in that case,
+D(H) is also modular.
+
+To prove Theorem 7.1 we firstly need to discuss how the quantum double of a
+totally-finite T-coalgebra H and the quantum double of the packed form of H are
+related.
+
+‘THE STRUCTURE OF A TOTALLY FINITE T-COALGEBRA. When H is a totally-finite
+*tot
+
+T-coalgebra, the Hopf algebra H7j*** = (H*),x is the dual of a certain Hopf algebra
+Hx. An easy computation shows that Hpx satisfies the following conditions.
+
+e As an algebra, Hpx = @ac, Ha-
+
+e The comultiplication Ap, is obtained setting Apk = 144. gy-a As.y(2);
+
+for any h € Hy C Hpx.
+
+The counit €px is given by Epk|y, = € and Epk| yy, = 9, foranyaeéa,aFl.
+
+The antipode is given by spk = )oyen Sa:
+
+Moreover, we have a group homomorphism Ypx: 7 Aut(Hpx): © Byen 93:
+Conversely, let Hi, be a finite-dimensional Hopf algebra (with antipode stot,
+
+counit ¢ and comultiplication A;o¢), endowed with a family of subcoalgebras {Hy baer
+
+and a group homomorphism Yjot: 7 + Aut(Atot): @ 4 Ytot,a, such that the fol-
+
+lowing conditions hold.
+
+e Fy. is, as an algebra, the product H, (a € 7).
+
+For any a € 77, we have Atot(Ha) C @g., st. py-a( He @ Ay).
+For any a € 7 \ {1}, Ha C Kere.
+
+For any a € 7, Stot(Ha) = Hy-1.
+
+For any a, 8 € 7, the image of Hy, under Ytot,g lies in Hgqg-1.
+
+To Ato¢ corresponds, in the obvious way, a T-coalgebra H such that Hp, = Atot-
+In particular, for any a,@ € 7, the component Agg: Hag - Ha ® Hg of the
+
+ae : : : Ato: ‘a
+comultiplication is given by Hag @ Htot —“9 Atot ® Atot PoP? Hy ® Hg, where
+
+Po and pg are the canonical projections of Ht ot on Hq and, respectively, Hg.
+
+‘THE QUANTUM DOUBLE OF A TOTALLY-FINITE T-COALGEBRA. Let H be a totally-
+finite T-coalgebra. We have seen that D(H) is totally finite. We can construct in
+the usual way the quantum double D(H)x) of Hpx. Neither as an algebra nor as a
+coalgebra D(Hpx) is isomorphic to (D(H )) ox since neither the multiplication nor
+the comultiplication of D(H.) depend on the conjugation.
+
+Now, the canonical embedding of vector spaces H; @ Hy"? 4 @,<, Ha ®
+Hy"? provides an embedding of Hopf algebras of Di(H) > D(Hpx), so we can
+identify D,(H) with its image in D(H),). Moreover, even if the universal R-matrix
+Ri = (€1;@€) ®(1@e'") of Di(H) and the universal R-matrix Rpx = >, Ra,a
+of D(Hpx) are different, for any x € H; ® H* we have
+
+32 tRy, = xR, 4 and Ry « = Ry 12.
+p , p ,
+
+FACTORIZABLE T-COALGEBRAS. We recall that a finite dimensional quasitriangular
+Hopf algebra H with universal R-matrix R = €; @ G; is factorizable (see {1J)) if the
+map A: H* > H: f +> (f,G&))&C; is bijective. In particular, the quantum double
+of any finite-dimensional Hopf algebra is factorizable. It is proved in (i) that any
+factorizable Hopf algebra is unimodular.
+
+act
+
+18 MARCO ZUNINO
+
+Lemma 7.2. Let H be a finite-type T-coalgebra. The Hopf algebra (Di(H),€a)i®
+C1).i) is factorizable.
+
+Proof. We can identify D)(H) as a subspace of D(Hpx) and (Di(H)) * as a subspace
+of (D(Hpx)) We only need to check that Ap, (47) = Apt) (p (H)” Let R =
+1
+
+&; ® G be the universal R-matrix of D(Hpx). For any f € (D1 (H))" we have
+
+AD Hox) (Ff) = (Fs Cbs EGG = (F Cay e862). $a) 1Sa).7. = AD UD (S)-
+
+THE QUANTUM DOUBLE OF A SEMISIMPLE T-COALGEBRA. Let us consider the case
+of a semisimple T-coalgebra H over a field k of characteristic zero. It was proved
+in [| that, for any a € 7,
+
+(33) Sq-1 0 Sq = Idy,,.
+
+Lemma 7.3. If H is quasitriangular, then it is also ribbon by setting 04 = uz,
+
+for anyaer.
+
+Proof. Axiom follows by (B7q) and (B3). Axiom follows by (BOY). Ax-
+iom follows by (P7f). Axiom can be rewritten
+
+(34) Sq-1(Ug-1) = Uq-!-
+
+This follow by pd, Theorem 6(b)], by observing that, in that formula, ga = la
+
+(by (P3, Corollary 7]) g(a) = 1 (by (P4, Theorem 7]), and ha = la (by pd,
+Lemma 16], since the distinguished group-like element of Hy is equal to « because
+
+Hy is semisimple by fill). Finally axiom follows by (B4).
+
+Proof of Theorem |7.4. If H is not totally-finite, D|(#) is not finite-dimensional
+and so it is not semisimple.
+
+Suppose that H is totally-finite. H, is semisimple for any a € 7, therefore Hp
+is semisimple. It follows that D(Hpx) is semisimple (see {fli]]). Since Di(H) can be
+identified with a subalgebra of D(Hpx), also D;(H) is semisimple, hence D(#) is
+semisimple. By Lemma 4, D(#) has a natural structure of a ribbon T-coalgebra.
+
+The rest of the proof follows the streamline of the proof of Lemma 1.1 in fj]
+to which we refer for further details. Let C(Di(H)) C (Di (H))* be the ring of
+characters of D,(H) and let Z(D1(H)) be the center of D;(H). By Lemma [.J,
+the restriction A = Ale(puun)' C(D,(H)) > Z(D,(4)) is an isomorphism of
+
+algebras. Let Irr(Di(H)) = {V;|0 < i < m} be a set of representatives for the
+isomorphism classes of the irreducible representations of D(H) such that Vo = k.
+Then B = {xj* = tr|v,.: 0 <j < m} isa linear basis of C(D(H;)). We also observe
+that the set C = {e;: 0 < 7 < m} of central primitive idempotents of D,(H) is a
+basis of Z(D(H1)). Now, S[D,(H)] = DA, where A is the invertible matrix which
+represents A with respect to the bases B and C, while D = diag(dim Vj).
+
+8. THE RIBBON EXTENSION OF A QUASITRIANGULAR T-COALGEBRA
+
+Let H be any quasitriangular T-coalgebra (not necessarily of finite-type). We
+describe how to obtain a ribbon T-coalgebra RT(H) such that, when 7 = {1}, we
+recover the construction described in [LJ].
+
+DOUBLE CONSTRUCTION FOR CROSSED HOPF COALGEBRAS 19
+
+DEFINITION OF RT(H). The ribbon extension RT(H) of a quasitriangular T-coal-
+gebra H is the T-coalgebra defined as follows.
+
+e For any a € 7, the a-th component of RT(H), denoted RT,(H), is the
+vector space whose elements are formal expressions h+kvqg, with h,k € Hy.
+The sum is given by (h+ kug) + (h’ + k’vq) = (h+ Ah’) + (K+ E’)va, for
+any h,h’,k,k’ € Ha. The multiplication is obtained by requiring v2, =
+UaSq-1(Ug-1), Le., by setting, for any h,h’,k,k’ € Ha,
+
+(h + kvq) (bh! + k'va) = (RR! + kepa(k’ Ue Sq-1(Ua-1)) + (hk! + kyalk’))va-
+
+We identify H, with the subset {h + Ova|h € Ha} of RT,(H). The
+algebra RT,(H) is unitary with unit 1, = lg + Ova. Moreover, for any
+a, 8 € 7, we have Rog € Hy ® Hg C RT,(H) ® RTg(H).
+
+e The comultiplication is given by
+
+Aaa (h + kvag) = Aa,a(h) + Aa,e (k)Qa,3 (Va ® vg);
+
+for any h,k € H, and a,B € mz. The counit is given by (c,h + kug) =
+(c,h) + (e,k), for any h,k € Ay.
+
+The antipode is given by sa (h+ kvq) = 8a(h) + (Sa ° Ya-1)(K)vq-1, for any
+h,k © Hy anda €7.
+
+Finally, the conjugation is given by yg(h + kva) = pa(h) + ¥a(k)ugag-1,
+for any h,k € Hy anda,@ € 7m.
+
+Theorem 8.1. RT(H) is a ribbon T-coalgebra.
+
+Proof. Since computations involved to prove in detail Theorem are relatively
+long, we only prove the coassociativity of A, while the rest is left to the reader. To
+prove the multiplicativity of A you need to check before the relation
+
+Aap (tas $(a8)-1(U(as)-1)) = Qa,8(Ga ® 98) (Qa,8)UaSq—1(Ug—1) ® Ugsg-1(ug-r).
+
+(for any a,8 € 7). To prove that spr(#) is an antipode, one first needs to show
+that it is antimultiplicative.
+
+COASSOCIATIVITY. We need to check that, for any h,k € Hagy, with a, 8,y € 7,
+we have
+
+(35) ((Aa,s @ RT}(A1)) 0 Aag,7)(h + kvagy)
+= ((RT.(H) @ Ag) ° Ao.) (h + kvapy).
+
+By the linearity and the multiplicativity of the comultiplication in RT(H) and the
+coassociativity of the comultiplication in H, by computing the left-hand side of (By),
+we obtain ((Ag,g ® RT(H)) o Aag,y)(h + kvagy) = Rig) @ Nig) @ hE) + (Kay ®
+Kg) ® ky) ((Aa,g @ RT+(H)) 0 Aag,y) (vay), while, by computing the right-hand,
+side we obtain ((RTo(H) @ Ag,,) 0 Aa,sy)(h+kvapy) = Rig) @N(g @hCy + (Kay ®
+Kia) @ ky )((RTa(H) ® Ag.) 0 Aa,8y)(Vagy), So we only need to check that we
+
+B (y)
+have
+
+(36) ((Aa,8 ® RT,(#)) ° Aap.) (vasy) = ((RTo (H) ® Az,7) ° Aa,87) (Vapy).
+
+By computing the left-hand side of (Bq), we get ((Aa,g@RT¥(H))oAag,7) (vagy) =
+((Aa,3 @ Hy)(Qag,7)) (Qa,8)12y(Va ® vg ® vy), while, by computing the right-hand
+side, ((RT.(H) ® Az,7) ° Aa.) (Vasy) = ((Ha ® A3,7)(Qa,87)) (Q8,7)023 (Va ®
+vg ® Vy). We only need to show that ((Ag,s ® Hy)(Qas,y))(Qa,3)127 = ((Ha ®
+
+20 MARCO ZUNINO
+
+Az.) (Qa,4)) (Qs.7)a23 , or, equivalently,
+
+((o (Hs @%a))(Raw)),, (Raya)iay
+. (Aas @ Hy) cao (Hy, ® Yas) (Ry,.08)(Aa,s @ H,)(Ras,y)
+= (( 0 (Hy ® a) (Ry,9)) 9g 87 )023"
+
+. ((Ho ® A3,7) ogo (Hey @ Ya))(Rey,a)(Ha ® Ag,7)(Ra,ey):
+
+(37)
+
+Let us set ¢ = (oot @Ha)° Agga-t,a) @H,) 000(H, @ m9) ) (Ry,08), and
+
+y= (Has (ootea @Hp)°Asyp-1,3)) 000(Hy,2 ¥s) ) (Rgy,a)- Since, by (fd),
+
+(Ra,g)124 (Aas @H,)oa0(H,® Yas)) (Ry,a8) = e(Ra,g)i2y and (Rg,7)a23 (Ha ®
+Ag.y) 00 0 (Hay ® ~a)) (Raya) = y(Rs,7)o23, if we substitute these expressions
+in (ba) and we apply axiom (Fd) to the left-hand side and axiom (7) to the right-
+hand side, we find that (B7) can be rewritten as
+
+(colts @ Pa) (Re.a)) joy t(Ro,8)127((Ha ® pp-1)(Ro,ba8-1)) 143(Ra,7)a23
+
+= (( 0 (H, @ pa) (Ry,9)) og E87) 023 (Re,7)023(Ra.y)163(Ra,6)129-
+
+Thus, by the Yang-Baxter equation (§), we can rewrite (B7) as
+
+(88) (70(Hs @ ¥a))(Ra.a)),, # = ((2 0 (Hy @ ¥5))(Ry.s))
+
+Given three vector spaces Vi, V2, and V3, let us introduce the notation o;,;,4
+(with {i,j,k} = {1,2,3}) for the permutation Vi @ V2 @ V3 > V; @ Vj @ Vp.
+If we compute the two factors on the left-hand side in (a), then we have
+
+12
+= ((¢ ® Hy) 002,31 0 (Hg ® 8 ® Gag)) ((Re,g-108)23);
+
+(co(Hs ® ea))(Ro.a)),, = (( @ Hy) © 02,3: 0 (Hy ® Hs ® Ga)) ((Rs.a)q2s)
+
+(where in the last passage we used axiom ('d)) and
+
+r= (0 © (Yq-1 ® Ha) o Ag-1 60,0 ° Yas) @ Hy) ° a) (Ry,a8)
+
+= (((0(a-1 @ Ha) 2 (Gn ® ¥8)) @ Fy) ©022,1 9 (Hy @ Mp.9-r99) ) (By
+
+= ((¢ ® Hy) 0 02,31 0 (Hg ® Y6 ® Yag)) ((Ry,g-18)183(Ry,8)12(6-18))>
+
+(where, in the last passage, we used axiom (7). Similarly, on the right-hand side
+we have
+
+((co(H,@¥9))(Rya) = ((Ha®0)003,1,20( Hy, @99Pap)) ((Ry,3)12(2-108))
+
+23
+
+DOUBLE CONSTRUCTION FOR CROSSED HOPF COALGEBRAS 21
+
+and
+
+y ((1 @a)o (va ® ((Yg-1 @ Hg) 0 Asys-1,3)) ° a) (Rs+,c)
+
+= ((Ha ® 0) © (Gas ®@ Hy ® ga) © (~p-1 ® (An, °9p-1)) 2) (Ren.c)
+
+(by axiom ((7d))
+= ((Ha ®2) 0 (Pag ® Hy ® 9g) © (Hg-109 ® Ay,8) 07) (Ryg,sa8-1)
+= ((Ha ®0) © (Yop @ Hy ® vp) 0 93,1,2 0 (Ay,6 @ Hp-t08)) (Ryp,a8-1)
+= ((Ha @0) 0 03,1,2 0 (Hy ® 96 ® Yag)) (4, ® 2e-1)(Ry,a)) yg4(Ra,6—108)928)
+
+(where in the last passage we used axiom ([q)).
+We observe that the application (Hy ® 7) 003,1,2 0° (Ha ® Ya ® Yaz) is bijective.
+So, we can rewrite (B) in the form
+(Re,e-106)y23(Ry,6-108)163(Ry,8)12(6-108)
+= (Ry,8)12(8-108) (Hy ® P-1)(Ry,0)) 143 (Rs,6-108) 728
+and this last formula is true by the Yang-Baxter equation ().
+
+Corollary 8.2. Let H be a finite-type T-coalgebra. We obtain a ribbon T-coalgebra
+RT(D(H)).
+
+REFERENCES
+
+1. Eiichi Abe, Hopf Algebras, Cambridge Tractats in Mathematics 74, Cambridge University
+Press, Cambridge (U.K.), 1980. MR 83a:16010
+
+2. Vladimir G. Drinfeld, Quantum groups, Proceedings of the International Congress of Math-
+ematicians (Berkeley, 1986) (Providence, RI), vol. 1, Amer. Math. Soc., 1987, pp. 798-820.
+MR 89f:17017
+
+3. Pavel Etingof and Shlomo Gelaki, Some properties of finite-dimensional semisimple Hopf
+algebras, Math. Res. Lett. 5 (1998), 191-197. MR 99e:16050
+
+4. André Joyal and Ross Street, Braided tensor categories, Adv. in Math. 102 (1993), no. 1,
+20-78. MR 94m:18008
+
+5. Christian Kassel, Quantum Groups, Graduate Texts in Mathematics 155, Springer-Verlag,
+New York, 1995. MR 96e:17041
+
+6. Christian Kassel and Vladimir G. Turaev, Double construction for monoidal categories, Acta
+Math. 175 (1995), no. 1, 1-48. MR 96m:18015
+
+7. Richard G. Larson and David E. Radford, Semisimple cosemisimple Hopf algebras, Amer. J.
+Math. 110 (1988), no. 1, 187-195. MR 89a:16011
+
+8. Thang Le and Vladimir G. Turaev, Quantum groups and ribbon G-categories, Preprint
+math.QA/0103017, 2001.
+
+9. Shahn Majid, Physics for algebraists: noncommutative and noncocommutative Hopf algebras
+by a bicrossproduct construction, J. Algebra 130 (1990), no. 1, 17-64. MR 91j:16050
+
+, Representations, duals and quantum doubles of monoidal categories, Proceedings of
+the Winter School on Geometry and Physics (Srnf, 1990), no. 26, 1991, pp. 197-206. MR
+93c:18008
+
+11. David E. Radford, Minimal quasitriangular Hopf algebras, J. Algebra 157 (1993), no. 2,
+285-315. MR 94c:16052
+
+12. Nicolai Yu. Reshetikhin and Michael A. Semenov-Tian-Shansky, Quantum R-matrices and
+factorization problems, J. Geom. Phys. 5 (1988), no. 4, 533-550 (1989). MR 92g:17019
+
+13. Nicolai Yu. Reshetikhin and Vladimir G. Turaev, Ribbon graphs and their invariants derived
+from quantum groups, Comm. Math. Phys. 127 (1990), no. 1, 1-26. MR 91¢:57016
+
+, Invariants of 3-manifolds via link polynomials and quantum groups, Invent. Math.
+103 (1991), no. 3, 547-597. MR 92b:57024
+
+15. Hans-Jiirgen Schneider, Lectures on Hopf Algebras, Avaliable at the site
+
+mathematik.uni-muenchen.de/~hanssch/Publications.html}, 1995.
+
+10.
+
+22 MARCO ZUNINO
+
+16. Ross Street, The quantum double and related constructions, J. Pure Appl. Algebra 132 (1998),
+no. 2, 195-206. MR 99e:16054
+
+17. Moss E. Sweedler, Hopf Algebras, Mathematics Lecture Note Series, W. A. Benjamin, Inc.,
+New York, 1969. MR 40/5705
+
+18. , Integrals for Hopf algebras, Ann. of Math. 89 (1969), no. 2, 323-335. MR 39/4167
+
+19. Vladimir G. Turaev, Homotopy field theory in dimension 2 and group-algebras, Preprint
+math.QA/9910010, 2000.
+
+, Homotopy field theory in dimension 3 and crossed group-categories, Preprint
+math.GT/000529, 2000.
+
+21. Leonid Vainermann, In preparation.
+
+22. Alexis Virelizier, Hopf group-coalgebras, Preprint math.QA/0012073. To appear in J. Pure
+Appl. Algebra, 2000.
+
+, Algébres de Hopf graduées et fibrés plats sur le 3-variétés (In English), Ph.D. thesis,
+Université Louis Pasteaur (Strasbourg), 2001.
+
+24. David N. Yetter, Quantum groups and representations of monoidal categories, Math. Proc.
+Cambridge Philos. Soc. 108 (1990), no. 2, 261-290. MR 91k:16028
+
+25. Marco Zunino, Bicrossproduct of crossed group coalgebras, In preparation.
+
+26. , Tannaka Theory for Turaev crossed structures, In preparation.
+
+27. , Yang-Baxter modules for Turaev crossed structures, In preparation.
+
+20.
+
+23.
+
+Marco ZUNINO — INSTITUT DE RECHERCHE MATHEMATIQUES AVANCEE (IRMA) — UNIVERSITE
+Louis PASTEUR ET CNRS — 7, RUE RENE DESCARTES, 67084 STRASBOURG CEDEX, FRANCE.
+E-mail address: zunino@math.u-strasbg.fr

@@ -1,0 +1,1455 @@
+246 IEEE TRANSACTIONS ON PATTERN ANALYSIS AND MACHINE INTELLIGENCE, VOL. 15, NO. 3, MARCH 1993
+
+Approximating Probabilistic Inference
+in Bayesian Belief Networks
+
+Paul Dagum and R. Martin Chavez
+
+Abstract—A belief network comprises a graphical represen-
+tation of dependencies between variables of a domain and a
+set of conditional probabilities associated with each dependency.
+Unless P=NP, an efficient, exact algorithm does not exist to
+compute probabilistic inference in belief networks. Stochastic
+simulation methods, which often improve run times, provide
+an alternative to exact inference algorithms. We present such
+a stochastic simulation algorithm D-snras that is a randomized
+approximation scheme. To analyze the run time, we parameterize
+belief networks by the dependence value D;, which is a measure
+of the cumulative strengths of the belief network dependencies
+given background evidence ¢. This parameterization defines the
+class of f-dependence networks. The run time of P-snras is
+polynomial when f is a polynomiat function. Thus, the results
+of this paper prove the existence of a class of belief networks
+for which inference approximation is polynomial and, hence,
+provably faster than any exact algorithm.
+
+I. INTRODUCTION
+
+ELIEF NETWORKS denote a knowledge representation
+
+that is ideally suited to model uncertainty in complex
+domains. Belief networks are the paradigm of knowledge
+representation in medical decision systems. The intractability
+of probabilistic inference in large belief networks, however,
+impedes their application to large domains. Cooper [6] proves
+probabilistic inference for belief networks is NP-hard. Con-
+sequently, we do not expect general-purpose algorithms for
+probabilistic inference to run in polynomial time. The need
+to solve time-pressured decision problems in medical applica-
+tions motivates researchers to design approximation algorithms
+that trade complexity in run time for accuracy of computation.
+Stochastic simulation algorithms such as forward propagation
+[10], [11], [18], [19] and Gibbs sampling [1], [3], [4], [15],
+(16] number among such algorithms.
+
+For many classes of inputs, stochastic simulation algorithms
+for probabilistic inference require exponential run time [3],
+[4], [16]. For example, logic sampling [11] and likelihood
+weighting [18] require exponential run time on inferences
+conditioned on rare observations. More generally, Dagum
+and Luby [9] prove that the approximation of probabilistic
+
+inference is NP-hard. Thus, they confirm that all stochastic -
+
+Manuscript received November 1991; revised August 1992. This work was
+supported by National Library of Medicine Grants LM-04 136, LM-0S 208,
+National Science Foundation Grant IRI-9 108 385, and Rockwell International
+Science Center IR&D funds.
+
+P. Dagum is with the Section on Medical Informatics, Stanford University
+School of Medicine, Stanford, CA 94305-5479. He is also with Rockwell Palo
+Alto Laboratory, Palo Alto, CA.
+
+R. M. Chavez is with the Section on Medical Informatics, Stanford
+University School of Medicine, Stanford, CA 94305-5479.
+
+IEEE Log Number 9206610.
+
+simulation algorithms exhibit poor behavior on certain classes
+of belief networks. In spite of this negative result, the plethora
+of belief network applications in medical expert systems
+compels us to search for approximation algorithms that run
+faster than exact algorithms, even though we know that the
+approximation algorithms do not run in polynomial time on
+certain classes of belief-network inputs.
+
+Computer scientists formulate stochastic simulation algo-
+rithms as randomized approximation schemes (RAS’s) [14].
+A stochastic simulation algorithm for probabilistic inference
+is a RAS if on inputs c,6 < 1 and inference Pr[X = cE],
+the output lies within relative error « of PrLX = a|€] with
+probability of at least 1 — 6. Given the parameters of the
+approximation, ¢« and 6, a RAS provides a priori bounds on
+the required run time. A RAS for probabilistic inference has
+desirable properties. For example, automated medical support
+systems regularly face time-pressured decision problems. The
+a priori bound of a RAS allows resource constraints to
+determine the accuracy of the approximation. Since a RAS
+incrementally tightens the error bounds, the system may make
+a treatment recommendation immediately or rather defer a
+recommendation and continue to reason. A rational decision
+results from a utility model weighing the expected value
+of further computation against the cost of inference-based
+delay.
+
+Central to the formulation of a RAS, the zero-one estimator
+theorem bounds the number of belief network instantiations
+N required by a RAS to output an estimate of the input
+inference [14]. For input inference Pr[X = 2|£], this number is
+proportional to Pr[X = z|€]~!. Thus, evaluation of N given
+by the zero-one estimator theorem requires prior knowledge
+of Pr[X = x]. Because this prior knowledge is unknown
+in advance, BNRAS, likelihood weighting, and logic sampling
+algorithms employ easily computable lower bounds on the
+inference to yield upper bounds on N. Unfortunately, this
+approach often is conservative; it yields an upper bound on
+the number of simulations N that exceeds the optimal value
+provided by the zero-one estimator theorem by an exponential
+factor—for example, a factor of 2" on an n-node belief
+network, Furthermore, it is NP-hard to determine whether NV
+is finite. By the zero-one estimator theorem, N is finite if
+and only if Pr[X = z|€) is nonzero: an NP-hard decision
+problem [6]. Inferences close to zero present a further problem
+to stochastic simulation algorithms that employ the zero-one
+estimator theorem. Approximations based naively on zero-one
+estimation theory are intractable even for exact evaluations
+of N.
+
+0162-8828/93$03.00 © 1993 IBEE
+
+DAGUM AND CHAVEZ: APPROXIMATING PROBABILISTIC INFERENCE IN BAYESIAN BELIEF NETWORKS 247
+
+The algorithm BNRAS of Chavez and Cooper [4] repre-
+sents the first design of a stochastic simulation algorithm
+for probabilistic inference formulated explicitly as a RAS.
+The formulation of the algorithm utilizes Markov simulation.
+Nevertheless, it does not exploit the geometric properties of
+the Markov chain. Thus, Chavez and Cooper obtain suboptimal
+results on the convergence of the simulation.
+
+We characterize belief networks by their dependence value
+D. Intuitively, the dependence value measures the cumulative
+strength of the dependencies among nodes in a belief network
+encoded in the conditional probabilities of each node. We
+present an approximation algorithm D-BNRAS for probabilistic
+inference in the spirit of Chavez and Cooper’s BNRAS [4],
+[6]. However, we focus on the geometric intuition underlying
+the algorithm: a random walk on a hypercube. Each hypercube
+vertex represents a possible instantiation of the network nodes,
+and each hypercube edge connects vertices if they differ in
+the instantiation of a single node. We exploit this geometry
+to prove tight convergence bounds on the random walk.
+Consequently, we derive nonasymptotic results on the rate of
+convergence by proving a lower bound on the conductance of
+the hypercube with results from [20]. We use these bounds to
+reduce the time required by the algorithm to output an instan-
+tiation. A rigorous analysis shows that D-BNRAS significantly
+improves the run time of BNRAS on all classes of inputs.
+
+The class of f-dependence networks comprises belief net-
+works with a dependence value bounded by the function f(n).
+We prove D-BNRAS runs in time proportional to f4(n). When
+f(n) is a polynomial function, D-BNRAS has polynomial run
+time. If for all n, f(r) > 1+ a@ for any constant a > 0, then
+probabilistic inference is NP-hard for f-dependence networks.
+Thus, we do not expect to find efficient exact algorithms for
+probabilistic inference even for very restricted f-dependence
+networks. D-BNRAS runs in polynomial time when f is a
+polynomial, and it yields a tractable solution to the problem
+of probabilistic inference for this class.
+
+Formulation of stochastic simulation algorithms for proba-
+bilistic inference as RAS algorithms involves the naive appli-
+cation of the zero-one estimator theorem. We encounter two
+difficulties with this approach: We must compute good lower
+bounds on the inference we intend to approximate, and when
+the inference nears zero, we must use a very large number
+of simulations. In contrast with the difficulties encountered
+by these algorithms, we prove a key result that allows D-
+BNRAS to employ a polynomial number of instantiations to
+approximate any input inference. Thus, the efficiency of D-
+BNRAS is independent of the input inference; however, the
+efficiency relies strongly on the dependence value of the belief
+network. Thus, in almost all cases, D-BNRAS requires fewer
+instantiations to output an estimate than previous stochastic
+simulation algorithms, but the run time to generate instantia-
+tions is significantly longer than likelihood weighting and, in
+many cases, logic sampling.
+
+Il. BACKGROUND
+
+Here and elsewhere, B denotes a binary-valued belief
+network on n unobserved nodes {.X1,...,X,} with back-
+
+ground evidence €. The set X refers to an arbitrary subset
+of unobserved nodes in B. For any node X;, any set of
+unobserved parents wx,, and any set of observed parents Ex,
+a belief network specifies a conditional probability function
+Pr[X;|ux,,&x,]. We simplify the notation of the conditional
+probability function by writing Pr[X,|ux,,é], where it is
+understood that €, in this context, refers to €x,. The full
+joint probability distribution specified by a belicf network is
+calculated by taking the product of the conditional probabilities
+
+Pr[X1,.-.. Xn €] = [J Pr[Xifux,, €]. (1)
+i=l
+
+Probabilistic inference in belief networks refers to the com-
+putation of Pr[X = z|€] for an instantiation x of X and
+background evidence €.
+
+A. Dependence Value
+
+We parametrize belief networks by their dependence value
+Dg > 1. The dependence value of a belief network depends on
+the background evidence €. Intuitively, the dependence value
+gives a measure of the cumulative strength of the dependencies
+among nodes in a belief network that are encoded by the
+conditional probabilities associated with each node.
+
+For cach node .X;, we define 1; and u,; as the greatest and
+smallest numbers, respectively, such that, for instantiation 2;
+of X;, and for all instantiations of X;’s unobserved parents
+UX
+
+by < Priwilux,,€] < wi.
+It follows that
+
+where 7; = 1 — 2,. Note that /; > 0 and u; < 1 since we
+assume that no complete instantiation of the network has zero
+probability. Let }; = max (#. 4). When _X; is a prior
+node—that is, X; has no parents—or when ux, is empty—that
+is, the parents of X; have been observed—then A; = 1.
+
+Definition: For a belief network B, the dependence value
+is given by
+
+i=l
+
+By this definition, Dg > 1. The trivial case when D; = 1
+occurs when there are no conditional dependencies between
+nodes in the belief network.
+
+Definition: Let f(n) denote a positive-valucd function on
+the positive integers. The class of f-dependence networks
+consists of the set of belief network and evidence couples
+(B,€) such that if B has n nodes and dependence value D,,
+then De < f(n).
+
+When f(r) is a polynomial function, the class of _/f-
+dependence networks is an example of a class of polynomial
+dependence networks.
+
+248 IEEE TRANSACTIONS ON PATTERN ANALYSIS AND MACHINE INTELLIGENCE, VOL. 15, NO. 3, MARCH 1993
+
+B. Randomized Approximation Schemes
+
+Convergence analysis of simulation algorithms in the the-
+oretical computer science community is rooted in zero-one
+estimation theory. The methodology carries over to the anal-
+ysis of simulation algorithms for probabilistic inference [18],
+[4], (61.
+
+We review briefly the zero-one estimation approach for
+convergence anlaysis of a simulation algorithm. Consider the
+problem of trying to estimate Pr[A] in the probability space
+(2,2, Pr), where A denotes a subset of 2. Define the random
+variable ¢ = ¢(w) to take on the value 1 when w € A and
+to take on the value 0 otherwisc. The Monte Carlo method
+simulates the probability Pr and scores the random variable
+¢ = ¢(w) to estimate @ = Pr[A]. By the Law of Large
+Numbers, in the limit of an infinite number of trials, the
+arithmetic mean yz of the output of each simulation converges
+to @. After a finite number of trials N, the current fraction
+i estimates @.
+
+For simulation algorithms, we desire an upper bound on N
+that guarantees that 4 provides a good estimate of 4. More
+specifically, for any ¢,6 < 1, we would like to know the least
+number of trials V needed to guarantee that
+
+Pri[g(1+6)7' <p< d+] >1-6 (2)
+
+A RAS for probabilistic inference is a randomized algorithm
+that accepts as input a belief network B, instantiation X = :c,
+and two positive parameters « and 6. The output of the
+algorithm is an estimate yp of ¢ that satisfies (2).
+
+The zero-one estimator theorem gives the smallest number
+of trials required for a RAS to satisfy (2)
+
+4 2
+N= 95 M85: (3)
+
+For details on this derivation, see [14]. When NV, e, and 6
+satisfy (3) then js satisfies (2).
+
+The upper bound on N provided by the zero-one estimator
+theorem is contingent on ¢—the same quantity we estimate
+with a simulation algorithm to estimate. To circumvent this
+circular definition, polynomial time computable lower bounds
+for ¢ allow us to derive an upper bound estimate of N. A
+key challenge is the computation of a lower bound within
+a constant multiplicative factor of @ to avoid wasteful com-
+putations. Unfortunately, in many cases, the best computable
+lower bound is O(2~”).
+
+C. Stochastic Simulation Algorithms for Probabilistic Inference
+
+Stochastic simulation algorithms for probabilistic inference
+include logic sampling {11], straight simulation [15], [16],
+the randomized approximation scheme BNRAS [4], [5S] and
+likelihood weighting [18] algorithms. Chavez and Cooper
+[4], [3] reformulate straight simulation and logic sampling
+as RAS algorithms. The number of simulations necessary for
+convergence is determined by the zero-one estimator theorem.
+Furthermore, Chavez and Cooper present the first explicitly
+designed RAS: BNRAS [3]. Thus, Chavez and Cooper show that
+(3) bounds the number of trials required by these algorithms to
+output estimates that satisfy (2). Similarly, Shachter and Peot
+
+[18] reformulate likelihood weighting as a RAS and analyze
+convergence using the zero-one estimator theorem. We now
+discuss two limitations of stochastic-simulation algorithms
+relying on (3) to bound the number of trials.
+
+We denote the inference probability PrLX = x|€] by ¢.
+We established that we require ¢ to determine N. Since ¢ is
+the probabilistic inference the stochastic simulation algorithm
+computes, it is not known in advance. We resolve the problem
+with a computable lower bound on ¢ that provides an upper
+bound on JN. In the absence of a good lower bound on 4,
+many wasteful trials are generated to estimate ¢. For example,
+Shachter and Peot [18] use the smallest inference probability
+in the network to bound ¢. More generally, it is NP-hard to
+determine whether @ > 0 [6], and thus, by (3), it is NP-hard
+to determine whether N’ is finite.
+
+When inferences approach zero, stochastic simulation algo-
+rithms that employ (3) to bound the number of trials experience
+a further complication. From this equation, the number of
+trials becomes intractable because N approaches infinity as
+@ approaches zero. When ¢ is an inference conditioned on
+evidence—for example, # = Pr[X = x|€|—then logic sam-
+pling and likelihood weighting algorithms are subject to this
+complication. These algorithms do not estimate ¢ directly.
+Rather, they estimate PrLX = x, €] and Pr[é]. Bayes’ rule
+dictates that the ratio of these two estimates is an estimate of
+@. The number of trials required to estimate Pr[X = 2, €], or to
+estimate Pr[é], is given by (3), with ¢ denoting Pr[X = z, ]
+or Pr({é]. When the evidence € is rare or when it contains many
+observed nodes, the joint probability PrLX = 2, €] is small,
+and logic sampling or likelihood weighting algorithms require
+many trials to output an estimate of Pr[X = z|€].
+
+In contrast, the run time of D-BNRAS is independent of ¢.
+Furthermore, unlike logic sampling and likelihood weighting,
+‘D-BNRAS performs better when the evidence set is large. The
+effect of multiple observations reduces the dependence value
+Dg of the network and, therefore, speeds the generation of
+trials. De-BNRAS, however, requires a long run time to generate
+a simulation, whereas logic sampling and likelihood weighting
+generate simulations efficiently.
+
+UI. THE ALGORITHM D-BNRAS
+
+Given a belief network and evidence set, we construct a
+Markov process. If we simulate this process for sufficient time,
+then we sample the joint probability distribution conditioned
+on the evidence. We prove results on the convergence of the
+Markov process and, hence, on the simulation time required
+to sample this distribution. We use the the trial generator to
+construct D-BNRAS. We then prove results on the number of
+samples D-BNRAS requires to achieve a specified precision in
+the estimate. We combine this result with the time to generate
+a sample, and thus, we obtain the run time of D-BNRAS.
+
+A. The Trial Generator
+
+We construct a trial generator for belief networks—that is,
+an ergodic Markov process MC on the space of instantiations
+of B. The joint probability distribution conditioned on the
+evidence &, Pr] |é] represents the stationary distribution of
+
+DAGUM AND CHAVEZ: APPROXIMATING PROBABILISTIC INFERENCE IN BAYESIAN BELIEF NETWORKS 249
+
+the time-reversible ergodic Markov chain M{C. Thus, in its
+stationary distribution, MMC samples Pr[ |é]. The process MMC
+reaches the stationary distribution only in the limit of an
+infinite number of simulations; for finite simulation, A(C
+approximates the stationary distribution. In Section III-E, we
+will incorporate the error from MC into the error € of (2).
+
+Without loss of generality, we restrict the presentation to
+belief networks with binary valued nodes and with nonzero
+conditional probabilities. For 0 < 2 < 2”, let 2 denote both
+the instantiation of the nodes in B to the binary representation
+of i and, in addition, a binary representation of a node in an
+n-dimensional hypercube (n-cube). Let e1,...,€n denote the
+basis of the n-cube, where e; is the vector with coordinate /
+set to 1 and all other coordinates set to 0. Let @ denote the
+symmetric-difference operator. B defines the Markov chain
+MC as follows:
+
+1) With probability $5 from any state i, randomly choose
+an I such that 1 <7 < n, and make a transition to state
+j =16 e with probability
+
+Prijlé]
+Pr(e|g] + Prile)
+
+2) With probability $s do nothing—that is, make a null
+transition to the same state.
+Thus, the transition probabilities of the Markov chain from
+2 to the neighbor 7 = i @ e; are given as follows:
+
+1 Pr(glé - “
+meee: ted:
+
+r= | ae ,
+
+Note that the self-loop probability P;; is defined to normalize
+the probability of making a transition.
+
+By the definition of an n-cube and from the equivalence
+between instantiations of B and nodes in the n-cube, it follows
+that the Markov chain MC is a random walk on the n-
+cube. The self-loop probability renders the chain aperiodic; the
+existence of a path from any state to every other state makes
+the chain irreducible; therefore, the chain is ergodic. Symmetry
+considerations dictate that the chain is time reversible.
+
+The ergodicity of the chain guarantees a unique stationary
+distribution. We show the stationary distribution is identical to
+the belief network’s joint-probability distribution Pr.
+
+Lemma 1: The stationary distribution of the Markov chain
+MC is the joint probability distribution Pr of B.
+
+Proof: From the theary of ergodic Markov chains, it
+suffices to show, for any state 7, Pr satisfies the eigenvalue
+equation
+
+Prfi{é] = d PrfilPi:-
+
+However
+ier, 2 Spee) Pull lap.
+
+Prijle\Pi = »» Prlll pags pape + PelilslPs
+_! 7 Prijlé] “e1D..
+an 2 PP peta paige] * Pe)?
+_ pel 1 Privé) :
+= Prile)| 2 9m Beael+ Pope] *
+= Priilel 32 P,
+
+jd
+
+= Pr{i{€],
+
+which proves the lemma. O
+
+B. The Approximation Algorithm D-BNRAS
+
+A recurring theme in stochastic simulation algorithms for
+probabilistic inference is the slow convergence of algorithms
+when the computed inferences are small. The problem traces
+back to the result of the zero-one estimator theorem in (3).
+We described, in Section II-C, how stochastic simulation
+algorithms traditionally perform poorly on inferences near zero
+and, furthermore, how users of these algorithms experience the
+problem of obtaining reasonable lower bounds on the inference
+probabilities. A poor lower bound translates, through (3), to a
+large value for N and, therefore, an excessive number of trials
+to approximate an inference. Dagum and Horvitz offer the
+most general solution to the latter problem [8]. They develop
+optimal Bayesian stopping rules for stochastic simulation
+algorithms. However, we need to address the intractability
+problem encountered by previous simulation algorithms when
+inferences are near zero.
+
+‘D-BNRAS solves the preceding problems very efficiently
+with the self reducibility of probabilistic inference. D-BNRAS
+decomposes the problem of estimating an inference probability
+into one of estimating inferences for a set of subproblems. The
+decomposition guarantees that the subproblem inference prob-
+abilities are at least one half. Thus, by (2), each subproblem
+inference can be approximated with N trials, where
+
+2
+.
+
+In the subsequent analysis, we simplify the presentation
+if we assume the trial generator outputs instantiations of B
+with probability distribution Pr[|€}. In reality, however, the
+distribution of the trial generator AAC only approximates this
+distribution for finite simulation runs. In Section III-E, we
+show how the approximation can be made sufficiently close
+to Pr[|€] to render our results valid.
+
+We introduce the algorithm D-BNRAS by considering the
+problem of estimating the inference 6 = Pr{X = zj€]. For
+k = 1,...,n, let d, denote the probabilities
+
+16
+€
+
+and let
+
+250 IEEE TRANSACTIONS ON PATTERN ANALYSIS AND MACHINE INTELLIGENCE, VOL. 15, NO. 3, MARCH 1993
+
+Without loss of generality, we assume the sct of nodes X
+
+contains nodes X,,...,X, instantiated to z,,...,2%,. Thus,
+we express the inference @ as
+Pp
+p=. (5)
+Po
+
+‘D-BNRAS outputs estimates of the inferences @, and @. The
+ratio of estimates in (5) provides an estimate of ¢.
+Using Bayes’ theorem
+
++++hp,£) = bps. (6)
+
+Equation (6) reduces the problem of estimating ¢, to
+the problems of 1) estimating ¢,4; and 2) of estimating
+Prlap4ile1,...,€p, &]. Estimating ¢,,, is not visibly simpler
+than estimating ¢,. However, solving problem (2) is a simpler
+problem when the instantiation 7,4, is chosen appropriately.
+Observe
+
+bp Prlvp4ilei,.
+
+tp, €] + PrXpyilei,...,ap,éJ=1 (7)
+
+where, in general, %, denotes the instantiation 1 — z;. We
+briefly discuss how to choose the instantiation z,4) such that
+the first probability in (7) exceeds one half. The estimation
+of Prizp4ilz1,....¢,,€] is the first of the easily solvable
+subproblems that D-BNRAS generates.
+
+Similarly, we reduce the estimation of ¢,4, to 1) the
+estimation of ¢,42 and to 2) the easily solvable subproblem
+Pritp+2|71,---,¢p4i.€] when 2,49 is chosen so that this
+probability has a value of at least one half. We continue to
+generate easily solvable subproblems until we reach ¢,. At
+this point, we have reduced the estimation of ¢, to a set of
+n-p easily solvable subproblems and the estimation of @,.
+However, ¢, is the probability of a complete instantiation of
+the nodes in B, and we compute it exactly with 1.
+
+In summary, we yield an estimate of ¢, after D-BNRAS
+completes n-p cycles. In cycle 7, the algorithm runs N trials,
+and it separately scores 4: and 72, which are the estimates
+of Pr[tp4ile1....,Up4i—a-€] and Pr(#p4ifri,....¢ppi-a. €],
+respectively. Therefore, one of jz or fi exceeds one half. If we
+run the algorithm for a number of trials N
+
+(n — p)? 2
+2
+
+Pr[zp4ifei. oe
+
+N=16 log =,
+
+6
+then one of x or Zi satisfies (2) with error e(n — p)—'. Without
+loss of generality, we assume the estimate j« satisfies (2) with
+error e(n — p)~'. We instantiate node X,+, to t,4;, and we
+store pi.
+
+At the end of the n-p cycles, we compute the probability
+go» using (10). We divide ¢,, by the product of the w’s stored
+at the end of each cycle to estimate @,. The estimates of each
+subproblem satisfy (1) with error e(n — p)~+. Thus, standard
+error propagation dictates that the estimate of ¢, satisfies this
+equation with error €.
+
+(8)
+
+C. Convergence Bounds for MC
+
+The relative pointwise distance (RPD) measures the dis-
+tance between the stationary distribution of MMC and the
+distribution after simulation of MMC for T transitions. Thus,
+
+the RPD gives a measure, parametrized by the number of
+transitions T’, of the error in the trial-generation phase occuring
+because we sample the stationary distribution after a finite
+number of transitions of a Markov process. For a given error
+tolerance, we chose T so that the RPD is Iess than the
+given error. However, we cannot compute the RPD directly.
+Instead, we use Theorem 2 to relate the RPD to a computable
+graph-theoretic property of a Markov process known as the
+conductance.
+
+We begin with some observations about MC. The Markov
+process MC is time reversible since, for any pair of states
+i,j, Pr[i|é]Pi; = Pr[ylé]Pj;. For a time-reversible Markov
+chain, the underlying graph H of the chain is the weighted
+undirected graph with vertex set [m], and for any 7,7 € [7],
+edge (1,7) has weight wi; = Prfilé]Piy = Priylé]Py. de
+P,; = 0, then edge (7,7) is not in the graph.) Jerrum and
+Sinclair define the conductance of the graph H as
+Dies ies PrldllPis }
+
+Dies Prltle}
+with minimization performed over all subsets S of [m] [12].
+
+Let Pp denote the T-step transition probability from state
+i to j—that is, the probability we reach state j after T
+transitions if we start in state 7. Define the RPD
+Pi? ~ Priel
+
+Prijé]
+
+O(H) = mn (9)
+
+A(T) = max
+4,7€[m]
+
+(10)
+By relating the conductance to the second eigenvalue of the
+chain’s transition matrix, which governs the transient behavior
+of the chain, Jerrum and Sinclair prove the following upper
+bound on the RPD after ¢ transitions [12].
+
+Theorem 2: Let H = (V(H),(H)) represent the un-
+derlying graph of the time-reversible Markov chain MC
+with conductance ®(#), stationary distribution Pr[|E], and
+minimum sclf-loop probability 5. Let I = min;ejn) Pril€].
+Then, the RPD is bounded by
+
+(1 — @(H)?/2)"
+A(T) <“—.
+
+oO
+
+Theorem 2 provides an upper bound on the number of
+
+transitions required for the RPD of MC to be within a given
+tolerance ¢:
+
+log at
+
+T <4. (11)
+
+D. Conductance of MC
+
+In this section, we prove a lower bound on the conductance
+of the underlying graph of MMC. A lower bound on the
+conductance, in conjunction with Theorem 2, gives us an upper
+bound on the RPD of MC after T transitions. Thus, we choose
+T so that the probability distribution of the instances generated
+by MC lies within a given error tolerance ¢ of the correct, or
+stationary, distribution.
+
+The dependence value of a belief network parameterizes the
+lower bound on the conductance. For polynomial dependence
+
+DAGUM AND CHAVEZ; APPROXIMATING PROBABILISTIC INFERENCE IN BAYESIAN BELIEF NETWORKS 251
+
+networks, the conductance is sufficiently large to guarantee
+rapid convergence.
+
+Theorem 3: For belief network B with dependence value
+De, the underlying graph H of the Markov chain MC has
+conductance satisfying
+
+Po
+O(If) > (H) = 2D?
+
+where po denotes the minimum transition probability of MC.
+Proof: We use the methods developed by Jerrum and
+Sinclair [12]. The graph H is an n-cube with weighted edges
+on vertex set [n] consisting of 2” binary vectors of length n.
+Each vertex in [n] is identified with an instantiation of B in
+the usual way. Let Pr[|é] denote the stationary distribution
+of MC. For any S C [n], where [n] denotes the vertex set
+of H, let S = [n] \ S, and let C(S) represent the edge
+cutset of S—that is, (4,7) € C(S) if and only if vertices i
+and 7 are neighbors in the hypercube such that ¢ €¢ S and
+j € S. Define unique paths in H between any two states as
+follows. Let i = (vi1 +++ Zin) € S and j = (xj1-+-Zjn) € S.
+The path from i to 7 is the following. Examine the first
+coordinate x,, in the binary vector 7. If it has the same
+value as the first coordinate xj, in j, proceed to the next
+coordinate; otherwise, move from 2 to the neighboring state
+(xj1%i2-++ Zin). By sequentially progressing through all the
+coordinates, this procedure defines a unique path from 3 to 7.
+The path from initial state z to final state 7 is given a weight
+of Pr[#|é] Pr[j|€]. For any S such that 7; Pr[ilé] < 5, the
+sum total of the weights of the paths crossing from S to S is
+
+> Priilé] Priviél
+
+i€S,JES
+= Prd Priel > 5 Pri
+i€S jes ies
+
+since 7 ,¢5 Pr[ylé] = 1 -— Mies Pritlé]. For any transition
+t = (k,k’), let P(t) be the set of ordered pairs (1,m) such
+that the path from / to m contains t. Lemma 4 shows
+
+pS
+
+(me P(t)
+
+Pr[klé| Pax > Fp Pr{iié] Pr[mlé|
+§
+
+where po denotes the smallest transition probability min; ; P;;.
+It now follows that
+
+> Priilelry = d> Pelle] Prime]
+& £€C(S) (Lm) EP(t)
+
+i€S.jES
+Pp . .
+> FD Priel Priste)
+i€S,jES
+Pp .
+> spt DL Puliiél-
+€ ies
+Finally
+Po
+®(H) > 2DF
+
+O
+We now prove the lemma used in the above analysis.
+
+Lemma 4; Let ¢ = (k,k’) be a transition from state k to
+state k’ in MC. Let P(t) be the set of ordered pairs (1,m)
+such that the unique path from / to m contains ¢. Let po denote
+the smallest transition probability min, ; P;;. Then
+
+D2
+S= Prflié] Pemlé] < — Pr[klé] Pax.
+(Lm) P(t) Po
+
+O
+Proof: Each (l,m) € P(t) defines a unique state
+f,m) =k (1@m). We show for all (1,m) € P(t)
+Pr[dle] Prime] < DEPrthle] Prif(l.m)le}. (12)
+
+It follows that
+
+S Pr{é|é] Pr[m|gé] < D? Prik|g]
+
+(m)eP(t)
+
+S> Prl f(r) ig]
+
+(Lm)EeP(t)
+< Dz Pr[kié].
+
+The second inequality holds because the map f : [n] x [n] >
+{n] is injective and, therefore
+
+S> Prif,m\lé] < S° Prfilé] = 1.
+
+(Lm)EP(t) i¢{n]
+
+The lemma now follows since, by definition, Px, > po.
+We rewrite (12) as
+
+Proll, €] Prim, €] < Dz Prfk, €] Pr[f(l,m)é]. (13)
+
+For any instantiation s = (71,...,%,) of the nodes of a
+belief network, the joint probability of x can be factored into
+a product of conditional probabilitics
+
+Priz, é] = I] Prix,|ux,, €]
+
+where wx, is the configuration of X;’s unobserved
+parents in a. Denote the binary vectors (i,€), (m,€),
+(k,€), and (f(i,m),€) by (t1,---.n,€), (™m1,.--, 77, §),
+(ky,...;Kn,€), and (f(l,m)i....,f(,m)n,§€). From the
+factorization of the joint probability distribution, we obtain
+
+Pri, €] Prim, €} = Prily,....fn,€] Prima,..+, mn, ]
+
+= [ent
+
+w=1
+
+tx, =1,,€] Pr[mi|ux,=m;,§]
+
+with a similar expression for Pr{k, €] Pr[f(i,m), €]. By defi-
+nition of & and f(1,m), either 1; and m,; have the same value,
+in which case kj and f(l,m); also have the same value |;
+and m,, or 1; and m; differ in value, in which case k; and
+f(i,m); also differ. Thus, recalling the definition of A; given
+in Section H-A, we prove for all z
+
+Pril; UX =1;5 é] Prim, |ux;—m, ; é] < x;
+Prk; |tx,an,.€] Pr[f(, m):\ex, =F(t,m), €)-
+
+Equation (13) follows from the definition De. oO
+
+252 IEEE TRANSACTIONS ON PATTERN ANALYSIS AND MACHINE INTELLIGENCE, VOL. 15, NO. 3, MARCH 1993
+
+E. Analysis of the Run Time
+
+Equation (3) gives the number of trials N required by
+stochastic simulation algorithms to output an estimate j: that
+satisfies (2). The bound on N is valid only if we sample
+the stationary distribution of the Markov process, and thus,
+we generate instantiations X with probability distribution
+Pr[X|€]. We sample the stationary distribution only in the
+limit of an infinite simulation of MMC. For finite simulation
+time T, the RPD between the sampling distribution and the
+stationary distribution ¢ is given by (11). We use methods that
+appear in [2], [13] to verify that if ¢ satisfies
+
+(56 (14)
+
+(3) lies within a multiplicative constant of the number of trials
+required to satisfy (2). In Section III-B, we show that D-
+BNRAS reduces the estimation of d, = Pr[x1,..., 2p, €] to the
+estimation of n-p inferences, each with probability exceeding
+one half. Thus, by (14), the trials used to compute the n-p
+inferences are generated with ¢ = de,
+
+We obtain the number of simulations T of MC such that
+the RPD between the distribution of the trials and the distri-
+bution Pr[|é] is sufficiently small to satisfy the assumption
+(made in Section III-B) concerning the distribution of output
+instantiations.
+
+We use the conductance bound given by Theorem 3 with
+(11) and let ¢ = Ze to obtain
+
+De
+T = 16 $ log — (15)
+pe 6
+
+=
+The complete run time is (n — p)N - 7, where N, which
+is given by (8), is the number of trials required to compute
+estimates of the n-p inferences produced by D-BNRAS. Thus
+2 3 Pe
+
+16*(n - Py a 28 oi (16)
+
+|
+aii 0B.
+
+IV. COMPLEXITY RESULTS
+
+We prove an upper bound on the conductance of the
+Markov process constructed previously. The upper bound
+yields a lower bound on the Markov process simulation time
+to sample the distribution Pr{ [£]. This lower bound represents
+the minimum achievable simulation time of MMC. The bound
+is achieved if we had available a stronger result on the
+convergence of Markov chains than is provided by Theorem 2.
+
+We prove that the complexity of probabilistic inference for
+f-dependence networks is NP-hard for any function f such
+that for all n and for any constant a > 0, f(n) > 1+a.
+
+A. An Upper Bound on the Conductance
+
+Previously, we proved a lower bound on the conductance
+®,(H). We prove an upper bound
+
+2Po
+D
+
+©,,(A) = TT
+8
+€
+on the conductance. We construct a class of belief networks
+with this conductance.
+
+For a fixed constant c and for any £ < € < 1, we construct
+a class of belief networks denoted by 8 such that any belief
+network B € BS with Markov chain MMC(B) and underlying
+graph H has conductance
+
+<
+
+By Theorem 5, we cannot prove a lower bound on the
+conductance of Markov chains MC of belief networks that
+is better than 20. Thus, for belief networks that are not
+in the class of polynomial dependence networks, the RAS
+does not have polynomial run time. Intuitively, the algorithm
+fails because the Markov chain used to construct the ¢-trial
+generator converges to the stationary distribution too slowly
+to yield a polynomial time trial generator.
+
+We begin with a lemma.
+
+Lemma 6: For a fixed constant c and for any © <e <1,
+we can construct a class of Markov chains denoted by MC‘
+with underlying graph H and conductance
+
+2
+O(H) < 2 ae
+
+l-e
+Proof: MC‘ is the Markov chain with underlying graph
+fT constructed from an n-cube with transition probabilities
+P.,. defined below.
+
+Let Q; represent the vertices of H whose binary represen-
+tation consists of exactly & i’s. Each vertex in Q; has n-k
+edges connecting it to Q,4: and k edges connecting it to
+Qx-—1. Assume that n is odd. Define Sp to be the set
+
+nl
+So = LU Qi
+i=0
+
+where
+
+and
+
+For any k < ae arrange the transition probabilitics from
+
+Qy to @p_-1 and @,41 such that there is a small bias toward
+@x-1. Similarly, bias the transition probabilities for k > att
+to favor Qx41. Specifically, for v € Qk, k < 25+ and for
+mn <€ <1, let
+
+1- wey .
+zp, fel e Qari;
+L . a .
+P,y = te, if v € Qr-15
+UV 1 if ,— a.
+oe Wwe Vv;
+0 otherwise.
++1
+For v € Qz, k > at
+1 : .
+Ate if'u’ © Qeais
+i-e ‘ i .
+Pyotr = 4 ye OE On
+3 ifu=v’;
+0 otherwise.
+
+DAGUM AND CHAVEZ: APPROXIMATING PROBABILISTIC INFERENCE IN BAYESIAN BELIEF NETWORKS 253
+
+Let P, be the total probability of a state in Q, in the
+Stationary distribution. Clearly, P, = Vice, a;. Recalling
+that there are & + 1 edges from Q,4,1 to Q@, andn—-—kK41
+edges from Q;-1 to Qz, we derive the recurrence equation
+
+Py = 24e41Peoi + 2re—1Pe-1 (17)
+where
+(l—e)(n—k+1)
+Tr-1=
+dn
+and
+(14+ €)(k+ 1)
+qk = ————-.
+
+An
+In addition, the symmetry of the construction guarantees that
+
+us 1
+
+n+l
+2
+
+intl
+
+nol
+i=1
+
+Now, consider the conductance
+
+ies eS mi Pay \
+ies Mi
+
+ieso.jeS) MiP is
+
+eS Ti
+
+Ss; WP ij =
+
+i€ S50 ESo 1€EQ na 1 JEQn L
+
+&(H) = min {
+
+Because
+
+|
+=
+|
+mm
+a
+
+I
+~
+'
+
+it follows that
+o(H) < PoPa—
+
+since ie = po, the minimum transition probability in H.
+Equation (17) lacks an exact solution. An upper bound on
+P.-1 suffices. The recurrence equation indicates that a random
+walk started in state Q; drifts to state k-1, provided q, < rz.
+Let m denote the value between 0 and Bot for which q, = rr.
+
+We verify
+
+n-l oc
+
+l-e
+
+<
+ns 5} 3
+
+where the second inequality follows because, by definition,
+€ > £. In conclusion, for 0 < k< a, a random walk
+that begins in Q; will drift to Q,,. From the symmetry of the
+cube, it is clear that the probabilities P, increase from k = 0
+to & = m and then decrease from k = m tok = 2+.
+
+Although it is not possible to solve (17) in closed form, the
+standard recurrence equation
+
+m=
+
+Po = 4Phyi +1 Phat (18)
+
+with r and q constant, has the solution
+
+Tr
+Pi = A(-\*
+i oy
+
+for some normalization A.
+
+Let ko denote the midpoint between m and 3—that is,
+ky = B(1—$). Set q = (H#)(422) and r = (158)(2=B2),
+Solving
+
+Pl_, = A(~)o
+bea = ACEC
+
+tts
+
+q
+
+—ko _ PL() net —ko |
+
+Because Pi, < 1, we get
+
+Ploy < (2)
+2
+
+r
+q
+le *
+<2 .
+|
+
+However, by the definition of De
+
+1-e]*® 1
+l+e ~ Dis’
+For k > ko, the ratio of coefficients in (17) oa is smaller than
+
+the ratio a in (18). Thus, P, > Pp forko SE < aot. Finally,
+
+2
+Paa <
+2 — Di
+
+a
+
+and
+
+2p0
+Dis”
+
+O(H) <
+
+O
+
+Proof: Define | = i. For any 7 < € < 1, we construct
+
+a class of belief networks denoted by B* with the following
+
+properties. For any belief network B € BY‘, the conditional
+
+probabilities are contained in the range [/,1 — é], and the
+
+Markov chain MC(B) is contained in MC‘. The proof follows
+from Lemma 9.
+
+To construct the appropriate belief network, we proceed as
+
+follows. The chain rule
+Pr[X1,..., Xn] = Pr[Xi|Xo,.--, Xn] - Pr[X2|X3,..., Xn]
++++ Pr[X,-1|Xn] - Pr[Xa]
+
+defines a belief network on the binary-valued nodes
+{X1,...,Xn} such that each node X; has parents
+
+ux, = {Xiy1.--
+and conditional probabilities
+Pr[X; jux,] = Pr[X,|Xi41, eaey X,).
+
+In order for the Markov chain defined by the belief network
+to have a the stationary distribution of MMC‘, we define for
+anyi<k<n
+
+Prix, = WX1,.--,Xe-1, Xeg1s-++, Xn]
+= {i if (41 ---an) € So;
+~ +t if (21 ---an) € Sp
+and
+Prix = O|X1,..-,Xn—1, Xegi,---> Xn]
+if (f1-++2n) € So;
+
+{a
+— 2 2
+= 74
+2
+
+if (21 -++an) € So.
+
+254 IEEE TRANSACTIONS ON PATTERN ANALYSIS AND MACHINE INTELLIGENCE, VOL. 15, NO. 3, MARCH 1993
+
+Now, we need to verify that the conditional probabilities
+
+with the above definitions are contained in the interval [J, 1-1].
+
+Let
+> Pr(xy,...,c,-a|tepis---.2n| =p
+Bye 1i(H1 Ly ESO
+and
+Ss, Prizy,...,2g-1/?e41,---,2n] =1—p
+eyrrp—1:(21-ay ESO
+where 0 < p < 1. Then
+Pri |aegi,---:2n]
+= - Prizy[21,---,2k—1,Tk+15---;Zn]
+(er tR-1)
+Prizi, tee »0e-1|Leq15 a £y]
+l
+= 5° Pr(xy,...,@e-1|"e41,---, En]
+Ey ER (Tp Py ESO
+1-l
+ay
+Bye 13(ay en ESO
+Prlzy, tee Cr-iltesi, tee .£n]
+I 1-l,
+==sp+——(l-—p).
+5P + > ~P)
+Therefore, the conditional probabilities are contained in the
+interval [2,1 — d]. O
+
+B. Complexity of Probabilistic Inference
+
+Cooper [6] proves that the complexity of probabilistic
+inference for belief networks is NP-hard. However, it is well
+known that probabilistic inference for belief networks with
+restricted topologies, such as singly connected networks, are
+amenable to polynomial time algorithms [17]—that is, the
+complexity of the inference lies in P. The following question
+arises: Does there exists a class of f-dependence networks
+such that the complexity of exact inference is in P. Theorem
+7 proves that no such class exists.
+
+Theorem 7: For any a > 0, the complexity of probabilis-
+tic inference for the class of belief networks characterized by
+dependence value D, that satisfy 1 < Dz < 1+ is NP-hard.
+
+Thus, we do not expect to find efficient exact algorithms for
+probabilistic inference under any set of restrictions placed on
+the range of the conditional probabilities—barring the trivial
+case when a = 0 and Dg = 1 occuring in the absence of
+conditional dependencies.
+
+Proof: We reduce the problem of counting satisfying as-
+signments in 3-SAT to the problem of computing probabilistic
+inference. The former problem is known to be {P-complete
+[21]. We use a construction first described in [6] and used
+there to prove that the complexity of probabilistic inference
+for general belief networks is {P-hard.
+
+Let F be an instance of 3-SAT with variables V =
+{Ui,.--,Un} and clauses C = {c1,...,¢m}. The formula F
+defines the belief network that has binary-valued nodes V UC
+
+and arcs directed from v; to c, if and only if variable v; appears
+in clause c;. Each node wu; is given a prior probability of one
+half of being instantiated to 0 or 1. For any clause c;, let
+Jj1, 92,93 index the three variables in V contained in c,;. The
+conditional probabilities associated with node c;, which have
+parent nodes {v;1, v2, v;3} in the belief network, are defined
+by
+
+if Uj1s Uj2, Vj3 satisfies CH
+otherwise;
+
+1
+
+Price; = Llv;1, vj2, 73] = { Ite?
+
+1+e*
+
+for some 0 < € < 1. By this definition, the conditional
+
+probability Prle; = lei, u;2,v;3] bas value a if the
+
+instantiation of the variables vj1,v;2,0;3 in the formula F
+
+satisfies the clause c; and has value ;{- otherwise. In addition,
+
+note that the dependence value of the belief network is given
+by D= an:
+
+Let the vector 1 denote the instantiation c; = 1,...,¢m = 1
+in the belief network, and let 1; index the ith instantiation
+¢; = 1. For any 0 <i < 2”, let the length n binary vector v'
+denote the instantiation of the nodes v;,...,v, to the binary
+representation of i, and let vi index the instantiation of v;.
+
+We complete the proof by showing that if we compute the
+inference Pr{1], we may then count the number of satisfying
+assignments to F’. By construction
+
+2"-1
+Prfl] = S> Pr[l|o'] Prfo']
+i=0
+27-1
+
+1 i
+= on » Priijy'}.
+
+From the properties of belief networks, we show that
+Pro’) = T] Pritjlv', vip, vial
+j=l
+
+where, as before, j1, 72,73 index the three variables in V
+contained in c;. Together with the definition of the conditional
+probabilities, we obtain
+
+s
+
+J) = —f
+Pr(l|e’] = (@+er
+where s denotes the number of clauses in F that are not
+satisfied by the instantiation v’. For 0 < s < n, let N, denote
+the number of instantiations for which F has exactly s clauses
+that are not satisfied. Putting the preceding results together,
+we now express Pr/l] by
+
+1 1 sen
+a (r+ on
+
+Pri] = (19)
+
+It follows that by computing Pr[1] for n+ 1 different values of
+€ such that the n + 1 equations given by (19) are independent,
+and inverting the n + 1 equations, we salve for No,..., Nn.
+However, No is the number of satisfying assignments to F’.
+Hence, we complete the proof once we show that n+ 1 values
+for « can be chosen such that Dp < D < Do + a, given
+the independence of the equations. Restricting the values of
+
+aa
+€ to lie within the interval [(Do + a)~ 2", Dp ?"] satisfies the
+
+DAGUM AND CHAVEZ: APPROXIMATING PROBABILISTIC INFERENCE IN BAYESIAN BELIEF NETWORKS 255
+
+former condition. Independence of the equations is guaranteed
+if the determinant of the matrix of coefficients is different from
+0. However, we verify that the determinant is a multivariate
+polynomial in the n + 1 different € of degree minty) Thus,
+it has a finite number of roots. Since any interval in the field
+of rational numbers contains an infinite number of rational
+numbers, we always find n+ 1 values for € in the interval
+
+ae
+((Do + @)7 3, Dp "| for which the determinant does not
+vanish. O
+
+V. CONCLUSION
+
+The run time of D-BNRAS increases as the fourth power
+of the dependence value D;, and for belief networks with
+large dependence value, the run time is intractable. To address
+this problem, Dagum and Horvitz condition on nodes with
+large \ [7]. Thus, they reformulate an inference approximation
+in a belief network with a large dependence value into a set
+of inference approximations with reduced dependence value.
+They express the original inference as a weighted sum of
+subproblem inferences. They approximate these weights with
+logic sampling.
+
+‘D-BNRAS is ideally suited for applications where the size
+of the evidence set is very large—that is, applications where
+stochastic simulation algorithms sensitive to the size of the
+evidence set, such as logic sampling and likelihood weighting,
+perform poorly. Increases in the observed evidence £ decreases
+D¢ and, consequently, improves the performance of D-BNRAS.
+The performance, however, is tractable only if the dependence
+value is polynomial. Thus, from Section II-A, D-BNRAS is
+tractable on the class of belief networks with at least n —
+O(logn) nodes X; having A; = 1+ O( 88), For this
+class, when n approaches infinite, the 4; approach 1, and
+the conditional probabilities Pr[x;|ux,,€] and Pr[¥;|twx, , €]
+approach p and 1-p for some 0 < p < 1.
+
+ACKNOWLEDGMENT
+
+We benefited from many valuable discussions with R.
+Shachter. L. Dupré edited the manuscript.
+
+REFERENCES
+
+[1] C. Berzuini, R. Bellazzi, and S. Quaglini, “Temporal reasoning with
+probabilities,” in Proc. 1989 Workshop Uncertainty Artificial Intell.
+(Windsor, Canada), 1989, pp. 14-21.
+
+[2] A. Broder, “How hard is it to marry at random? (On the approximation
+of the permanent),” in Proc. Eighteenth ACM Symp. Theory Comput.,
+1986, pp. 50-58.
+
+(3] R. Chavez, “Architectures and approximation algorithms for probabilis-
+tic expert systems,” Ph.D. thesis, Medical Comput. Sci. Group, Stanford
+Univ., Stanford, CA, 1990.
+
+[4] R. Chavez and G. Cooper, “A randomized approximation algorithm for
+probabilistic inference on Bayesian belief networks,” Networks, val. 20,
+pp. 661-685, 1990.
+
+, “A randomized approximation analysis of logic sampling,” in
+
+Proc. Sixth Conf. Uncertainty Artificial Intell. (Cambridge, MA), 1990,
+
+pp: 130-135.
+
+G. Cooper, “The computational complexity of probabilistic inference
+
+using Bayesian belief networks,” Artificial Intell., vol. 42, pp. 393-405,
+
+1990.
+
+[7] P. Dagum and E. Horvitz, “Reformulating inference problems through
+selective conditioning,” in Proc. Eighth Conf. Uncertainty Artificial
+Intell. (Stanford, CA), 1992, pp. 49-54.
+
+[5]
+
+[6
+
+=
+
+, “An analysis of Monte-Carlo algorithms for probabilistic infer-
+ence,” Tech. Rep. KSL-91-67, Knowledge Syst. Lab., Stanford Univ.,
+Stanford, CA, 1991.
+
+(9] P. Dagum and M. Luby, “Approximating probabilistic inference in
+Bayesian belief networks is NP-hard,” Tech. Rep. KSL-91-51, Knowl-
+edge Syst. Lab., Stanford Univ., Stanford, CA, 1991.
+
+[10] R. Fung and K. -C. Chang, “Weighing and integrating evidence for
+
+stochastic simulation in Bayesian networks,” in Uncertainty in Artificial
+
+Intelligence 5. Amsterdam: Elsevier, 1990, pp. 209-219.
+
+M. Henrion, “Propagating uncertainty in Bayesian networks by prob-
+
+abilistic logic sampling,” in Uncertainty in Artificial Intelligence 2.
+
+Amsterdam: North-Holland, 1988, pp. 149-163.
+
+(12] M. Jerrum and A. Sinclair; “Approximating the permanent,” SIAM J.
+
+Comput., vol. 18, no. 6, pp. 1149-1178, 1989. ‘
+
+M. Jerrum, L. Valiant, and V. Vazirani, “Random generation of com-
+
+binatorial structures from a uniform distribution,” Theoretical Comput.
+
+Sci., vol, 43, pp. 169-188, 1986.
+
+R. Karp, M. Luby, and N. Madras, “Monte-carlo approximation algo-
+
+rithms for enumeration problems,” J. Algorithms, vol. 10, pp. 429-448,
+
+1989.
+
+(15] J. Pearl, “Addendum: Evidential reasoning using stochastic simulation
+of causal models,” Artificial Intell., vol. 33, pp. 131, 1987.
+
+, “Evidential reasoning using stochastic simulation of causal
+
+models,” Artificial Intell., vol. 32, pp. 245-257, 1987.
+
+, Probabilistic Reasoning in Intelligent Systems: Networks of
+
+Plausible Inference. San Mateo, CA: Morgan Kaufmann, 1988.
+
+R. Shachter and M. Peot, “Evidential reasoning using likelihood weight-
+
+ing,” to be published in Artificial Intell.
+
+, “Simulation approaches to general probabilistic inference on be-
+lief networks,” in Uncertainty in Artificial Intelligence 5. Amsterdam:
+Elsevier, 1990, pp. 221-231.
+
+(20] A. Sinclair and M. Jerrum, “Approximate counting, uniform generation,
+and rapidly mixing Markov chains,” Inform. Comput., vol. 82, pp.
+93-133, 1989. ,
+
+(21] L. Valiant, “The complexity of computing the permanent,”
+Comput. Sci., vol. 8, pp. 189-201, 1979.
+
+[8]
+
+[11
+
+[13]
+
+[14]
+
+[16]
+
+{17]
+[18]
+
+[19]
+
+Theoretical
+
+Paul Dagum received the B.Sc. degree with Hon-
+ors and the Gold Medal in chemical physics in
+1984 from Queen’s University, Canada. Funded by
+the Natural Sciences and Engineering Council of
+Canada, he received the M.Sc. degree in nuclear
+physics in 1986 and the Ph.D. degree in com-
+puter science in 1989, both from the University
+of Toronto. His doctoral dissertation was in graph
+theory and computational complexity.
+
+In 1989, he spent one year as a visiting scholar at
+the International Computer Science Institute at the
+Unversity of California, Berkeley. Since 1990, he has been a postdoctoral
+fellow in the Section on Medical Informatics at Stanford University. His
+current research interests include Monte Carlo inference algorithms for
+Bayesian belief networks and belief network models for time-series analysis.
+He also studies medicine at Stanford University Medical School.
+
+R. Martin Chavez received the A.B. degree (magna
+cum laude) in biochemical sciences from Harvard
+College in 1985, the S.M. degree in computer sci-
+ence from Harvard University in 1985, and the
+Ph.D. degree in medical informatics from Stanford
+University in 1991. He lives in San Francisco's
+SoMa district and is the founder and chief tech-
+nical officer of Quorum Software Systems, which is
+a venture-financed start-up company that provides
+software solutions for MacIntosh developers who
+wish to make their products available on multiple
+platforms. Quorum has won its landmark legal battle with Apple Computer
+and is successfully licensing its Quorum Compatibility Engine Technology on
+SPARC and Silicon Graphics platforms.

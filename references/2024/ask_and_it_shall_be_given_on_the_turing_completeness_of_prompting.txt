@@ -1,0 +1,1622 @@
+2411.01992v3 [cs.LG] 20 Feb 2025
+
+e
+e
+
+arXiv
+
+Published as a conference paper at ICLR 2025
+
+ASK, AND IT SHALL BE GIVEN: ON THE TURING COM-
+PLETENESS OF PROMPTING
+
+Ruizhong Qiu, Zhe Xu, Wenxuan Bao, & Hanghang Tong
+University of Illinois Urbana—Champaign
+{rq5, zhexu3,wbao4, htong}@illinois.edu
+
+ABSTRACT
+
+Since the success of GPT, large language models (LLMs) have been revolutioniz-
+ing machine learning and have initiated the so-called LLM prompting paradigm.
+In the era of LLMs, people train a single general-purpose LLM and provide the
+LLM with different prompts to perform different tasks. However, such empirical
+success largely lacks theoretical understanding. Here, we present the first theoret-
+ical study on the LLM prompting paradigm to the best of our knowledge. In this
+work, we show that prompting is in fact Turing-complete: there exists a finite-size
+Transformer such that for any computable function, there exists a corresponding
+prompt following which the Transformer computes the function. Furthermore, we
+show that even though we use only a single finite-size Transformer, it can still
+achieve nearly the same complexity bounds as that of the class of all unbounded-
+size Transformers. Overall, our result reveals that prompting can enable a single
+finite-size Transformer to be efficiently universal, which establishes a theoretical
+underpinning for prompt engineering in practice.
+
+1 INTRODUCTION
+
+The mainstream architecture of large language models (LLMs; e.g., OpenAlI, 2024; |Anthropic,
+2024; Meta, 2024; Google, 2024) is Transformers (Vaswanietal., 2017). There has been
+a series of theoretical studies on Transformers under realistic abstractions (Pérez etal!, 2019;
+Bhattamishra et al., 2020; Hahn, 2020; Pérez et.al’, 2021; Hao etal., 2022; Liuetal., 2023a;
+Chiang et al, 2023; Merrill & Sabharwal, 2023; Roberts, 2023; Merrill & Sabharwal, 2024a:b;
+Hou et al, 2024; Lietal., 2024). For example, Pérez et.al) (2021) have shown that the class of
+all Transformers with hardmax attention is Turing-complete: for any computable function y €
+TIME, (t(7)), there exists a Transformer that computes y using O(t(n)) chain-of-thought (CoT;
+Wei et al., 2022b) steps and O(log(n + t(n))) precision on length-n inputs; Merrill & Sabharwal
+(2024a) have later improved the CoT complexity to O(¢(n)) for TIME(¢(m)) functions. These works
+have finely characterized the capacities and limits of Transformers under the classic one-model-one-
+task paradigm.
+
+Nevertheless, existing theoretical studies fail to align with the LLM prompting practice (i.e., one-
+model-many-tasks). In the era of LLMs, people train a single general-purpose LLM and provide
+the LLM with different prompts to perform different tasks. Since the success of GPT (Brown et all,
+2020), the LLM prompting paradigm has revolutionized machine learning (Liu et al., 2023b). For
+example, a bonus capability arising from prompting is zero-shot learning (Wei et al., (20224): when
+provided with suitable prompts, LLMs can even perform novel tasks not present in their training cor-
+pora. Such empirical success calls for a theoretical understanding of the LLM prompting paradigm:
+
+Fundamentally, how powerful is the LLM prompting paradigm?
+
+We answer this call and present the first theory on the LLM prompting paradigm to the best of our
+knowledge. In this work, we show that prompting is in fact Turing-complete: there exists a finite-size
+Transformer such that for any computable function, there exists a corresponding prompt following
+which the Transformer computes the function. Furthermore, we show that prompting is not only
+universal but also efficiently universal: even though we use one finite-size Transformer, it can still
+achieve nearly the same complexity bounds as that of the class of all unbounded-size Transformers.
+
+Published as a conference paper at ICLR 2025
+
+Main contributions. Our main contributions are informally stated as follows:
+
+¢ Expressive power. We show that prompting is Turing-complete: there exists a finite-size
+Transformer J’ such that for any computable function y, there exists a finite prompt 7,
+such that for any input «, the Transformer I’ computes (a) following the prompt zy.
+Importantly, our constructed Transformer I’ is independent of the function y, the prompt
+7 is independent of the input x, and the input x can be arbitrarily long.
+
+Simple construction. In fact, it is not hard to deduce the existence of such a Transformer
+I’ by combining Theorem | of Hennie & Stearns (1966) and Theorem 3.4 of Pérez et al.
+(2019), but explicitly constructing the Transformer via that approach is cumbersome. In-
+stead, we provide a simple constructive proof, which makes it easy to further study the
+properties of the construction such as CoT complexity and precision complexity.
+
+CoT complexity. We show that our I’ can compute any TIME (¢(n)) function within
+O(t(n)) CoT steps and can compute any TIME(t(n)) function within O(t(n) log t(n))
+CoT steps for any length-n input. Notably, our result shows that even a single Transformer
+can still achieve nearly the same CoT complexity as the class of all Transformers does.
+
+Precision complexity. We show that our I can compute any TIME(t(n)) function within
+O(log(n + t(n))) bits of precision for any length-n input. Notably, our result shows that
+even a single Transformer can still achieve the same precision complexity as the class of
+all Transformers does. In particular, I’ can decide any P language within log-precision.
+
+1.1 RELATED WORK
+
+In modern machine learning (Weietal., 2024; (Chen etal., 2024; Liu etal!, 2024a;bic; 2023c;
+Qiu et al., 2024b;a; 2023; 2022; Xuetal., 2024; Qiu & Tong, 2024; Zeng et al., 2024; Lin et all,
+2024; Yoo et al!, 2025; 2024; Chan etal., 2024; Wuetal., 2024; He etal., 2024; Wang et all,
+2023), Transformers have nowadays become a mainstream architecture. Existing theoretical
+studies on Transformers fall under the classic one-model-one-task paradigm: they need to con-
+struct different Transformers for different tasks. There are two lines of related work: (i) when
+at most O(1) CoT steps are allowed, it has been shown that Transformers are capable but
+far from Turing-complete (Hahn, 2020; Hao et al., 2022; Liu et al., 2023a; Chiang et al, 2023;
+Merrill & Sabharwal, 2023; 2024b); (ii) when more CoT steps are allowed, it has been shown
+that the expressive power of Transformers increases with the number of CoT steps (Pérez et all,
+2019; \Bhattamishra et al., 2020; Pérez et.al., 2021; Roberts, 2023; Merrill & Sabharwal, |2024a;
+Hou et al, 2024; Liet al, 2024). Besides that, there have recently been studies on the learnabil-
+ity (Malach, |2023; |Grau-Moya et al, 2024) and the in-context learning capability (Akyiirek et al.,
+2022; von Oswald et al., 2023; Zhang et al., 2024; Ahn et al!, 2024; Vladymyrov et al., 2024). Nev-
+ertheless, no existing work studies the LLM prompting paradigm (i.e., the one-model-many-tasks
+paradigm). Our work is the first to bridge this gap to the best of our knowledge.
+
+1.2. TECHNICAL OVERVIEW
+
+A core step of our constructive proof is to construct a new model of computation (called 2-PTMs)
+that can be easily encoded into a prompt using a finite alphabet. Furthermore, we show that 2-PTMs
+are not only Turing-complete but also nearly as efficient as Turing machines.
+
+Theorem (informal version of Theorem .1). Any TIME(t(n)) function can be computed by a 2-
+PTM within O(t(n) log t(n)) steps. O
+
+Given any computable function y, we encode its 2-PTM into a prompt 7. Then, it remains to
+construct a Transformer J" that can execute 2-PTMs. Since it is known that Transformers without
+CoTs are not universal (Hahn, 2020), the Transformer J” needs to use CoT steps to execute 2-PTMs.
+Specifically, we use CoT steps to record the execution steps of the 2-PTM so that the Transformer
+can restore the state of the 2-PTM at any step. This establishes the CoT complexity of I’.
+
+Corollary (informal version of Corollary £5). Our constructed [ can compute any TIME(t(n))
+function within O(t(n) log t(n)) CoT steps. Oo
+
+To incorporate input x into computation, we use O(|a|) CoT steps to emulate an imaginary process
+of writing the input x onto a tape of the 2-PTM. This implies the precision complexity of I’.
+
+Published as a conference paper at ICLR 2025
+
+Corollary (informal version of Corollary £7). Our constructed [ can compute any TIME(t(n))
+function within O(log(n + t(n))) bits of precision. oO
+
+Finally, we construct a decoder-only Transformer that achieves the desiderata above by leveraging
+ReLU activation, layer normalization, and causal attention.
+
+2 PRELIMINARIES
+
+Let € denote the empty string. Given an alphabet »’, let ©’ (n > 0) denote the set of length-n
+strings over 3’, let Y* := Us) X°” denote the set of all finite strings over Y, let Yt := Us, L”
+denote the set of all non-empty finite strings over ’, and let 1’” denote the set of all countably
+infinite strings over 5’. Each symbol in »’ is called a token. For a string x € &™, let |a| denote the
+length of the string, and let x” denote repeating the string n times. For two strings x, y € &”™, let
+x -y denote their concatenation. Given a string @ = % -%1-++ Zg)-1 © »/*, for an index 7 € Z, let
+x; denote the (¢ mod |a])-th token of a; for indices 1,7 € Z with i mod |a| < j mod |a|, let x;.;
+denote the substring 7; moa |x| ° U(i mod |x|)+1°** (j mod |a|)—1-
+
+2.1 THEORY OF COMPUTATION
+
+Turing machines. Turing machines (TMs; Turing, 1937a) are an abstract model of computation that
+defines the notion of computability (Church, 1936; Kleene, 1936; Turing, 1937b). An m-tape TM
+is defined by a septuple (Q, dstart; Ghalt, »', 4,7, 0) where Q is the finite set of states, gstan € Q is the
+initial state, dnar is the halting state, X’ is the finite alphabet of the tapes, . € 5’ is the blank symbol,
+m € Nis the number of tapes, and 6 : (Q \ {qnan}) x 2°” = Q x (© x {L,S,R})” is the transition
+function (L: left; S: stay; R: right). See, e.g., Arora & Barak (2009) for details. By the Church—
+Turing thesis (Church, 1936; Kleene, 1936; Turing, 1937b), a function y : domy —> {0,1}* is said
+to be computable if there exists a TM that computes y(a) for all inputs a € dom y.
+
+Shannon (1956) has shown that any TM M over any alphabet can be simulated by a TM M’ over
+the binary alphabet ©’ = {0, 1} with . = 0 (although M’ uses more states). Hence, we will assume
+that TMs have a binary alphabet for simplicity throughout this paper.
+
+Time complexity. Let n denote the length of the input. A function t(n) : N + R, is said to be
+a complexity function iff t(n) is non-decreasing and either t(n) is a constant > 1 or t(n) > oo as
+nm — oo. In this work, we refer to the time complexity as the the time complexity on a random-access
+machine (RAM) unless otherwise stated (e.g., when working with TMs). If O(t(m)) is a complexity
+function, let TIME,,,(t(n)) denote the class of functions that can be computed by an m-tape TM
+within O(t(n)) steps, let TIME(t(n)) := Um>1TIME,,(¢(n)) denote the class of functions that
+can be computed by a TM within O(t¢(n)) steps, and let P C TIME(poly(n)) denote the class of
+(indicator functions of) languages that can be decided in polynomial time.
+
+2.2 NEURAL NETWORKS
+
+ReLU neural networks. A ReLU neural network 7 : R°° + R™ is a composition ~ := wr_1 0
+--+0 Wo of basic operations u, : R®& + R@+1 (1 =0,..., £2 — 1) where each basic operation v;(z)
+(z € R) is either an affine map yi (z) := W)z + b) (W, © R@+!**, by € R@+*), an entry-wise
+ReLU activation wj(z) := max{z,0} (Fukushima, 1969) with e741 = e7, or a layer normalization
+Wi(z) = 72-1124) (Baetal., 2016) with e741 = e7.
+
+Izl2
+
+Decoder-only Transformers. Mainstream LLMs are based on decoder-only Transformers
+(Radford et al!, 2018). Given a finite token alphabet 3’, a decoder-only Transformer : U+ > Y
+(with greedy decoding) is a composition I’ := arg max ol oy o [',-1 0-++ 0 [9 0 Temp consists of
+an embedding layer Ismp : + — (IR*)*, causal-attention Transformer layer I, : (R?)+ — (R¢)*+
+(1 = 0,...,L — 1), and an output layer yy : R4 — R*. A token embedding is a map
+emb : © — RZ, and a positional encoding is a map pos : N + R¢. Following the common
+practice (Vaswani et al., 2017), given the input token sequence v = v9 +++ Vjyj—1 € +, the embed-
+ding layer Imp adds a positional encoding pos(i) to each token embedding emb(v;):
+
+Zo; -= emb(v;) + pos(i), i=0,...,|v|—1, (1)
+
+Published as a conference paper at ICLR 2025
+
+where pos is a computable function. Following existing theoretical works (e.g., Pérez et al., 2019;
+
+Hao et al., 2022; Merrill & Sabharwal, 2024a), we use hardmax attention as a realistic abstraction
+
+of softmax. Given an R sequence s, if the maximum value of s appears ¢ times, then one has
+1
+
+hardmax;(s) := + if s; equals the maximum value and hardmax;(s) := 0 otherwise. Each
+
+Transformer layer I; has H; attention heads followed by a ReLU neural network ¢; : R? > R?,
+Each attention head k has a query map qry,;, : R¢ + R**, a key map key, , : R¢ > R*, a value
+map valj., : IR? — R¢, and a similarity map sim, , : R- R(k =0,..., HM) — 1), all of which are
+ReLU neural networks. The similarity scores between two tokens v; and v; are
+
+SLk,i,j sim). (ary), 421)" key; (21,3). (2)
+A decoder-only Transformer layer [7 is computed via causal attention and residual connection:
+M-1, i
+Zi41 = Zit Oy} ( S° (> hardmax, (S1,,i,05 sees SLk,i,i) val,.(219))) . (3)
+k=0 \j=0
+
+The output token is greedily selected according to the final outputs of the last token v,)_1:
+
+I(v):= arg max Dout(Z1,|v|—1)e> (4)
+ce
+
+where the output layer Ju: is a ReLU neural network.
+
+Given a Transformer I’, let generate, : ©'* + ©3+UX'” denote autoregressive generation using I’.
+Specifically, let w € Xt denote the input sequence and y € X* the (current) output sequence. Ini-
+tially, y is an empty string. In each generation step, we append I’(w-y) to y. The generation process
+ends once the last token of y is a so-called stop token $ € 3’, and we define generatep(w) := y
+at last. It is possible that generation never ends, in which case we have y € 2“. The autore-
+gressive generation procedure is formally presented in Algorithm[] A Transformer is said to use
+log-precision for a computable function y if the intermediate computation of all generation steps
+uses O(log n) bits of precision for every length-n input of function y (Merrill & Sabharwal, 2023).
+
+3. TURING COMPLETENESS OF PROMPTING
+
+Theorem 3.1 (Turing completeness of prompting). There exist a finite alphabet 3’, a finite-size
+decoder-only Transformer I. : 3+ —+ 3S, and coding schemes tokenize : {0,1}* — * and
+readout : ©* — {0,1}* with which prompting is Turing-complete: for every computable function
+yp: domy — {0,1}* with domy C {0,1}*, there exists a prompt 7, € &'* such that for every
+input x € dom y, generate (7, « tokenize(a)) computes] a finite CoT, and
+
+readout(generate (7, - tokenize(a))) = y(a). (5)
+
+Here, 3’, I’, tokenize, readout are independent of .p; 7, is independent of x; for any input x €
+{0, 1}*, tokenize and readout run in O(|x|) and O(|\y(a)|) time on a RAM, respectively.
+
+Our Theorem B-]] shows that prompting can enable a single Transformer to be universal and estab-
+lishes a theoretical underpinning for prompt engineering in practice. Note that CoT is necessary for
+Turing completeness because it is known that Transformers without CoTs cannot even compute the
+parity function (Hahn, 2020). As a CoT typically contains more information than the answer v(x)
+alone, we need a map readout : ©* — {0,1}* here to extract the answer, resembling the fact that
+humans need to read out the answer from the generated CoT.
+
+Furthermore, to elucidate the technical non-triviality of our TheoremB_i] we remark that our Theo-
+remB, [has ruled out trivial possibilities:
+
+¢ Memorization? It is impossible that the Transformer I simply memorizes all computable
+functions, because there are infinitely many computable functions while I” has only a finite
+size (i.e., it has a finite number of finite-bit parameters).
+
+¢ Self-answering? It is impossible that the prompt 7, simply reveals the answers for all
+possible inputs, because there can be infinitely many inputs while the prompt is finite.
+
+‘Following prior work (e.g., Pérez et al!, 2019), we assume that every arithmetic computation in I’ is exact.
+
+Published as a conference paper at ICLR 2025
+
+* Tautology? It is impossible that I’ simply restates wm, - tokenize(a) and lets
+tokenize or readout compute y(a) instead, because the time hierarchy theorem
+(Hartmanis & Stearns, 1965) implies that a computable function y in general can require
+more than Q(max{|a|, |y(a)|}) time while tokenize and readout run in only O(|a|) time
+and O(|y(a)|) time, respectively.
+
+Our proof of Theorem B dis constructive. In the rest of this section, we will present the core con-
+structions in our proof, including the prompt, the CoT steps, the input tokenizer, and the Transformer.
+Due to space limit, the complete proof is deferred to Appendix |B]
+
+3.1 CONSTRUCTION OF PROMPTS
+
+In this subsection, we show how to construct a prompt 7, for any given computable function y.
+The basic idea here is that we let the prompt encode a formal description of the function ¢ and later
+construct a Transformer that can execute the description. The construction of the Transformer is
+deferred to SectionB4
+
+As computability means that there exists a TM that computes y, one might seek to encode the TM
+into the prompt. Unfortunately, a TM can have an unbounded number of states and an unbounded
+number of tapes, but we are only allowed to construct all prompts using a single finite alphabet 7 and
+to execute all prompts using a single finite-size Transformer. Even though one can use sophisticated
+schemes to encode TMs (Turing, 19374), it remains highly non-trivial to construct a Transformer to
+efficiently execute such encoded TMs.
+
+Hence, instead of working with TMs directly, here we want a model of computation that (i) can be
+easily encoded by a single finite alphabet, that (ii) is still Turing-complete, and that (iii) is nearly
+as efficient as TMs. Although a possible approach is to use an imperative model of computation
+such as Wang machines (Wang, |1957) and Davis—Sigal-Weyuker’s Post-Turing machines (DSW-
+PTMs; Davis et al.,|1994), it is still unknown how to efficiently simulate arbitrary TMs using Wang
+machines or Davis—Sigal—-Weyuker’s Post-Turing machines. This suggests that these models of
+computation might not be the best candidate for constructing the prompt.
+
+To fulfill our desiderata, we propose a new imperative model of computation that extends Wang ma-
+chines and DSW-PTMs. Inspired by the Hennie—Stearns theorem (Hennie & Stearns, 1966), we let
+our model of computation use two bi-infinite tapes A and B. Each tape has infinitely many cells over
+the binary alphabet {0, 1} and a head pointing to a cell. We call this model two-tape Post-Turing
+machines (2-PTMs). A 2-PTM is defined by a finite instruction sequence & = (0, ¢1,---5%\e|-1)
+where each instruction 1; (0 < j < |e|) is one of the following:
+
+° #: halt;
+TL (7 € {A,B}): move the head for tape 7 one cell left, and go to 1j+41;
+TR (7 € {A,B}): move the head for tape 7 one cell right, and go to 1541;
+70 (7 € {A, B}): write 0 to the pointed cell of tape 7, and go to 1j41;
+71 (7 © {A,B}): write 1 to the pointed cell of tape 7, and go to bj415
+T!a (7 € {A,B}; k # J): if the pointed cell of tape 7 is 0, go to vz; else, go to 4541;
+T?k (7 € {A,B}; k # J): if the pointed cell of tape 7 is 1, go to v4; else, go to 0541.
+
+Let Z denote the set of all possible instructions. Before execution, the input is written to tape A,
+and the head for tape A is pointing to the leftmost cell of the input. All blank tape cells are filled
+with 0. Then, execution starts from instruction v9 and halts upon instruction #, and the output is the
+content left on tape A starting from cell 0. We will show in Section EJ] that 2-PTMs are not only
+Turing-complete but also nearly as efficient as TMs.
+
+Next, we describe how to construct a prompt for a given computable function. Recall that 2-PTMs
+
+use the binary alphabet {0, 1} with blank symbol being 0. To distinguish the input symbol 0 and
+
+the blank symbol 0, we employ Shannon’s encoding S : {0,1}* — {0,1}* (Shannon, |1956) to
+translate inputs and outputs of computable functions:
+
+S(e):=e, S(0):=10, S(4):= 11; (6)
+
+S(x) = S(ao) +++ S(ajez\-1), «# € {0,1}*. (7)
+
+Thus, we identify 00 as the blank symbol. Note that Shannon’s encoding S is injective, and that both
+
+S and its corresponding decoding S—! are computable in linear time. Since the class of 2-PTMs is
+
+Published as a conference paper at ICLR 2025
+
+Turing-complete, then given any computable function y, there exists a 2-PTM e € Z* that computes
+S(y(a)) from S(a) for all 2 € dom y. It remains to encode ¢ into a prompt 7y.
+
+We will define a map P : N x Z — %”* to encode each instruction 2; and let the prompt be the
+concatenation of P(j,1,;), where the alphabet 5’ will be specified later. For instructions #, TL, TR,
+70, 71, we can simply create a corresponding token in »’ for each of them:
+
+P(j, ej) = by if 1; is one of #, TL, TR, TO, 71. (8)
+
+For instructions 7! and T?,%, since & can be any natural number, we can no longer create a token
+for each k because otherwise the alphabet +’ would be infinite. Instead, to help the Transformer to
+execute the prompt, we use a unary encoding w.r.t k — 7:
+
+o--j-k.@ ifv; =o, andk < j,
+
+Pj, tj) = 1,7? hy ;
+(3.45) {oie ift; =o, andk > j, oe {ri.7?} {AB} )
+
+where we create seven auxiliary tokens A!,B!,A?,B?,—-,+,@ € » to be used by the Transformer.
+Finally, we construct the prompt as
+
+Ty i= ~ +> P(O,t0) ++ P(le] — 1, ep)-1) - $, (10)
+where we create two auxiliary tokens *,$ € »’ to be used by the Transformer.
+Example. A 2-PTM for deciding the DYCK language (Schiitzenberger, 1963) if]
+A? 4A0ALAOALA ?; ARARA1ARBLB ?13A1#ARA ?19B1BRB ! 9; BLB ! 24BOARB ! pALARARA ?95 AOALAOALA ?9g ARARA1 #,
+
+and its corresponding prompt is
+
+CA2+++4+++4++4+++4+4+@AOALAOALA?————@ARARA1ARBLB?++@A1#ARA?++++@B1BRB! +++@BLB!++++@BOARB ! ---------~------------- @
+ALARARA?-~@AQALAOALA?——-~@ARARA1#5.
+
+3.2 RECORDING EXECUTION IN COT STEPS
+
+It is known that finite-size Transformers without CoT steps are not universal (Hahn, |2020). To
+achieve Turing completeness, here we leverage CoT steps to record execution steps of the 2-PTM u
+so that the Transformer can restore the state of 4 at any execution step. In this subsection, we focus
+on the case where the input is empty; we will describe how to incorporate the input in SectionB3)
+
+Let 1; denote the current instruction, and let ca, cg denote the pointed cell of tapes A and B, respec-
+tively. Note that each execution step can be summarized as a quadruple (j, 2;, ca, cp), Where v; is the
+current instruction, and cq and cg are the currently pointed cell of tapes A and B, respectively. We
+will define a map C : N x Z x {0,1} — »* that maps each execution step to one or more CoT
+steps. If 1; is one of #, TL, TR, TO, 71, we simply use a single CoT step to record 1;:
+
+C(j, by, Cay Ca) 2= by if .; is one of #, TL, TR, 70, 71. (11)
+Ife; is 7! , Or T?,%, we record whether the go-to condition is satisfied or not:
+
+/ ifv; =T!,andc, 4 0;
+=.I-k.@ ife; =T!e, Cr =O, andk <j;
+=.4k-J.@ ife; =T!e, Cr =0, andk > J;
+if; = 72, and c, # 1;
+=.I-k.@ ift; =T?e, Cr = 1, andk < j;
+=-+*-J.@ fe; =T?_, cr =1, andk > J;
+
+Ci, Lj5Ca, CB) = (12)
+
+™~
+
+where we create two auxiliary tokens /,= € »' to indicate whether the go-to condition is unsatisfied
+or satisfied, respectively. The execution step stops once it reaches the halting instruction #.
+
+Finally, we append the output y(a) after the execution steps in the CoT. We create a new auxiliary
+token : € »' to mark the beginning of the output and reuse the token $ € » to mark the end of the
+output, and we put the output y(a) € {0,1}* C &”* between : and $. Hence, we define readout
+as extracting the part of the CoT between : and $ (see Algorithm). By construction, the number
+of CoT steps is proportional to the number of execution steps plus the length of the output.
+
+From now on, we will omit delimiters for conciseness when there is no ambiguity.
+
+Published as a conference paper at ICLR 2025
+
+Example (cont’d). An empty input € is in the DYCK language. Its corresponding CoT steps are:
+/ AOALAOAL/ARARA1ARBL/A1:15S.
+To recap, we have created a finite alphabet of 23 tokens all together:
+
+X= {#, AL, BL, AR, BR, AO, BO,A1,B1,A!,B!,A?,B?,-,+,@,°,$,/,=,:,0,1}. (13)
+
+3.3. CONSTRUCTION OF INPUT TOKENIZER
+
+In this subsection, we describe our input tokenizer tokenize : {0,1}* + 2*, which is independent
+of the function y and can encode any input « € {0,1}* without changing the prompt 7. Although
+it is possible to introduce additional auxiliary tokens to represent inputs, here we provide a simpler
+construction that makes use of only the existing tokens in 2’.
+
+The key idea here is to use CoT steps to emulate an imaginary process of writing the input to tape
+A. We will define a map E : {0,1}* — 2’* that encodes an input x into CoT steps. Since 2-PTMs
+assume that the head for tape A is initially pointing to the leftmost cell of the input, we write the
+input from right to left onto tape A. Hence, for each bit x; of the input x, we write its Shannon
+encoding S(;) from right to left onto tape A:
+
+E(0):=ALALA1, = E(1) := ALA1ALA41. (14)
+For the entire input, we concatenate the CoT steps of each bit from right to left:
+E(a) := E(a\g\-1) ++: E(xo), x € {0,1}*. (15)
+Intuitively, F(a) represents execution steps of an imaginary program that writes S(a) onto tape A.
+
+To ensure that the tape-A head is at cell 0 after writing the input, we first move the tape-A head
+|S(a)| = 2|a| steps right. Hence, we define the CoT steps for writing S(a) as Z : {0,1}+ + Dt,
+
+Z(a) := aR?!. E(x), a« € {0,1}+. (16)
+
+Nevertheless, there is a caveat: a 2-PTM should start from to, but these extra CoT steps Z(a)
+will confuse the Transformer into starting from 1) z(2)|. To address this caveat, our input tokenizer
+tokenize additionally employs an imaginary go-to step to let the Transformer go back to 19. Follow-
+
+ing Equation ([2), we re-use =, —, @ to construct the imaginary go-to step:
+. € ifx =e,
+tokenize(az) := ita) =. -l2@)l.@ ife He. (17)
+
+Example. Since input 01 has Shannon encoding S(01) = 1011, it is tokenized as
+tokenize(01) = ARARARARALA1ALA1ALALA1=---——------- @.
+
+3.4 CONSTRUCTION OF TRANSFORMER
+
+In this subsection, we sketch how to construct a decoder-only Transformer I* that executes prompts
+through CoT steps as described in SectionB.2 Due to the space limit, we only present three core
+operations to be used by I” here and defer the detailed construction to Appendix Bl
+
+Boolean algebra via ReLU activation. Let ReLU(z) := max{z,0} denote the ReLU function.
+Boolean algebra is a basic building block of our Transformer for, e.g., checking the go-to condition.
+A core operation in Boolean algebra is the ( operation. Here, we implement A via ReLU activation:
+
+uAv = ReLU(u+v-—1), u,v € {0, 1}. (18)
+
+Together with negation ~v = 1 — v, they can implement all other Boolean operations such as
+uVv=-((au) A (Av)) and u @ v = (uA (Av)) + (su) Av).
+Equality check via layer normalization. Let LN(z) := Tepe 2401 denote layer normalization
+
+(LN). When checking whether a tape cell has been written or not, we will need an equality check
+between two real numbers: Equal : R? — {0,1} where Equal(u, v) := lfu=v] (u,v € R). Since
+
+Published as a conference paper at ICLR 2025
+
+Equal is not a continuous map, it cannot be implemented using only affine maps or ReLU activation.
+Instead, we implement Equal via layer normalization as follows:
+
+Equal(u, v) :-= ReLU(LN(u — v)) + ReLU(LN(v — u)), u,v ER. (19)
+
+Farthest retrieval via causal attention. A core operation to be used by the Transformer I’ can be
+abstracted as follows: Given a sequence of values v = (vo, ..-, Ujy|—1) with vu; € {—1,0, +1} for all
+a, find the smallest i such that Yj=0 Uj = > vd v;. However, since causal attention is an average
+
+rather than a sum, it cannot even compute the sum yo j<0 Uj for any 7. It can compute the average
+
+1 , . a a il Jv|-1
+TI Do j-0 Us for every i, but )7,9 vj = rye0 0 a does not mean => j=0 UF = Py Lj=0 Y%-
+
+To bypass the mismatched coefficients => + Tao and Ter? we use LN to remove the averaging coefficient
+
+: First, we let every token attend to the initial token * at 7 = 0 to compute => and compute
+
+a T
+9% 1 v; 1
+uj = (a) = (— 2jx0% , ——) . (20)
+a u a
+Vu j=0 vj)? + 1 (Yj-0 vs)? +1
+If 9 vj = a “lt u;, we have uf Uly|—1 = 1s if Yi vj Aye? vj, we have uj tyy)-1 <
+
+1. Thus, we can ‘add Uly|—1 to the query map qry and add wu; to the key map key in attention to
+
+retrieve an i with }"_9 vj = an U;.
+
+It remains to retrieve the smallest such 2 via causal attention. Since Yio uj, <it+1 < jo, then
+note that if w; wjy)-1 < 1, we in fact have
+
+vu lv 1 Jo] +1 Ly
+iMlyi-1S Crores Tea) ( PT VT) ”
+
+lvl(Jv] +1) +1 =1-2/ l ) (22)
+
+~ Joe +l/(e+ 2+ Jvl4
+
+This motivates us to use the following quantity, which can be computed in positional encoding pos:
+
+pii=1-— FUG +2)+1 = (— ) (23)
+G41)? +1/G4+2)2 +1 (i+1)4
+Note that if w} w),)-1 = 1 and wu) w,)-1 < 1, we also have
+UW) Ujy|—1 + —— Plo|=1 <ul 7 Uy|-1 + Pily|-1 < 1= ul Uv|-1 < ul Uly|—1 + —-— Ploj=1 (24)
+! j+1 7 i+]
+
+Therefore, we can retrieve the smallest 7 with U} Uy|—1 = | by using query vector (Ujo|— 1s Plv|— 1)!
+and key vector (w;, a) in causal attention.
+
+4 COMPLEXITY BOUNDS
+
+We (i) show in Section J] that 2-PTMs are Turing-complete and nearly as efficient as TMs and (ii)
+use this result to characterize the complexities of our constructed I’ in Sections~ & £3) Through-
+out this section, let ¢(n) denote a complexity function. Following the convention in complexity
+theory, we allow different computable functions to have different constant factors in big O.
+
+4.1 EFFICIENT SIMULATION OF TMS By 2-PTMS
+
+Since 2-PTMs are an essential component of our construction, we need the complexity bounds of
+2-PTMs to analyze the complexities of [°. While Wang machines and DSW-PTMs suffer from a
+polynomial slowdown over TMs (Neary et.al., 2014), we show that our 2-PTMs in fact has only at
+most a logarithmic slowdown over TMs.
+
+Theorem 4.1 (efficient simulation). TIME(t(n)) C TIME prm(t(n) log t(n)).
+
+Published as a conference paper at ICLR 2025
+
+Theorem J] shows that our 2-PTMs are Turing-complete and nearly as efficient as TMs. To prove
+it, we need the following Lemmal.Jto establish a relation between two-tape TMs and 2-PTMs.
+Lemma 4.2 (two-tape simulation). TIME2(¢(n)) C TIME2 pr (t(n)).
+
+Proof of Lemma For any computable function y € TIMEd2(t(n)), there is a two-tape TM M =
+(Q, start; Galt, {0, 1}, 4 = 0,m = 2,6) that maps S(ax) to S(y(a)) within time O(t(n)), according
+to Shannon (1956). Suppose w.lLo.g. that Q = {0,1,...,K} (& © N,) and that gotan = 0, gran =
+K. We will construct a 2-PTM « of length |e| = 27K + 1 that simulates M within time O(t(n)).
+
+Recall that 6 : (Q \ {qnan}) x {0,1}2 > Q x ({0, 1} x {L,S, R})?. We use exactly six instructions
+11(q’ ,ca,da,cs,dy) tO Simulate each transition (q’, cy, da, cg, dg), where q’ € Q, cy, cy € {0,1}, da, de €
+{L,S,R}. If dy,dg 4 S, we let
+
+Tq! ch daychdg) 7= (ACa, Ada, Beg, Bdg, A! 27q’, A?27q’). (25)
+If dy = S or dg = S, we can replace the corresponding Ad, or Bdg with Ac, or Bcg, respectively, so
+1 (q' ,ch dy,ch,dg) Still has exactly six instructions.
+
+Then for each g € Q \ {dna}, we use 27 instructions to simulate its transition rules:
+
+borg:27q-427 2= (A? 279q414; B? 27g+8, 15(q,0,0)115(q,0,1)) B? 27g+213 75(q,1,0)» M5(q,1,1)) (26)
+For the halting state gna = A’, we use one instruction to7K := # to simulate it.
+Since e simulates each transition of M by O(1) steps, then e also has time complexity O(t(n)).
+
+Due to space limit, the proof of correctness of « is deferred to Appendix [Al O
+We are now ready to prove Theorem. i]
+
+Proof sketch of Theorem] Let y € TIME(t(n)). Then, there exists a TM M that computes y
+within T(n) = O(t(n)) steps for every length-n input.
+
+Case 1: There exists n9 € N such that T(no) < no. Thus, the behavior of the TM M depends only
+on the first T(7m9) < no bits of the input. Hence, further increasing the length of the input does not
+change the behavior of M. Therefore, a tighter time complexity T(n) of M is
+
+T(n) <T(no)=O(1), WneN. (27)
+This implies that y € TIMEs(1) C TIME .prm(1) © TIME: pro (t(n) log t(n)).
+Case 2: T(n) > n for all n € N. Then by the Hennie—Stearns theorem (Hennie & Stearns, |1966),
+yp € TIME2(T(n) log T(n)). Therefore, by Lemmak.,
+y € TIMEs(t(n) log t(n)) C TIMEs-pru(t(7) log t(n)). (28)
+It follows from the above two cases that TIME(t(n)) C TIMEs pra (t(7) log t()). oO
+
+Theorem[Z [shows that 2-PTMs have only at most a logarithmic slowdown over TMs. In subsequent
+Sections LJ] & we will use Theorem] to characterize the CoT complexity and the precision
+complexity of our constructed I’.
+
+4.2 COT COMPLEXITY
+
+In this subsection, we analyze the CoT complexity of our construction. We will show that our con-
+structed I can compute any TIME2(t(n)) function within O(t(n)) CoT steps and any TIME(t(n))
+function within O(¢(n) log t(n)) CoT steps for any length-n input.
+
+Definition 4.3 (CoT complexity class). Let CoT p(t(n)) be the class of functions that our con-
+structed Transformer I’ can compute within O(t(n)) CoT steps.
+
+Lemma 4.4 (CoT complexity for 2-PTMs). TIME -pru(t(7)) C CoT r(t(n)).
+Proof sketch. For any y € TIME>-prm(t(n)), since prompt 7, has length |7,,| = O(1), then by
+
+Section BZ) each #, T<, T>, TO, T1 takes 1 = O(1) CoT step, and each 7!%, 7?, takes at most
+O(|7,|) = O(1) CoT steps. This implies that TIMEs.prm (t(n)) C CoT r(t(n)). oO
+
+Published as a conference paper at ICLR 2025
+
+Corollary 4.5 (CoT complexity for TMs). For two-tape TMs, TIMEs(t(n)) C CoT r(t(n)). For
+general TMs, TIME(t(n)) C CoT r(t(n) log t(n)).
+
+Proof. For two-tape TMs, by LemmasH21& £4
+TIME2(t(n)) C TIME: pru(t(n)) C CoT r(t(m)). O
+For general TMs, by Theorem. & LemmaH.4
+TIME(t(n)) C TIME prm(t(n) log t(n)) C CoT r(t(n) log t(n)).
+
+Corollary shows prompting a single Transformer can compute any TIME2(¢(n)) function within
+O(t(n)) CoT steps and any TIME(¢(n)) function within O(¢(n) log t(n)) CoT steps. Notably, this
+is nearly the same as the CoT complexity of the class of all Transformers, which can compute any
+TIME(t(n)) function within O(t(n)) CoT steps. The logarithmic slowdown here is because the
+class of all Transformers can simulate an unbounded number of tapes while our single Transformer
+simulates only a finite number of tapes. Assuming TIME 2(t(n)) 4 TIME(é(n)), it is unlikely that
+the CoT complexity O(t(n) log t(n)) of I’ for TIME(t()) could be further improved to O(t(n)).
+
+4.3 PRECISION COMPLEXITY
+
+In this subsection, we analyze the precision complexity of our construction. We will show that our
+constructed I’ can compute any TIME(t(7)) function within O(log(n + t(n))) bits of precision for
+any length-n input; in particular, it can decide any P language within log-precision. Following the
+common practice in numerical analysis, we assume that each floating-point number has significant
+bits and guard bits (Goodman & Feldstein, 1977), where both significant bits and guard bits are used
+in arithmetic operations while guard bits are rounded off in number comparisons.
+
+Definition 4.6 (Precision complexity class). For a complexity function p(n), let PREC r(p(n)) be
+the class of functions that our constructed I’ can compute using O(p(n)) significant and guard bits.
+
+Corollary 4.7 (Precision complexity). TIME(¢(n)) C PRECr(log(n+t(n))); P C PRECr (log n).
+
+Proof sketch. For any function gy € CoTp(t(n) logt(n)), since the prompt 7, has length O(1),
+then by Section B.3] the total length J of the tokenized input, the prompt, and the CoT steps is
+
+I = O(n) + O(1) + O(¢(n) log t(n)) = O(n + t(n) log t(n)). (29)
+
+Thus, according to SectionB.4] all the intermediate results during computation are at most O(1), and
+attention similarities have mutual differences at least 0(75) = 2 (mam oetny This implies
+
+CoT p(t(n) log t(n)) C PREC r (log((n + t(n) log t(n))°)) = PRECr(log(n + t(n))). (30)
+It follows from Corollary &3Jand Equation (BO) that
+
+TIME(t(n)) C CoT p(t(n) log t(n)) C PREC (log(n + t(n))). (31)
+In particular, we have
+P Cc TIME(poly(n)) C PREC p(log(n + poly(n))) = PRECr(log n). oO
+
+Notably, Corollary K/ shows that prompting a single Transformer can achieve the same precision
+complexity as that of the class of all Transformers: it is known that the class of all Transformers can
+compute any TIME(t(n)) function within O(log(n + t(m))) precision (Pérez et al, 2021) while we
+further show a single Transformer with prompting can as well. This suggests our precision complex-
+ity is presumably tight unless there are further advances in the complexity theory of Transformers.
+
+5 CONCLUSION
+
+In this work, we have shown that prompting is in fact Turing-complete: there exists a finite-size
+Transformer such that for any computable function, there exists a corresponding prompt following
+which the Transformer computes the function. Furthermore, we have shown that even though we
+use only a single finite-size Transformer, it can still achieve nearly the same complexity bounds as
+that of the class of all unbounded-size Transformers. Overall, our result reveals that prompting can
+enable a single finite-size Transformer to be efficiently universal, which establishes a theoretical
+underpinning for prompt engineering in practice.
+
+10
+
+Published as a conference paper at ICLR 2025
+
+ACKNOWLEDGMENTS
+
+This work is supported by NSF (2416070). The content of the information in this document does not
+necessarily reflect the position or the policy of the Government, and no official endorsement should
+be inferred. The U.S. Government is authorized to reproduce and distribute reprints for Government
+purposes notwithstanding any copyright notation here on.
+
+REFERENCES
+
+Kwangjun Ahn, Xiang Cheng, Hadi Daneshmand, and Suvrit Sra. Transformers learn to imple-
+ment preconditioned gradient descent for in-context learning. Advances in Neural Information
+Processing Systems, 36, 2024.
+
+Ekin Akyiirek, Dale Schuurmans, Jacob Andreas, Tengyu Ma, and Denny Zhou. What learning
+algorithm is in-context learning? investigations with linear models. In The Eleventh International
+Conference on Learning Representations, 2022.
+
+Anthropic. The Claude 3 model family: Opus, Sonnet, Haiku, 2024. URL
+https://www-cdn.anthropic.com/de8ba9b01c9ab7cbhabf5c33b80b7bbc618857627/Model_ Card_(
+
+Sanjeev Arora and Boaz Barak. Computational Complexity: A Modern Approach. Cambridge
+University Press, 2009.
+
+Jimmy Lei Ba, Jamie Ryan Kiros, and Geoffrey E. Hinton. Layer normalization. arXiv, 1607.06450,
+2016.
+
+Satwik Bhattamishra, Arkil Patel, and Navin Goyal. On the computational power of Transformers
+and its implications in sequence modeling. In Proceedings of the 24th Conference on Computa-
+tional Natural Language Learning, pp. 455-475, 2020.
+
+Tom B. Brown, Benjamin Mann, Nick Ryder, Melanie Subbiah, Jared Kaplan, Prafulla Dhari-
+wal, Arvind Neelakantan, Pranav Shyam, Girish Sastry, Amanda Askell, Sandhini Agarwal,
+Ariel Herbert-Voss, Gretchen Krueger, Tom Henighan, Rewon Child, Aditya Ramesh, Daniel M.
+Ziegler, Jeffrey Wu, Clemens Winter, Christopher Hesse, Mark Chen, Eric Sigler, Mateusz Litwin,
+Scott Gray, Benjamin Chess, Jack Clark, Christopher Berner, Sam McCandlish, Alec Radford,
+Ilya Sutskever, and Dario Amodei. Language models are few-shot learners. arXiv, 2005.14165,
+2020.
+
+Eunice Chan, Zhining Liu, Ruizhong Qiu, Yuheng Zhang, Ross Maciejewski, and Hanghang Tong.
+Group fairness via group consensus. In The 2024 ACM Conference on Fairness, Accountability,
+and Transparency, pp. 1788-1808, 2024.
+
+Lingjie Chen, Ruizhong Qiu, Siyu Yuan, Zhining Liu, Tianxin Wei, Hyunsik Yoo, Zhichen Zeng,
+Deqing Yang, and Hanghang Tong. WAPITI: A watermark for finetuned open-source LLMs.
+arXiv, 2410.06467, 2024.
+
+David Chiang, Peter Cholak, and Anand Pillay. Tighter bounds on the expressivity of Transformer
+encoders. In Proceedings of the 40th International Conference on Machine Learning, pp. 5544—-
+5562, 2023.
+
+Alonzo Church. An unsolvable problem of elementary number theory. American Journal of Math-
+ematics, 58(2):345-363, 1936.
+
+Martin Davis, Ron Sigal, and Elaine J Weyuker. Computability, complexity, and languages: funda-
+mentals of theoretical computer science. Elsevier, 1994.
+
+Kunihiko Fukushima. Visual feature extraction by a multilayered network of analog threshold ele-
+ments. JEEE Transactions on Systems Science and Cybernetics, 5(4):322-333, 1969.
+
+R. Goodman and Alan Feldstein. Effect of guard digits and normalization options on floating point
+multiplication. Computing, 18:93-106, 1977.
+
+Google. Gemini 1.5: Unlocking multimodal understanding across millions of tokens of context.
+arXiv, 2403.05530, 2024.
+
+11
+
+Published as a conference paper at ICLR 2025
+
+Jordi Grau-Moya, Tim Genewein, Marcus Hutter, Laurent Orseau, Gregoire Deletang, Elliot Catt,
+Anian Ruoss, Li Kevin Wenliang, Christopher Mattern, Matthew Aitchison, and Joel Veness.
+Learning universal predictors. In Proceedings of the 41st International Conference on Machine
+Learning, volume 235, pp. 16178-16205, 2024.
+
+Michael Hahn. Theoretical limitations of self-attention in neural sequence models. Transactions of
+the Association for Computational Linguistics, 8:156—171, 2020.
+
+Yiding Hao, Dana Angluin, and Robert Frank. Formal language recognition by hard attention Trans-
+formers: Perspectives from circuit complexity. Transactions of the Association for Computational
+Linguistics, 10:800-810, 2022.
+
+Juris Hartmanis and Richard E. Stearns. On the computational complexity of algorithms. Transac-
+tions of the American Mathematical Society, 117:285-306, 1965.
+
+Xinyu He, Jian Kang, Ruizhong Qiu, Fei Wang, Jose Sepulveda, and Hanghang Tong. On the
+sensitivity of individual fairness: Measures and robust algorithms. In Proceedings of the 33rd
+ACM International Conference on Information and Knowledge Management, pp. 829-838, 2024.
+
+Fred C. Hennie and Richard Edwin Stearns. Two-tape simulation of multitape Turing machines.
+Journal of the ACM, 13(4):533-546, 1966.
+
+Kaiying Hou, David Brandfonbrener, Sham Kakade, Samy Jelassi, and Eran Malach. Universal
+length generalization with Turing programs. arXiv, 2407.03310, 2024.
+
+Stephen Cole Kleene. A-definability and recursiveness. Duke Mathematical Journal, 2(2):340-353,
+1936.
+
+Zhiyuan Li, Hong Liu, Denny Zhou, and Tengyu Ma. Chain of thought empowers Transformers to
+solve inherently serial problems. In The Twelfth International Conference on Learning Represen-
+tations, 2024.
+
+Xiao Lin, Zhining Liu, Dongqi Fu, Ruizhong Qiu, and Hanghang Tong. BackTime: Backdoor
+attacks on multivariate time series forecasting. In Advances in Neural Information Processing
+Systems, volume 37, 2024.
+
+Bingbin Liu, Jordan T. Ash, Surbhi Goel, Akshay Krishnamurthy, and Cyril Zhang. Transformers
+learn shortcuts to automata. In The Eleventh International Conference on Learning Representa-
+tions, 2023a.
+
+Lihui Liu, Zihao Wang, Ruizhong Qiu, Yikun Ban, Eunice Chan, Yangqiu Song, Jingrui He, and
+Hanghang Tong. Logic query of thoughts: Guiding large language models to answer complex
+logic queries with knowledge graphs. arXiv, 2404.04264, 2024a.
+
+Pengfei Liu, Weizhe Yuan, Jinlan Fu, Zhengbao Jiang, Hiroaki Hayashi, and Graham Neubig. Pre-
+train, prompt, and predict: A systematic survey of prompting methods in natural language pro-
+cessing. ACM Computing Surveys, 55(9):1-35, 2023b.
+
+Zhining Liu, Zhichen Zeng, Ruizhong Qiu, Hyunsik Yoo, David Zhou, Zhe Xu, Yada Zhu, Kommy
+Weldemariam, Jingrui He, and Hanghang Tong. Topological augmentation for class-imbalanced
+node classification. arXiv, 2308.14181, 2023c.
+
+Zhining Liu, Ruizhong Qiu, Zhichen Zeng, Hyunsik Yoo, David Zhou, Zhe Xu, Yada Zhu, Kommy
+Weldemariam, Jingrui He, and Hanghang Tong. Class-imbalanced graph learning without class
+rebalancing. In Proceedings of the 41st International Conference on Machine Learning, 2024b.
+
+Zhining Liu, Ruizhong Qiu, Zhichen Zeng, Yada Zhu, Hendrik Hamann, and Hanghang Tong. AIM:
+Attributing, interpreting, mitigating data unfairness. In Proceedings of the 30th ACM SIGKDD
+Conference on Knowledge Discovery and Data Mining, pp. 2014-2025, 2024c.
+
+Eran Malach. Auto-regressive next-token predictors are universal learners. arXiv, 2309.06979,
+2023.
+
+12
+
+Published as a conference paper at ICLR 2025
+
+William Merrill and Ashish Sabharwal. The parallelism tradeoff: Limitations of log-precision Trans-
+formers. Transactions of the Association for Computational Linguistics, 11:531—545, 2023.
+
+William Merrill and Ashish Sabharwal. The expressive power of Transformers with chain of thought.
+In The Twelfth International Conference on Learning Representations, 2024a.
+
+William Merrill and Ashish Sabharwal. A logic for expressing log-precision Transformers. In
+Advances in Neural Information Processing Systems, volume 36, 2024b.
+
+Meta. Introducing Llama 3.1: Our most capable models to date, 2024. URL
+https://ai.meta.com/blog/meta-llama-3-1/,
+
+Turlough Neary, Damien Woods, Niall Murphy, and Rainer Glaschick. Wang’s B machines are
+efficiently universal, as is Hasenjaeger’s small universal electromechanical toy. Journal of Com-
+plexity, 30(5):634—646, 2014.
+
+OpenAl. Hello gpt-40, 2024. URL https: //openai.com/index/hello-gpt-—4o/,
+
+Jorge Pérez, Javier Marinkovi¢, and Pablo Barcelo. On the Turing completeness of modern neural
+network architectures. In International Conference on Learning Representations, 2019.
+
+Jorge Pérez, Pablo Barceld, and Javier Marinkovic. Attention is Turing-complete. Journal of Ma-
+chine Learning Research, 22(75):1-35, 2021.
+
+Ruizhong Qiu and Hanghang Tong. Gradient compressed sensing: A query-efficient gradient esti-
+mator for high-dimensional zeroth-order optimization. In Proceedings of the 41st International
+Conference on Machine Learning, 2024.
+
+Ruizhong Qiu, Zhiqing Sun, and Yiming Yang. DIMES: A differentiable meta solver for combina-
+torial optimization problems. In Advances in Neural Information Processing Systems, volume 35,
+pp. 25531-25546, 2022.
+
+Ruizhong Qiu, Dingsu Wang, Lei Ying, H Vincent Poor, Yifang Zhang, and Hanghang Tong. Re-
+constructing graph diffusion history from a single snapshot. In Proceedings of the 29th ACM
+SIGKDD Conference on Knowledge Discovery and Data Mining, pp. 1978-1988, 2023.
+
+Ruizhong Qiu, Jun-Gi Jang, Xiao Lin, Lihui Liu, and Hanghang Tong. TUCKET: A tensor time
+series data structure for efficient and accurate factor analysis over time ranges. Proceedings of the
+VLDB Endowment, 17(13), 2024a.
+
+Ruizhong Qiu, Weiliang Will Zeng, Hanghang Tong, James Ezick, and Christopher Lott. How
+efficient is LLM-generated code? a rigorous & high-standard benchmark. arXiv, 2406.06647,
+2024b.
+
+Alec Radford, Karthik Narasimhan, Tim Salimans, and Ilya Sutskever. Im-
+proving language understanding by _ generative pre-training, 2018. URL
+httpos://cdn.openai.com/research-covers/language-unsupervised/language_understandin«
+
+Jesse Roberts. How powerful are decoder-only Transformer neural models? arXiv, 2305.17026,
+2023.
+
+Marcel Paul Schititzenberger. On context-free languages and push-down automata. Information and
+Control, 6(3):246—-264, 1963.
+
+Claude E. Shannon. A universal Turing machine with two internal states. Automata Studies, 34:
+157-165, 1956.
+
+Alan Mathison Turing. On computable numbers, with an application to the Entscheidungsproblem.
+Proceedings of the London Mathematical Society, 42(2):230—265, 1937a.
+
+Alan Mathison Turing. Computability and \-definability. Journal of Symbolic Logic, 2(4):153-163,
+1937b.
+
+13
+
+Published as a conference paper at ICLR 2025
+
+Ashish Vaswani, Noam Shazeer, Niki Parmar, Jakob Uszkoreit, Llion Jones, Aidan N. Gomez,
+Lukasz Kaiser, and Illia Polosukhin. Attention is all you need. In Advances in Neural Infor-
+mation Processing Systems, volume 30, pp. 5998-6008, 2017.
+
+Max Vladymyrov, Johannes von Oswald, Mark Sandler, and Rong Ge. Linear Transformers are
+versatile in-context learners. arXiv, 2402.14180, 2024.
+
+Johannes von Oswald, Eyvind Niklasson, Ettore Randazzo, Joio Sacramento, Alexander Mordv-
+intsev, Andrey Zhmoginov, and Max Vladymyrov. Transformers learn in-context by gradient
+descent. In Proceedings of the 40th International Conference on Machine Learning, pp. 35151-
+35174. PMLR, 2023.
+
+Dingsu Wang, Yuchen Yan, Ruizhong Qiu, Yada Zhu, Kaiyu Guan, Andrew Margenot, and Hang-
+hang Tong. Networked time series imputation via position-aware graph enhanced variational
+autoencoders. In Proceedings of the 29th ACM SIGKDD Conference on Knowledge Discovery
+and Data Mining, pp. 2256-2268, 2023.
+
+Hao Wang. A variant to Turing’s theory of computing machines. Journal of the Association for
+Computing Machinery, 4(1):63—92, 1957.
+
+Jason Wei, Maarten Bosma, Vincent Zhao, Kelvin Guu, Adams Wei Yu, Brian Lester, Nan Du, An-
+drew M Dai, and Quoc V. Le. Finetuned language models are zero-shot learners. In International
+Conference on Learning Representations, 2022a.
+
+Jason Wei, Xuezhi Wang, Dale Schuurmans, Maarten Bosma, Fei Xia, Ed Chi, Quoc V. Le, Denny
+Zhou, et al. Chain-of-thought prompting elicits reasoning in large language models. In Advances
+in Neural Information Processing Systems, volume 35, pp. 24824—24837, 2022b.
+
+Tianxin Wei, Ruizhong Qiu, Yifan Chen, Yunzhe Qi, Jiacheng Lin, Wenju Xu, Sreyashi Nag, Ruirui
+Li, Hanging Lu, Zhengyang Wang, Chen Luo, Hui Liu, Suhang Wang, Jingrui He, Qi He, and
+Xianfeng Tang. Robust watermarking for diffusion models: A unified multi-dimensional recipe,
+2024. URL https: //openreview.net/pdf?id=013fIFEB81,
+
+Ziwei Wu, Lecheng Zheng, Yuancheng Yu, Ruizhong Qiu, John Birge, and Jingrui He. Fair anomaly
+detection for imbalanced groups. arXiv, 2409.10951, 2024.
+
+Zhe Xu, Ruizhong Qiu, Yuzhong Chen, Huiyuan Chen, Xiran Fan, Menghai Pan, Zhichen Zeng,
+Mahashweta Das, and Hanghang Tong. Discrete-state continuous-time diffusion for graph gener-
+ation. In Advances in Neural Information Processing Systems, volume 37, 2024.
+
+Hyunsik Yoo, Zhichen Zeng, Jian Kang, Ruizhong Qiu, David Zhou, Zhining Liu, Fei Wang, Charlie
+Xu, Eunice Chan, and Hanghang Tong. Ensuring user-side fairness in dynamic recommender
+systems. In Proceedings of the ACM on Web Conference 2024, pp. 3667-3678, 2024.
+
+Hyunsik Yoo, Ruizhong Qiu, Charlie Xu, Fei Wang, and Hanghang Tong. Generalizable recom-
+mender system during temporal popularity distribution shifts. In Proceedings of the 31st ACM
+SIGKDD Conference on Knowledge Discovery and Data Mining, 2025.
+
+Zhichen Zeng, Ruizhong Qiu, Zhe Xu, Zhining Liu, Yuchen Yan, Tianxin Wei, Lei Ying, Jingrui
+He, and Hanghang Tong. Graph mixup on approximate Gromov—Wasserstein geodesics. In
+Proceedings of the 41st International Conference on Machine Learning, 2024.
+
+Ruiqi Zhang, Spencer Frei, and Peter L. Bartlett. Trained Transformers learn linear models in-
+context. Journal of Machine Learning Research, 25(49):1-55, 2024.
+
+14
+
+Published as a conference paper at ICLR 2025
+
+Algorithm 1 Autoregressive generation: generate p(x)
+
+Input: decoder-only Transformer I’ : ©* —> ©’; nonempty input x € X'+; stop token $ €
+Output: generated output € Y* UT’
+1: repeat
+2 generate next token c + I(x)
+3: append next token w + 2-c
+4: until c = $
+5: return generated output x
+
+Algorithm 2 Extracting output from CoT (readout)
+
+Input: generated CoT v € St
+Output: extracted output y € {0, 1}*
+: initialize the left index 7 <- —2
+while v; ~ : do
+decrement the left index 1 + 1-1
+end while
+return extracted output v;41:—-1
+
+CONTENTS
+
+[B.4| Retrieving pointed tape Cells)...... 02... cece cece cece cette nee e ee en nee e ees
+BI (Parsing Tstructions IN PYOMPU. 1... eee eee cee cette ee neeee WES
+Leen eee e eee eee e eee e eect bette eeeebeneeeeeeeeees in)
+[B-7 [Executing next CoT step)... 0.0.0... c ccc cee e cece cece ee bees eeeees 20)
+iB.3} Extracting final output]... 0... ccc cece cee teen eee e ee eeeeeee
+iB.9} Generating next token)... ... 0... cece eee eee e nent eee nee e ene 2.2
+beeen debe bee eee e been bbe e eb eeeees 22)
+[B-Ti Size of the constructed Transformed... 0... ccc cece eee nee e ence eee eens 23]
+EXperiments).. 0... cece ene e enn e nee n tent eben been ten eens 233)
+IDI (Concluding remarks)... 0... ccc cc ee eee teen eee eee e eee e eee eaeee 23)
+
+A TWO-TAPE TMS v.s. 2-PTMS
+
+In this section, we characterize the relation between two-tape TMs and 2-PTMs.
+
+A.1 2-PTMS SIMULATING TWO-TAPE TMS
+
+In this subsection, we show the correctness of the construction presented in SectionZ.I
+
+For each non-halting state g € Q\ {ghar}, since we use 1+1+6+6+1+6+6 = 27 instructions to
+simulate its transition rules, we put these instructions at £979:27q+27- Thus, the instructions for state
+q Starts at 127g. Besides that, for the halting state gna, = A’, we put the halting instruction after the
+last non-halting state kK — 1. Thus, the halting instruction is at lo7(K—-1)4+27 = 427K = 27 ¢nan- To
+recapitulate, the instructions for every state q € @ start at 279.
+
+Hence, to make a state transition to q’ € Q, we should go to instruction 127,’. Since we do not know
+pointed cell values after we move tape heads, We use two go-to instructions (A! 274’, A?27q’) with op-
+posite conditions to ensure a state transition to q’. This establishes the correctness of 1a’ sca,dacn de)"
+
+15
+
+Published as a conference paper at ICLR 2025
+
+To simulate transition rules 5(q, 0,0), 5(q, 0,1), d(q, 1,0), 6(q, 1, 1) for each non-halting state g €
+Q \ {hat }, we first use A? 279414 to check the pointed cell value of tape A and then use B?274+8 and
+B?27q+21 to check the pointed cell value of tape B, where it is easy to see that the indices 27q + 14,
+27q + 8, and 27q + 21 are correct.
+
+Finally, note that the simulation is always valid because 2-PTMs have bi-directional tapes while
+TMs have uni-directional tapes. This concludes the correctness of the constructed 2-PTM te.
+
+It follows that TIMEs(t(n)) C TIMEs pr (t(n)).
+
+A.2. BI-INFINITE TWO-TAPE TMS SIMULATING 2-PTMS
+
+In this subsection, we show that any 2-PTM can be simulated by a TM over two bi-infinite tapes.
+
+For any y € TIME>.prm(t(n)), there exists a 2-PTM e that computes S(y(a)) from S(a) within
+time O(t(n)). Let K := |e]. We will construct a two-tape TM M = (Q := {0,1,..., A}, Gotan =
+0, Qhalt “= kK, {0, tye = 0,m = 2, é: (Q \ {halt }) x {0, 1}? > Q x ({0, 1} x {L, S,R})?) that
+simulates the 2-PTM e within time O(t(n)), where we simulate each instruction z; (7 = 0,..., |e|—
+1) using one state 7. Let c,,cg € {0, 1} denote the pointed cell value on tapes A and B, respectively.
+
+If 1; = #, then we only make a transition to the halting state qnan:
+
+5(J, Ca, CB) = (Ghat; Ca, 8, CB, 8). (32)
+If 1; = Ad, (da € {L,R}), then we move the head for tape A and keep the head for tape B:
+O(j, Ca, CB) = (9 +1, ca, da, cp, 8). (33)
+If 1; = Bdg (dg € {L,R}), then we move the head for tape B and keep the head for tape A:
+O(J, Ca, Ca) = (9 +1, ca, 8, cp, dp). (34)
+If 1; = Ack (cy € {0, 1}), then we write c) to tape A and keep tape heads:
+5(7, Ca, ca) = (7 +1,¢4,8, cp, 8). (35)
+If 1; = Beg (cg € {0, 1}), then we write cf to tape B and keep tape heads:
+0(J, Ca, Ca) == (7 +1, ca, 8, cg, 8). (36)
+Ifv; =7!% (7 € {A,B}), we go to k if the pointed cell on tape 7 is 0 and to j + 1 otherwise:
+. k,ca,S, cp, 8 ifc, = 0,
+80h Cas ea) = fF ees ifc, £0. Gn)
+
+Ifv; = 77% (7 € {A,B}), we go to k if the pointed cell on tape 7 is 1 and to j + 1 otherwise:
+k, ca, 8, Cp, S) ifc, = 1
+6 — ( , _ > : ,
+(3; Cas ¢s) ees ifc, # 1.
+
+The correctness of the construction above is clear. Since M simulates each 1; through 1 = O(1)
+transition, then MV also has time complexity O(t(n)).
+
+(38)
+
+B PROOF OF THEOREMB. I]
+
+In this section, we present our detail construction of the Transformer I’ as the proof of TheoremB.1]
+We will show that we can execute the constructed prompts using affine maps, ReLU activation, layer
+normalization, and causal attention. Some key ideas are presented in SectionB.4jin the main paper.
+Unless otherwise specified, the similarity map we use in causal attention is the identity function.
+
+B.1 EMBEDDING LAYER
+
+Here, we present our construction of the token embedding and the positional encoding in the embed-
+ding layer Famp. Let v = vo +++ Ujyj—1 € + denote the input token sequence of the Transformer.
+For each token v; (¢ = 0,..., Ujy)-1), we use the one-hot representation as its embedding:
+
+zP7 = lpy,=o); ae. (39)
+
+a
+As described in SectionB.4] we use the following positional encoding for each position 7:
+
+(i+ 1)(G +2) 41
+
+a A 4
+(+12 +1 /G+22+1 ©)
+
+pii=1-
+
+16
+
+Published as a conference paper at ICLR 2025
+
+B.2 OTHER POSITIONAL IDENTIFIERS
+
+In addition to the positional encoding, we compute three other positional identifiers to be used later.
+First, we use causal attention with query 1, key 1, and value z; to compute
+
+zPos | _ 1 is* __ 1 (41)
+
+Bay ae GET
+j=O
+
+Next, we use layer normalization (LN) to compute two other positional identifiers:
+
+, 1
+(20%? zPs 2 _ = LN(1, zPs = (= a+ 5). (42)
+
+/(i+ 1)? ” JG +1)?
+
+B.3. PARSING COT STEPS
+
+Since the prompt and the CoT share some tokens, we need distinguish CoT steps from the prompt
+according to the position of the delimiter token $. Specifically, we need an indicator of whether
+each token 1; is located after the delimiter token $ or not. Thus, we use causal attention with query
+1, key 1, and value z's * to compute the discounted indicator:
+1 Liaj<ievj=s]
+after delim, disc is $ J Qtivj=$S
+Zz; i. 2 =. 43
+: i+1 = I i+1 (43)
+
+Then, we use layer normalization to convert it to a Boolean value:
+zilter delim LN(z! after delim, dise) __ Laj<ie,—s)- (44)
+Next, we check if a token is a CoT step of writing a cell using ReLU-implemented Boolean algebra:
+gist wnt -— ReLU(zis 7 4 zis™ 4 zafterdelim 4) > € {a B}: (45)
+we can compute the value that is being written using ReLU:
+2p WMH — ReLU(zi871 4 zatterdelim _ 4) 7 © {A,B}; (46)
+we can also compute the direction of head move in a CoT step using ReLU:
+
+at move ,__ = ReLU(zi is TR 4 zifter delim __ 1)- ReLU(z! is TL 4 zafter delim _ 1), TE fA, B}. (47)
+
+a a a
+
+B.4 RETRIEVING POINTED TAPE CELLS
+
+Before retrieving the pointed tape cells, we need to compute the current positions of tape heads.
+Since attention cannot compute sums directly, we use the idea presented in SectionB.4]to compute
+a normalized representation of the position. Specifically, we first use causal attention with query 1,
+key 1, and value z7 ™°Y to compute discounted head positions:
+
+4
+
+‘ 1
+7 curdisc ,__ 7 move
+z, = 724 ; 7 © {A,B}. (48)
+j=0
+Then, we use zP» —_ + 77 and LN to compute a normalized representation of head positions:
+(27 cur norm zp cur one norm = LN(z7? cur ~ 2 ') (49)
+
+a T move
+——— 2s 10) 45
+
+/( ra move’) 24 1 /( ra move) 24 1
+
+Next, we can retrieve the pointed tape cells by finding the last write step at the
+
+——_——), rT € {A,B}. (50)
+
+same position. We use causal attention with query (1, 27 2O™, 7 curonenomm )T key
+(2 T write zy cur norm zy cur one norm | —2a vy and value (25 write zy cur norm | zs T write )T to compute
+
+17
+
+Published as a conference paper at ICLR 2025
+
+the retrieved tape cells (27%, z7 rer curnom yr retris write)T (> € {A Bt), Note that we also com-
+
+pute z7 rcurnomm and z7 ris write here because there is a caveat: the pointed tape cells might not
+
+have been written yet. We use LN and ReLU to compute an indicator of whether the pointed tape
+y' P Pp P'
+
+cells have not been written:
+
+zg not found , = ReLU(LN(z} 7 Cur norm _ zg retr cur norm) + ReLU(LN(z; T retr cur norm _ zg cur norm ))
+
+a a a
+
+= L[z7 cur norm 4 27 retr cur norm) T E {A, B}. (51)
+If a retreived tape cell has not been written yet, it must have a blank value 0:
+
+zt val . = ReLU(z3 Tretr zn not found 4+ at retr is write 1), TE fA, B}. (52)
+
+a
+
+B.5 PARSING INSTRUCTIONS IN PROMPT
+
+Recall that each instruction is encoded into one or more tokens. Thus, we first compute whether
+each token is the start of a instruction in the prompt:
+
+st is AL is BL is AR is B
+zis zs B! zis A? zs B? gafter delim) (55)
+
+We compute a program index t for the start token of each instruction. We use causal attention with
+query 1, key 1, and value 27 st tg compute the program index of each token in the prompt:
+
+a
+rog idx disc, raw 1 is ins
+2? gs — 2's inst (56)
+
+a . ; J
+t+1 a0
+We further subtract 1 from Yio zs inst to handle the lag between the prompt and the CoT:
+
+4
+
+bre idx disc — zPme idx disc, raw pos, 1 __ 1 2 inst _ 1 (57)
+i4+1 a+1
+j=O
+Then, we use LN to compute a normalized representation of > =0 zs inst _ J;
+
+( progidx norm | progidx onenormy) ,__ LN prog idx disc _ pos, 1 58
+
+a is inst
+
+do j=0 2 1 1
+J=0 “5
+
+= (== —$——<§). (59)
+
+is inst
+J
+
+—1)?+1
+
+—1)?+1
+
+Besides that, since go-to’s are special instructions that need multiple tokens to encode, we also check
+whether a token is the start of a go-to instruction:
+
+zs goto cond = 2 isAt +4 zisB! 4+ zis A? 4+ zis Be (60)
+We also need a go-to index for tokens —,+,@ in the prompt to mark the order of tokens within
+each go-to instruction. To compute it, we first compute the reciprocal number of tokens between
+
+v,; and the start token v; of the current go-to instruction, using causal attention with query 1, key
+is goto cond ,
+
+id
+zene and value 2;
+4 is goto cond
+zeoto one disc ,__ si a5 _ 1 (61)
+jaw 1 a-VU +1
+Then, we use LN to compute a normalized representation of the go-to index:
+goto idx norm, raw, goto one norm, raw) | __ for one disc | goto one disc
+(z; 12; ):= LN(1 - 12; Z (62)
+
+i-w +1
+= 63
+(SS —iv+1) Si —iv+1) ==). ©)
+
+18
+
+Published as a conference paper at ICLR 2025
+
+To match the go-to index of non-go-to tokens, we finally adjust them if v; is the start token v; of the
+current go-to instruction:
+
+oto idx norm oto idx norm, raw is goto cond
+2° = 28 + 288 (64)
+4 4 4 ’
+gotoonenorm ,__ goto one norm, raw ___ is goto cond
+5 = 2 ; ; (65)
+
+That is, when 1; is the start token vj of a go-to instruction, we instead have
+
+(28° idx norm goto one norm) _ (1, 0) . (66)
+
+a +4
+
+B.6 LOCATING CURRENT COT STEP
+
+Here, we describe how to locate the current instruction to execute. We can imagine a program
+pointer ¢ that indicates the instruction 4; we are currently executing. A caveat here is that each go-to
+instruction needs multiple CoT steps. Thus, it is important to check whether it is during a go-to
+instruction or not.
+First, we compute how each go-to step contributes to the program pointer via ReLU:
+
+zPre Move ,__ ReLU(zis* 4+ gafter delim __ 1) _ ReLU(zis~ 4+ after delim _ 1). (67)
+
+prog move
+4
+
+Then, we use causal attention with query 1, key 1, and value z
+total contribution:
+
+to compute the discounted
+
+4
+
+dis 1
+j=0
+and use LN to compute a normalized representation of )7_9 255°:
+prog move norm | prog move one normy | __ prog move disc _ pos, 1
+(z; Zi ):= LN(z; («*+ (69)
+a prog move
+i027; 1
+=0
+
+= (== —_— — ——— ). (70)
+
+4 prog move \ 9 4 prog move \ 9
+
+zi +1 9 2 )
+
+Next, we check whether the token v; is the start token v/ of the current execution step record in the
+CoT:
+
+isrec start, ,is ~ is AL is BL is AR is BR
+Zi = zp + ReLU(z; zi Zi Zi (71)
+is / is = after delim
++2ep + 28° + 2 — 1), (73)
+
+where we also add zis * here for convenience later. Similarly, we check whether the token ¥; is the
+ending token v; of the current execution step record in the CoT:
+
+za rec end = ReLU(z§ $ za AL a BL za AR 2s BR (74)
++2i8 @ + gifter delim __ 1). (76)
+
+Then, imagine that each token has a record index to mark which each execution step it belongs to.
+To compute it, we first compute the reciprocal number of execution steps t’ so far, using causal
+
+attention with query 1, key 2‘S"°“*", and value zi*:
+
+4 is rec start is *
+Prog rec one disc | Dd j=0 ej 25 _ 1 (77)
+a . a isrecstat t! 1°
+ye i=0 25 +
+
+We then compute a normalized representation of t’ + 1 using LN:
+
+(zPes rec norm Pros rec one nn) = LN(1 Pros rec one aise) (78)
+
+U+d 1
+_ — 79
+Sos) ™)
+
+19
+
+Published as a conference paper at ICLR 2025
+
+Next, since each go-to execution step needs multiple CoT steps, we need to handle go-to execution
+step records specially when the go-to condition is satisfied. We can image that each CoT step has
+a temporary program index that marks the order of each token in a go-to execution step record. To
+
+compute it, we first compute the reciprocal number of tokens between v; and the start token v, of
+prog rec one disc
+
+the current go-to execution step record, using causal attention with query 1, key —z; , and
+value 2):
+a is =
+z Prog tmp one disc | __ jai" ai _ 1 (80)
+a . ay al i-v +1
+jai
+With this, we can compute a normalized representation of 7 — 2’ + 1 using LN:
+prog tmp norm, raw | prog tmp one norm, raw) | __ prog tmp one disc
+(2; %% ) := LN(, 2; ) (81)
+
+“iad 1
+= (= Ss) - (82)
+Yi-v+1)j?4+1 J/G@-4+1)?4+1
+To match the temporary program index of non-go-to execution steps, we further adjust them if v; is
+the ending token of the current go-to instruction:
+Prog tmp norm = ReLU(z?" tmp norm, raw zis rec end’) 4+ zis rec end (83)
+
+a a a 9
+
+zPre tmp one norm = ReLU(2? tmp one norm, raw zis rec end) . (84)
+
+That is, when v; is the ending token of the current go-to instruction, we instead have
+(2Prs tmp norm zbrog tmp one norm) _ (1, 0) . (85)
+
+a on)
+
+We will use the quantities above to identify the instruction to execute.
+
+B.7 EXECUTING NEXT COT STEP
+
+To generate the next token, we need to execute the current instruction and record it via a CoT step.
+Before that, we check whether v; belongs to a satisfied go-to execution step record:
+
+ZiT £0 -_ ReLU (zis = 4 zis 4 zis + 4 zafterdelim 7), (86)
+
+Another quantity we will need is how each CoT step contributes to the current program pointer:
+zpre cur move = ReLU(z*s AL zis BL zis AR zis BR (87)
+4zis/ 4 zis+ 4 zafterdelim 1) _ Rep U(zis~ 4 zaerdetim _ 4), (89)
+
+prog rec diff
+a
+
+We also compute an auxiliary bound z on the differences between some attention scores
+
+: : : progrecnorm | prog rec one norm) T pos,2 _ pos, 3\T
+using causal attention with query (z; Zi )', key (2) °°", 2; 7"), and value pj.
+We further compute an auxiliary quantity:
+progrec bias |__ prog rec diff is rec goto
+z; =3- 3 ReLU(z; + 22, — 2). (90)
+
+It is easy to see that 2P°2"°"" < 3 if and only if 2S™°* = 1. Using this quantity, we
+
+will be able to avoid attending to tokens outside the current execution step record. Next, we
+use it to identify the next instruction to execute. We first compute the discounted program in-
+dex of the instruction that we need to execute, which is proportional to the sum of 2/8 ™°""
+until the beginning token v, of the current execution step record, using causal attention with
+query (208 rec Bias | — Zhe rec nom —zbns Tec one nom yt key (1, a Tec von a rec one nom yT value
+
+(zhroscurmon’ 28 °)T and similarity function sim(a) := 2 — ReLU(2 — x) = min{z, 2}:
+
+J 7*d
+of of
+a rog cur move a rog cur move
+di=0 75 yi=0 75
+
+prog curdisc |__ j=0 ~7 _ j=0 “J
+dj=0 | ut
+of
+v is
+prog curone disc ,__ do i=0 5 _ 1 92
+Sol WHI
+
+Published as a conference paper at ICLR 2025
+
+Then, we use LN to compute a normalized representation of yu Dns canon
+
+j=0 ~3
+rog cur norm rog cur one norm rog cur disc rog cur one disc
+(2b apes ) = LN(zP* zps ) (93)
+a prog cur move
+yi i=0 2 1
+~ 7 = a cur move , 7 prog cur move —) : (94)
+
+Next, we find the instruction 1; whose program index matches the current program
+pointer and whose go-to index matches the current temporary program index, using
+
+t t
+causal attention with query (2 prog cur norm | zPre cur one norm | zPre mp norm | zPre mp one norm | i. -1)', key
+id: id. to id: Nt s, 1
+(zee x norm hres x one norm | 003 * norm Boro one norm Dos , 1)T, and value z o.
+Ze ents — ae, o€ {#, AL, BL, AR, BR, AO, BO, A1,B1,A!,B!,A?,B?,-,+,@}; (95)
+tokenis: ,__ is #
+2 ra zis (96)
+
+Note that exactly one of them is 1. It remains to execute the instruction 1, and record its outcome. If
+zlokenis 7 — | for some o € {A!,B!,A?,B?}, then we need to check whether the go-to condition is
+
+satisfied or not:
+
+zat! — ReLU (2 isA! zh val) (97)
+zsatB! — ReLU(z!' isB! 2B val) (98)
+gaat a? ReLU(zp*"'s “P+ 2} val — 1), 0)
+2StB? ReLU(z! token is B? | | 28 val 1). (100)
+
+They enable us to choose = (satisfied) or / (unsatisfied):
+ziokenis ——— sat a! sat! sath? Sat B? (101)
+zoken is / = zhoken is A! 4+ zhoken is B! 4+ zhoken is A? 4+ zhoken isB? zhoken is = (102)
+
+B.8 EXTRACTING FINAL OUTPUT
+
+After execution, the content left on the tape A is the Shannon-encoded output S(y(a)). We need to
+extract the decoded output y(a) from the previous CoT steps.
+
+First, we need to check whether we have arrived at the final output stage:
+
+is read key ,
+
+zi 4 Zi8° 4 zis, (103)
+
+Suppose that we are now trying to find the k-th token of the output y(a). Recall that the k-th token
+(k > 0) of the output y(a) corresponds to the (2k)-th and (2k + 1)-th tokens of S(y(a)). To help
+compute the indices 2k and 2k + 1, we compute the following shifts:
+
+ziead cur0 shift ,__ 2(zi8° 4+ zis ), (104)
+ziead curl shift ,__ zis Poy 2(zis° 4+ zis ). (105)
+
+Suppose that token : is the ¢-th token in the generated CoT. We use causal attention with query 1,
+
+is 9 d ke 9 chi igs :
+key 2° "°°", and value (zat cu shift read curl shift is: )T to compute the discounted 2k and 2k + 1
+fori =t+k:
+read cur0 disc ,__ 1 read cur0 shift __ 2k 1
+2 = = eat = _, (106)
+Su 2 read * 4 a~—-t4+1
+j=0 “J
+a
+read curl disc ,__ 1 read curl shift __ 2k + 1
+> 2 read key 2 J a~—-t4+1
+J=0 “7 j=0
+ad one dis 1 ae 1
+zread one disc ,__ —________ 7st —___. (108)
+> 2 read key J i—-t+l1
+j=0 *j j=0
+
+21
+
+Published as a conference paper at ICLR 2025
+
+We use layer normalization to compute representations of 2k and 2k + 1:
+
+read curOnorm read cur0 one norm) ,__ read cur0 disc read one disc
+(z; A ) = LN(z; A )
+
+2k 1
+= (———___., —_____. 109
+(= a): ™
+
+read curl norm read curl one norm) ,__ read curl disc read one disc
+(z; A ) = LN(z; A ’
+
+2k+1
+= 11
+a 2k + 1)? “/( (2k + 1)2 sea): (110)
+
+Next, similarly with Appendix [B-4] we retrieve the “bk.th and so + 1)-th tokens of S(y(a))
+as follows. We use causal attention with query (1, 2%@¢cuO norm, zreadcurO onenorm ;)T key
+
+on)
+
+(2 A write | zy cur norm zy cur one norm | — 2s vy and value (2 A write | zy cur norm zs A write) T to compute the
+
+retrieved tape cell status (z!#4 uO, zread retrO curnorm read itis write)T We use causal attention with
+
+read curl norm ,read curl one norm T is A write ,Acurnorm ,Acur one norm pos, 1) T
+and value (z} "MS, zBcurnorm, a Awrite)T t ) compute the retrieved tape cell status
+(ziead retrl , zread retrl cur norm , zread retr1 is write )T We use LN and ReLU to compute an indicator
+
+of whether the retrieved tape cells have not been written:
+
+read retrO not found . read cur0 norm read retrO cur norm read retrO cur norm read cur0 norm
+2 = ReLU(LN(z! —2 )) + ReLU(LN(z! —2 ))
+= 1 [2m read cur0 norm 4 read retrO cur norm) ; ( 1 1 1)
+gread retrl not found , _ = ReLU(LN(z! read curl norm __ read retr] cur norm) ) 1 ReLU(LN(z! read retrl curnorm __ zread curl norm) )
+= 1 [ztead curl norm —£ yread retrl cur norm) . ( 1 12)
+Finally, we can obtain the values of cells 2k and 2k + 1:
+zread retrO val . = ReLU(z} read retr0 — ziead retrO not found || gread retrO is write 1) , a 13)
+gread retrl val = ReLU(zi4 retr] grad retr] notfound |_ grad retrl is write 1) . al 14)
+
+Using the quantities above, we can decide the next token to generate:
+
+token i is 0. -92 ReLU(zi isread key gread retrO val gread retrl val 1) , ad 15)
+ad k 4 4 q q
+
+ztoken is 1. -9 ReLU(zi isread key | gread retrO val 4+ gread retrl val 2) , ad 16)
+d k d a
+
+token is $, -9 ReLU(z! is read key — ziead retrO val) . (117)
+
+Here, we use coefficient 2 to distinguish the output extraction stage from the execution stage.
+
+B.9 GENERATING NEXT TOKEN
+
+The next token to be generated by the Transformer I" is
+
+arg max Ae (118)
+
+o€{AL, BL,AR,BR,AO,BO,A1,B1,/,=,-,+, @,:,0,1,$}
+The generation procedure stops upon the generation of the ending token $ A
+
+B.10 COMPOSING THE TRANSFORMER
+
+In this subsection, we describe how to compose the aforementioned operations into a Transformer.
+
+Embedding layer. Recall that the construction uses 4 positional encodings p;, z?°', 2? 7, 2P?,
+Thus, our token embedding and positional encoding use the first |5’| + 1 dimensions, For the token
+embedding emb, the first |’| dimensions are the ont-hot representation of the token, and the next
+
+dimension is zero. For example, if v; is the first token in 3’, then
+
+emb(v;) =(1,0,...,0, 0, 0,0,...,0 )'. (119)
+—_—_—— “— —_—_—
+
+first || dims: one-hot next dim: zero slots for intermediate results
+
+3Nevertheless, the token $ in the prompt does not stop the generation procedure.
+
+22
+
+Published as a conference paper at ICLR 2025
+
+For the positional encoding pos,
+pos(i) = ( 0,0,...,0, Dis 0,0,...,0 )'. (120)
+—— “YH ——
+first || dims: zeros _ next dim: pos enc slots for intermediate results
+Therefore, the embedding layer for the example above is
+emb(v;) + pos(i) =( 1,0,...,0, Dis 0,0,...,0 jf. (121)
+—— “YH ——
+first |°| dims: one-hot next dim: pos enc _ slots for intermediate results
+Here, emb(v;) + pos(z) is indeed the standard embedding layer in LLMs.
+
+Intermediate results. Recall that each Transformer layer has a residual connection after its output.
+Thus, we can compute each intermediate result via a Transformer layer and add it to the hidden
+embedding via the residual connection. For the example above, we can construct a Transformer
+layer that computes 2? ', and then the hidden embedding after the residual connection of this
+Transformer layer is
+
+pos, | T
+( 1,0,...,0, pi, zP!, 0,...,0 yr (122)
+SS —_—’
+first || dims: one-hot slots for other intermediate results
+
+B.11 SIZE OF THE CONSTRUCTED TRANSFORMER
+
+In this subsection, we show that the constructed Transformer J’ has a constant size in terms of the
+number of its operations and the number of bits to represent its parameters.
+
+Number of operations. From the construction above, we can see that the constructed Transformer
+I’ does not depend on ¢ or x. (To compute different functions y, we change only the prompt but
+do not need to change the Transformer.) It is clear to see that our constructed Transformer has a
+constant number of operations.
+
+Number of parameter bits. From the construction above, we can see that the constructed Trans-
+former uses only 0, $, 1, 2,3 as its parameters. These numbers can be exactly expressed with a
+constant number of bits.
+
+C EXPERIMENTS
+
+We demonstrate our construction through a Python implementation. Our code and demo results are
+publicly available athttps://github.com/gq-rz/ICLR25-prompting-theory.
+
+D CONCLUDING REMARKS
+
+Connection with universal TMs. (Hennie & Stearns (1966) have shown that there exists a uni-
+versal TM (UTM) that can simulate any Turing machine M/ in O(¢(n) log t(n)) steps if M halts in
+t(n) > n steps. Then by Pérez et al! (2019), there exists a Transformer that simulates this UTM.
+However, due to the complication of the UTM, it would be quite involved to explicitly construct
+this Transformer. Nevertheless, this UTM has inspired us to propose 2-PTMs, which enables us to
+explicitly construct a simpler Transformer. Furthermore, our 2-PTMs establish the first theoretical
+framework to formalize prompting. Using our 2-PTM-based framework, we believe that people
+will be able to generalize more results from the classic one-model-one-task paradigm to the LLM
+prompting paradigm.
+
+Discussion on CoT complexity. A limitation of this work is that our construction uses long CoTs for
+hard problems with high time complexity. However, while it might be possible to slightly improve
+the CoT complexity, recent theoretical evidence has suggested that long CoTs are very likely to be
+necessary for these hard problems. For example, Merrill & Sabharwal (2024a) have shown that any
+Transformer with O(log) CoT steps can solve only L problems. Assuming L 4 NL, it implies
+that any Transformer with O(log) CoT steps cannot even solve any NL-complete problems such
+
+23
+
+Published as a conference paper at ICLR 2025
+
+as directed graph connectivity. An interesting future work is to show a tight lower bound of the CoT
+complexity.
+
+Discussion on hardmax. Following prior works (e.g., Pérez et al., 2019; Hahn, 2020), this work
+uses hardmax in attention to simplify construction. However, real-world Transformers use softmax
+in attention. Using hardmax instead of softmax is a limitation of this area. We hope to address this
+limitation in future work.
+
+Discussion on context windows. The Transformer constructed in this work uses an unbounded
+context window. However, practical implementations of Transformers typically use a bounded con-
+text window due to memory considerations. This is indeed a limitation of current studies on the
+Turing completeness of Transformers. To address this limitation, we hope to study bounded context
+windows in future work.
+
+Discussion on learnability. Our current work focuses on expressive power rather than learnability.
+While we have shown the existence of a Transformer on which prompting is Turing-complete, it
+does not necessarily imply that a Transformer effectively learns to simulate any 2-PTMs through
+CoT steps. Investigating the learnability of such a Transformer is an intriguing direction for future
+research.
+
+24

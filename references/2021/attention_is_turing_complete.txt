@@ -1,0 +1,1942 @@
+Journal of Machine Learning Research 22 (2021) 1-35 Submitted 3/20; Revised 10/20; Published 3/21
+
+Attention is Turing Complete
+
+Jorge Pérez JPEREZ@DCC.UCHILE.CL
+Department of Computer Science
+
+Universidad de Chile
+
+IMFD Chile
+
+Pablo Barceldé PBARCELO @UC.CL
+Institute for Mathematical and Computational Engineering
+
+School of Engineering, Faculty of Mathematics
+
+Universidad Catolica de Chile
+
+IMFD Chile
+
+Javier Marinkovic JMARINKOVIC@DCC.UCHILE.CL
+Department of Computer Science
+
+Universidad de Chile
+
+IMFD Chile
+
+Editor: Luc de Raedt
+
+Abstract
+
+Alternatives to recurrent neural networks, in particular, architectures based on self-attention,
+are gaining momentum for processing input sequences. In spite of their relevance, the com-
+putational properties of such networks have not yet been fully explored. We study the
+computational power of the Transformer, one of the most paradigmatic architectures ex-
+emplifying self-attention. We show that the Transformer with hard-attention is Turing
+complete exclusively based on their capacity to compute and access internal dense repre-
+sentations of the data. Our study also reveals some minimal sets of elements needed to
+obtain this completeness result.
+
+Keywords: ‘Transformers, Turing completeness, self-Attention, neural networks, arbi-
+trary precision
+
+1. Introduction
+
+There is an increasing interest in designing neural network architectures capable of learning
+algorithms from examples (Graves et al., 2014; Grefenstette et al., 2015; Joulin and Mikolov,
+2015; Kaiser and Sutskever, 2016; Kurach et al., 2016; Dehghani et al., 2018). A key
+requirement for any such an architecture is thus to have the capacity of implementing
+arbitrary algorithms, that is, to be Turing complete. Most of the networks proposed for
+learning algorithms are Turing complete simply by definition, as they can be seen as a
+control unit with access to an unbounded memory; as such, they are capable of simulating
+any Turing machine.
+
+On the other hand, the work by Siegelmann and Sontag (1995) has established a dif-
+ferent way of looking at the Turing completeness of neural networks. In particular, their
+work establishes that recurrent neural networks (RNNs) are Turing complete even if only a
+bounded number of resources (i.e., neurons and weights) is allowed. This is based on two
+
+©2021 Jorge Pérez, Pablo Barceld, Javier Marinkovic.
+
+License: CC-BY 4.0, see https://creativecommons.org/licenses/by/4.0/. Attribution requirements are provided
+at http://jmlr.org/papers/v22/20-302.html.
+
+PEREZ, BARCELO, MARINKOVIC
+
+conditions: (1) the ability of RNNs to compute internal dense representations of the data,
+and (2) the mechanisms they use for accessing such representations. Hence, the view pro-
+posed by Siegelmann and Sontag shows that it is possible to release the full computational
+power of RNNs without arbitrarily increasing its model complexity.
+
+Most of the early neural architectures proposed for learning algorithms correspond to
+extensions of RNNs — e.g., Neural Turing Machines (Graves et al., 2014) —, and hence
+they are Turing complete in the sense of Siegelmann and Sontag. However, a recent trend
+has shown the benefits of designing networks that manipulate sequences but do not directly
+apply a recurrence to sequentially process their input symbols. A prominent example of this
+approach corresponds to architectures based on attention and self-attention mechanisms. In
+this work we look at the problem of Turing completeness a la Siegelmann and Sontag for
+one of the most paradigmatic models exemplifying attention: the Transformer (Vaswani
+et al., 2017).
+
+The main contribution of our paper is to show that the Transformer is Turing complete
+a la Siegelmann and Sontag, that is, based on its capacity to compute and access internal
+dense representations of the data it processes and produces. To prove this we assume that
+internal activations are represented as rational numbers with arbitrary precision. The proof
+of Turing completeness of the Transformer is based on a direct simulation of a Turing
+machine which we believe to be quite intuitive. Our study also reveals some minimal sets
+of elements needed to obtain these completeness results.
+
+Background work ‘The study of the computational power of neural networks can be
+traced back to McCulloch and Pitts (1943), which established an analogy between neurons
+with hard-threshold activations and threshold logic formulae (and, in particular, Boolean
+propositional formulae), and Kleene (1956) that draw a connection between neural networks
+and finite automata. As mentioned earlier, the first work showing the Turing completeness
+of finite neural networks with linear connections was carried out by Siegelmann and Sontag
+(1992, 1995). Since being Turing complete does not ensure the ability to actually learn
+algorithms in practice, there has been an increasing interest in enhancing RNNs with mech-
+anisms for supporting this task. One strategy has been the addition of inductive biases in
+the form of external memory, being the Neural Turing Machine (NTM) (Graves et al., 2014)
+a paradigmatic example. To ensure that NTMs are differentiable, their memory is accessed
+via a soft attention mechanism (Bahdanau et al., 2014). Other examples of architectures
+that extend RNNs with memory are the Stack-RNN (Joulin and Mikolov, 2015), and the
+(De)Queue-RNNs (Grefenstette et al., 2015). By Siegelmann and Sontag’s results, all these
+architectures are Turing complete.
+
+The Transformer architecture (Vaswani et al., 2017) is almost exclusively based on
+the attention mechanism, and it has achieved state of the art results on many language-
+processing tasks. While not initially designed to learn general algorithms, Dehghani et al.
+(2018) have advocated the need for enriching its architecture with several new features as a
+way to learn general procedures in practice. This enrichment is motivated by the empirical
+observation that the original Transformer architecture struggles to generalize to input of
+lengths not seen during training. We, in contrast, show that the original Transformer
+architecture is Turing complete, based on different considerations. These results do not
+contradict each other, but show the differences that may arise between theory and practice.
+
+ATTENTION IS TURING COMPLETE
+
+For instance, Dehghani et al. (2018) assume fixed precision, while we allow arbitrary internal
+precision during computation. As we show in this paper, Transformers with fixed precision
+are not Turing complete. We think that both approaches can be complementary as our
+theoretical results can shed light on what are the intricacies of the original architecture,
+which aspects of it are candidates for change or improvement, and which others are strictly
+needed. For instance, our proof uses hard attention while the Transformer is often trained
+with soft attention (Vaswani et al., 2017).
+
+Recently, Hahn (2019) has studied the Transformer encoder (see Section 3) as a language
+recognizer and shown several limitations of this architecture. Also, Yun et al. (2020) studied
+Transformers showing that they are universal approximators of continuous functions over
+strings. None of these works studied the completeness of the Transformer as a general
+computational device which is the focus of our work.
+
+Related article A related version of this paper was previously presented at the Interna-
+tional Conference on Learning Representations, ICLR 2019, in which we announced results
+on two modern neural network architectures: Transformers and Neural GPUs; see (Pérez
+et al., 2019). For the sake of uniformity this submission focuses only on the former.
+
+Organization of the paper The rest of the paper is organized as follows. We begin
+by introducing notation and terminology in Section 2. In Section 3 we formally introduce
+the Transformer architecture and prove a strong invariance property (Section 3.1) that
+motivates the addition of positional encodings (Section 3.2). In Section 4 we prove our
+main result on the Turing completeness of the Transformer (Theorem 6). As the proof
+need several technicalities we divide it in three parts: overview of the main construction
+(Section 4.1), implementation details for every part of the construction (Section 4.2) and
+proof of intermediate lemmas (Appendix A). We finally discuss on some of the characteristics
+of the Transformer needed to obtain Turing completeness (Section 5) and finish with the
+possible future work (Section 6).
+
+2. Preliminaries
+
+We adopt the notation of Goodfellow et al. (2016) and use letters x, y, z, etc. for scalars, x,
+y, Z, etc. for vectors, and A, X, Y, etc. for matrices and sequences of vectors. We assume
+that all vectors are row vectors, and thus they are multiplied as, e.g., 2A for a vector x
+and matrix A. Moreover, A;,, denotes the i-th row of matrix A.
+
+We assume all weights and activations to be rational numbers of arbitrary precision.
+Moreover, we only allow the use of rational functions with rational coefficients. Most of our
+positive results make use of the piecewise-linear sigmoidal activation function ao : Q > Q,
+which is defined as
+
+0 x <0,
+o(x) =< x 0<a2<l, (1)
+1 x>l.
+
+Observe that o(x) can actually be constructed from standard ReLU activation functions.
+In fact, recall that relu(z) = max(0, 2). Hence,
+
+o(x) = relu(x) — relu(a — 1).
+
+PEREZ, BARCELO, MARINKOVIC
+
+Then there exist matrices A and B, and a bias vector b, such that for every vector x it
+holds that o(a) = relu(aA+6)B. This observation implies that in all our results, whenever
+we use o(-) as an activation function, we can alternatively use relu(-) but at the price of an
+additional network layer.
+
+Sequence-to-sequence neural networks We are interested in sequence-to-sequence
+(seq-to-seq) neural network architectures that we formalize next. A seq-to-seq network
+N receives as input a sequence X = (#1,...,%n) of vectors x; € Q%, for some d > 0, and
+produces as output a sequence Y = (yj,...,Ym) of vectors y; € Q?. Most architectures
+of this type require a seed vector s and some stopping criterion for determining the length
+of the output. The latter is usually based on the generation of a particular output vector
+called an end of sequence mark. In our formalization instead, we allow a network to produce
+a fixed number r > 0 of output vectors. Thus, for convenience we see a general seq-to-seq
+network as a function N such that the value N(X,s,r) corresponds to an output sequence
+of the form Y = (yj, y2,.--, yr). With this definition, we can interpret a seq-to-seq network
+as a language recognizer of strings as follows.
+
+Definition 1 A seq-to-seq language recognizer is a tuple A = (©, f,N,s,F), where X is a
+finite alphabet, f : X > Q¢ is an embedding function, N is a seq-to-seq network, s € Q¢
+is a seed vector, and F C Q¢ is a set of final vectors. We say that A accepts the string
+w € &*, if there exists an integer r € N such that N(f(w),s,r) = (y1,.--, yr) and yy € F.
+The language accepted by A, denoted by L(A), is the set of all strings accepted by A.
+
+We impose two additional restrictions over recognizers. The embedding function f :
+>» — Q? should be computed by a Turing machine in polynomial time w.r.t. the size of D.
+This covers the two most typical ways of computing input embeddings from symbols: the
+one-hot encoding, and embeddings computed by fixed feed-forward networks. Moreover,
+the set F should also be recognizable in polynomial-time; given a vector f, the membership
+f © F should be decided by a Turing machine working in polynomial time with respect to
+the size (in bits) of f. This covers the usual way of checking equality with a fixed end-
+of-sequence vector. We impose these restrictions to disallow the possibility of cheating by
+encoding arbitrary computations in the input embedding or the stopping condition, while
+being permissive enough to construct meaningful embeddings and stopping criterions.
+
+Turing machine computations Let us recall that (deterministic) Turing machines are
+tuples of the form M = (Q,», 0, dnit, F’), where:
+
+e Q is a finite set of states,
+
+e \ is a finite alphabet,
+
+e d6:QxuU>Q x =x {1,—-1} is the transition function,
+© ginit € Q is the initial state, and
+
+e F CQ is the set of final states.
+
+We assume that M is formed by a single tape that consists of infinitely many cells (or
+positions) to the right, and also that the special symbol # € © is used to mark blank
+
+ATTENTION IS TURING COMPLETE
+
+positions in such a tape. Moreover, M has a single head that can move left and right over
+the tape, reading and writing symbols from ™.
+
+We do not provide a formal definition of the notion of computation of M on input
+string w € &*, but it can be found in any standard textbook on the theory of computation;
+c.f. Sipser (2006). Informally, we assume that the input w = a,---a, is placed symbol-
+by-symbol in the first n cells of the tape. The infinitely many other cells to the right of
+w contain the special blank symbol #. The computation of M on w is defined in steps
+71=1,2,.... In the first step the machine M is in the initial state ginit with its head reading
+the first cell of the tape. If at any step 7, for 7 > 0, the machine is in state g € Q with its
+head reading a tape that contains symbol a € ©, the machine proceeds to do the following.
+Assume that 6(q,a) = (q',b,d), for d € Q, b € N, and dé {1,—1}. Then M writes symbol
+b in the cell that is reading, updates its state to q’, and moves its head in the direction d,
+with d= 1 meaning move one cell to the right and d = —1 one cell to the left.
+
+If the computation of M on w ever reaches a final state q € F, we say that M accepts
+w. The language of all strings in %* that are accepted by M is denoted L(M). A language
+L is recognizable, or decidable, if there exists a TM M with L = L(M).
+
+Turing completeness of seq-to-seq neural network architectures A class N of
+seq-to-seq neural network architectures defines the class £yy composed of all the languages
+accepted by language recognizers that use networks in NV’. From these notions, the formal-
+ization of Turing completeness of a class NV naturally follows.
+
+Definition 2 A class N of seq-to-seq neural network architectures is Turing Complete if Ly
+contains all decidable languages (i.e., all those that are recognizable by Turing machines).
+
+3. The Transformer architecture
+
+In this section we present a formalization of the Transformer architecture (Vaswani et al.,
+2017), abstracting away from some specific choices of functions and parameters. Our for-
+malization is not meant to produce an efficient implementation of the Transformer, but
+to provide a simple setting over which its mathematical properties can be established in a
+formal way.
+
+The Transformer is heavily based on the attention mechanism introduced next. Consider
+a scoring function score : Q¢ x Q¢ > Q and a normalization function p : Q” > Q”, for
+d,n >0. Assume that q € Q%, and that K = (k,,..., kn) and V = (v1,..., Un) are tuples
+of elements in Q¢. A q-attention over (K,V), denoted by Att(q, K,V), is a vector a € Q?
+defined as follows.
+
+($1,---;5n) = p(score(q, k,),score(q,k2),...,score(q, k,)) (2)
+QA = $811, + 89VQ +++ + SnUn- (3)
+
+Usually, q is called the query, K the keys, and V the values. We do not pose any restriction
+on the scoring functions, but we do pose some restrictions over the normalization function
+to ensure that it produces a probability distribution over the positions. We require the
+normalization function to satisfy that for each w = (#1,...,%7) € Q” there is a function
+fo from Q to Q* such that it is the case that the i-th component p;(x) of p(a) is equal
+
+PEREZ, BARCELO, MARINKOVIC
+
+to fp(xi)/ a f(a). We note that, for example, one can define the softmax function in
+this way by simply selecting f,(x) to be the exponential function e*, but we allow other
+possibilities as well as we next explain.
+
+When proving possibility results, we will need to pick specific scoring and normalization
+functions. A usual choice for the scoring function is a non linear function defined by a
+feed forward network with input (q,k;), sometimes called additive attention (Bahdanau
+et al., 2014). Another possibility is to use the dot product (q,k;), called multiplicative
+attention (Vaswani et al., 2017). We actually use a combination of both: multiplicative
+attention plus a feed forward network defined as the composition of functions of the form
+o(g(-)), where g is an affine transformation and a is the piecewise-linear sigmoidal activation
+defined in equation (1). For the normalization function, softmax is a standard choice.
+Nevertheless, in our proofs we use the hardmax function, which is obtained by setting
+fhardmax(%i;) = 1 if x; is the maximum value in a, and fhardmax(2i) = 0 otherwise. Thus,
+for a vector z in which the maximum value occurs r times, we have that hardmax;(x) = 4
+if x; is the maximum value of x, and hardmax;(a) = 0 otherwise. We call it hard attention
+whenever hardmax is used as normalization function.
+
+Let us observe that the choice of hardmax is crucial for our proofs to work in their current
+shape, as it allows to simulate the process of “accessing” specific positions in a sequence of
+vectors. Hard attention has been previously used specially for processing images (Xu et al.,
+2015; Elsayed et al., 2019) but, as far as we know, it has not been used in the context of
+self-attention architectures to proces sequences. See Section 5 for further discussion on our
+choices for functions in positive results. As it is customary, for a function F : Q? > Q?
+and a sequence X = (#1, #9,...,@n), with x; € Q%, we write F(X) to denote the sequence
+
+(F(a1),...,F (an)).
+
+Transformer Encoder and Decoder A single-layer encoder of the Transformer is a
+parametric function Enc(@), with 6 being the parameters, that receives as input a sequence
+X = (#1,...,%n) of vectors in Q¢ and returns a sequence Enc(X;0) = (21,...,2n) of
+vectors in Q% of the same length as X. In general, we consider the parameters in @ to
+be parameterized functions Q(-),K(-),V(-), and O(-), all of them from Q? to Q¢. The
+single-layer encoder is then defined as follows
+
+a; = Att(Q(ai), K(X), V(X) +2 (4)
+
+Notice that in equation 4 we apply functions Q and V, separately, over each entry in X.
+In practice Q(-), K(-), V(-) are typically linear transformations specified as matrices of
+dimension (d x d), and O(-) is a feed-forward network. The + a; and + a; summands
+are usually called residual connections (He et al., 2016; He et al.). When the particular
+functions used as parameters are not important, we simply write Z = Enc(X).
+
+The Transformer encoder is defined simply as the repeated application of single-layer
+encoders (with independent parameters), plus two final transformation functions K(-) and
+V(-) applied to every vector in the output sequence of the final layer. Thus the L-layer
+Transformer encoder is defined by the following recursion (with 1 < ¢< L—-land X!= X).:
+
+NS
+
+X 1 — Enc(X‘;@), K=K(X"), V=V(X"). (6)
+
+ATTENTION IS TURING COMPLETE
+
+We write (K,V) = TEnc,(X) to denote that (K, V) is the result of an L-layer Transformer
+encoder over the input sequence X.
+
+A single-layer decoder is similar to a single-layer encoder but with additional attention
+to an external pair of key-value vectors (K°®, V°). The input for the single-layer decoder is
+a sequence Y = (yj,..., yx) plus the external pair (K°, V®), and the output is a sequence
+Z = (21,...,2%) of the same length as Y. When defining a decoder layer we denote by Y;
+the sequence (y1,..., yi), for 1 <i < k. The output Z = (z,..., 2%) of the layer is also
+parameterized, this time by four functions Q(-), K(-), V(-) and O(-) from Q? to Q%, and is
+defined as follows for each 1 <i <k:
+
+pi = Att(Q@m), K(Vi),V(%)) + wi (7)
+a; = Att(p;, K®, V°) + pi (8)
+
+Notice that the first (self) attention over (K(Y;), V(Y¥;)) considers the subsequence of Y only
+until index i and is used to generate a query p; to attend the external pair (K°,V°). We
+denote the output of the single-decoder layer over Y and (K°, V°) as Dec((K°, V°), Y; 8).
+
+The Transformer decoder is a repeated application of single-layer decoders, plus a trans-
+formation function F : Q? + Q? applied to the final vector of the decoded sequence. Thus,
+the output of the decoder is a single vector z € Q¢. Formally, the L-layer Transformer
+decoder is defined as
+
+Y! = Dec((K°,V°),¥50@), z=Flyf) (1<€<L—-landY'=Y). (10)
+
+We use z = TDecz((K®, V®), Y) to denote that z is the output of this L-layer Transformer
+decoder on input Y and (K°,V°).
+
+An important restriction of Transformers is that the output of a Transformer decoder
+always corresponds to the encoding of a letter in some finite alphabet [. Formally speaking,
+it is required that there exists a finite alphabet T and an embedding function g : T > Q”,
+such that the final transformation function F' of the Transformer decoder maps any vector
+in Q? to a vector in the finite set g(I) of embeddings of letters in I.
+
+The complete Transformer A Transformer network receives an input sequence X, a
+seed vector yo, and a value r € N. Its output is a sequence Y = (y1,...,y,) defined as
+
+We denote the output sequence of the transformer as Y = (yj, y2,.--, yr) = Trans(X, yo, Tr).
+
+3.1 Invariance under proportions
+
+Transformer networks, as defined above, are quite weak in terms of its abilities to capture
+languages. This is due to the fact that Transformers are order-invariant, i.e., they do not
+have access to the relative order of the elements in the input. More formally, two input
+sequences that are permutations of each other produce exactly the same output. This is
+a consequence of the following property of the attention function: if K = (ki,...,kn),
+V = (vj,.--,Un), and 7: {1,...,n} > {1,...,n} is a permutation, then Att(q,kK,V) =
+Att(q, (Kc), 7(V)) for every query q.
+
+PEREZ, BARCELO, MARINKOVIC
+
+Based on order-invariance we can show that Transformers, as currently defined, are quite
+weak in their ability to recognize basic string languages. As a standard yardstick we use
+the well-studied class of regular languages, i.e., languages recognized by finite automata;
+see, e.g., Sipser (2006). Order-invariance implies that not every regular language can be
+recognized by a Transformer network. For example, there is no Transformer network that
+can recognize the regular language (ab)*, as the latter is not order-invariant.
+
+A reasonable question then is whether the Transformer can express all regular languages
+which are themselves order-invariant. It is possible to show that this is not the case by
+proving that the Transformer actually satisfies a stronger invariance property, which we
+call proportion invariance, and that we present next. For a string w € &* and a symbol
+a € %, we use prop(a, w) to denote the ratio between the number of times that a appears
+in w and the length of w. Consider now the set PropInv(w) = {u € &* | prop(a,w) =
+prop(a, u) for every a € }}. Then:
+
+Proposition 3 Let Trans be a Transformer, s a seed, r € N, and f : % > Q® an em-
+bedding function. Then Trans(f(w),s,r) = Trans(f(u),s,r), for each u,w € %* with
+u € PropInv(w).
+
+The proof of this result is quite technical and we have relegated it to the appendix. As
+an immediate corollary we obtain the following.
+
+Corollary 4 Consider the order-invariant regular language L = {w © {a,b}* | w has an
+even number of a symbols}. Then L cannot be recognized by a Transformer network.
+
+Proof To obtain a contradiction, assume that there is a language recognizer A that uses
+a Transformer network and such that L = L(A). Now consider the strings w; = aabb and
+w2 = aaabbb. Since w; € PropInv(w2) by Proposition 3 we have that w; € L(A) if and only
+if wo € L(A). This is a contradiction since w, € L but we ¢ L. a
+
+On the other hand, languages recognized by Transformer networks are not necessarily
+regular.
+
+Proposition 5 There is a Transformer network that recognizes the non-regular language
+S = {w € {a,b}* | w has strictly more symbols a than symbols b}.
+
+Proof To obtain a contradiction, assume that there is a language recognizer A that uses
+a Transformer network and such that L = L(A). Now consider the strings w; = aabb and
+w2 = aaabbb. Since w; € PropInv(w2) by Proposition 3 we have that w; € L(A) if and only
+if w2 € L(A). This is a contradiction since w; € L but we ¢ L. ||
+
+That is, the computational power of Transformer networks as defined in this section is
+both rather weak (they do not even contain order-invariant regular languages) and not so
+easy to capture (as they can express counting properties that go beyond regularity).
+
+ATTENTION IS TURING COMPLETE
+
+3.2 Positional Encodings
+
+The weakness in terms of expressive power that Transformers exhibit due to order- and
+proportion-invariance has motivated the need for including information about the order of
+the input sequence by other means; in particular, this is often achieved by using the so-
+called positional encodings (Vaswani et al., 2017; Shaw et al., 2018), which come to remedy
+the order-invariance issue by providing information about the absolute positions of the
+symbols in the input. A positional encoding is just a function pos : N > Q¢. Function pos
+combined with an embedding function f : © > Q® give rise to a new embedding function
+foos : S X N > Q? such that fpos(a,i) = f(a) + pos(i). Thus, given an input string
+W = a142°+-dn € &*, the result of the embedding function f,.s(w) provides a “new” input
+
+(fpos(@1, 1), foos (G2, 2), tee , foos(Gn; n))
+
+to the Transformer encoder. Similarly, the Transformer decoder instead of receiving the
+sequence Y = (yo, yi,---,Yz) as input, it receives now the sequence
+
+Y’ = (yo + pos(1), yi + pos(2),..., ye + pos(t + 1))
+
+As for the case of the embedding functions, we require the positional encoding pos(i) to be
+computable by a Turing machine in polynomial time with respect to the size (in bits) of 7.
+
+As we show in the next section, positional encodings not only solve the aforementioned
+weaknesses of Transformer networks in terms of order- and proportion-invariance, but ac-
+tually ensure a much stronger condition: There is a natural class of positional encoding
+functions that provide Transformer networks with the ability to encode any language ac-
+cepted by a Turing machine.
+
+4. Turing completeness of the Transformer with positional encodings
+
+In this section we prove our main result.
+
+Theorem 6 The class of Transformer networks with positional encodings is Turing com-
+plete. Moreover, Turing completeness holds even in the restricted setting in which the only
+non-constant values in positional embedding pos(n) of n, forn €N, aren, 1/n, and 1/n?,
+and Transformer networks have a single encoder layer and three decoder layers.
+
+Actually, the proof of this result shows something stronger: Not only Transformers can
+recognize all languages accepted by Turing machines, i.e., the so-called recognizable or decid-
+able languages; they can recognize all recursively enumerable or semi-decidable languages,
+which are those languages L for which there exists a TM that enumerates all strings in L.
+
+We now provide a complete proof of Theorem 6. For readability, the proofs of some
+intermediate lemmas are relegated to the appendix.
+
+Let M = (Q,%, 6, dnit, F) be a Turing machine with a tape that is infinite to the right
+and assume that the special symbol # € © is used to mark blank positions in the tape. We
+make the following assumptions about how M works when processing an input string:
+
+e M begins at state ginit pointing to the first cell of the tape reading the blank symbol
+#. The input is written immediately to the right of this first cell.
+
+PEREZ, BARCELO, MARINKOVIC
+
+e Q has a special state gqeaq used to read the complete input.
+
+e Initially (step 0), M makes a transition to state qreaq and move its head to the right.
+e While in state dreaq it moves to the right until symbol # is read.
+
+e There are no transitions going out from accepting states (states in F’).
+
+It is easy to prove that every general Turing machine is equivalent to one that satisfies the
+above assumptions. We prove that one can construct a transformer network Transyy that is
+able to simulate M on every possible input string; or, more formally, L(M) = L(Transa,).
+
+The construction is somehow involved and makes use of several auxiliary definitions and
+intermediate results. To make the reading easier we divide the construction and proof in
+three parts. We first give a high-level view of the strategy we use. Then we give some details
+on the architecture of the encoder and decoder needed to implement our strategy, and finally
+we formally prove that every part of our architecture can be actually implemented.
+
+4.1 Overview of the construction and high-level strategy
+
+In the encoder part of Trans,y we receive as input the string w = s1s59---8,. We first use an
+embedding function to represent every s; as a one-hot vector and add a positional encoding
+for every index. The encoder produces output (K*°,V°), where K® = (kf,...,k&) and
+V* = (vf,...,v&) are sequences of keys and values such that v& contains the information
+of s; and k& contains the information of the i-th positional encoding. We later show that
+this allows us to attend to every specific position and copy every input symbol from the
+encoder to the decoder (see Lemma 7).
+
+In the decoder part of Transyy we simulate a complete execution of M over w =
+$152°*+S,. For this we define the following sequences (for i > 0):
+
+(@ state of M at step i of the computation
+
+Q
+
+)
+sO: symbol read by the head of M during step 7
+) symbol written by M during step 7
+
+)
+
+mit direction in which the head is moved in the transition of M during step 7
+
+For the case of m™ we assume that —1 represents a movement to the left and 1 represents a
+movement to the right. In our construction we show how to build a decoder that computes
+all the above values, for every step 7, using self attention plus attention over the encoder
+part. Since the above values contain all the needed information to reconstruct the complete
+history of the computation, we can effectively simulate M.
+
+In particular, our construction produces the sequence of output vectors yi, y2,... such
+that, for every i, the vector y; contains both q® and s encoded as one-hot vectors. The
+construction and proof goes by induction. We begin with an initial vector yo that represents
+the state of the computation before it has started, that is q® = ginit and s© = #. For the
+induction step we assume that we have already computed y,...,y, such that y; contains
+information about g® and s, and we show how on input (Yo, Y1,---,Yr) the decoder
+produces the next vector y,+1 containing q+) and s+),
+
+10
+
+ATTENTION IS TURING COMPLETE
+
+The overview of the construction is as follows. First, by definition the transition function
+6 of Turing machine M relates the above values with the following equation:
+
+(4,8) = (9,0, m), (12)
+
+We prove that we can use a two-layer feed-forward network to mimic the transition function
+6 (Lemma 8). Thus, given that the input vector y; contains g® and s, we can produce the
+values qt), v and m™ (and store them as values in the decoder). In particular, since
+y, is in the input, we can produce g("+!) which is part of what we need for Yr+1- In order
+to complete the construction we also need to compute the value s‘"t)), that is, we need to
+compute the symbol read by the head of machine M during the next step (step r +1). We
+next describe at a high level, how this symbol can be computed with two additional decoder
+layers.
+
+We first make some observations about s that are fundamental for our construction.
+Assume that during step i of the computation the head of M is pointing at the cell with
+index k. Then we have three possibilities:
+
+1. Ifi <n, then s = 5; since M is still reading its input string.
+2. Ifi > n and M has never written at index k, then s = #, the blank symbol.
+
+3. Otherwise, that is, if 7 > and step 7 is not the first step in which M is pointing to
+index k, then s is the last symbol written by M at index k.
+
+For the case (1) we can produce s® by simply attending to position i in the encoder
+part. Thus, if 7 +1 <n to produce s+) we can just attend to index r +1 in the encoder
+and copy this value to y,;1. For cases (2) and (3) the solution is a bit more complicated,
+but almost all the important work is done by computing the index of the cell that M will
+be pointing during step r+ 1.
+
+To formalize this computation, let us denote by c\ € N the following value:
+
+cl : the index of the cell the head of M is pointing to during step 7.
+
+Notice that the value c, for i > 0, satisfies that cC) = c-) + m@-)). If we unroll this
+equation by using c) = 0, we obtain that
+
+co) — m) + m) foes mi),
+
+Then, since we are assuming that the decoder stores each value of the form m), for
+0 <j <i, at step 7 the decoder has all the necessary information to compute not only
+value c but also c+). We actually show that the computation (of a representation) of
+c® and c+) can be done by using a single layer of self attention (Lemma 9).
+
+We still need to define a final notion. With c® one can define the auxiliary value (i)
+as follows. If the set {7 | j <i and c) = c} is nonempty, then
+
+(i) = max{j | j <iandc) =e},
+
+Otherwise, &(i) = (i — 1). Thus, if the cell c has been visited by the head of M before
+step 7, then ¢(i) denotes the last step in which this happened. Since, by assumption, at
+
+11
+
+PEREZ, BARCELO, MARINKOVIC
+
+Ginit Ff Iread_ Ff Qread_# 1 read $1
+
+attends to the
+Yread $2 encoder and copies
+
+: the corresponding
+symbol
+
+read $1 dread $1 read $1 2
+
+read $n Gead $n > read Sn Qread_#
+
+uses self attention
+
+Att to compute next state
+gts) qv meT Qut-D qs and the next symbol
+under M’s head
+gq? s g@t) v® m® AS 9 yO cl) g@tDst+)
+————_—_r ——@—ro eer
+implements M!’s : computes index of cell : computes last symbol
+transition function * at the next step (+1) ° written at cell c+)
+
+Figure 1: High-level structure of the decoder part of Transy,.
+
+every step of the computation M moves its head either to the right or to the left (it never
+stays in the same cell), for every i it holds that cl) t c’-)) from which we obtain that, in
+this case, £(i) <i—1. This implies that (i) =i—1 if and only if cell c is visited by the
+head of M for the first time at time step i. This allows us to check that c is visited for
+the first time at time step i by just checking whether ¢(i) =7—1.
+
+We now have all the necessary ingredients to explain how to compute the value s+),
+i.e., the symbol read by the head of M during step i of the computation. Assume that
+r+1>n (the case r+1 <n was already covered before). We first note that if @(r+1)=r
+then s"t) = # since this is the first time that cell c+") is visited. On the other hand, if
+&(r +1) <r then s‘"+)) is the value written by M at step &(r +1), ie., st) = vr+)),
+Thus, in this case we only need to attend to position (r+ 1) and copy the value vl) to
+produce s+), We show that all this can be done with an additional self-attention decoder
+layer (Lemma 10).
+
+We have described at a high-level a decoder that, with input (yo, yi,.-., yr), computes
+the values q+) and s"t) which are needed to produce y,41. A pictorial description of
+this high-level idea is depicted in Figure 1. In the following we explain the technical details
+of our construction.
+
+4.2 Details of the architecture of Transjy
+
+In this section we give more details on the architecture of the encoder and decoder needed
+to implement our strategy.
+
+Attention mechanism For our attention mechanism we make use of the non-linear func-
+tion y(x) = —|z| to define a scoring function score, : R¢ x R¢ > R such that
+
+score,(u, v) = y((u, v)) = —|(u, v)|.
+
+We note that this function can be computed as a small feed-forward network that has the
+dot product as input. Recall that relu(x) = max(0,2). Function y(x) can be implemented
+as v(x) = —relu(x) —relu(—ax). Then, let w, be the (row) vector [1, —1] and w2 the vector
+[—1,—-1]. We have that y(x) = relu(zw1)w3 and then score,(u, v) = relu(wv? w))ws .
+Now, let q € Q¢, and K = (k,...,kn) and V = (v1,...,Un) be tuples of elements
+
+in Q¢. We describe how Att(q,K,V) is computed when hard attention is considered
+
+12
+
+ATTENTION IS TURING COMPLETE
+
+(i.e., when hardmax is used as a normalization function). Assume first that there is a
+single j* € {1,...,n} that maximizes the value score,(q,k;). In such a case we have that
+Att(q, K,V) = v;« with
+
+j* = argmax score, (q, kj)
+l<j<n
+= argmax —|(q, k;)|
+l<j<n
+= argmin l(q, k;)| 8)
+l<jsn
+
+Thus, when computing hard attention with the function score,(-) we essentially select the
+vector v; such that the dot product (q, kj) is as close to 0 as possible. If there is more than
+one index, say indexes jj, j2,..., jr, that minimize the dot product (q,k;), we then have
+
+1
+Att(q, K,V) = 7 (ei + Vjo +++ + 0y,).
+
+Thus, in the extreme case in which all dot products of the form (q,k;) are equal, for 1 <
+j <n, attention behaves simply as the average of all value vectors, that is Att(q,K,V) =
+1 1 v;. We use all these properties of the hard attention in our proof.
+
+Vectors and encodings We now describe the vectors that we use in the encoder and
+decoder parts of Transyy. All such vectors are of dimension d = 2|Q|+4||+11. To simplify
+the exposition, whenever we use a vector v € Q¢ we write it arranged in four groups of
+values as follows
+v = [ ,81,%1,
+
+2, $2, %2,%3, 04, U5,
+
+83,76, $4, 07
+
+©g,X9, 10,011 F
+
+where for each i we have that q; € QI@!, s; € Ql™, and x; € Q. Whenever in a vector of
+
+the above form any of the four groups of values is composed only of 0’s, we simply write
+‘O,...,0’ assuming that the length of this sequence is implicitly determined by the length
+of the corresponding group. Finally, we denote by 0, and 0, the vectors in Ql@! and Q™|,
+respectively, that consist exclusively of Os.
+
+For a symbol s € 5, we use [ s ] to denote a one-hot vector in Q'™! that represents s.
+That is, given an injective function 7: © — {1,...,||}, the vector | s ] has a 1 in position
+m(s) and a 0 in all other positions. Similarly, for g € Q, we use [ q ] to denote a one-hot
+vector in QI@! that represents g.
+
+Embeddings and positional encodings We can now introduce the embedding and po-
+sitional encodings used in our construction. We use an embedding function f : © > Q¢
+defined as
+
+0,...,0,
+0,...,0,
+
+[ s ’ 0, 0;, 0,
+0,...,0 ]
+
+PEREZ, BARCELO, MARINKOVIC
+
+Our construction uses the positional encoding pos : N > Q? such that
+
+pos(i) = [ 0,...,0,
+0,...,0,
+0,...,0
+1
+
+i, 1/i,1/? |
+Thus, given an input sequence s152---S, € &*, we have for each 1 <i <n that
+pos (Si) = f (si) + pos(z) = [ 0,...,0,
+0,...,0,
+[ si ],0, 05, 0,
+1i,1/i,1/i? |
+
+We denote this last vector by x;. That is, if M receives the input string w = s189--- Sn,
+then the input for Transyy is the sequence (a, #2,...,@,,). The need for using a positional
+encoding having values 1/i and 1/7? will be clear when we formally prove the correctness
+of our construction.
+
+We need a final preliminary notion. In the formal construction of Transj;y we also use
+the following auxiliary sequences:
+
+Sn, a>n
+
+n t>n
+These are used to identify when M is still reading the input string.
+
+Construction of TEncy The encoder part of Trans, is very simple. For TEncjy we use
+a single-layer encoder, such that TEncys(x1,...,%n) = (K°, V®), where K® = (ky,..., kn)
+
+and V® = (v1,...,Un) satisfy the following for each 1 <i <n:
+
+ki; = [ 0,...,0,
+0, .,0,
+0,...,0,
+i, -1,0,0
+0,...,0,
+[ si ],2, 0s, 0,
+0,...,0
+
+It is straightforward to see that these vectors can be produced with a single encoder layer
+by using a trivial self attention, taking advantage of the residual connections in equations (4)
+and (5), and then using linear transformations for V(-) and K(-) in equation (6).
+
+When constructing the decoder we use the following property.
+
+14
+
+ATTENTION IS TURING COMPLETE
+
+Lemma 7 Let q € Q? be a vector such that q=[_,...,_,1,j,_,_], where 7 © N and ‘_’
+denotes an arbitrary value. Then
+Att(q,K°®,V°) = [ 0,...,0,
+0,...,0,
+[ 0 ],8%,0.,0,
+0,...,0 ]
+Construction of TDecy We next show how to construct the decoder part of Transjy to
+produce the sequence of outputs yi, y2,..., where y; is given by:
+yi = [ ra J]. s® J,m@)
+0,...,0,
+0,...,0,
+0,...,0
+
+That is, y; contains information about the state of M at step 7, the symbol under the head
+of M at step 7, and the last direction followed by M (the direction of the movement of
+the head at step i—1). The need to include m“—") will become clear in the construction.
+Notice that this respects the restriction on the vectors produced by Transformer decoders:
+there is only a finite number of vectors y; the decoder can produce, and thus such vectors
+can be understood as embeddings of some finite alphabet I.
+
+We consider as the initial (seed) vector for the decoder the vector
+
+[ dinit a [ # I. 0,
+0,...,0,
+
+0,...,0,
+
+0,...,0
+
+yo = [
+
+We are assuming that m) = 0 to represent that previous to step 1 there was no head
+movement. Our construction resembles a proof by induction; we describe the architecture
+piece by piece and at the same time we show how for every r > 0 our architecture constructs
+yr+i from the previous vectors (Yyo,..-,Yr)-
+
+Thus, assume that yo,...,y, satisfy the properties stated above. Since we are using
+positional encodings, the actual input for the first layer of the decoder is the sequence
+
+yo + pos(1), yi + pos(2), --., Yr + pos(r + 1).
+We denote by y; the vector y; plus its positional encoding. Thus,
+
+B= 1 LoL hme,
+0,...,0,
+0,...,0,
+1
+
+(i + 1),1/G@4+1),1/@4+1) |
+
+For the first self attention in equation (7) we just produce the identity which can be
+easily implemented as in the proof of Proposition 5. Thus, we produce the sequence of
+vectors (pj, Pj;---; p+) such that p} = %;.
+
+15
+
+PEREZ, BARCELO, MARINKOVIC
+
+Since p} is of the form [_,...,_,1,i+1,_,_], by Lemma 7 we know that if we use p}
+to attend over the encoder we obtain
+Att(p},K°,V°) = [ 0,...,0,
+0,...,0,
+[ a) 1, 6°"), 0,,0,
+0,...,0 ]
+
+Thus, in equation (8) we finally produce the vector a} given by
+
+al = Att(p}, K°,V°) +p} = [ [d],[s© ],m@,
+0,...,0,
+[at) 7,8, 0,,0,
+1,@41),1/@41),1/@41) |
+
+As the final piece of the first decoder layer we use a function O;(-) in equation (9) that
+satisfies the properties stated in the following lemma.
+
+(14)
+
+Lemma 8 There exists a two-layer feed-forward network O; : Q¢ + Q¢ such that, on input
+vector a} as defined in equation (14), it produces as output
+
+O(a!) = [| -[q® ],-[s® ],-m-9,
+[a J, [ vo J,m®,m?,0,0
+
+0,...,0
+
+That is, function O;(-) simulates transition 6(q,s) to construct [ g@+) J, [ o J,
+and m besides some other linear transformations.
+
+We finally produce as the output of the first decoder layer, the sequence (z@, 21,..., Z})
+such that
+z} = O:(aj)+a} = [ 0,...,0,
+[ a) J, fv ],m©, mY, 0,0,
+[al J, 8,04, 0,
+1,(¢4+1),1/(¢+1),1/(¢+ 1)?
+
+(15)
+
+Notice that z} already holds info about g?*)) and m which we need for constructing
+vector y;+41. The single piece of information that we still need to construct is s+), that
+is, the symbol under the head of machine M at the next time step (time r+ 1). We next
+describe how this symbol can be computed with two additional decoder layers.
+
+Recall that c is the cell to which M is pointing to at time i, and that it satisfies that
+cf) = mO +m) +...4 ml). We can take advantage of this property to prove the
+following lemma.
+
+Lemma 9 Let Z} = (z4,z1,...,2z}). There exist functions Qo(-), Ko(-), and V2(-) defined
+
+iad)
+
+by feed-forward networks such that
+
+Att(Qo(z}), K2(Z}),Vo(Z})) = [ 0,...,0, ay
+i+l1 a
+0,...,0,
+0,...,0 ]
+
+16
+
+ATTENTION IS TURING COMPLETE
+
+Lemma 9 essentially shows that one can construct a representation for values c and
+c'+)) for every possible index i. In particular, if i = r we will be able to compute the value
+c+) that represents the cell to which the head of M is pointing to during the next time
+step.
+
+Continuing with the second decoder layer, after applying the self attention defined by
+Qe, Ke, and Vo, and adding the residual connection in equation (7), we obtain the sequence
+of vectors (p2, p7,...,p2) such that for each 0 <i <r:
+
+Pp? = — Att(Qo(z}), K2(Z}), Vo(Z})) + 24
+
+v
+
+= [ 0,...,0,
+i i a) mi-1), Pe
+[9 J, [00 J.mO, mY, or,
+[ qit+1) ],6°*), 0,0,
+1,(¢+1),1/(@4+1),1/(i +1)?
+
+From vectors (p?,p7,..-,p7), and by using the residual connection in equation (8)
+plus a null output function O(-) in equation (9), one can produce the sequence of vec-
+tors (za, 2?, ...,22) such that z? = p?, for each 0 < i < r, as the output of the second
+decoder layer. That is,
+
+z? = p? = [ 0,...,0,
+
+4 i a a i-1) ct) cl)
+[ 9 J, [0 JO, ml, Cy
+[ a) 1, 8°", 0,,0,
+1,(¢+1),1/(i+1),1/(i +1)?
+
+We now describe how we can use a third, and final, decoder layer to produce our desired
+st) value, i.e., the symbol read by the head of M over the next time step. Recall that
+€(i) is the last time (previous to i) in which M was pointing to position c, or it is i—1 if
+this is the first time that M is pointing to c. We can prove the following lemma.
+
+Lemma 10 There exist functions Q3(-), K3(-), and V3(-) defined by feed-forward networks
+such that
+
+4 0
+
+ooo O&O
+
+We prove Lemma 10 by showing that, for every i, one can attend exactly to position
+é(i+1) and then copy both values: ¢(i+1) and [ v@¢*) ]. We do this by taking advantage
+of the previously computed values c® and c+). Then we have that p? is given by
+
+p> = — Att(Q3(z?), K3(Z?), V3(Z?)) + 2?
+
+[ 0,...,0
+i i i i-1) CD
+[69 ],[ 00 J.mO,mOY, Co, Sy,
+La) |e), [ VG) | eat),
+LG +D) 1/G+),1/( +1? !
+
+(17)
+
+17
+
+PEREZ, BARCELO, MARINKOVIC
+
+plus a null output function O(-) in equation (9), we can produce the sequence of vectors
+(zg, z3,..., 22) such that z3 = p?, for each 1 < i <r, as the output of the third and final
+decoder layer. We then have
+
+From vectors (pz, p},...,p%), and by using the residual connection in Equation (8)
+(
+
+z3 = p? = [ 0,...,0,
+
+i i i it) cD el)
+[oY J, [0 JO, me), Ca, Ey,
+[a |e), [ VG) | eat),
+1,(¢+1),1/@+1),1/G+1)?
+
+We finish our construction by applying a final transformation function F'(-) in equa-
+tion (10) with the properties specified in the following lemma.
+
+Lemma 11 There exists a function F : Q4 + Q¢ defined by a feed-forward network such
+that
+Fla) = [
+
+r
+
+[a?t) ],[ set) J,m™,
+0,...,0,
+
+0,...,0,
+0,...,0
+
+’ ’
+
+— Ur+1
+
+Final step Recall that M = (Q,%,6,dinit, Ff). We can now use our Transyy network to
+construct the seq-to-seq language recognizer
+
+A= (d, fos: Transp, Yo; F),
+
+where F is the set of all vectors in Q? that correspond to one-hot encodings of final states
+in F. Formally, F = {[ ¢]|q¢€ F} x Q¢'@l. It is straightforward to see that membership
+in F can be checked in linear time.
+
+It is easy to observe that L(A) = L(M), ie., for every w € &* it holds that A accepts
+w if and only if M accepts w. In fact, if M accepts w then the computation of M on w
+reaches an accepting state qr € F at some time step, say ¢*. It is clear from the construction
+above that, on input fpos(w), our network Transjy produces a vector yj» that contains qf
+as a one-hot vector; this implies that A accepts w. In turn, if M does not accept w then
+the computation of M on w never reaches an accepting state. Therefore, Trans; on input
+foos(w) never produces a vector y, that contains a final state in F’ as a one-hot vector. This
+finishes the proof of the theorem.
+
+5. Requirements for Turing completeness
+
+In this section we describe some of the main features used in the proof of Turing completeness
+for Transformer networks presented in the previous section, and discuss to what extent they
+are required for such a result to hold.
+
+18
+
+ATTENTION IS TURING COMPLETE
+
+Choices of functions and parameters Although the general architecture that we pre-
+sented closely follows the original presentation of the Transformer by Vaswani et al. (2017),
+some choices for functions and parameters in our Turing completeness proof are different to
+the standard choices in practice. For instance, for the output function O(-) in equation (9)
+our proof uses a feed-forward network with various layers, while Vaswani et al. (2017) use
+only two layers. A more important difference is that we use hard attention which allow us
+to attend directly to specific positions. Different forms of attention, including hard atten-
+tion, has been used in previous work (Bahdanau et al., 2014; Xu et al., 2015; Luong et al.,
+2015; Elsayed et al., 2019; Giilcehre et al.; Ma et al., 2019; Katharopoulos et al., 2020).
+The decision of using hard attention in our case is fundamental for our current proof to
+work. In contrast, the original formulation by Vaswani et al. (2017), as well as most of the
+subsequent work on Transformers and its applications (Dehghani et al., 2018; Devlin et al.,
+2019; Shiv and Quirk, 2019; Yun et al., 2020) uses soft attention by considering softmax as
+the normalization function in Equation (2). Although softmax is not a rational function,
+and thus, is forbidden in our formalization, one can still try to analyze if our results can be
+extended by for example allowing a bounded-precision version of it. Weiss et al. (2018) have
+presented an analysis of the computational power of different types of RNNs with bounded
+precision. They show that when precision is restricted, then different types of RNNs have
+different computational capabilities. One could try to develop a similar approach for Trans-
+formers, and study to what extent using softmax instead of hardmax has an impact in its
+computational power. This is a challenging problem that deserves further study.
+
+The need of arbitrary precision Our Turing-complete proof relies on having arbitrary
+precision for internal representations, in particular, for storing and manipulating positional
+encodings. Although having arbitrary precision is a standard assumption when studying
+the expressive power of neural networks (Cybenko (1989); Siegelmann and Sontag (1995)),
+practical implementations rely on fixed precision hardware. If fixed precision is used, then
+positional encodings can be seen as functions of the form pos : N > A where A is a finite
+subset of Q¢. Thus, the embedding function fpos Can be seen as a regular embedding
+function f’ : 5! > Q?¢ where ©’ = © x A. Thus, whenever fixed precision is used, the net
+effect of having positional encodings is to just increase the size of the input alphabet. Then
+from Proposition 3 we obtain that the Transformer with positional encodings and fixed
+precision is not Turing complete.
+
+An interesting way to bound the precision used by Transformer networks is to make it
+depend on the size of the input only. An immediate corollary of our Turing completeness
+proof in Theorem 6 is that by uniformly bounding the precision used in positional encodings
+we can capture every deterministic complexity class defined by Turing machines. Let us
+formalize this idea. We assume now that Turing machines have both accepting and rejecting
+states, and none of these states have outgoing transitions. A language L C &* is accepted
+by a Turing machine M in time T(n), for T : N > N, if for every w € X* we have that
+the computation of M on w reaches an accepting or rejecting state in at most T'(|w]) steps,
+and w € L(M) iff it is an accepting state that is reached by the computation. We write
+TimME(T(n)) for the class of all languages L that are accepted by Turing machines in time
+f(n). This definition covers some important complexity class; e.g., the famous class P of
+
+19
+
+PEREZ, BARCELO, MARINKOVIC
+
+languages that can be accepted in polynomial time is defined as
+
+Po := Time(n°) = |) TIME(n*),
+k>0
+
+while the class of EXPTIME of languages that can be accepted in single exponential time is
+defined as
+
+O(1)
+
+) = J TIME”).
+k>0
+
+EXPTIME := TIME(2”
+
+Since a Turing machine M that accepts a language in time T(n) does not need to
+move its head beyond cell T(|w|), assuming that w is the input given to M, the positional
+encodings used in the proof of Theorem 6 need at most log(T'(|w])) bits to represent pos(n),
+for n the index of a cell visited by the computation of M on w. Moreover, in order to detect
+whether M accepts or not the input w the decoder Transj,y does not need to produce more
+than T(|w|) vectors in the output. Let us then define a Transformer network Trans to be
+T (n)-bounded if the following conditions hold:
+
+e The precision allowed for the internal representations of Trans on input w is of at
+most log(T'(|w]) bits.
+
+e If A is a seq-to-seq language recognizer based on Trans such that A accepts input w,
+then A accepts w without producing more than T(|w|) output vectors, i.e., there is
+r <T(\w|) such that Trans(f(w),s,r) = (yi,...,yr) and y, € F.
+
+The following corollary, which is obtained by simple inspection of the proof of Theo-
+rem 6, establishes that to recognize languages in TIME(T(n)) it suffices to use T'(n)-bounded
+Transformer networks.
+
+Corollary 12 Let T: NN. For every language L € TIME(T(n)) there is a seq-to-seq
+language recognizer A, based on a T(n)-bounded Transformer network Transy, such that
+L=L(A).
+
+Residual connections First, it would be interesting to refine our analysis by trying
+to draw a complete picture of the minimal sets of features that make the Transformer
+architecture Turing complete. As an example, our current proof of Turing completeness
+requires the presence of residual connections, i.e., the +a;, +a;, +y;, and +p; summands in
+the definition of the single-layer encoder. We would like to sort out whether such connections
+are in fact essential to obtain Turing completeness.
+
+6. Future work
+
+We have already mentioned some interesting open problems in the previous section. It would
+be interesting, in addition, to extract practical implications from our theoretical results. For
+example, the undecidability of several practical problems related to probabilistic language
+modeling with RNNs has recently been established Chen et al. (2018). This means that
+such problems can only be approached in practice via heuristics solutions. Many of the
+results in Chen et al. (2018) are, in fact, a consequence of the Turing completeness of
+
+20
+
+ATTENTION IS TURING COMPLETE
+
+RNNs as established by Siegelmann and Sontag (1995). We plan to study to what extent
+our analogous undecidability results for Transformers imply undecidability for language
+modeling problems based on them.
+
+Another very important issue is if our choices of functions and parameters may have a
+practical impact, in particular when learning algorithms from examples. There is some evi-
+dence that using a piece-wise linear activation function, similar to the one used in this paper,
+substantially improves the generalization in algorithm learning for Neural GPUs (Freivalds
+and Liepins, 2018). This architecture is of interest, as it is the first one able to learn dec-
+imal multiplication from examples. In a more recent result, Yan et al. (2020) show that
+Transformers with a special form of masked attention are better suited to learn numerical
+sub-routines compared with the usual soft attention. Masked attention is similar to hard
+attention as it forces the model to ignore a big part of the sequence in every attention
+step, thus allowing only a few positions to be selected. A thorough analysis on how our
+theoretical results and assumptions may have a practical impact is part of our future work.
+
+Acknowledgments
+
+Barcel6é and Pérez are funded by the Millennium Institute for Foundational Research on
+Data (IMFD Chile) and Fondecyt grant 1200967.
+
+Appendix A. Missing proofs from Section 3
+
+Proof [of Proposition 3] We extend the definition of the function PropInv to sequences
+of vectors. Given a sequence X = (%1,...,%n) of n vectors, we use vals(X) to denote the
+set of all vectors occurring in X. Similarly as for strings, for a vector v we write prop(v, X)
+for the number of times that v occurs in X divided by n. To extend the notion of PropInv
+to any sequence X of vectors we use the following definition:
+
+PropInv(X) = {X’ | vals(X") = vals(X) and
+prop(v, X) = prop(v, X’) for all v € vals(X)}.
+
+Notice that for every embedding function f : © > Q¢ and string w € *, we have that if u €
+PropInv(w) then f(u) € PropInv(f(w)). Thus in order to prove that Trans(f(w),s,r) =
+Trans(f(u),s,7r) for every u € PropInv(w), it is enough to prove that
+
+Trans(X,s,r) = Trans(X’, s,r), for every X’ € PropInv(X). (18)
+
+To further simplify the exposition of the proof we introduce some extra notation. We
+denote by pX the number of times that vector v occurs in X. Thus we have that X! €
+PropInv(X) if and only if, there exists a value y € Q* such that for every v € vals(X) it
+holds that px = px. We now have all the necessary ingredients to proceed with the proof
+of Proposition 3; more in particular, with the proof of equation 18. Let X = (a ,...,%n)
+be an arbitrary sequence of vectors, and let X’ = (x},...,a/,,) © PropInv(X). Moreover,
+let Z = (Z1,...,2n) = Enc(X;0) and Z’ = (z},...,z/,) = Enc(X’;0). We first prove the
+following property:
+
+For every pair of indices (i,j) € {1,...,n} x {1,...,m}, if aw; =a, then 2; =z. (19)
+
+21
+
+PEREZ, BARCELO, MARINKOVIC
+
+Let (i, 7) be a pair of indices such that x; = x’. From Equations (4-5) we have that z; =
+O(a;)+a;, where a; = Att(Q(x;), K(X),V(X))+a;. Thus, since x; = x/, in order to prove
+z; = 2! it is enough to prove that Att(Q(x;), K(X), V(X)) = Att(Q(x§), K(X’), V(X").
+By equations (2-3) and the restriction over the form of normalization functions,
+
+Att(Q(a;), K(X),V(X)) = - S¢ seV (ae),
+l=1
+
+where s¢ = f,(score(Q(a;), K(ae))), for some normalization function f,, and a = \7y_, se.
+The above equation can be rewritten as
+
+Att(Q(wi), K(X),V(X)) = — do Pe fo(score(Q(ai), K(v))) -V(w)
+
+vevals(X)
+
+with a’ = Dvevals(X) px f,(score(Q(v), K(v))). By a similar reasoning we can write
+
+Att(Q(#)), K(X’), V(X) = - do Pe fo(score(Q(a5), K(v))) -V(w)
+vevals(X’)
+
+with 6 = vevals(x") Pe fo(score(Q(v), K(v))).
+
+Now, since X’ € PropInv(X) we know that vals(X) = vals(X’) and there exists a
+7 € Qt such that px = ypx for every v € vals(X). From this property, plus the fact that
+xL,= xi, we have
+
+Att(Q(@'), K(X'),V(X’)) = — SY) wk folscore(Q(a}), K(v))) - V(v)
+vevals(X )
+
+= — Ye folscore(Qei), K(w))) Vw)
+vevals(X )
+= Att(Q(a:), K(X),V(X)).
+
+This completes the proof of property (19) above.
+Consider now the complete encoder TEnc. Let (K,V) = TEnc(X) and (K’,V’) =
+TEnc(X’), and let qg be an arbitrary vector. We prove next that
+
+Att(q, K,V) = Att(q, K’,V’). (20)
+
+By following a similar reasoning as for proving Property (19) plus induction on the layers
+of TEnc, one can first show that if x; = a’, then k; = ki and v; = v’., for every i €
+{1,...,n} and j € {1,...,m}. Thus, there exists mappings Mx : vals(X) — vals(K)
+and My : vals(X) — vals(V) such that, for every X” = (a/,...,a) with vals(X”) =
+vals(X’), it holds that TEnc(X") = (K",V") for K” = (Mx(2{),...,M(x,)) and V" =
+(My (27),--.,Mv(a,)). Let us then focus on Att(q, K,V). It holds that
+
+i=1
+
+22
+
+ATTENTION IS TURING COMPLETE
+
+with a = >}, fp(score(q, k;)). Similarly as before, we can rewrite this as
+
+- S— fo(score(q, Mx (a;))) - My (ai)
+
+w=1
+
+Y= pe fo(score(q, Mic(v))) - My (v)
+vevals(X )
+
+with a =) yevals(X) px f,(score(q, Mx(v))). Similarly for Att(g, K’, V’) we have
+
+Att(q, K,V)
+
+Q le
+
+Att(q, K’,V’) = i S- fo(score(q, Mx (#‘))) - My (2)
+j=l
+= 3 Xv flscore(a, Mic(v))) Mv(v)
+
+veEvals(X’)
+
+Finally, using X’ € PropInv(X), we obtain
+
+1 '
+veEvals(X’)
+1
+= = D2 wy folscore(q, Mx (v))) » Mv(v)
+y veEvals(X)
+1
+= 35 Ss" Px fp(score(q, K(v))V(v)
+veEvals(X)
+= Att(q,K,V),
+
+which is what we wanted.
+To complete the rest of the proof, consider Trans(X,yo,7) which is defined by the
+recursion
+
+Yri1 = TDec(TEnc(X), (yo, yi1,---,yn)), forO<k<r.
+
+To prove that Trans(X,yo,r) = Trans(X’, yo,r) we use an inductive argument on & and
+show that if (y1,...,yr) = Trans(X, yo,r) and (yj,...,y).) = Trans(X’, yo,r), then yx =
+Yi, for each 1 <k <r. For the basis case it holds that
+
+y1 = TDec(TEnc(X), (yo)
+Now TDec((K,V), (yo)) is completely determined by yo and the values of the form Att(q, K,V),
+where q is query that only depends on yo. But Att(q,K,V) = Att(q, kK’, V’), for any such
+a query g from equation 20, and thus
+
+= TDee(TEnc(X"), (y))
+
+= yf.
+
+23
+
+PEREZ, BARCELO, MARINKOVIC
+
+The rest of the steps follow by a simple induction on k. |
+
+Appendix B. Missing proofs from Section 4
+
+Proof [of Lemma 7| Let q € Q? be a vector such that q = [_,...,_,1,j,__,_], where
+j € N and ‘_’ is an arbitrary value. We next prove that
+Att(q, K°,V°) = |[ 0,...,0,
+0,...,0,
+0,...,0 ]
+
+where a) and 6) are defined as
+
+a) = i Isjsn
+Sn j>n
+
+“) . JJ jen
+
+P . j>n
+
+Recall that K° = (k1,...,kp) is such that k; = [0,...,0,i7,-—1,0,0 ]. Then
+
+scorey(q, ki) = 9((q,ki)) = —l(a,ki)| = —|é— J].
+
+Notice that, if 7 <n, then the above expression is maximized when i = j. Otherwise, if
+j >n then the expression is maximized when i = n. Then Att(q, K®, V°) = vj, where
+
+» — fi asn
+n j>n
+
+Therefore, i* as just defined is exactly BY. Thus, given that v; is defined as
+
+Ui = [ 0, . , 0,
+0,...,0,
+[ si ], 2, 0s, 0,
+0,...,0
+we obtain that
+Att(q, K°, V°) = Uj, = [ 0,...,0,
+0,...,0,
+[ Six ], 2“, 05, 0,
+0,...,0
+= [ 0,...,0,
+0,...,0,
+[oe ],6,0,,0
+0,...,0
+
+24
+
+ATTENTION IS TURING COMPLETE
+
+which is what we wanted to prove. a
+
+Proof [of Lemma 8] In order to prove the lemma we need some intermediate notions and
+properties. Assume that the injective function 7 : © — {1,...,||} is the one used to
+construct the one-hot vectors | s ] for s € %, and that m2: Q — {1,...,|Q|} is the one used
+to construct | q¢ ] for q € Q. Using 7 and m2 one can construct one-hot vectors for pairs
+in the set Q x U. Formally, given (q,s) € Q x © we denote by | (q,s) ] a one-hot vector
+with a 1 in position (71(s) — 1)|Q| + 72(q) and a 0 in every other position. To simplify the
+notation, we define
+
+™(q,8) = (m(s) — YQ] + 72(9).
+
+One can similarly construct an injective function a’ from Q x © x {—1,1} such that
+m'(q,8,m) = m(q,8) if m = —1, and r’(q,s,m) = |Q|| | + 7(q,s) otherwise. We denote
+by | (q,8,m) ] the corresponding one-hot vector for each (q,s,m) € Q x © x {-1, 1}.
+
+We prove three useful properties below. In every case we assume that q € Q, s € ¥&,
+m € {1,1}, and 6(.,-) is the transition function of the Turing machine M.
+
+1. There exists f; : QI@I+!™] = QI@I=I such that fi([ [¢],[s]])=[(@s) ].
+2. There exists fs : QI@I~! 4 Q@lI=I such that f5([ (q,s) J) = [ 6(¢,s) ].
+3. There exists fo : Q7/@I/=! = QI@HI=I+1 such that fo([ (q.s,m) J) =[[¢].[s ].m].
+
+To show (1), let us denote by Sj, with i € {1,...,]X|}, a binary matrix of dimensions
+|| x |Q| such that every cell of the form (i,-) in S$; contains a 1, and every other cell
+contains a 0. We note that for every s € © it holds that [ s ]S; = [1,...,1] if and only if
+7 (s) = 7%; otherwise [ s ]S; = [0,...,0]. Now, consider the vector v(q,s)
+
+%qs) = [La +s IS. L¢]+1sIS2,--., la] +s 1S\y 1.
+
+We first note that for every i € {1,..., |X|}, if m1(s) #7 then
+
+[a]+ Is]S =[¢]+(0,...,0] =[¢].
+
+Moreover,
+[a]+ 1s }Si4(s) = [a] +f1,---54
+is a vector that contains a 2 exactly at index 72(q), and a 1 in all other positions. Thus,
+the vector Uiq,s) contains a 2 exactly at position (71(s) — 1)|Q| + 72(q) and either a 0 or a
+1 in every other position.
+Now, let us denote by o a vector in Q!@I|™! that has a 1 in every position and consider
+the following affine transformation
+
+al laI.bs1]) = %s) —@. (21)
+
+Vector gi([{ [| ¢ ], | s ] ]) contains a 1 exclusively at position (71(s) — 1)|Q|+72(q) = 7(q@, 8),
+and a value less than or equal to 0 in every other position. Thus, to construct fi(-) we can
+apply the piecewise-linear sigmoidal activation o(-) (see Equation (1)) to obtain
+
+AdlabtsI) = e@mdlah.s1)) = e@@s)-o) =1@s) I, (22)
+
+25
+
+PEREZ, BARCELO, MARINKOVIC
+
+which is what we wanted.
+
+Now, to show (2), let us denote by M® a matrix of dimensions (|Q||5|) x (2|Q||>])
+constructed as follows. For (q,s) € Q x 5, if 6(q,s) = (p,r,m) then M® has a 1 at position
+(x(q, 8),7'(p,r,m)) and it has a 0 in every other position. That is,
+
+It is straightforward to see then that [ (q,s) ]M® = [ 6(q,s) ], and thus we can define fo(-)
+as
+
+fol @s) I) = [@s) 1M? = [6(a,8) ]. (23)
+To show (3), consider the matrix A of dimensions (2|Q||©]) x ({Q| + |=] + 1) such that
+Aj1(q,s,m);: = [ [ qd I. [ 8 ],m |.
+
+Then we can define f3(-) as
+
+fs(L (4.8m) ]) = 1 (s,m) JA = [[a].[s],m]. (24)
+We are now ready to begin with the proof of the lemma. Recall that a} is given by
+ay = [| [a], [8 ],m@,
+
+0,...,0,
+
+[ a") J, 8), 05,0,
+
+1,(¢@4+1),1/@4+1),1/@+1)? J
+We need to construct a function O; : Q? > Q% such that
+
+[a J, [ve ],m©,m&,0,0
+
+0,...,0,
+
+0,...,0 ]
+
+We first apply function h4(-) defined as follows. Let us define
+
+. 1. 1
+HCV) w= iml-D 4s
+m : a!” + 5"
+Note that m—) is 0 if m&-) = -1, it is 5 if m-) = 0 (which occurs only when i = 1),
+
+and it is 1 if m@-) = 1. We use this transformation exclusively to represent m—)) with a
+value in [0, 1].
+Now, consider h;(a}) defined by
+
+ma?) = [La]. fs Je, (Lo 10s U1,
+
+where g;(-) is the function defined above in Equation (21). It is clear that hj(-) is an affine
+transformation. Moreover, we note that except for gi([[ q J, [ s© ]]) all values in h,(a})
+are in the interval [0, 1]. Thus, if we apply function o(-) to hy(a}) we obtain
+
+otal) = [La L180 me, ool LL s 1) 1
+(La DE 5 fm, |, 5) 1],
+
+26
+
+ATTENTION IS TURING COMPLETE
+
+where the second equality is obtained from equation (22). We can then define ho(-) such
+that
+
+[La J fs J, 2m? —1, fol @,s) DI]
+
+[La LP s® Lm, [ 6,8) J]
+[[ g? ml 5) ],m?, | (q@*9) vv, m) 1]
+
+h2(a(hi(a;)))
+
+where the second equality is obtained from equation (23). Now we can define h3(-) as
+
+hg(h2(o(ha(a;)))) [fa Tf 6° Lm, (LG), 0m) ]) |
+[La [fs [mg ], [o® J,m® ],
+where the second equality is obtained from equation (24).
+
+Finally we can apply a function h4(-) to just reorder the values and multiply some
+components by —1 to complete our construction
+
+Oi(a}) = ha(ha(ho(o(m(a}))))) = [ -La® ],-Ps ].—m9,
+Lg) J, [ v® ],m,m“,0,0
+
+0,...,0
+
+We note that we applied a single non-linearity and all other functions are affine transfor-
+mations. Thus O;(-) can be implemented with a two-layer feed-forward network. a
+
+Proof [of Lemma 9] Recall that z} is the following vector
+
+z} = [ 0,...,0,
+
+[ot J, [vo J,m©,m©, 0,0,
+
+[ a) J, BOY, 0,,0,
+1,(@+1),1/(@+1),1/(¢+1)? |
+
+We consider Q2 : Q¢ > Q?¢ and Ke : Q¢ > Q? to be trivial functions that for every input
+produce an output vector composed exclusively of 0s. Moreover, we consider V2 : Q4¢ > Q¢
+such that for every j € {0,1,...,7},
+
+0,7, 05, 0,0, mI) mV,
+0,...,0,
+0,...,0 ]
+
+Then, since Ko(z;) = [0,...,0], it holds that score,(Qo(z 1), Ka(z3)) = = 0 for every j €
+{0,...,i}. Thus, we have that the attention Att(Qo(z}), K2(Z}), V2(Z})) corresponds pre-
+
+cisely to the average of the vectors in Vo(Z}) = Vo(zA, a z}),i Le.,
+Att(Qa(2}), Ko(Z}),ValZ})) = gy Cjeo Val2})
+0,, 0s, 0 , 0, my yj=0 mid), sy) yj=0 mI-Y,
+0,...,0,
+0,...,0
+
+27
+
+PEREZ, BARCELO, MARINKOVIC
+
+Then, since m +---4+m@ = c) and mM +---+m-) = c© it holds that
+Att(Qo(z}), Ko(Z}),Va(Z?)) = [ 0,...,0,
+clit] el)
+Og, Os, 0, 0, (+1)? G41)?
+0,...,0,
+
+0,...,0
+
+which is exactly what we wanted to show. |
+
+Proof [of Lemma 10] Recall that z? is the following vector
+
+ze = [ 0,...,0,
+[ g +4) 11 vw) ],mé ),m( 1), oy GIy?
+[ a) J, BOM, 05,0,
+1,(¢+1),1/(¢+1),1/(+ 1)?
+We need to construct functions Q3(-), K3(-), and V3(-) such that
+
+Att(Qa(z2), Ka(Z2),Va(Z2)) = [| 0,..-50,
+
+0,...,0,
+0,...,0
+
+We first define the query function Q3 : Q¢ > Q? such that
+
+Q3(z7) = [ 0,...,0
+0,...,0,
+0,...,0,
+9, te 1 1 ]
+
+> G41)’ G41)? BG+1)2
+Now, for every j € {0,1,...,i} we define K3 : Q¢ + Q? and V3 : Q¢ > Q? such that
+K3(22) = | Oe,
+0,...,
+0,...,0,
+
+9. —c{9) 1 ]
+? G+1)? G41)? G+1)?
+
+V3(z7) = [ 0,...,0,
+
+’
+
+ooo
+
+J
+0,...,0,
+0,,0,[ vo ],7,
+0,...,0 |
+
+It is clear that the three functions are linear transformations and thus they can be defined
+by feed-forward networks.
+
+Consider now the attention Att(Q3(z?), K3(Z?), V3(Z?)). In order to compute this
+value, and since we are considering hard attention, we need to find a value j € {0,1,...,i}
+that maximizes
+
+score, (Qs3(z;), K3(z7)) = e((Qs(z7), Ka(z7))).
+
+28
+
+ATTENTION IS TURING COMPLETE
+
+Let 7* be any such a value. Then
+Att(Qs(z7), K3(Z?), Va(Z?)) = Va(z}s).
+
+We show next that given our definitions above, it always holds that 7* = @(i+1), and hence
+V3(z5.) is exactly the vector that we wanted to obtain. Moreover, this implies that 7* is
+actually unique.
+
+To simplify the notation, we denote by xi the dot product (Q3(z?), K3 (z5)). Thus, we
+need to find j* = arg max, y(x}): Recall that, given the definition of y (see equation (13)),
+it holds that
+
+arg max (x) = argmin xj.
+JE{0,...,¢} JE{0,...,¢}
+
+Then, it is enough to prove that
+
+arg min x5 = (i+1).
+je{0,...,7}
+Now, by our definition of Q3(-) and K‘3(-) we have that
+clit) ol) .
+G@+)G4+1) G+)G41) 80¢4+1)G +1)
+= ge,- (C4) _ GW) 4
+E5E5 (c cee + 3 )
+
+xj =
+
+where €, = Et y" We next prove the following auxiliary property.
+
+If j is such that ce) 4 c+) and jz is such that c) = c+), then xjo| < xj, I: (25)
+
+In order to prove (25), assume first that j; € {0,...,i} is such that ce) ¢ c+), Then
+we have that |e) — e)| > 1 since c+) and cM) are integer values. From this we have
+two possibilities for yi,,:
+
+e If ct) — eG) < —1, then
+
+(€:€5,)?
+
+Xj S ~eiej, + 3
+
+Notice that 1 > ej, > ¢; > 0. Then we have that eje;, > (ei€;,)? > $ (ie j)?, and
+
+thus ( e
+ones
+xj, | 2 Gif, — a
+Finally, and using again that 1 > €;, > ¢; > 0, from the above equation we obtain
+= (sien)? (6)? , 26)
+; EGER, 2 on 2 on
+xj, = a > (ei)" — 3 2 3
+
+e If cl) — cM) > 1, then Xi, = ei€j, + Z(€ie;,)”. Since 1 > €;, > ej; > 0 we obtain
+that xj, | > EjEj, 2 C1&j = 3 (ei)°.
+
+29
+
+PEREZ, BARCELO, MARINKOVIC
+
+Thus, we have that if &) 4 c+) then xj, | > 2 (e;).
+
+Now assume jo € {0,...,i} is such that c42) = c+"), In this case we have that
+Ixi,| = (ijn)? _ (£1)? (Ej)? c (e;)?
+
+where the last inequality holds since 0 < ¢;, < 1.
+We showed that if c{%1) #4 c() then Ixi,| > 2(e;)? and if c¥2) = c“+)) then Ixi.l <
+3 (Ei), which implies that |xj,| < |xj,|- This completes the proof of the property in (25).
+We now prove that arg min, Ixi\ = ¢(i+1). Recall first that @(¢ +1) is defined as
+
+i+ 1) = {peu |j<iand &) =cF} if there exists j <is.t. &) = 4),
+
+a otherwise.
+
+Assume first that there exists 7 <i such that c) = c+), By (25) we know that
+
+2
+E;e5
+= arg min (eie5)"
+
+jst. act) 3
+
+= arg min Ey
+
+. 1
+= argmin = ——
+jst. aclity J+1
+= max
+
+= max{j | c¥) =}
+
+On the contrary, assume that for every 7 < i it holds that cD # +), We will prove
+that in this case |x/| > |x?|, for every j < i, and thus arg mid je(0,...,;} Ixi\ = 1. Now, since
+cl) t c’+) for every j < i, then c@+ is a cell that has never been visited before by
+M. Given that M never makes a transition to the left of its initial cell, then cell c+)
+is a cell that appears to the right of every other previously visited cell. This implies that
+c+) > @G) for every j < i. Thus, for every 7 < i we have c+) — eG) > 1. Hence,
+
+1
+Ixjl = xp = eiey + 3 (te)
+Moreover, notice that if 7 <i then ¢; > €; and thus, if 7 <7 we have that
+
+(e:€i)*
+
+x5 2 EEG + 3. 7 Ixj]-
+
+2
+EjE;
+eer > eye, +
+
+Therefore, arg minje,o, 4} x5 =i.
+Summing it up, we have shown that
+
+arg min x5 =
+
+yree | co) = Dy if there exists 7 <ist. ED = 0,
+jE{0,...,i}
+
+1 otherwise.
+
+30
+
+ATTENTION IS TURING COMPLETE
+
+This is exactly the definition of @(¢ + 1), which completes the proof of the lemma. a
+
+Proof [Lemma 11] Before proving Lemma 11 we establish the following auxiliary claim
+that allows us to implement a particular type of if statement with a feed-forward network.
+
+Claim 1 Let x € {0,1} and y,z € {0,1}" be binary vectors, and let b € {0,1}. There
+exists a two-layer feed-forward network f : Q™+2"+! — Q™+t” such that
+
+M(e-y, 2,6) = ie ifb=1.
+
+Proof Consider the function f; : Q"+2"+! > Q™*?" such that
+Siz, y, 2, 0]) = [x,y —b1,z+ 61-1),
+where 1 is the n-dimensional vector [1,1,...,1]. Thus, we have that
+
+[~,y,z—1] ifb=0,
+
+fille, y, 2,0)) = {euro ifb=1.
+
+Now, since x, y and z are all binary vectors, it is easy to obtain by applying the piecewise-
+linear sigmoidal activation function o that
+
+[z,y,0] ifb=0,
+
+o(fi([x,y, z,5])) = {ene ifb=1,
+
+where 0 is the n-dimensional vector [0,0,...,0]. Finally, consider the function fo : Q"+t?” >
+Q™*” such that fo([x, y, z]) = [x,y + z]. Then we have that
+
+[x,y] ifb=0,
+
+fo(o(fi([a, y, z,6]))) = {ee ifb=1.
+
+We note that fi(-) and fo(-) are affine transformations, and thus f(-) = fe(a(fi(-))) is a
+two-layer feed-forward network. This completes our proof. a
+
+We can now continue with the proof of Lemma 11. Recall that z? is the following vector
+
+2 = [ 0...,0,
+
+r r r r— ct) _cf)
+La) J, [0 J,mO, me, een
+Lalt) J, Ber), | vet) J, er +1),
+
+1,(r+1),1/(r +1), 1/(r +1)? |
+
+Let us denote by [ m) ] a vector such that
+
+[m” ] = [1,0] ifm” =1,
+(0,1) ifm” =-1.
+
+31
+
+PEREZ, BARCELO, MARINKOVIC
+
+We first consider the function f1(-) such that
+filzr) = (LaF? Lm J, fo? J (r+) — 8), [oO 7 r+) -(r-1) I.
+
+It is straightforward that f1(-) can be implemented as an affine transformation. Just notice
+that [ # ] is a fixed vector, &(r + 1) — (r — 1) = &(r +1) — (r +1) +2 and that [ m™ ] =
+pe , =m ]+[4, 5]. Moreover, all values in f1(z#) are binary values except for (r+1)—80+)
+
+and €(r + 1) —(r —1). Thus, if we apply function o(-) to f;(z3) we obtain
+
+where b) = o((r +1) — B+) and be = o(€(r +1) — (r—1)). By the definition of 8°+) we
+know that B/+) =r +1 whenever r+1 <n, and BU+) =nifr+1>n. Thus we have
+that
+
+b = 0 ifr+l<n
+tr 1 ifr+l>n
+
+For the case of bz, since €(r+1) < r we have that bo = 1 if &(r+1) =r and it is 0 otherwise.
+Therefore,
+
+by = 1 if@r+1)=r
+2 V0 fer tir
+
+Then, we can use the if function in Claim 1 to implement a function fo(-) such that
+
+(La? Lm J.P? Jr, fo) ]] if be =0,
+
+hlo(filz))) =
+
+[Laet) Lm ],.Loet) ]o,1# 1] if bg = 1.
+We can use again the if function in Claim 1 to implement a function f3(-) such that
+[Lat? J. [m@ J, Pa) |] if by = 0 and b; = 0,
+(r+1) (r) (€(r+1)) i = —
+ayy JEL DB bm Jf oY) J] ify =0 and by =1,
+fa(fo(o(fi(z,)))) [ git) 1 [ m(”) I [ a(t+1) ] ] if bo = 1 and b, = 0,
+[Lat J, .m LL#9] if by = 1 and b} = 1,
+
+which can be rewritten as
+
+[La Lm ], Le J] ifr+i<n,
+f(falo(fle))) = y (Lat? LE m® LL #1) ifr+1>n and &(r +1) =r,
+[fa@t) Jf m© J, pot) ] | ifr +15 n and &(r +1) ¥r.
+
+From this, it is easy to prove that
+
+fal folo(filze))) =[ Lat? J. Em J. Es? J].
+
+This can be obtained from the following observation. If r+ 1 <n, then al’) = 5,4, =
+sD). Ifr+1>n and &(r +1) =r, then we know that ct" is visited by M for the
+
+32
+
+ATTENTION IS TURING COMPLETE
+
+first time at time r+ 1 and this cell is to the right of the original input, which implies that
+st) — #4. Finally, ifr+1>n and €(r+1) #7, then we know that c+) has been visited
+before at time &(r + 1), and thus s+) = y+),
+
+The final piece of the proof consists in converting [ m ” ]] back to its value m“), reorder
+the values, and add 0s to obtain y,41. We do all this with a final linear transformation
+fa(-) such that
+
+fal fa(folo(fi(2?))))) [ fat) Ups?) Jom,
+
+0,...,0,
+0,...,0,
+0,...,0
+
+’ ’
+
+—_ Ur41
+
+This completes the proof of the lemma. a
+
+References
+
+Dzmitry Bahdanau, Kyunghyun Cho, and Yoshua Bengio. Neural machine translation by
+jointly learning to align and translate. CoRR, abs/1409.0473, 2014.
+
+Yining Chen, Sorcha Gilroy, Andreas Maletti, Jonathan May, and Kevin Knight. Recurrent
+neural networks as weighted language recognizers. In Conference of the North American
+Chapter of the Association for Computational Linguistics, NAACL-HLT, pages 2261-—
+2271, 2018.
+
+George Cybenko. Approximation by superpositions of a sigmoidal function. MCSS, 2(4):
+303-314, 1989.
+
+Mostafa Dehghani, Stephan Gouws, Oriol Vinyals, Jakob Uszkoreit, and Lukasz Kaiser.
+Universal transformers. CoRR, abs/1807.03819, 2018.
+
+Jacob Devlin, Ming-Wei Chang, Kenton Lee, and Kristina Toutanova. BERT: pre-training
+of deep bidirectional transformers for language understanding. In Jill Burstein, Christy
+Doran, and Thamar Solorio, editors, Conference of the North American Chapter of the
+Association for Computational Linguistics, NAACL-HLT, pages 4171-4186. Association
+for Computational Linguistics, 2019.
+
+Gamaleldin F. Elsayed, Simon Kornblith, and Quoc V. Le. Saccader: Improving accuracy of
+hard attention models for vision. In Hanna M. Wallach, Hugo Larochelle, Alina Beygelz-
+imer, Florence d’Alché-Buc, Emily B. Fox, and Roman Garnett, editors, Conference on
+Neural Information Processing Systems, NeurIPS, pages 700-712, 2019.
+
+Karlis Freivalds and Renars Liepins. Improving the neural GPU architecture for algorithm
+learning. In Neural Abstract Machines & Program Induction, NAMPI, 2018.
+
+Ian J. Goodfellow, Yoshua Bengio, and Aaron C. Courville. Deep Learning. Adaptive
+computation and machine learning. MIT Press, 2016.
+
+33
+
+PEREZ, BARCELO, MARINKOVIC
+
+Alex Graves, Greg Wayne, and Ivo Danihelka. Neural Turing Machines. arXiv preprint
+arXiv:1410.5401, 2014.
+
+Edward Grefenstette, Karl Moritz Hermann, Mustafa Suleyman, and Phil Blunsom. Learn-
+ing to transduce with unbounded memory. In Conference on Neural Information Pro-
+cessing Systems, NIPS, pages 1828-1836, 2015.
+
+Caglar Gtilcehre, Misha Denil, Mateusz Malinowski, Ali Razavi, Razvan Pascanu,
+Karl Moritz Hermann, Peter W. Battaglia, Victor Bapst, David Raposo, Adam San-
+toro, and Nando de Freitas. Hyperbolic attention networks. In International Conference
+on Learning Representations, ICLR.
+
+Michael Hahn. Theoretical limitations of self-attention in neural sequence models. arXiv
+preprint arXtv:1906.06755, 2019.
+
+Kaiming He, Xiangyu Zhang, Shaoqing Ren, and Jian Sun. Identity mappings in deep
+residual networks. In European Conference on Computer Vision, ECCV.
+
+Kaiming He, Xiangyu Zhang, Shaoqing Ren, and Jian Sun. Deep residual learning for image
+recognition. In Conference on Computer Vision and Pattern Recognition, CVPR, pages
+770-778, 2016.
+
+Armand Joulin and Tomas Mikolov. Inferring algorithmic patterns with stack-augmented
+recurrent nets. In Conference on Neural Information Processing Systems, NIPS, pages
+190-198, 2015.
+
+Lukasz Kaiser and Ilya Sutskever. Neural GPUs learn algorithms. In International Confer-
+ence on Learning Representations, ICLR, 2016.
+
+Angelos Katharopoulos, Apoorv Vyas, Nikolaos Pappas, and Francois Fleuret. Transform-
+ers are rnns: Fast autoregressive transformers with linear attention. In International
+Conference on Machine Learning, ICML, 2020.
+
+5S. C. Kleene. Representation of events in nerve nets and finite automata. In Claude Shannon
+and John McCarthy, editors, Automata Studies, pages 3-41. Princeton University Press,
+1956.
+
+Karol Kurach, Marcin Andrychowicz, and Ilya Sutskever. Neural random-access machines.
+In International Conference on Learning Representations, ICLR, 2016.
+
+Minh-Thang Luong, Hieu Pham, and Christopher D. Manning. Effective approaches to
+attention-based neural machine translation. CoRR, abs/1508.04025, 2015.
+
+Xindian Ma, Peng Zhang, Shuai Zhang, Nan Duan, Yuexian Hou, Ming Zhou, and Dawei
+Song. A tensorized transformer for language modeling. In Hanna M. Wallach, Hugo
+Larochelle, Alina Beygelzimer, Florence d’Alché-Buc, Emily B. Fox, and Roman Garnett,
+editors, Conference on Neural Information Processing Systems, NeurIPS, pages 2229-—
+2239, 2019.
+
+34
+
+ATTENTION IS TURING COMPLETE
+
+Warren McCulloch and Walter Pitts. A logical calculus of ideas immanent in nervous
+activity. Bulletin of Mathematical Biophysics, 5:127-147, 1943.
+
+Jorge Pérez, Javier Marinkovic, and Pablo Barcelé. On the turing completeness of modern
+neural network architectures. In International Conference on Learning Representations,
+ICLR, 2019.
+
+Peter Shaw, Jakob Uszkoreit, and Ashish Vaswani. Self-attention with relative position
+representations. In Conference of the North American Chapter of the Association for
+Computational Linguistics, NAACL-HLT, pages 464-468, 2018.
+
+Vighnesh Shiv and Chris Quirk. Novel positional encodings to enable tree-based transform-
+ers. In Conference on Neural Information Processing Systems, NeurIPS, pages 12081-—
+12091. Curran Associates, Inc., 2019.
+
+Hava T. Siegelmann and Eduardo D. Sontag. On the computational power of neural nets.
+In Conference on Computational Learning Theory, COLT, pages 440-449, 1992.
+
+Hava T. Siegelmann and Eduardo D. Sontag. On the computational power of neural nets.
+J. Comput. Syst. Sci., 50(1):132-150, 1995.
+
+Michael Sipser. Introduction to the Theory of Computation. Second edition, 2006.
+
+Ashish Vaswani, Noam Shazeer, Niki Parmar, Jakob Uszkoreit, Llion Jones, Aidan N
+Gomez, Lukasz Kaiser, and Illia Polosukhin. Attention is all you need. In Conference on
+Neural Information Processing Systems, NIPS, pages 5998-6008, 2017.
+
+Gail Weiss, Yoav Goldberg, and Eran Yahav. On the practical computational power of
+finite precision RNNs for language recognition. In Annual Meeting of the Association for
+Computational Linguistics, ACL, pages 740-745, 2018.
+
+Kelvin Xu, Jimmy Ba, Ryan Kiros, Kyunghyun Cho, Aaron C. Courville, Ruslan Salakhut-
+dinov, Richard S$. Zemel, and Yoshua Bengio. Show, attend and tell: Neural image cap-
+tion generation with visual attention. In International Conference on Machine Learning,
+ICML, pages 2048-2057, 2015.
+
+Yujun Yan, Kevin Swersky, Danai Koutra, Parthasarathy Ranganathan, and Milad
+Hashemi. Neural execution engines: Learning to execute subroutines. In Conference
+on Neural Information Processing Systems, NeurIPS, 2020.
+
+Chulhee Yun, Srinadh Bhojanapalli, Ankit Singh Rawat, Sashank J Reddi, and Sanjiv
+Kumar. Are transformers universal approximators of sequence-to-sequence functions? In
+International Conference on Learning Representations, ICLR, 2020.
+
+35

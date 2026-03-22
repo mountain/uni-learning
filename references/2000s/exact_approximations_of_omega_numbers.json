@@ -2,7 +2,7 @@
   "stage": "zero_preprocessing_catalog",
   "source_pdf": {
     "file_name": "exact_approximations_of_omega_numbers.pdf",
-    "file_path": "/Users/mingli/Khex/uni-learning/references/2000s/exact_approximations_of_omega_numbers.pdf",
+    "file_path": "references/2000s/exact_approximations_of_omega_numbers.pdf",
     "same_directory_output": true
   },
   "bibliography": {
@@ -46,7 +46,7 @@
     ]
   },
   "generation_notes": {
-    "methodology_file": "/Users/mingli/Khex/uni-learning/agents/reader/methodolgy.md",
+    "methodology_file": "agents/reader/methodolgy.md",
     "notes": [
       "本 JSON 对应 methodolgy.md 第 5.1 节“零号预处理（编目与分流）”输出。"
     ]

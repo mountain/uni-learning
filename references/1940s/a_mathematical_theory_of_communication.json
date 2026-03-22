@@ -2,7 +2,7 @@
   "stage": "zero_preprocessing_catalog",
   "source_pdf": {
     "file_name": "a_mathematical_theory_of_communication.pdf",
-    "file_path": "/Users/mingli/Khex/uni-learning/references/1940s/a_mathematical_theory_of_communication.pdf",
+    "file_path": "references/1940s/a_mathematical_theory_of_communication.pdf",
     "same_directory_output": true
   },
   "bibliography": {
@@ -47,7 +47,7 @@
     ]
   },
   "generation_notes": {
-    "methodology_file": "/Users/mingli/Khex/uni-learning/agents/reader/methodolgy.md",
+    "methodology_file": "agents/reader/methodolgy.md",
     "notes": [
       "本 JSON 对应 methodolgy.md 第 5.1 节“零号预处理（编目与分流）”输出。",
       "本地环境缺少可用 PDF 文本提取库，未直接抽取全文文本；编目信息基于题名与该论文公认书目信息完成。"

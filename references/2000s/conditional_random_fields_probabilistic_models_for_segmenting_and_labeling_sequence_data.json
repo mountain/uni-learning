@@ -1,0 +1,56 @@
+{
+  "stage": "zero_preprocessing_catalog",
+  "source_pdf": {
+    "file_name": "conditional_random_fields_probabilistic_models_for_segmenting_and_labeling_sequence_data.pdf",
+    "file_path": "/Users/mingli/Khex/uni-learning/references/2000s/conditional_random_fields_probabilistic_models_for_segmenting_and_labeling_sequence_data.pdf",
+    "same_directory_output": true
+  },
+  "bibliography": {
+    "title": "Conditional Random Fields: Probabilistic Models for Segmenting and Labeling Sequence Data",
+    "authors": [
+      "John D. Lafferty",
+      "Andrew McCallum",
+      "Fernando C. N. Pereira"
+    ],
+    "year": 2001,
+    "publication": "ICML",
+    "volume": "",
+    "pages": "282-289"
+  },
+  "input_context_for_catalog": {
+    "abstract_brief": "论文提出条件随机场作为判别式序列建模框架，兼顾全局一致性与特征灵活性，成为结构化预测的重要基线。",
+    "toc_brief": [
+      "序列标注问题设定",
+      "CRF 模型定义与训练",
+      "与 HMM/MEMM 比较",
+      "实验评估"
+    ],
+    "preface_or_intro_brief": "引言聚焦如何避免局部归一化模型在序列标注中的偏置问题。"
+  },
+  "catalog_result": {
+    "document_type": "技术论文",
+    "primary_route": "Bayes / probability",
+    "estimated_difficulty": {
+      "concept_density": "中",
+      "math_density": "中",
+      "historical_context_density": "中"
+    },
+    "reading_priority": "中",
+    "recommended_survey_chapters": [
+      "Bayes / uncertainty",
+      "历史前奏"
+    ],
+    "misreading_risks": [
+      "将条件建模优势误读为对任意任务的全面优势",
+      "忽略特征设计对 CRF 性能的决定性作用",
+      "把局部实验结果外推到开放生成场景",
+      "以后来深度模型叙事弱化其结构贡献"
+    ]
+  },
+  "generation_notes": {
+    "methodology_file": "/Users/mingli/Khex/uni-learning/agents/reader/methodolgy.md",
+    "notes": [
+      "本 JSON 对应 methodolgy.md 第 5.1 节“零号预处理（编目与分流）”输出。"
+    ]
+  }
+}

@@ -1,0 +1,54 @@
+{
+  "stage": "zero_preprocessing_catalog",
+  "source_pdf": {
+    "file_name": "random_forests.pdf",
+    "file_path": "/Users/mingli/Khex/uni-learning/references/2000s/random_forests.pdf",
+    "same_directory_output": true
+  },
+  "bibliography": {
+    "title": "Random Forests",
+    "authors": [
+      "Leo Breiman"
+    ],
+    "year": 2001,
+    "publication": "Machine Learning",
+    "volume": "45",
+    "pages": "5-32"
+  },
+  "input_context_for_catalog": {
+    "abstract_brief": "论文提出随机森林集成方法，通过随机特征与自助采样构建多树投票机制，兼顾泛化性能与稳健性。",
+    "toc_brief": [
+      "集成学习问题设定",
+      "随机森林构造机制",
+      "误差与泛化性质",
+      "实验比较"
+    ],
+    "preface_or_intro_brief": "引言强调通过随机化与集成降低单模型方差并提升泛化。"
+  },
+  "catalog_result": {
+    "document_type": "技术论文",
+    "primary_route": "Bayes / probability",
+    "estimated_difficulty": {
+      "concept_density": "中",
+      "math_density": "中",
+      "historical_context_density": "中"
+    },
+    "reading_priority": "中",
+    "recommended_survey_chapters": [
+      "Bayes / uncertainty",
+      "历史前奏"
+    ],
+    "misreading_risks": [
+      "把经验稳健性误解为理论最优性",
+      "忽略特征空间与数据分布对模型行为的影响",
+      "将树集成结论直接外推到序列与生成任务",
+      "只看精度而忽略不确定性与可解释边界"
+    ]
+  },
+  "generation_notes": {
+    "methodology_file": "/Users/mingli/Khex/uni-learning/agents/reader/methodolgy.md",
+    "notes": [
+      "本 JSON 对应 methodolgy.md 第 5.1 节“零号预处理（编目与分流）”输出。"
+    ]
+  }
+}

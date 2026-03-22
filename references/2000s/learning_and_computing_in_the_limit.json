@@ -1,0 +1,56 @@
+{
+  "stage": "zero_preprocessing_catalog",
+  "source_pdf": {
+    "file_name": "learning_and_computing_in_the_limit.pdf",
+    "file_path": "/Users/mingli/Khex/uni-learning/references/2000s/learning_and_computing_in_the_limit.pdf",
+    "same_directory_output": true
+  },
+  "bibliography": {
+    "title": "Learning and Computing in the Limit",
+    "authors": [
+      "Sanjay Jain",
+      "Daniel Osherson",
+      "James S. Royer",
+      "Arun Sharma"
+    ],
+    "year": 2002,
+    "publication": "Book / Monograph",
+    "volume": "",
+    "pages": ""
+  },
+  "input_context_for_catalog": {
+    "abstract_brief": "文本系统讨论极限学习理论与可计算性关系，刻画在无限数据与渐近收敛语境下的学习能力边界。",
+    "toc_brief": [
+      "极限学习基本模型",
+      "可学习类与层级结构",
+      "可计算性与复杂度关联"
+    ],
+    "preface_or_intro_brief": "引言强调学习过程应在时间展开和收敛标准下被形式刻画。"
+  },
+  "catalog_result": {
+    "document_type": "综述",
+    "primary_route": "open computation / limit / anytime",
+    "estimated_difficulty": {
+      "concept_density": "高",
+      "math_density": "高",
+      "historical_context_density": "高"
+    },
+    "reading_priority": "中",
+    "recommended_survey_chapters": [
+      "open computation",
+      "历史前奏"
+    ],
+    "misreading_risks": [
+      "将极限可学习误解为有限样本可学习保证",
+      "忽略学习准则定义差异导致的结论变化",
+      "把理论层级关系直接映射为工程算法优劣",
+      "仅按现代 ML 术语重写而丢失原始框架"
+    ]
+  },
+  "generation_notes": {
+    "methodology_file": "/Users/mingli/Khex/uni-learning/agents/reader/methodolgy.md",
+    "notes": [
+      "本 JSON 对应 methodolgy.md 第 5.1 节“零号预处理（编目与分流）”输出。"
+    ]
+  }
+}

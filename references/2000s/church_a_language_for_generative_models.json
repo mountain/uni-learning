@@ -1,0 +1,57 @@
+{
+  "stage": "zero_preprocessing_catalog",
+  "source_pdf": {
+    "file_name": "church_a_language_for_generative_models.pdf",
+    "file_path": "/Users/mingli/Khex/uni-learning/references/2000s/church_a_language_for_generative_models.pdf",
+    "same_directory_output": true
+  },
+  "bibliography": {
+    "title": "Church: A Language for Generative Models",
+    "authors": [
+      "Noah D. Goodman",
+      "Vikash Mansinghka",
+      "Daniel Roy",
+      "Keith Bonawitz",
+      "Joshua B. Tenenbaum"
+    ],
+    "year": 2008,
+    "publication": "UAI",
+    "volume": "",
+    "pages": "220-229"
+  },
+  "input_context_for_catalog": {
+    "abstract_brief": "论文提出概率编程语言 Church，以可组合程序表达生成过程并支持不确定推断，推动模型描述与推断机制一体化。",
+    "toc_brief": [
+      "语言设计与语义",
+      "生成模型表达能力",
+      "推断机制与示例"
+    ],
+    "preface_or_intro_brief": "引言强调用编程语言统一表达复杂概率模型与推断任务。"
+  },
+  "catalog_result": {
+    "document_type": "技术论文",
+    "primary_route": "Bayes / probability",
+    "estimated_difficulty": {
+      "concept_density": "高",
+      "math_density": "中",
+      "historical_context_density": "中"
+    },
+    "reading_priority": "高",
+    "recommended_survey_chapters": [
+      "Bayes / uncertainty",
+      "LM / agent / AGI"
+    ],
+    "misreading_risks": [
+      "把语言表达能力直接等同于推断效率",
+      "忽略模型先验与程序结构对结果的主导作用",
+      "将示例级可行性外推为通用规模化能力",
+      "仅看语法层面而忽视其方法承诺"
+    ]
+  },
+  "generation_notes": {
+    "methodology_file": "/Users/mingli/Khex/uni-learning/agents/reader/methodolgy.md",
+    "notes": [
+      "本 JSON 对应 methodolgy.md 第 5.1 节“零号预处理（编目与分流）”输出。"
+    ]
+  }
+}

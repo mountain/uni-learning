@@ -1,0 +1,54 @@
+{
+  "stage": "zero_preprocessing_catalog",
+  "source_pdf": {
+    "file_name": "approximating_probabilistic_inference_in_bayesian_belief_networks_is_np_hard.pdf",
+    "file_path": "/Users/mingli/Khex/uni-learning/references/1990s/approximating_probabilistic_inference_in_bayesian_belief_networks_is_np_hard.pdf",
+    "same_directory_output": true
+  },
+  "bibliography": {
+    "title": "Approximating Probabilistic Inference in Bayesian Belief Networks Is NP-Hard",
+    "authors": [
+      "Paul Dagum",
+      "Michael Luby"
+    ],
+    "year": 1993,
+    "publication": "IEEE Transactions on Pattern Analysis and Machine Intelligence",
+    "volume": "15",
+    "pages": "1108-1113"
+  },
+  "input_context_for_catalog": {
+    "abstract_brief": "论文证明在贝叶斯网络中进行近似概率推断同样具有高计算复杂度，强调不确定性推断的算法边界并推动近似方法与结构假设研究。",
+    "toc_brief": [
+      "问题定义与复杂度框架",
+      "NP-hard 证明结构",
+      "对近似推断实践的含义"
+    ],
+    "preface_or_intro_brief": "引言将关注点从精确推断扩展到近似推断的复杂度可行性边界。"
+  },
+  "catalog_result": {
+    "document_type": "技术论文",
+    "primary_route": "Bayes / probability",
+    "estimated_difficulty": {
+      "concept_density": "高",
+      "math_density": "高",
+      "historical_context_density": "中"
+    },
+    "reading_priority": "高",
+    "recommended_survey_chapters": [
+      "Bayes / uncertainty",
+      "open computation"
+    ],
+    "misreading_risks": [
+      "把复杂度下界误读为实践不可用的绝对否定",
+      "忽略结论依赖的问题设定与误差定义",
+      "将理论困难直接等同为所有任务上的经验失败",
+      "只关注结论标签而忽视证明路线中的关键假设"
+    ]
+  },
+  "generation_notes": {
+    "methodology_file": "/Users/mingli/Khex/uni-learning/agents/reader/methodolgy.md",
+    "notes": [
+      "本 JSON 对应 methodolgy.md 第 5.1 节“零号预处理（编目与分流）”输出。"
+    ]
+  }
+}

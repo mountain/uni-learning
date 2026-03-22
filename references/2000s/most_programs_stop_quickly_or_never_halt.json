@@ -1,0 +1,54 @@
+{
+  "stage": "zero_preprocessing_catalog",
+  "source_pdf": {
+    "file_name": "most_programs_stop_quickly_or_never_halt.pdf",
+    "file_path": "/Users/mingli/Khex/uni-learning/references/2000s/most_programs_stop_quickly_or_never_halt.pdf",
+    "same_directory_output": true
+  },
+  "bibliography": {
+    "title": "Most Programs Stop Quickly or Never Halt",
+    "authors": [
+      "Cristian S. Calude",
+      "Michael A. Stay"
+    ],
+    "year": 2008,
+    "publication": "Advances in Applied Mathematics",
+    "volume": "40",
+    "pages": "295-308"
+  },
+  "input_context_for_catalog": {
+    "abstract_brief": "论文分析程序停机时间分布，提出大量程序要么快速停机要么长期不止，为资源受限推断与 anytime 计算提供统计直觉。",
+    "toc_brief": [
+      "停机问题的分布视角",
+      "停机时间性质与界",
+      "对计算实践的含义"
+    ],
+    "preface_or_intro_brief": "引言将停机问题从二元可判定性扩展到时间分布与可用性分析。"
+  },
+  "catalog_result": {
+    "document_type": "技术论文",
+    "primary_route": "open computation / limit / anytime",
+    "estimated_difficulty": {
+      "concept_density": "高",
+      "math_density": "高",
+      "historical_context_density": "中"
+    },
+    "reading_priority": "高",
+    "recommended_survey_chapters": [
+      "open computation",
+      "Solomonoff / universal induction"
+    ],
+    "misreading_risks": [
+      "将统计意义上的“多数”误读为个体程序可判定性",
+      "忽略模型与编码方式对分布结果的影响",
+      "把理论分布性质直接外推为工程停止准则",
+      "仅看结论口号而忽略证明条件"
+    ]
+  },
+  "generation_notes": {
+    "methodology_file": "/Users/mingli/Khex/uni-learning/agents/reader/methodolgy.md",
+    "notes": [
+      "本 JSON 对应 methodolgy.md 第 5.1 节“零号预处理（编目与分流）”输出。"
+    ]
+  }
+}

@@ -1,0 +1,58 @@
+{
+  "stage": "zero_preprocessing_catalog",
+  "source_pdf": {
+    "file_name": "imagenet_a_large_scale_hierarchical_image_database.pdf",
+    "file_path": "/Users/mingli/Khex/uni-learning/references/2000s/imagenet_a_large_scale_hierarchical_image_database.pdf",
+    "same_directory_output": true
+  },
+  "bibliography": {
+    "title": "ImageNet: A Large-Scale Hierarchical Image Database",
+    "authors": [
+      "Jia Deng",
+      "Wei Dong",
+      "Richard Socher",
+      "Li-Jia Li",
+      "Kai Li",
+      "Li Fei-Fei"
+    ],
+    "year": 2009,
+    "publication": "CVPR",
+    "volume": "",
+    "pages": "248-255"
+  },
+  "input_context_for_catalog": {
+    "abstract_brief": "论文构建大规模层次化图像数据集 ImageNet，推动视觉表示学习进入数据驱动规模化阶段。",
+    "toc_brief": [
+      "数据集构建目标与层级体系",
+      "采集与标注流程",
+      "统计特征与基准任务"
+    ],
+    "preface_or_intro_brief": "引言强调数据规模与语义层级对视觉识别进展的关键作用。"
+  },
+  "catalog_result": {
+    "document_type": "技术论文",
+    "primary_route": "cybernetics / automata / Dartmouth",
+    "estimated_difficulty": {
+      "concept_density": "中",
+      "math_density": "低",
+      "historical_context_density": "中"
+    },
+    "reading_priority": "高",
+    "recommended_survey_chapters": [
+      "历史前奏",
+      "Transformer / ICL / PFN"
+    ],
+    "misreading_risks": [
+      "将数据规模提升等同为模型能力自动提升",
+      "忽略标注体系与分布偏差对结论的影响",
+      "把视觉数据集经验无条件迁移到通用智能问题",
+      "仅看 benchmark 结果而忽视数据工程方法论"
+    ]
+  },
+  "generation_notes": {
+    "methodology_file": "/Users/mingli/Khex/uni-learning/agents/reader/methodolgy.md",
+    "notes": [
+      "本 JSON 对应 methodolgy.md 第 5.1 节“零号预处理（编目与分流）”输出。"
+    ]
+  }
+}

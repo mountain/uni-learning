@@ -1,0 +1,53 @@
+{
+  "stage": "zero_preprocessing_catalog",
+  "source_pdf": {
+    "file_name": "on_the_learnability_of_the_uncomputable.pdf",
+    "file_path": "/Users/mingli/Khex/uni-learning/references/1990s/on_the_learnability_of_the_uncomputable.pdf",
+    "same_directory_output": true
+  },
+  "bibliography": {
+    "title": "On the Learnability of the Uncomputable",
+    "authors": [
+      "Jonathan I. Lathrop"
+    ],
+    "year": 1996,
+    "publication": "Proceedings of ICML",
+    "volume": "",
+    "pages": ""
+  },
+  "input_context_for_catalog": {
+    "abstract_brief": "论文讨论不可计算对象在分布与近似意义下的可学习性，展示“不可计算”与“不可学习”并非同义，推动资源受限推断视角。",
+    "toc_brief": [
+      "学习目标重定义",
+      "PAC/分布框架下的可学习性分析",
+      "构造与边界条件讨论"
+    ],
+    "preface_or_intro_brief": "引言通过学习标准重写，将绝对不可判定问题转入近似学习语境。"
+  },
+  "catalog_result": {
+    "document_type": "技术论文",
+    "primary_route": "open computation / limit / anytime",
+    "estimated_difficulty": {
+      "concept_density": "高",
+      "math_density": "高",
+      "historical_context_density": "中"
+    },
+    "reading_priority": "高",
+    "recommended_survey_chapters": [
+      "open computation",
+      "Solomonoff / universal induction"
+    ],
+    "misreading_risks": [
+      "将分布意义下可学习误读为无条件可计算",
+      "忽略结论对样本分布与误差标准的依赖",
+      "把理论可能性直接外推为工程可行性",
+      "只看结论而忽略问题重写的核心价值"
+    ]
+  },
+  "generation_notes": {
+    "methodology_file": "/Users/mingli/Khex/uni-learning/agents/reader/methodolgy.md",
+    "notes": [
+      "本 JSON 对应 methodolgy.md 第 5.1 节“零号预处理（编目与分流）”输出。"
+    ]
+  }
+}

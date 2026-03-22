@@ -1,0 +1,54 @@
+{
+  "stage": "zero_preprocessing_catalog",
+  "source_pdf": {
+    "file_name": "exact_approximations_of_omega_numbers.pdf",
+    "file_path": "/Users/mingli/Khex/uni-learning/references/2000s/exact_approximations_of_omega_numbers.pdf",
+    "same_directory_output": true
+  },
+  "bibliography": {
+    "title": "Exact Approximations of Omega Numbers",
+    "authors": [
+      "Cristian S. Calude",
+      "Michael A. Stay"
+    ],
+    "year": 2006,
+    "publication": "International Journal of Bifurcation and Chaos",
+    "volume": "16",
+    "pages": "1937-1954"
+  },
+  "input_context_for_catalog": {
+    "abstract_brief": "论文研究 Chaitin Ω 数的可逼近结构与精确近似性质，揭示停机概率相关对象在可计算近似中的边界。",
+    "toc_brief": [
+      "Ω 数背景与定义",
+      "近似构造与性质",
+      "可计算性边界讨论"
+    ],
+    "preface_or_intro_brief": "引言将不可计算常数问题转为可分析的逼近结构研究。"
+  },
+  "catalog_result": {
+    "document_type": "技术论文",
+    "primary_route": "open computation / limit / anytime",
+    "estimated_difficulty": {
+      "concept_density": "高",
+      "math_density": "高",
+      "historical_context_density": "中"
+    },
+    "reading_priority": "中",
+    "recommended_survey_chapters": [
+      "open computation",
+      "Solomonoff / universal induction"
+    ],
+    "misreading_risks": [
+      "将可逼近性误读为可有效计算",
+      "忽略近似过程的资源与表示前提",
+      "把数论层面结论直接外推到工程推理",
+      "只看结果陈述而忽略构造细节"
+    ]
+  },
+  "generation_notes": {
+    "methodology_file": "/Users/mingli/Khex/uni-learning/agents/reader/methodolgy.md",
+    "notes": [
+      "本 JSON 对应 methodolgy.md 第 5.1 节“零号预处理（编目与分流）”输出。"
+    ]
+  }
+}

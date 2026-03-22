@@ -1,0 +1,54 @@
+{
+  "stage": "zero_preprocessing_catalog",
+  "source_pdf": {
+    "file_name": "learning_to_predict_by_the_methods_of_temporal_differences.pdf",
+    "file_path": "/Users/mingli/Khex/uni-learning/references/1980s/learning_to_predict_by_the_methods_of_temporal_differences.pdf",
+    "same_directory_output": true
+  },
+  "bibliography": {
+    "title": "Learning to Predict by the Methods of Temporal Differences",
+    "authors": [
+      "Richard S. Sutton"
+    ],
+    "year": 1988,
+    "publication": "Machine Learning",
+    "volume": "3",
+    "pages": "9-44"
+  },
+  "input_context_for_catalog": {
+    "abstract_brief": "论文提出时序差分学习框架，通过相邻时刻预测误差更新价值估计，连接自举估计与在线学习，是强化学习核心方法来源之一。",
+    "toc_brief": [
+      "预测学习问题定义",
+      "时序差分更新规则",
+      "与监督学习及动态规划关系",
+      "理论性质与实验结果"
+    ],
+    "preface_or_intro_brief": "引言强调在延迟反馈环境中通过时间结构进行预测改进。"
+  },
+  "catalog_result": {
+    "document_type": "技术论文",
+    "primary_route": "open computation / limit / anytime",
+    "estimated_difficulty": {
+      "concept_density": "中",
+      "math_density": "中",
+      "historical_context_density": "中"
+    },
+    "reading_priority": "高",
+    "recommended_survey_chapters": [
+      "open computation",
+      "LM / agent / AGI"
+    ],
+    "misreading_risks": [
+      "将 TD 学习简化为普通梯度下降而忽略时序自举结构",
+      "把收敛或稳定性结论无条件外推到任意函数逼近场景",
+      "仅关注算法公式而忽略其对预测问题重写的意义",
+      "以后来强化学习工程实践覆盖原文理论边界"
+    ]
+  },
+  "generation_notes": {
+    "methodology_file": "/Users/mingli/Khex/uni-learning/agents/reader/methodolgy.md",
+    "notes": [
+      "本 JSON 对应 methodolgy.md 第 5.1 节“零号预处理（编目与分流）”输出。"
+    ]
+  }
+}

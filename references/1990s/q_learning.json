@@ -1,0 +1,54 @@
+{
+  "stage": "zero_preprocessing_catalog",
+  "source_pdf": {
+    "file_name": "q_learning.pdf",
+    "file_path": "/Users/mingli/Khex/uni-learning/references/1990s/q_learning.pdf",
+    "same_directory_output": true
+  },
+  "bibliography": {
+    "title": "Q-Learning",
+    "authors": [
+      "Christopher J. C. H. Watkins",
+      "Peter Dayan"
+    ],
+    "year": 1992,
+    "publication": "Machine Learning",
+    "volume": "8",
+    "pages": "279-292"
+  },
+  "input_context_for_catalog": {
+    "abstract_brief": "论文提出无模型时序决策学习算法 Q-learning，在延迟回报环境中通过值迭代思想实现渐进最优策略逼近。",
+    "toc_brief": [
+      "马尔可夫决策问题设定",
+      "Q 值更新规则",
+      "收敛性质与条件"
+    ],
+    "preface_or_intro_brief": "引言强调无需环境模型即可进行在线策略改进。"
+  },
+  "catalog_result": {
+    "document_type": "技术论文",
+    "primary_route": "open computation / limit / anytime",
+    "estimated_difficulty": {
+      "concept_density": "中",
+      "math_density": "中",
+      "historical_context_density": "中"
+    },
+    "reading_priority": "高",
+    "recommended_survey_chapters": [
+      "open computation",
+      "LM / agent / AGI"
+    ],
+    "misreading_risks": [
+      "把收敛结论外推到任意函数逼近与非平稳环境",
+      "将 Q-learning 与规划方法混同而忽略模型无关设定",
+      "忽视探索策略与学习稳定性的关键作用",
+      "仅看工程应用而弱化其理论问题重写意义"
+    ]
+  },
+  "generation_notes": {
+    "methodology_file": "/Users/mingli/Khex/uni-learning/agents/reader/methodolgy.md",
+    "notes": [
+      "本 JSON 对应 methodolgy.md 第 5.1 节“零号预处理（编目与分流）”输出。"
+    ]
+  }
+}

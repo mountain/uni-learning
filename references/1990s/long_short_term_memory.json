@@ -1,0 +1,54 @@
+{
+  "stage": "zero_preprocessing_catalog",
+  "source_pdf": {
+    "file_name": "long_short_term_memory.pdf",
+    "file_path": "/Users/mingli/Khex/uni-learning/references/1990s/long_short_term_memory.pdf",
+    "same_directory_output": true
+  },
+  "bibliography": {
+    "title": "Long Short-Term Memory",
+    "authors": [
+      "Sepp Hochreiter",
+      "Jürgen Schmidhuber"
+    ],
+    "year": 1997,
+    "publication": "Neural Computation",
+    "volume": "9",
+    "pages": "1735-1780"
+  },
+  "input_context_for_catalog": {
+    "abstract_brief": "论文提出 LSTM 结构，通过门控机制缓解长程依赖学习中的梯度问题，为序列建模建立可训练的长期记忆路径。",
+    "toc_brief": [
+      "RNN 长期依赖学习困难",
+      "LSTM 单元与门控结构",
+      "训练过程与实验验证"
+    ],
+    "preface_or_intro_brief": "引言聚焦如何在递归网络中保持长期信息并实现稳定训练。"
+  },
+  "catalog_result": {
+    "document_type": "技术论文",
+    "primary_route": "cybernetics / automata / Dartmouth",
+    "estimated_difficulty": {
+      "concept_density": "中",
+      "math_density": "中",
+      "historical_context_density": "中"
+    },
+    "reading_priority": "高",
+    "recommended_survey_chapters": [
+      "Transformer / ICL / PFN",
+      "历史前奏"
+    ],
+    "misreading_risks": [
+      "把 LSTM 看作对所有序列问题的统一最优解",
+      "忽略其改进目标是梯度传播与记忆保持而非通用推理",
+      "以后来架构演化叙事替代原论文的问题设定",
+      "仅比较性能而忽略结构性方法承诺"
+    ]
+  },
+  "generation_notes": {
+    "methodology_file": "/Users/mingli/Khex/uni-learning/agents/reader/methodolgy.md",
+    "notes": [
+      "本 JSON 对应 methodolgy.md 第 5.1 节“零号预处理（编目与分流）”输出。"
+    ]
+  }
+}

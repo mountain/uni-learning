@@ -1,0 +1,54 @@
+{
+  "stage": "zero_preprocessing_catalog",
+  "source_pdf": {
+    "file_name": "support_vector_networks.pdf",
+    "file_path": "/Users/mingli/Khex/uni-learning/references/1990s/support_vector_networks.pdf",
+    "same_directory_output": true
+  },
+  "bibliography": {
+    "title": "Support-Vector Networks",
+    "authors": [
+      "Corinna Cortes",
+      "Vladimir Vapnik"
+    ],
+    "year": 1995,
+    "publication": "Machine Learning",
+    "volume": "20",
+    "pages": "273-297"
+  },
+  "input_context_for_catalog": {
+    "abstract_brief": "论文提出支持向量机框架，以最大间隔原则与核技巧组织监督学习，强调泛化能力与优化可解性的统一。",
+    "toc_brief": [
+      "分类问题与间隔原则",
+      "支持向量与优化形式",
+      "核方法与泛化讨论"
+    ],
+    "preface_or_intro_brief": "引言聚焦统计学习中的泛化控制与可计算训练机制。"
+  },
+  "catalog_result": {
+    "document_type": "技术论文",
+    "primary_route": "Bayes / probability",
+    "estimated_difficulty": {
+      "concept_density": "中",
+      "math_density": "高",
+      "historical_context_density": "中"
+    },
+    "reading_priority": "中",
+    "recommended_survey_chapters": [
+      "Bayes / uncertainty",
+      "历史前奏"
+    ],
+    "misreading_risks": [
+      "将最大间隔思想与概率解释简单混同",
+      "忽略核选择与任务先验对效果的决定性影响",
+      "把经典凸优化结论直接外推到当代大规模非凸训练",
+      "只看性能比较而忽视其理论结构贡献"
+    ]
+  },
+  "generation_notes": {
+    "methodology_file": "/Users/mingli/Khex/uni-learning/agents/reader/methodolgy.md",
+    "notes": [
+      "本 JSON 对应 methodolgy.md 第 5.1 节“零号预处理（编目与分流）”输出。"
+    ]
+  }
+}

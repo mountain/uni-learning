@@ -1,0 +1,55 @@
+{
+  "stage": "zero_preprocessing_catalog",
+  "source_pdf": {
+    "file_name": "learning_representations_by_back_propagating_errors.pdf",
+    "file_path": "/Users/mingli/Khex/uni-learning/references/1980s/learning_representations_by_back_propagating_errors.pdf",
+    "same_directory_output": true
+  },
+  "bibliography": {
+    "title": "Learning Representations by Back-Propagating Errors",
+    "authors": [
+      "David E. Rumelhart",
+      "Geoffrey E. Hinton",
+      "Ronald J. Williams"
+    ],
+    "year": 1986,
+    "publication": "Nature",
+    "volume": "323",
+    "pages": "533-536"
+  },
+  "input_context_for_catalog": {
+    "abstract_brief": "论文提出通过误差反向传播训练多层网络表示的方法，展示隐藏层可学习中间表征，是现代深度学习训练范式的关键奠基工作。",
+    "toc_brief": [
+      "多层网络与表示学习问题",
+      "误差反向传播机制",
+      "实验示例与表示能力讨论"
+    ],
+    "preface_or_intro_brief": "引言聚焦如何在多层结构中高效分配误差信号以学习内部表示。"
+  },
+  "catalog_result": {
+    "document_type": "技术论文",
+    "primary_route": "cybernetics / automata / Dartmouth",
+    "estimated_difficulty": {
+      "concept_density": "中",
+      "math_density": "中",
+      "historical_context_density": "中"
+    },
+    "reading_priority": "高",
+    "recommended_survey_chapters": [
+      "历史前奏",
+      "Transformer / ICL / PFN"
+    ],
+    "misreading_risks": [
+      "把反向传播视为对全部学习难题的充分解法",
+      "忽略当时任务规模与模型结构限制对结论边界的影响",
+      "仅从工程成功叙事回看而遮蔽其表示学习问题重写价值",
+      "将其直接等同于当代大模型训练体系"
+    ]
+  },
+  "generation_notes": {
+    "methodology_file": "/Users/mingli/Khex/uni-learning/agents/reader/methodolgy.md",
+    "notes": [
+      "本 JSON 对应 methodolgy.md 第 5.1 节“零号预处理（编目与分流）”输出。"
+    ]
+  }
+}

@@ -1,0 +1,56 @@
+{
+  "stage": "zero_preprocessing_catalog",
+  "source_pdf": {
+    "file_name": "latent_dirichlet_allocation.pdf",
+    "file_path": "/Users/mingli/Khex/uni-learning/references/2000s/latent_dirichlet_allocation.pdf",
+    "same_directory_output": true
+  },
+  "bibliography": {
+    "title": "Latent Dirichlet Allocation",
+    "authors": [
+      "David M. Blei",
+      "Andrew Y. Ng",
+      "Michael I. Jordan"
+    ],
+    "year": 2003,
+    "publication": "Journal of Machine Learning Research",
+    "volume": "3",
+    "pages": "993-1022"
+  },
+  "input_context_for_catalog": {
+    "abstract_brief": "论文提出 LDA 主题模型，以层次贝叶斯结构刻画文档生成过程，成为概率主题建模与无监督文本分析的经典方法。",
+    "toc_brief": [
+      "主题建模问题设定",
+      "生成过程与先验结构",
+      "推断与参数学习",
+      "实验与模型比较"
+    ],
+    "preface_or_intro_brief": "引言强调在可解释统计框架下统一文档表示与不确定性建模。"
+  },
+  "catalog_result": {
+    "document_type": "技术论文",
+    "primary_route": "Bayes / probability",
+    "estimated_difficulty": {
+      "concept_density": "中",
+      "math_density": "中",
+      "historical_context_density": "中"
+    },
+    "reading_priority": "中",
+    "recommended_survey_chapters": [
+      "Bayes / uncertainty",
+      "历史前奏"
+    ],
+    "misreading_risks": [
+      "把主题解释性误读为语义理解充分性",
+      "忽略先验选择与推断近似对结果的影响",
+      "将文本主题模型结论外推到一般生成智能",
+      "只看可视化效果而弱化概率结构价值"
+    ]
+  },
+  "generation_notes": {
+    "methodology_file": "/Users/mingli/Khex/uni-learning/agents/reader/methodolgy.md",
+    "notes": [
+      "本 JSON 对应 methodolgy.md 第 5.1 节“零号预处理（编目与分流）”输出。"
+    ]
+  }
+}

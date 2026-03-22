@@ -1,0 +1,753 @@
+Computability 7 (2018) 259-271 259
+DOI 10.3233/COM- 170073
+IOS Press
+
+A probabilistic anytime algorithm for the halting problem
+
+Cristian S. Calude
+
+Department of Computer Science, University of Auckland, Auckland, New Zealand
+cristian@cs.auckland.ac.nz
+www.cs.auckland.ac.nz/~cristian
+
+Monica Dumitrescu
+
+Faculty of Mathematics and Computer Science, Bucharest University, Romania
+mdumi@fmi.unibuc.ro
+http://goo.gl/txsqpU
+
+The first author dedicates his contribution to this paper to the memory of his collaborator and friend S. Barry
+Cooper (1943-2015).
+
+Abstract. The Halting Problem, the most (in)famous undecidable problem, has important applications in theoretical and applied
+computer science and beyond, hence the interest in its approximate solutions.
+
+Experimental results reported on various models of computation suggest that halting programs are not uniformly distributed —
+running times play an important role. A reason is that a program which eventually stops but does not halt “quickly”, stops at a
+time which is algorithmically compressible.
+
+In this paper we work with running times to define a class of computable probability distributions on the set of halting programs
+in order to construct an anytime algorithm for the Halting problem with a probabilistic evaluation of the error of the decision.
+
+Keywords: Halting Problem, anytime algorithm, running time distribution
+
+1. Introduction
+
+The Halting Problem asks to decide, from a description of an arbitrary program and an input, whether the
+computation of the program on that input will eventually stop or continue forever. In 1936 Alonzo Church, and
+independently Alan Turing, proved that (in Turing’s formulation) an algorithm to solve the Halting Problem for
+all possible program-input pairs does not exist; two equivalent models have been used to describe computa-
+tion by algorithms (an informal notion), the lambda calculus by Church and Turing machines by Turing. The
+Halting Problem is historically the first proved undecidable problem; it has many applications in mathematics,
+logic and theoretical as well as applied computer science, mathematics, physics, biology, etc. Due to its prac-
+tical importance approximate solutions for this problem have been proposed for quite a long time, see [2,5—
+7,9,14,16,19,21,26].
+
+Anytime algorithms trade execution time for quality of results [13]. These algorithms can be executed in two
+modes: either by a given contract time to execute or an interruptible method. Instead of correctness, an anytime
+algorithm returns a result together with a “quality measure” which evaluates how close the obtained result is to the
+result that would be returned if the algorithm ran until completion (which may be prohibitively long). To improve the
+solution, anytime algorithms can be continued after they have halted. That is similar to the use of iterative processes
+in numerical computing in which, after the process has been halted, if the output is not considered to be acceptable,
+then it can be refined by resuming the iterative process.
+
+Following Manin [21] we use a more general form of anytime algorithm as an approximation for a computation
+which may never stop. An anytime algorithm for the Halting Problem works in the following way: to test whether a
+program eventually stops on a given input we first effectively compute a threshold time — the interruptible (stopping)
+condition — and then run the program for that specific time. If the computation stops, then the program was proved
+to halt; if the computation does not stop, then we declare that: (a) the program will never stop and (b) evaluate the
+
+2211-3568/18/$35.00 © 2018 — IOS Press and the authors. All rights reserved
+
+260 C.S. Calude and M. Dumitrescu/A probabilistic anytime algorithm for the halting problem
+
+probability of error, i.e. the probability that the program may eventually stop. The goal is to prove that the probability
+of error can be made as small as we wish. By running the program a longer time we can improve its performance
+either by getting to the halting time or by decreasing the probability of error. Another important goal is to develop
+feasible anytime algorithms for the Halting Problem.
+
+In [6,7] anytime algorithms for the Halting Problem have been developed using the fact — proved in [7] — that
+programs which take a long time to halt stop at “algorithmically compressible times’, i.e. times which a computer
+can generate from “smaller” inputs. Although the set of algorithmically compressible times has constructive density
+zero, the stopping times obtained using this method are very large and the theoretical bounds cannot be improved
+in general [6]. However, experimental results in [30] for small Turing machines indicate much smaller stopping
+times. Furthermore, the experimental results in [27,30,31] and theoretical results in [14,15] show that halting pro-
+grams are not uniformly distributed and their distributions depend on the running times of the specific model of
+computation.
+
+In this paper we construct a class of computable probability distributions on the set of halting programs based
+on their running times. Each computable probability distribution induces a probability space on the set of halting
+programs. Using this probabilistic framework we construct an anytime algorithm for the Halting problem with a
+probabilistic evaluation of the error of the decision.
+
+The paper is organised as follows. We start with a section on basic notation. Section 3 presents the computability
+and complexity part while Section 4 is dedicated to probability and statistics. Section 5 is dedicated to the presenta-
+tion of the probabilistic framework for the anytime algorithms. We start by examining two plausible a priori halting
+probabilities. The analysis of their inadequacy leads to the introduction of running time probability spaces on the
+set of halting programs which, as their names indicate, are constructed using computable probability distributions
+on the set of running times. In Section 6 describe the anytime algorithm and prove its correctness. In Section 8 we
+propose methods to improve the performance of the algorithm and evaluate it power and limits. Finally, we discuss
+some open problems.
+
+2. Notation
+
+In the following we will denote by Z* the set of positive integers {1, 2, ... } and let Z+=Ztu {oo}; R is the set
+of reals. The domain of a partial function F: Z+ —> Z+ is denoted by dom(F): dom(F) = {x € Z* | F(x) < ox}.
+We denote by #S the cardinality of the set S and by P(X) the power set of X.
+
+We assume familiarity with elementary computability theory and algorithmic information theory [4,11,20].
+
+For a partially computable function F: Z+ —> Z+ we denote by F(x)[t] < o the statement “the algorithm
+computing F has stopped exactly in time t”. For t € Z* we consider the computable set Stop(F,t) = {x € Z* |
+
+F (x)[t] < oo}, and note that
+
+dom(F) = (_J Stop(F, 1). (1)
+
+teZt+
+3. Complexity and universality
+
+The algorithmic complexity relative to a partially computable function F: Z* —> Z+ is the partial func-
+tion Ve: Z+ —+ Z+ defined by Vr(x) = inf{y € Z+ | F(y) = x}. If F(y) # x for every y > 1, then
+Vr(x) = ©. That is, the algorithmic complexity of x is the smallest description/encoding of x with respect to the
+interpreter/decoder F, or infinity if F cannot produce x.
+
+A partially computable function U is called universal if for every partially computable function F : Z* —> Zt
+there exists a constant ky, such that for every x € dom(V) we have
+
+Vu(x) <ku,r: Ve(x). (2)
+
+C.S. Calude and M. Dumitrescu/A probabilistic anytime algorithm for the halting problem 261
+
+Theorem 3.1 ((6]). A partially computable function U is universal iff for every partially computable function
+
+F: Z*+ —+ Z there exists a constant cu,F such that for every x € dom(F) we have
+Vu(F(@)) < cur. (3)
+
+The difference between (2) and (3) is in the role played by F: in the traditional condition (2), F appears through
+Vr (which for some F can be incomputable), while in (3) F appears as argument of Vy, making the second member
+of the inequality always computable.
+
+A universal partially computable function U “simulates” any other partially computable function F in the fol-
+lowing sense: if x € dom(F’), then from (3) we deduce that Vy(F'(x)) < cu,r - x, hence there exists an y < cu,F +x
+in dom(U) such that U(y) = F(x). In particular, Vy (x) < 00, for all x € ZT.
+
+The set dom(U) (see (1) for U = F) is computably enumerable, but not computable (the undecidability of
+the Halting Problem), its complement dom(U) is not computably enumerable, but the sets (Stop(U, t));>1 are all
+computable.
+
+To solve the Halting Problem means to determine for an arbitrarily pair (F’, x), where F is a partially computable
+function and x € Z*, whether F(x) stops or not, or equivalently, whether x € dom(F), that is, x € Stop(F, t), for
+some t € Z*. In view of (2) or (3) solving the Halting Problem for a fixed universal U is enough to solve the Halting
+Problem. From now on we fix a universal U and study the Halting Problem U(x) < 00, for x € Z*.
+
+4. A glimpse of probability theory
+
+In this section we define the main notions from probability theory used in this paper. For more details see [10,25].
+
+A measurable space (Q, B(82)) consists of a non-empty set Q and a Borel field of subsets of Q, B(Q) C P(Q).
+A probability space is a triple (2, B(Q), Pr), where (Q, B(Q)) is a measurable space and Pr: B(Q) —> [0, 1]
+is a probability measure, that is, Pr satisfies the following two conditions: (a) the probability of a countable union
+of mutually-exclusive sets in B(Q2) is equal to the countable sum of the probabilities of each of these sets, and
+(b) Pr(Q2) = 1. We interpret B(Q) as “the family of events” and Q as “the certain event”.
+
+Consider a probability space (QQ, 6(Q2), Pr) and a measurable space (A, B(A)). A random variable is a mea-
+surable function X : (2 —> A, that is, for every B € B(A) we have X—!(B) € B(Q). In this case X induces a
+probability (called probability distribution of X) Px : B(A) —> [0, 1] defined by
+
+Px(B) = Pr(X~!(B)) = Pr({w | X(@) € B}), Be BUA),
+
+which identifies the probability space (A, B(A), Py).
+
+The random variable X has a discrete probability distribution if A is at most countable. If we denote by Px ({x})
+the probability of the event {X = x} = {@ € Q | X(@) = x}, then the discrete probability distribution of X is
+completely defined by the numbers Px ({x}) € [0, 1], x € A, with 7.4 Px({x}) = 1. A computable probability
+distribution Py is a discrete probability distribution such that the function x € A ~~ Px({x}) is computable (in
+particular, Py ({x}) is a computable real for each x € A [23, p. 159]; see also [24,29]).
+
+In what follows we assume that A C R.
+
+The Cumulative Distribution Function of a random variable X is the function CDFy : R —~ [0, 1] defined
+by CDFy(y) = Pr(X < y), y € R. Incase X is a random variable with a discrete distribution, CDFy is the
+stair-function (with piecewise-constant sections) given by
+
+CDFx(y)= D> Px@), yeR.
+{xeA]x<y}
+
+For example, the generally accepted model for “the time-to-the-first-success” is the geometric distribution —
+the discrete probability distribution that expresses the probability that the first occurrence of an event (“‘success’’)
+requires k independent trials, each with the same success probability 0. More precisely, the random variable X that
+
+262 C.S. Calude and M. Dumitrescu/A probabilistic anytime algorithm for the halting problem
+
+takes values in A = Zt has a geometric distribution with the rate of success 6 € (0, 1) if Px(k) = U - 6k! -0,
+k > 1. In this case
+
+CO
+
+CDFx(y)= >) U-0)!-6, yeR,
+k=1,k<y
+
+and limy_;99 CDFx(y) = 1.
+
+The Quantile Function of the random variable X with a discrete distribution is the function qx : [0,1] —> A
+defined by qx(p) = inf{y € A | p < CDF x(y)}. By definition, CDFx (qx (p)) = p, for all p € [0, 1].
+
+For fixed r € [0, 1], the value (number) qx (r) is called the rth quantile of the random variable X. Quantiles are
+important indicators that give information about the location and clustering of the probability values {Py (x), x € A}.
+For example, if the data being studied are not actually distributed according to an assumed underlying probability
+distribution or if there are outliers far removed from the mean, then quantiles may provide useful information. Beside
+the classical quartiles — first, second (median), third — the lower and upper eth quantiles, qx (¢) and qx (1 — £), give
+important informations about the “tails” of the probability distribution (for small ¢ > 0). For more details see [1].
+
+Proposition 4.1. For every « € (0, 1) we have Px({x € A| x > qx(1 —«)}) < 8, hence limg_,9 Py ({x € A | x >
+qx(1—«)}) =0.
+
+Proof. Indeed, we have:
+
+Px({x € Al x >qx(l—«)}) =1- Px({x € Al x <qx(1 —2)})
+= 1—CDFx(qx(1—«)) <e«.
+
+5. A probabilistic framework
+
+In this section we describe a probabilistic framework for developing two anytime algorithms based on an analysis
+of the finite running times of all halting computations U(x), x € dom(U).
+
+5.1. Halting probability
+
+Both approaches discussed in this paper depend — directly or indirectly — on a computable probability which has
+to model the informal notion of “halting probability” for programs for a universal U, that is, the probability that U
+stops on input x. Which probability measure should we choose?
+
+First, various studies of concrete probability distributions for halting programs in different models of computa-
+tions (see [15,27,30,31]) show that halting programs are not uniformly distributed and their probability distributions
+depend on the running times on the specific model of computation. This experimental evidence is reflected also
+in the theoretical result stating that programs which take a long time to halt stop at “algorithmically compressible
+times’’, a set of constructive density zero [7].
+
+Second, if we interpret the event “U stops on input x” as a “success” in a sequence of trials, then the running
+time of the computation U(x) becomes “the-time-to-the-first-success’. In this setting, the event “U(x) stops exactly
+in time ?”, that is “x € Stop(U, f)”, is interpreted as “t is the achieved time-to-the-first success”. Then, the truncated
+geometric distribution is a candidate for the halting probability. Is the geometric distribution probability a “natural”
+model for the halting probability? Can it be used for developing anytime algorithms for the Halting Problem? The
+answer to the first question is negative. Indeed, the phenomenon modelled by the geometric distribution requires a
+sequence of independent trials in which each trial has the same probability of success — a strong condition hardly
+satisfied by any U. For the second question we note that the computability of the probability — an essential property
+for evaluating the stopping condition of the anytime algorithm — depends on the computability of 6 and eT y d-
+6)'—!, which may be problematic even if Ty is computable, see [28].
+
+This brief analysis suggests that instead of “assuming” an a priori halting probability we should instead construct
+a model for the halting probability based on the running times Ty.
+
+C.S. Calude and M. Dumitrescu/A probabilistic anytime algorithm for the halting problem 263
+
+5.2. A running time probability space
+
+Recall that the finite running times! of the computations U(x) are the set of exact stopping times for the halting
+programs of U:
+
+Ty = {t € Z" | there exists x € Z™ such that x € Stop(U, t)}
+
+= {t € Z* | there exists x € Z* such that U(x)[t] < oo}.
+Lemma 5.1. The set Ty is infinite.
+Proof. The statement in the lemma is true because for every M ¢€ Z* there is a program x € dom(U) which
+
+stops in time larger than M: indeed, otherwise all programs would stop in time at most M, hence dom(U) would be
+decidable, a contradiction.
+
+The undecidability of the Halting Problem casts a “computational uncertainty” on the membership problem of
+the set dom(U). In what follows we model this phenomenon by introducing a probabilistic structure on dom(U).
+From (1) we have
+
+dom(U) = [_) Stop(U, 1) = |) Stop(U, 1). (4)
+
+teZt teTy
+
+Next we note that
+
+0, iftAr,
+
+StopU, 1) NStop(U. 1) = J cu. 1), otherwise
+
+Let us consider the family of (finite and countable) unions of sets Stop(U, t), tf € Z*. This family includes
+dom(U) and is closed under complement
+
+Stop(U,1) = |) Stop(U, 7’),
+eTy\(t)
+
+and countable unions; accordingly, it is a Borel field of subsets of dom(U), which we denote by B(dom(U)). To
+define the discrete probability measure on the measurable set (dom(U), B(dom(U))) we fix a computable probability
+distribution o on Ty (see Section 5.3). Then, we put
+
+Pr = Pr, : B(dom(U)) —> [0,1], Pr(Stop(U, 4) =p), te Tu. (5)
+
+Now we can introduce a probability structure on the set Ty via a random variable. Let B(Ty) be the family of
+all subsets of Ty. The function
+
+RT = RTy : dom(U) — Ty, RT(x) = min{t > 0 | x € Stop(U, t)} (6)
+
+has the property that for every t € Ty, RT~!({t}) = Stop(U, t) € B(dom(U)). Consequently, RT is a random
+variable — in fact a stopping time — which will be called the running time associated with U. As described in
+Section 4, the random variable RT induces the probability space (Ty, 6(Ty), Prr) on Ty in which the probability
+is defined as follows:
+
+Prr({t}) = Pr(RT~'({t})), 1 Tu.
+
+'See [12] for modelling running times.
+
+264 C.S. Calude and M. Dumitrescu/A probabilistic anytime algorithm for the halting problem
+
+It is seen that for every t € Tu:
+Prr({t}) = Pr(Stop(U, t)) = p(t).
+
+In what follows a computable probability space (dom(U), B(dom(U)), Pry) of the form defined in (5) will be
+called a running time probability space.
+
+The random variable RT is completely specified by a computable probability distribution on the set of finite
+running times of programs of U,
+
+{ot) |t € Ty}. (7)
+
+Of course, we need to prove that a computable probability distribution (7) exists: this will be done in Section 5.3.
+The cumulative distribution function CDFrr : Ty — [0, 1] of the discrete random variable RT: dom(U) —>
+Ty is then defined by the formula:
+
+k
+CDFrr(k) = Per({te Tul <¢<)= D> Prr@®, keTu,
+
+t=1,teTy
+and the quantile function of RT is
+qrT(r) = inf {k € Ty | CDFrr(k) = ri, r € (0,1).
+
+For ¢ € (0, 1) we now use the (1 — ¢)-quantile qrr(1 — £) as a probabilistic threshold separating the “the upper
+é-tail” of the distribution, i.e. those very large running times ¢ making the event “U(x)[t] < oo” negligible according
+to Prr.
+
+5.3. Running time computable probability distributions
+We now discuss examples of finite running time computable probability distributions for (7).
+
+Every computable probability on dom(U) is defined on a computably enumerable, but not computable set and
+has to satisfy the equality py(t) = Pr(Stop(U, £)), for all t € Ty, so it has to depend on U. Furthermore, to construct
+pu we need:
+
+e acomputable function pry: Z* x Z* — [0, 1] such that pry(x, t) > 0 iff x € Stop(U, 1) (the probability
+that U(x) stops on time 1),
+e acomputable sequence of computable reals vy(t) = aa pr(x, ft).
+If pan] vu(t) = 1, then we can set py(t) = vyu(t) = Pr(Stop(U, £)). If an vu(t) < 1, we need to normalise
+with Yy = > P°, vu(t), hence Yy has to be computable. In this case
+
+1
+pu(t) = Ty" vu(t) = Pr(Stop(U, 7).
+
+As an example we construct the computable probability distribution py by using the function pr = pry: Zt x
+Z* —> [0, 1] defined by
+
+2%
+=<—, ifx € Stop(U, rf),
+
+prx,t) = fr BS St0P(O. 0
+0, otherwise.
+
+(8)
+
+The function pr is computable because the sets Stop(U, t) are computable for every t € Z*.
+
+C.S. Calude and M. Dumitrescu/A probabilistic anytime algorithm for the halting problem 265
+
+Theorem 5.2. The real numbers
+
+v(t) = vu) = do pra), re Z*, (9)
+x=1
+Y= Tw =v (10)
+
+t=1
+are computable and0 < v(t) < Y <1.
+
+Proof. To prove that u(t) is computable we use Theorem 4.2.3 in [29] which says that the limit of a computable
+sequence of rationals having a computable modulus of convergence is a computable real. To this aim we need to
+prove that the modulus of convergence of the series (9) is computable. Indeed, for every positive integers i < j and
+n we have
+
+J Q-* i Q-* j q-%
+» — = dS
+
+t
+x=1,xeStop(U,t) x=1,x€Stop(U,t) x=i+1,xeStop(U,t)
+oo .
+2* 27
+< — ge
+- yD t t
+x=i+l
+
+fori > [log,(2*)], a computable convergence modulus.
+A similar argument works for the series (10) because the set {(f,x) € Zt x Z* | x € Stop(U,1)} is com-
+putable.
+
+Note that if x ¢ dom(U), then for every tf € Zt we have pr(x, tf) = 0, so v(t) = 0.
+Using Theorem 5.2 we construct the following computable probability distribution p on the set of finite running
+times Ty:
+
+CO
+
+= 7 Sopot), te Tu. (11)
+
+x=1
+
+v(t)
+Y
+
+P(t) = putt) =
+
+Indeed, from (11) and (10) we have:
+
+eM = Deo = Y= dpe. =1
+
+teTy t=1 t=1 x=l
+
+As described in Section 4, using p we define the computable discrete probability space (Ty, B(Tu), Pp), where
+B(Ty) is the set of all subsets of Ty and P,(t) = p(t).
+
+The series (9) is a semi-measure [18, Section 4] with a computable sum? — by Theorem 5.2, (10) — an essential
+property for the computability of the probability Pp.
+
+The above probability space — inspired from [7] — is “natural” because the discrete probability distribution
+combines the uniform distribution assumed in the halting probability Q number, see [4], with the time complexity of
+halting programs (normalised by the computable number T, see (10)). In detail, the function (8) biases the programs
+x — assumed to be uniformly distributed — by dividing 2~* to the program’s stopping time f.
+
+2The sum of a computable semi-measure may be not computable as Specker theorem [28] indicates.
+
+266 C.S. Calude and M. Dumitrescu/A probabilistic anytime algorithm for the halting problem
+
+A program which eventually stops but does not halt “quickly” stops at an algorithmically compressible time,
+hence the probability of a program, that doesn’t stop for a long time, to halt tends to zero, see [6,7]. More precisely,
+if x € Stop(U, rt), then the longer f is, the smaller the halting probability of x is; if the program never halts, that is
+x € Stop(U, 1), for all t, then the halting probability of x tends to zero when t + oo. Any computable probability
+distribution not reflecting this phenomenon is “un-natural”.
+
+To further justify the “naturalness” of the probability P, we now show that it reflects the behaviour of both
+halting and non-halting programs. To this aim we use the series (9) to define a variation of p, namely a semi-
+computable probability distribution r on the set of all running times, finite or infinite, Ty U {00} as follows:
+
+t), ift € Ty,
+rt) = v(t) i U
+1-Y, t=o.
+
+As by (10) and (11)
+
+CO
+
+Yor) +r(co) = Y) >i pre, ) + r(00) = 1,
+
+t=1 t=1 x=1
+
+we can define P,({t}) = r(t) for t € Ty U {00} to obtain the semi-computable probability space (Ty U {oo}, B(Ty U
+{oo}), P,), where B(Ty U {co}) is the set of all subsets of Ty U {oo}.
+
+In contrast with P, — which deals only with finite running times — P, handles also the infinite running time, the
+running time of non-halting programs. The normalisation factor Y makes P, “reflect” the behaviour of non-halting
+programs too as the restriction of P, to Ty is
+
+P,({t})
+
+Ppt) = y
+
+E€ Ty.
+
+In (8) ¢ can be replaced with log(t + 1) or, more generally, with g(t), where g is a non-decreasing, unbounded,
+computable function: in this way we obtain a class of computable probabilistic distributions on Ty.
+
+In what follows, a computable probability distribution o on Ty will be extended to Z* by setting p(t) = 0 for
+every t € Zt \ Ty.
+
+Finally, we note that the problem whether a concrete computable probability distribution is “natural” depends
+on various factors, some objective, others subjective. There are a few ways to mitigate subjectivity, in particular, to
+make (11) more “practical”. One possibility is to use instead of t a very slow increasing computable function g(t).
+A more substantial improvement can be obtained using Proposition 1.5.2 in [22]. Yet another way will be discussed
+in Section 7.
+
+6. The probabilistic anytime algorithm
+
+As we mentioned in Section 3, to solve the Halting Problem is enough to fix a universal U and to decide, for an
+arbitrary program x, whether U(x) < o0 or U(x) = o.
+
+Our aim is to construct tan anytime algorithm for testing the incomputable predicate “U(x) < oo”. The decision
+to accept/reject the hypothesis “U(x) < oo” will be based on the running time of the computation U(x). A decision
+made by the anytime algorithm is erroneous when it returns the output “U(x) = 00”, when, in fact, U(x) < oo (that
+is, U(x) eventually stops after a very long time).
+
+The Halting Problem will be re-formulated within the probabilistic framework presented in Section 5 as follows:
+
+For arbitrary x € Z* , test the hypothesis Hy : {U(x) < 00} against the alternative H’ : {U(x) = oo}.
+x
+
+The decision of rejecting H will be taken on the basis of a critical time region B,,. In both proposed anytime
+algorithms, the critical regions will not depend on x, that is, B = B,., for every x € Zr.
+
+C.S. Calude and M. Dumitrescu/A probabilistic anytime algorithm for the halting problem 267
+
+An erroneous decision occurs when we reject H, on the basis of B, but Hy is true. The quality of this decision
+is expressed by the probability of an erroneous decision, i.e. the probability that a halting program x stops in a time
+te B.
+
+In what follows we will work with an a priori running time probability space (Ty, B(Tu), Prr) defined in (7)
+and the running time random variable RT defined in (6). Our main example is Pet = P,, where p comes from (8).
+
+In what follows we fix a computable probability distribution Prr.
+
+First we apply Proposition 4.1 to the random variable RT:
+
+Corollary 6.1. For every ¢ € (0, 1) we have
+Per({t € Tu | t > arr(l —€)}) <e, (12)
+hence limg_+9 Prr({t € Ty | t > qrrU — ©)}) = 0.
+We now use the inequality (12) in Corrolary 6.1 to propose the following probabilistic anytime algorithm for
+
+the Halting Problem:?
+
+Fixe = a with M € Z*. Let x be an arbitrary program for U. If the computation U(x) does not stop in time
+less than or equal to qrt(1 — €), then declare that U(x) = oo.
+
+If the computation U(x) stops in time less than or equal to qrr(1 — €), then obviously U(x) < oo. Otherwise,
+the answer to the question whether U(x) < o is unknown and algorithmically unknowable. The above anytime
+algorithm gives an approximate answer. To analyse the quality of the answer produced by this anytime algorithm we
+choose the computable critical time region*
+
+B(Prr, €) = {t € Tu | t > qrr(i—«)},
+and the critical program region
+C(Per, €) = {x € Z* | U(x)[t] = 00, for some t € B(Prr, €)}
+= {x € dom(U) | RT(x) € B(Prr, €)}.
+Note that
+Z* \ dom(U) © C(Prr, €) C Z*.
+
+The first inclusion above is not necessarily an equality as there may exist t] > fo > qrr(1 — €) such that U(x) [fo] =
+oo and U(x)[t)] < oo.
+
+The anytime algorithm may output the answer “U(x) = oo” when in fact U(x) < oo. To evaluate the quality of
+the anytime algorithm we need to “compare” the set C( Prt, €£) — which gives the “anytime” answers “U(x) = co” —
+with the exact set Z* \ dom(U) — giving the correct answers “U(x) = 00”. To this aim we evaluate the “size” of the
+
+set C(Prr, €) with Pr.
+
+Corollary 6.2. For every M € Z*
+
+m(c( Pe. 2)) = ra(a( neh) < 2
+
+3A probabilistic anytime algorithm is different from a Monte Carlo algorithm. For such an algorithm there is no need of amplification as the
+quality measure is fixed a priori by the bound on the probability of error.
+
+4 Bare is independent of x; recall that ¢ = a MeZ*.
+
+268 C.S. Calude and M. Dumitrescu/A probabilistic anytime algorithm for the halting problem
+
+Proof. As C(Prr, €) = RT~!(B(Prt, &)), we have
+Pr(C(Prr, €)) = Prr(B(Prr, €))
+
+so from Corrolary 6.1 we deduce that for every M € Z* we have:
+Pri Cl P : = Prr| Bl P :
+r RTs ay J) = ART RT. 7
+= 1-—CDF 1 !
+= RT| QRT u))
+
+Comment. Corollary 6.2 is stronger than the ones obtained in [6,7] where the probability and the stopping decision
+depend on the program x.
+
+To implement the anytime algorithm above we need an algorithm to compute
+— = minjt € T | CDF @>i-t
+min > .
+RT uM U RT uM
+
+As the set Ty is only computably enumerable, we will not be able to compute exactly qrr(1 — a) but an upper
+bound for it. To this aim we consider a computably enumeration of Ty = {t1, f2,...,¢;,...} and compute the
+following new bound:
+
+k
+
+~ 1 1
+
+aai(1- 77) = > pts) > aer(1~ 57)
+M i=l M
+
+where
+
+k= min|s 2" | Sot > be .
+
+i=l
+
+Obviously, the anytime algorithm will work correctly with the larger bound, but this will increase its time
+complexity.
+
+7. Testing the quality of the running time distribution
+
+Inference-based-decisions are made using statistical procedures based on sets of observations. An inference-
+based-decision of a hypothesis results in one of two outcomes: the hypothesis is accepted or rejected. The outcome
+can be correct or erroneous. The set of observations leading to the decision “reject the hypothesis” is called the
+critical region.
+
+Fix the probability space (A, B(A), Px) induced by a random variable X. Consider a critical region B C A,
+B € B(A) and an observed value x € A. For every x € A, a hypothesis H,. is a statement such that “HA is true” and
+“HH, is false” are measurable sets from B(A).
+
+An inference-based-decision has the following form:
+
+If the observed value x € A belongs to B, then decide to reject the hypothesis Hy.
+An error occurs if we reject H, on the basis of B, when H,, is true. The probability of error, that is, the probability
+
+of an erroneous decision, is Px({x € B | “H, is true’}). Of course, only decisions with (very) low probability of
+error are of genuine interest.
+
+C.S. Calude and M. Dumitrescu/A probabilistic anytime algorithm for the halting problem 269
+
+Making the “right” choices for the running time computable probability distributions is essential for successful
+applications. There are a few ways to guide and improve the quality of these choices. One possibility is to test how
+“natural” is a particular computable probability distribution for some universal U using the sampling algorithm. For
+example we can use the two-sample Kolmogorov—Smirnov goodness-and-fit test (see [8, pp. 309-314]) to test how
+“natural” is a particular computable probability distribution, say P,, for a given universal U.
+
+We randomly sample Ty to obtain a long sequence of independent, identically distributed running times
+(t1,...,¢n) according to the discrete random variable RT. This can be achieved by a dovetailing method to generate
+sufficiently many L halting programs POS; = (x1,..., xz) and their running times Tpos, = (t1,..., 7). Then
+we implement a random sampling (see, for example, [3,17]) to extract N identically distributed running times from
+Tpos,, (t1,.--,¢n), which represent N independent, identically distributed replicates of the random variable RT.
+
+We can now use the associated Empirical Cumulative Distribution Function defined by
+
+#H1L<i<N|t <t}
+
+ECDF pr, wn (t) = N », teETy. (13)
+
+The two-sample Kolmogorov—Smirnov test compares these two empirical distribution functions in order to
+accept/reject the null hypothesis that the two datasets were drawn from “the same stochastic source”. The null
+hypothesis, denoted by Ho : {Prr = Pp}, states that the data produced by the sampling algorithm for the particular
+universal U fits the computable probability distribution P,. The decision of accepting/rejecting Ho is taken on the
+basis of numerical comparison of ECDFet,n and ECDF,,y.
+
+8. Conclusions
+
+In this paper we have proposed a probabilistic anytime algorithm for the Halting Problem. The anytime algorithm
+depends on the model of computation U; its quality depend on the computable probability distribution on the set
+stopping times.
+
+The main motivation comes from experimental results reported in [27,30,31] and the theoretical results in [14,
+15]: they all suggest that halting programs are not uniformly distributed and depend on the running times of the
+specific model of computation.
+
+We have used the fact that programs which take a long time to halt stop at “algorithmically compressible times”
+[7] to construct a class of computable probability distributions on the set stopping times of halting programs. Each
+computable probability distribution induces a running time probability space on the set of halting programs, the
+probabilistic framework for our anytime algorithms.
+
+Next we discuss some features of the proposed anytime algorithm. We start with positive features. (P1) The cut-
+off temporal bound does not depend on programs. (P2) The a priori class of computable probabilities distributions
+presented in Section 5.3 are not arbitrarily pre-imposed: they reflect the halting behaviour of the chosen universal
+machine through its running times. (P3) We can test empirically the choice of the computable probability distribution
+and sampling, hence adopt parameters suiting different universal machines.
+
+However, the approach has limits. (L1) Because of (P1) and the use of a universal machine, the cut-off temporal
+bound could be large. This can be mitigated to some extent by (P3). (L2) Working with a fixed universal machine
+and programs x instead of pairs (program, y) increases the computational time as the simulation of the computation
+program(y) on U takes longer than running program(y).
+
+It is a natural follow-up to study the computational complexity of the proposed anytime algorithms and, compli-
+mentary, to test experimentally their performance for classes of interesting programs.
+
+Acknowledgements
+
+We thank N. Allen, M. Holmes, Yu. Manin, L. Staiger and G. Tee for useful comments and suggestions. Special
+thanks to the anonymous referee for excellent critical remarks and suggestions that improved the paper. This work
+has been supported in part by the Quantum Computing Research Initiatives at Lockheed Martin.
+
+270 C.S. Calude and M. Dumitrescu/A probabilistic anytime algorithm for the halting problem
+
+References
+
+[1] B.C. Arnold, N. Balakrishnan and N.N. Nagaraja, A First Course in Order Statistics, John Wiley, New York,
+2008.
+
+[2] L. Bienvenu, D. Desfontaines and A. Shen, What percentage of programs halt?, in: Automata, Languages,
+and Programming I, M.M. Halldérsson, K. Iwama, N. Kobayashi and B. Speckmann, eds, LNCS, Vol. 9134,
+Springer, 2015, pp. 219-230.
+
+[3] K. Bringmann and K. Panagiotou, Efficient sampling methods for discrete distributions, Algorithmica (2016),
+1-25. doi: 10 .1007/s00453-016-0205-0.
+
+[4] C.S. Calude, Information and Randomness: An Algorithmic Perspective, 2nd edn, Springer, Berlin, 2002.
+
+[5] C.S. Calude and D. Desfontaines, Universality and almost decidability, Fundamenta Informaticae 138(1-2)
+(2015), 77-84.
+
+[6] C.S. Calude and D. Desfontaines, Anytime algorithms for non-ending computations, International Journal of
+Foundations of Computer Science 26(4) (2015), 465-475. doi:10.1142/S50129054115500252.
+
+[7] C.S. Calude and M.A. Stay, Most programs stop quickly or never halt, Advances in Applied Mathematics 40
+(2008), 295-308. doi:10.1016/j.aam.2007.01.001.
+
+[8] W.J. Conover, Practical Nonparametric Statistics, John Wiley, New York, 1971.
+
+[9] B. Cook, A. Podelski and A. Rybalchenko, Proving program termination, Communications ACM 54(5) (2011),
+88-98. doi:10.1145/1941487.1941509.
+
+0] A. DasGupta, Probability for Statistics and Machine Learning, Springer, New York, 2011.
+
+1] R. Downey and D. Hirschfeldt, Algorithmic Randomness and Complexity, Springer, Heidelberg, 2010.
+
+2] C.A. Furia, D. Mandrioli, A. Morzenti and M. Rossi, Modeling Time in Computing, Springer, Berlin, 2012.
+
+3] J. Grass, Reasoning about computational resource allocation. An introduction to anytime algorithms, Magazine
+Crossroads 3(1) (1996), 16-20. doi:10.1145/332148.332154.
+
+[14] J.D. Hamkins and A. Miasnikov, The halting problem is decidable on a set of asymptotic probability one, Notre
+
+Dame Journal of Formal Logic 47(4) (2006), 515-524. doi:10 .1305/ndj£1/1168352664.
+
+[15] S. Kohler, C. Schindelhauer and M. Ziegler, On approximating real-world halting problems, in: Fundamentals
+of Computation Theory 2005, M. Liskiewicz and R. Reischuk, eds, LNCS, Vol. 3623, Springer, 2005, pp.
+454-466. doi:10.1007/11537311_40.
+
+[16] R.H. Lathrop, On the learnability of the uncomputable, in: Proceedings International Conference on Machine
+Learning, L. Saitta, ed., Morgan Kaufmann, 1996, pp. 302-309.
+
+[17] PS. Levy and S. Lemeshow, Sampling of Populations. Methods and Applications, 3rd edn, John Wiley, NJ,
+1999.
+
+[18] M. Li and P.M.B. Vitanyi, An Introduction to Kolmogorov Complexity and Its Applications, 3rd edn, Springer
+Verlag, New York, 2008.
+
+[19] N. Lynch, Approximations to the halting problem, Journal of Computer and System Sciences 9 (1974), 143-
+150. doi:10 .1016/S0022-0000 (74) 80003-6.
+
+[20] Y.I. Manin, A Course in Mathematical Logic for Mathematicians, 2nd edn, Springer, Berlin, 2010.
+
+[21] Y.I. Manin, Renormalisation and computation I: Time cut-off and the halting problem, Mathematical Struc-
+tures in Computer Science 22 (2012), 729-751. doi:10 .1017/S0960129511000508.
+
+[22] YI. Manin, Zipf’s law and L. Levin probability distributions, Functional Analysis and Its Applications 48(2)
+(2014), 116-127. doi:10.1007/s10688-014-0052-1.
+
+[23] M. Minsky, Computation: Finite and Infinite Machines, Prentice-Hall, Inc., Englewood Cliffs, NJ, 1967.
+
+[24] T. Mori, Y. Tsujii and M. Yasugi, Computability of probability distributions and distribution functions, in: 6th
+International Conference on Computability and Complexity in Analysis, Schloss Dagstuhl-Leibniz-Zentrum
+fiir Informatik, A. Bauer, P. Hertling and K.-I. Ko, eds, Dagstuhl, 2009, pp. 185-196.
+
+[25] P. Olofsson, Probability, Statistics, and Stochastic Processes, Wiley-Interscience, New York, 2005.
+
+[26] A. Rybalov, On the generic undecidability of the halting problem for normalized Turing machines, Theory of
+Computing Systems 60 (2017), 671-676.
+
+[27] F. Soler-Toscano, H. Zenil, J.-P. Delahaye and N. Gauvrit, Calculating Kolmogorov complexity from the output
+frequency distributions of small Turing machines, PLoS ONE 9(5) (2014), e96223.
+
+C.S. Calude and M. Dumitrescu/A probabilistic anytime algorithm for the halting problem 271
+
+[28] E. Specker, Nicht konstruktiv beweisbare Satze der Analysis, The Journal of Symbolic Logic 14 (1949), 145-
+158. doi:10 .2307/2267043.
+
+[29] K. Weihrauch, Computable Analysis. An Introduction, Springer, Berlin, 2000.
+
+[30] H. Zenil, Computer runtimes and the length of proofs, in: Computation, Physics and Beyond, M.J. Dinneen,
+B. Khoussainov and A. Nies, eds, LNCS, Vol. 7160, Springer, 2012, pp. 224-240. doi:10 .1007/978-3-
+642-27654-5_17.
+
+[31] H. Zenil and J.-P. Delahaye, On the algorithmic nature of the world, in: Information and Computation. Essays
+on Scientific and Philosophical Understanding of Foundations of Information and Computation, G. Dodig-
+Crnkovic and M. Burgin, eds, World Scientific, Singapore, 2010, pp. 477-499.

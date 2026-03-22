@@ -1,0 +1,2328 @@
+1005.3014v4 [math.LO] 16 Nov 2019
+
+arXiv
+
+On the Computability of Conditional Probability
+
+NATHANAEL L. ACKERMAN, Harvard University
+CAMERON E. FREER, Massachusetts Institute of Technology
+DANIEL M. ROY, University of Toronto
+
+As inductive inference and machine learning methods in computer science see continued success, researchers are
+aiming to describe ever more complex probabilistic models and inference algorithms. It is natural to ask whether
+there is a universal computational procedure for probabilistic inference. We investigate the computability of
+conditional probability, a fundamental notion in probability theory and a cornerstone of Bayesian statistics.
+We show that there are computable joint distributions with noncomputable conditional distributions, ruling
+out the prospect of general inference algorithms, even inefficient ones. Specifically, we construct a pair of
+computable random variables in the unit interval such that the conditional distribution of the first variable
+given the second encodes the halting problem. Nevertheless, probabilistic inference is possible in many common
+modeling settings, and we prove several results giving broadly applicable conditions under which conditional
+distributions are computable. In particular, conditional distributions become computable when measurements
+are corrupted by independent computable noise with a sufficiently smooth bounded density.
+
+CONTENTS
+1 Introduction 2
+1.1 Probabilistic Programming 2
+1.2 Computable Probability Theory 3
+1.3 Conditional Probability 3
+1.4 Other Related Work 4
+1.4.1 Complexity Theory of Finite Discrete Distributions 4
+1.4.2 Computable Bayesian Learners 4
+1.4.3 Induction with respect to Universal Priors 5
+1.4.4 Radon-Nikodym Derivatives 5
+1.5 Summary of Results 5
+2 Computable Probability Theory 6
+2.1 Computable and Computable Enumerable Reals 7
+2.2 Computable Polish Spaces 7
+2.3 Notions of Computability for Functions on Probability Spaces 9
+2.4 Computable and Almost Computable Random Variables 10
+2.5 Computable Probability Measures 12
+2.6 Weaker Notions of Computability for Functions on Probability Spaces 13
+2.7 Almost Decidable Sets and Bases 14
+3 Conditional Probabilities and Distributions 15
+3.1 Conditional Distributions 18
+
+Authors’ addresses: Nathanael L. Ackerman, Harvard University, Department of Mathematics, One Oxford St., Cambridge,
+MA, 02138-2901, nate@math.harvard.edu; Cameron E. Freer, Massachusetts Institute of Technology, Department of Brain
+and Cognitive Sciences, 77 Massachusetts Ave., Cambridge, MA, 02139-4301, freer@mit.edu; Daniel M. Roy, University of
+Toronto, Department of Statistical Sciences, 100 St. George St., Toronto, ON, M5S 3G3 and Vector Institute, MaRS Centre,
+West Tower, 661 University Ave., Suite 710, Toronto, ON M5G 1M1, droy@utstat.toronto.edu
+
+On the Computability of Conditional Probability 2
+
+3.2 Dominated Families 19
+4 Computable Conditional Probabilities and Distributions 21
+5 Discontinuous Conditional Distributions 24
+6 Conditioning is Discontinuous 25
+7 Noncomputable Almost-Continuous Conditional Distributions 28
+8 Noncomputable Everywhere Continuous Conditional Distributions 34
+9 Positive Results 37
+9.1 Discrete Random Variables 38
+9.2 Continuous and Dominated Setting 39
+9.3 Conditioning on Noisy Observations 40
+9.4 Exchangeable Setting 41
+Acknowledgments 41
+References 42
+
+1 INTRODUCTION
+
+The use of probability to reason about uncertainty has wide-ranging applications in science and
+engineering, and some of the most important computational problems relate to conditioning, which
+is used to perform Bayesian inductive reasoning in probabilistic models. As researchers have faced
+more complex phenomena, their representations have also increased in complexity, which in turn
+has led to more complicated inference algorithms. It is natural to ask whether there is a universal
+inference algorithm — in other words, whether it is possible to automate probabilistic reasoning via
+a general procedure that can compute conditional probabilities for an arbitrary computable joint
+distribution.
+
+We demonstrate that there are computable joint distributions with noncomputable conditional
+distributions. As a consequence, no general algorithm for computing conditional probabilities can
+exist. Of course, the fact that generic algorithms cannot exist for computing conditional probabilities
+does not rule out the possibility that large classes of distributions may be amenable to automated
+inference. The challenge for mathematical theory is to explain the widespread success of probabilistic
+methods and characterize the circumstances when conditioning is possible. In this vein, we describe
+broadly applicable conditions under which conditional probabilities are computable.
+
+We begin by describing a setting, probabilistic programming, that motivates the search for these
+results. We proceed to describe the technical frameworks for our results, computable probability
+theory and the modern formulation of conditional probability. We then highlight related work, and
+end the introduction with a summary of results of the paper.
+
+1.1. Probabilistic Programming
+
+Within probabilistic artificial intelligence and machine learning, probabilistic programming provides
+formal languages and algorithms for describing and computing answers from probabilistic models.
+Probabilistic programming languages themselves build on modern programming languages and their
+facilities for recursion, abstraction, modularity, etc., to enable practitioners to define intricate, in
+some cases infinite-dimensional, models by implementing a generative process that produces an
+
+On the Computability of Conditional Probability 3
+
+exact sample from the model’s joint distribution. Probabilistic programming languages have been
+the focus of a long tradition of research within programming languages, model checking, and formal
+methods. For some of the early approaches within the AI and machine learning community, see,
+e.g., the languages PHA [Poole 1991], IBAL [Pfeffer 2001], Markov Logic [Richardson and Domingos
+2006], A. [Park et al. 2008], Church [Goodman et al. 2008], HANSEI [Kiselyov and Shan 2009], and
+Infer.NET [Minka et al. 2010].
+
+In many of these languages, one can easily represent the higher-order stochastic processes (e.g.,
+distributions on data structures, distributions on functions, and distributions on distributions) that
+are essential building blocks in modern nonparametric Bayesian statistics. In fact, the most expressive
+such languages are each capable of describing the same robust class as the others — the class of
+computable distributions, which delineates those from which a probabilistic Turing machine can
+sample to arbitrary accuracy.
+
+Traditionally, inference algorithms for probabilistic models have been derived and implemented
+by hand. In contrast, probabilistic programming systems have introduced varying degrees of support
+for computing conditional distributions. Given the rate of progress toward broadening the scope of
+these algorithms, one might hope that there would eventually be a generic algorithm supporting the
+entire class of computable distributions.
+
+Despite recent progress towards a general such algorithm, support for conditioning with respect
+to continuous random variables has remained incomplete. Our results explain why this is necessarily
+the case.
+
+1.2. Computable Probability Theory
+
+In order to study computable probability theory and the computability of conditioning, we work
+within the framework of Type-2 Theory of Effectivity (TTE) and use appropriate representations for
+topological and measurable objects such as distributions, random variables, and maps between them.
+This framework builds upon and contains as a special case ordinary Turing computation on discrete
+spaces, and gives us a basis for precisely describing the operations that probabilistic programming
+languages are capable of performing.
+
+In particular, we study the computability of distributions on computable Polish spaces including,
+e.g., certain spaces of distributions on distributions. In Section 2 we present the necessary definitions
+and results from computable probability theory.
+
+1.3. Conditional Probability
+
+For an experiment with a discrete set of outcomes, computing conditional probabilities is, in principle,
+straightforward as it is simply a ratio of probabilities. However, in the case of conditioning on the
+value of a continuous random variable, this ratio is undefined. Furthermore, in modern Bayesian
+statistics, and especially the probabilistic programming setting, it is common to place distributions
+on higher-order objects, and so one is already in a situation where elementary notions of conditional
+probability are insufficient and more sophisticated measure-theoretic notions are necessary.
+Kolmogorov [1933] gave an axiomatic characterization of conditional probabilities and an abstract
+construction of them using Radon-Nikodym derivatives, but this definition and construction do not
+yield a general recipe for their calculation. There is a further problem: in this setting, conditional
+probabilities are formalized as measurable functions that are defined only up to measure zero sets.
+Therefore, without additional assumptions, a conditional probability is not necessarily well-defined
+
+On the Computability of Conditional Probability 4
+
+for any particular value of the conditioning random variable. This has long been understood as a
+challenge for statistical applications, in which one wants to evaluate conditional probabilities given
+particular values for observed random variables. In this paper, we are therefore especially interested
+in situations where it makes sense to ask for the conditional distribution given a particular point.
+One of our main results is in the setting where there is a unique continuous conditional distribution.
+In this case, conditioning yields a canonical answer, which is a natural desideratum for statistical
+applications.
+
+A large body of work in probability and statistics is concerned with the derivation of conditional
+probabilities and distributions in special circumstances, each situation often requiring some special
+insight into the structure of the answer, especially when it was desirable for conditional probabilities
+and distributions to be defined at points, as in Bayesian statistical applications. This state of affairs
+motivated work on constructive definitions of conditioning (such as those due to Tjur [1974; 1975;
+1980], Pfanzagl [1979], and Rao [1988; 2005]), although this work has not been sensitive to issues of
+computability.
+
+Under certain conditions, such as when conditional densities exist, conditioning can proceed using
+the classic Bayes’ rule; however, it may not be possible to compute the density of a computable
+distribution (if the density exists at all), as we describe in Section 9.2.
+
+We recall the basics of the measure-theoretic approach to conditional probability in Section 3,
+and in Section 4 we use notions from computable probability theory to consider the sense in which
+conditioning could be potentially computable.
+
+1.4 Other Related Work
+
+We now describe several other connections between conditional probability and computation.
+
+1.4.1. Complexity Theory of Finite Discrete Distributions. Conditional probabilities for computable
+distributions on finite, discrete sets are clearly computable, but may not be efficiently so. In this
+finite discrete setting, there are already interesting questions of computational complexity, which
+have been explored by a number of authors through extensions of Levin’s theory of average-case
+complexity [Levin 1986]. For example, under cryptographic assumptions, it is difficult to sample
+from the conditional distribution of a uniformly distributed binary string of length n given its image
+under a one-way function. This can be seen to follow from the work of Ben-David, Chor, Goldreich,
+and Luby [1992] in their theory of polynomial-time samplable distributions, which has since been
+extended by Yamakami [1999] and others. Other positive and negative complexity results have been
+obtained in the particular case of Bayesian networks by Cooper [1990] and Dagum and Luby [1993;
+1997]. Extending these complexity results to the more general setting considered here could bear on
+the practice of statistical AI and machine learning.
+
+1.4.2. Computable Bayesian Learners. Osherson, Stob, and Weinstein [1988] study learning theory
+in the setting of identifiability in the limit (see [Gold 1967] and [Putnam 1965] for more details
+on this setting) and prove that a certain type of “computable Bayesian” learner fails to identify
+the index of a (computably enumerable) set that is “computably identifiable” in the limit. More
+specifically, a “Bayesian learner” is required to return an index for a set with the highest conditional
+probability given a finite prefix of an infinite sequence of random draws from the unknown set. An
+analysis by Roy [2011] of their construction reveals that the conditional distribution of the index
+given the infinite sequence is an everywhere discontinuous function (on every measure one set),
+
+On the Computability of Conditional Probability 5
+
+hence noncomputable for much the same reason as our elementary construction involving a mixture
+of measures concentrated on the rationals and on the irrationals (see Section 5). As we argue, in
+the context of statistical analysis, it is more appropriate to study the conditioning operator when
+it is restricted to those random variables whose conditional distributions admit versions that are
+continuous everywhere, or at least on a measure one set.
+
+1.4.3. Induction with respect to Universal Priors. Our work is distinct from the study of conditional
+distributions with respect to priors that are universal for partial computable functions (as defined
+using Kolmogorov complexity) by Solomonoff [1964], Zvonkin and Levin [1970], and Hutter [2007].
+The computability of conditional distributions also has a rather different character in Takahashi’s
+work on the algorithmic randomness of points defined using universal Martin-Léf tests [Takahashi
+2008]. The objects with respect to which one is conditioning in these settings are typically not
+computable (e.g., the universal semimeasure is merely lower semicomputable). In the present paper,
+we are interested in the problem of computing conditional distributions of random variables that are
+computable, even though the conditional distribution may itself be noncomputable.
+
+1.4.4 Radon-Nikodym Derivatives. In the abstract setting, conditional probabilities are (suitably
+measurable) Radon-Nikodym derivatives. In work motivated by questions in algorithmic randomness,
+Hoyrup and Rojas [2011] study notions of computability for absolute continuity and for Radon-
+Nikodym derivatives as elements in L’, i-e., the space of integrable functions. Hoyrup, Rojas, and
+Weihrauch [2011] then show an equivalence between the problem of computing Radon-Nikodym
+derivatives as elements in L' and computing the characteristic function of computably enumerable
+sets. The noncomputability of the Radon-Nikodym derivative operator is demonstrated by a pair p, v
+of computable measures whose Radon-Nikodym derivative dy:/dv is not computable as an element in
+L1(v). However, the Radon-Nikodym derivatives they study do not correspond to conditional proba-
+bilities, and so the computability of the operator restricted to those maps arising in the construction
+of conditional probabilities is not addressed by this work. The underlying notion of computability
+is another important difference. An element in L'(v) is an equivalence class of functions, every
+pair agreeing on a set of v-measure one. Thus one cannot, in general, evaluate these derivatives
+at points in a well-defined manner. Most Bayesian statisticians would be unfamiliar and perhaps
+unsatisfied with this notion of computability, especially in settings where their statistical models
+admit continuous versions of Radon—Nikodym derivatives that are unique, and thus well-defined
+pointwise. Regardless, we will show that even in such settings, computing conditional probabilities
+is not possible in general, even in the weaker L! sense. On the other hand, our positive results do
+yield computable probabilities/distributions defined pointwise.
+
+1.5 Summary of Results
+
+Following our presentation of computable probability theory and conditional probability in Sections 2
+through 4, we provide our main positive and negative results about the computability of conditional
+probability, which we now summarize. Recall that measurable functions are often defined only up to
+a measure-zero set; any two functions that agree almost everywhere are called versions of each other.
+
+In Proposition 5.1, we construct random variables X and C that are computable on a P-measure
+one set, such that every version of the conditional distribution map P[C|X = - ] (i.e., a probability-
+measure-valued function f such that f(X) is a regular version of the conditional distribution P[C|X])
+is discontinuous everywhere, even when restricted to a Py-measure one subset. (We make these
+
+On the Computability of Conditional Probability 6
+
+notions precise in Section 4.) The construction makes use of the elementary fact that the indicator
+function for the rationals in the unit interval (the so-called Dirichlet function) is itself nowhere
+continuous.
+
+Because every function computable on a domain D is continuous on D, discontinuity is a funda-
+mental barrier to computability, and so this construction rules out the possibility of a completely
+general algorithm for conditioning. A natural question is whether conditioning is a computable op-
+eration when we restrict the operator to random variables for which some version of the conditional
+distribution is continuous everywhere, or at least on a measure one set.
+
+In fact, even under this restriction, conditioning is not even continuous, let alone computable, as
+we show in Section 6. We further demonstrate that if some computer program purports to state true
+facts about the conditional distribution of a computable joint distribution provided as input, then we
+can uniformly find some other representation of the input distribution such that the program does
+not output any nontrivial fact about the conditional distribution.
+
+Our central result, Theorem 7.6, provides a pair of random variables that are computable on a
+measure one set, but such that the conditional distribution of one variable given the other is not
+computable on any measure one set (though some version is continuous on a measure one set).
+The construction involves encoding the halting times of all Turing machines into the conditional
+distribution map while ensuring that the joint distribution remains computable. This result yields
+another proof of the noncomputability of the conditioning operation restricted to measures having
+conditional distributions that are continuous on a measure one set.
+
+In Section 8 we extend our central result by constructing a pair of random variables, again
+computable on a measure one set, whose conditional distribution map is noncomputable but has
+an everywhere continuous version with infinitely differentiable conditional probability maps. This
+construction proceeds by smoothing out the distribution constructed in Section 7, but in such a way
+that one can still compute the halting problem relative to the conditional distribution. This result
+implies that conditioning is not a computable operation, even when we further restrict to the case
+where the conditional distribution has an everywhere continuous version.
+
+Despite the noncomputability of conditioning in general, conditional distribution maps are often
+computable in practice. We provide some explanation of this phenomenon by characterizing several
+circumstances in which conditioning is a computable operation. Under suitable computability hy-
+potheses, conditioning is computable in the discrete setting (Proposition 9.2) and where there is a
+conditional density (Corollary 9.6).
+
+We also characterize a situation in which conditioning is possible in the presence of noisy data,
+capturing many natural models in science and engineering. Let U, V, and E be computable random
+variables where U and E are real-valued, and suppose that P_ is absolutely continuous with a bounded
+computable density pe and E is independent of U and V. We can think of U+ E as the corruption of an
+idealized measurement U by independent source of additive error E. In Corollary 9.7, we show that
+the conditional distribution map P[(U, V)|U + E = - ] is computable (even if P[(U, V)|U = - ] is not).
+Finally, we discuss how symmetry, in the form of exchangeability, can contribute to the computability
+of conditional distributions.
+
+2 COMPUTABLE PROBABILITY THEORY
+
+We now give some background on computable probability theory, which will enable us to formulate
+our results. The foundations of the theory include notions of computability for probability measures
+
+On the Computability of Conditional Probability 7
+
+developed by Edalat [1996], Weihrauch [1999], Schroder [2007], and Gacs [2005]. Computable
+probability theory itself builds off notions and results in computable analysis, specifically the Type-2
+Theory of Effectivity. For a general introduction to this approach to real computation, see Weihrauch
+[2000], Braverman [2005] or Braverman and Cook [2006].
+
+2.1. Computable and Computable Enumerable Reals
+
+We first recall some elementary definitions from computability theory (see, e.g., Rogers [1987, Ch. 5]).
+A set of natural numbers (potentially in some correspondence with, e.g., rationals, integers, or other
+finitely describable objects with an implicit enumeration) is computable when there is a computer
+program that, given k, outputs whether or not k is in the set. A set is computably enumerable (c.e.)
+when there is a computer program that outputs every element of the set eventually. Note that a
+set is computable when both it and its complement are c.e. We say that a sequence of sets {B,,} is
+computable uniformly in n when there is a single computer program that, given n and k, outputs
+whether or not k is in B,,. We say that the sequence is c.e. uniformly in n when there is a computer
+program that, on input n, outputs every element of B,, eventually.
+
+We now recall basic notions of computability for real numbers (see, e.g., [Weihrauch 2000, Ch. 4.2]
+or [Nies 2009, Ch. 1.8]). We say that a real r is a c.e. real (sometimes called a left-c.e. real) when
+the set of rationals {q € Q : q <r} isc.e. Areal r is computable when both it and its negative are
+c.e. Equivalently, a real is computable when there is a program that approximates it to any given
+accuracy (e.g., given an integer k as input, the program reports a rational that is within 2~* of the
+real). A function f: N — R is lower semicomputable when f(n) is a c.e. real, uniformly in n (ie.,
+when the collection of rationals less than f(n) is c.e. uniformly in n). Likewise, a function is upper
+semicomputable when its negative is lower semicomputable. The function f is computable if and
+only if it is both lower and upper semicomputable.
+
+2.2 Computable Polish Spaces
+
+Recall that a Polish space is a topological space that admits a metric under which it is a complete
+separable metric space. Computable Polish spaces, as developed in computable analysis [Hemmerling
+2002; Weihrauch 1993] and effective domain theory [Blanck 1997; Edalat and Heckmann 1998],
+provide a convenient framework for formulating results in computable probability theory. For
+consistency, we largely use definitions from [Hoyrup and Rojas 2009b] and [Galatolo et al. 2010].
+Additional details about computable Polish spaces, sometimes called computable metric spaces
+or effective Polish spaces, can also be found in [Weihrauch 2000, Ch. 8.1], [Gacs 2005, §B.3], and
+[Moschovakis 2009, Ch. 3I].
+
+Definition 2.1 (Computable Polish space [Galatolo et al. 2010, Def. 2.3.1]). A computable Polish
+space is a triple (S, 5, D) for which 6 is a metric on the set S satisfying
+
+(1) (S, 5) is a complete separable metric space;
+(2) D = {s;}ien is an enumeration of a dense subset of S, called ideal points; and,
+(3) the real numbers 6(s;, s;) are computable, uniformly in i and j.
+
+In particular, note that condition (1) implies that the topological space determined by the metric
+space (S, 5) is a Polish space.
+
+On the Computability of Conditional Probability 8
+
+Let B(s;,q;) denote the ball of radius q; centered at s;. We call the elements of the set
+Bs = {B(s;, q;) : $; € Dand Cn Qstt. qj > 0} (1)
+the ideal balls of S, and fix the canonical enumeration of them induced by that of D and Q.
+
+Let Bs denote the Borel o-algebra on a Polish space S, i-e., the o-algebra generated by the open
+balls of S. Let M,(S) denote the set of Borel probability measures on S.
+
+In this paper we primarily work with computable Polish spaces. As such, unless otherwise noted,
+the o-algebras will always be the Borel o-algebras on such spaces — in particular, making them
+standard Borel spaces. Measurable functions between Polish spaces will always be measurable with
+respect to the Borel o-algebras. We will sometimes refer to measurable subsets of a probability space
+as events.
+
+Example 2.2. The set {0, 1} isa computable Polish space under the discrete metric, where 5(0, 1) = 1.
+
+Cantor space, the set {0, 1}°° of infinite binary sequences, is a computable Polish space under its
+usual metric and the dense set of eventually constant strings (under a standard enumeration of finite
+strings).
+
+The set R of real numbers is a computable Polish space under the Euclidean metric with the dense
+set Q of rationals (under its standard enumeration).
+
+Suppose we are given a finite sequence (Tp, 59, Do), --- 5 (Tn—-1, n-1, Dn-1) of computable Polish
+spaces. Then the product metric space []/2) T; (with one of any of the equivalent standard product
+metrics) is a computable Polish space where the ideal points consist of all finite products of ideal points.
+Furthermore, given a countably infinite such sequence (To, do, Do), (Ti, 61, D1), .. . that is uniformly
+computable and has a fixed bound on the diameter, the product metric spaces consists of the metric
+space whose underlying space is [];<n 7; and whose metric is given by 5(x, y) = Dien 2-15i(x, y);
+this too can be made into a computable Polish space, by taking the ideal points to be those sequences
+(x0, X1,...) with each x; € Dj such that for all but finitely many terms i, the point x; is the first
+element in the enumeration of D;. Note that in both the finite and infinite case, all projection maps
+are computable.
+
+Definition 2.3 (Computable point [Galatolo et al. 2010, Def. 2.3.2]). Let (S,5, D) be a computable
+Polish space with D = {s;}jen and x € S. Given a sequence {ix }jen of natural numbers, we say that
+the sequence {s;, }xen of elements of D is a representation of the point x if 5(s;,,x) < 2-* for all
+k. When {ix }iew is a computable sequence such that {s;, },en is a representation of x, we say that
+{si, }een is a computable representation, and that the point x is computable.
+
+Remark 2.4. A real a € Ris computable (as in Section 2.1) if and only if a is a computable point of
+R (as a computable Polish space). Although most of the familiar reals are computable, there are only
+countably many computable reals, and so almost every real is not computable.
+
+The notion of a c.e. open set (or =? class) is fundamental in classical computability theory, and
+admits a simple definition in an arbitrary computable Polish space.
+
+Definition 2.5 (C.e. open set [Galatolo et al. 2010, Def. 2.3.3]). Let (S,5, D) be a computable Polish
+space with the corresponding enumeration {B;}jcw of the ideal open balls As. We say that U C S is
+ac.e. open set when there is some c.e. set E C N such that U = Ujer Bi.
+
+On the Computability of Conditional Probability 9
+
+Note that the class of c.e. open sets is closed under computable unions and finite intersections.
+
+A computable function can be thought of as a continuous function whose local modulus of
+continuity is witnessed by a program. It is important to consider the computability of partial functions,
+because many natural and important random variables are continuous only on a measure one subset
+of their domain.
+
+Definition 2.6 (Computable partial function [Galatolo et al. 2010, Def: 2.3.6]). Let (S, 6s, Ds) and
+(T, dr, Dr) be computable Polish spaces, the latter with the corresponding enumeration {Bn }nen of
+the ideal open balls @r. A function f : S > T is said to be continuous on R C S when f restricted
+to R is continuous as a function from R, under the subspace topology to T. A function f: S > T is
+said to be computable on R € S when there is a computable sequence {Un }nen of c.e. open sets
+U, © S such that f71[B,] OR = U, OR for all n € N. We call such a sequence {Up }nen a witness to
+the computability of f.
+
+Note that the notion of being computable on a set R can be relativized to an oracle A € N in the
+obvious way. A function is continuous on R if and only if it is A-computable on R for some oracle A.
+
+Remark 2.7. Let S and T be computable Polish spaces. If f: S — T is computable on some subset
+RCS, then for every computable point x € R, the point f(x) is also computable. One can show that
+f is computable on R when there is an oracle Turing machine that, upon being fed a representations
+of points x € R on its oracle tape, computes representations of their images f(x) € S. (For more
+details, see [Hoyrup and Rojas 2009b, Prop. 3.3.2].)
+
+2.3. Notions of Computability for Functions on Probability Spaces
+
+The standard notion of computability of functions between computable Polish spaces is too restrictive
+in most cases when the inputs to these functions are points in a probability space. For example, the
+Heaviside function f(x) = 1(x > 0) is not computable on any set containing a neighborhood of 0.
+However, we can reliably compute the image of a Gaussian random variable under f, because the
+Gaussian random variable is nonzero with probability one, and f is computable on R \ {0}.
+
+For a measure space (Q,Y, y), a set E € Y is a p-null set when p(E) = 0. More generally, for
+p € [0, co], we say that E is a p-measure p set when j/(E) = p. A predicate P on Q is said to hold
+p-almost everywhere (abbreviated j-a.e.) if the event Ep = {@ € Q : P(@) does not hold) is a
+p-null set. When Ep is a p-null set but yz is a probability measure, we will instead say the event P holds
+p-almost surely, and we likewise say that an event E € ¥ occurs p-almost surely (abbreviated
+pi-a.s.) when p(E) = 1. In each case, we may drop the prefix p when it is clear from context (in
+particular, when it holds of P).
+
+Definition 2.8. Let S and T be Polish spaces and y a probability measure on S. A measurable
+function f: S — T is p-almost continuous when it is continuous on a ji-measure one set. When S
+and T are computable Polish spaces, the measurable function f is y-almost computable when it is
+computable on a ji-measure one set.
+
+(See [Hoyrup and Rojas 2009b] for further development of the theory of almost computable
+functions.) The following result relates y-almost continuity to p-a.e. continuity, ie., the set of
+continuity points being a p-measure one set. The proofs of the following proposition and lemma are
+due to Francois Dorais, Gerald Edgar, and Jason Rute [2013].
+
+On the Computability of Conditional Probability 10
+
+PROPOSITION 2.9. Let X and Y be Polish spaces, let f: X — Y be a p-almost continuous function,
+and let 1: be a probability measure on X. Then there is a 1-a.e. continuous g: X — Y that agrees with f
+p-ae.
+
+We will need the following technical lemma. Recall that a Gs set is a countable intersection of
+open sets.
+
+LEMMA 2.10. Let X be a Polish space. If D © X is a nonempty Gs -set then there is a measurable map
+h: X > D such that lim,—x, h(x) = xo for every xo € D.
+
+Proor. Suppose D = (nen Un, where (Un) nen is a descending sequence of open sets such that
+Un © Ux, ep B(x, 1/(n + 1)). Any measurable retraction h: X — D with the property that if
+x € U, \ Uns: then d(h(x), x) < 1/(n + 1) will be as required. By definition, it is always possible to
+find a suitable h(x) € D for each x € Up \ D. To ensure that h is measurable, fix an enumeration
+(d;)ien of a countable dense subset of D and, if x € Up \ D, define h(x) to be the first element in this
+list that matches all the necessary requirements. (We must have h(x) = x for x € D and it does not
+matter how h(x) is defined when x ¢ Up so long as the end result is measurable.) im
+
+PROOF OF PROPOSITION 2.9. By a classical result of Kuratowski [Kechris 1995, I.3.B, Thm. 3.8],
+we may assume (after first possibly changing its value on a p-null set) that f is continuous on a
+pi-measure one Gs set DC X.
+
+Let h be as in Lemma 2.10. Then g = f oh is a measurable function that agrees with f on D and
+
+Jim g(x) = f (tim h(x)) = f (x0) = g(xo)
+for all xo € D. Oo
+
+Remark 2.11. Let S and T be computable Polish spaces. A set X C S is an effective Gs set (or 13
+class) when it is the intersection of a uniformly computable sequence of c.e. open sets. Suppose that
+f:S —T is computable on R € S with {U,}nen a witness to the computability of f. One can show
+that there is an effective Gs set R’ 2 Randa function f’: S — T such that f’ is computable on R’,
+the restriction of f’ to R and f are equal as functions, and {U,}nen is a witness to the computability
+of f’. Furthermore, a Gs-code for some such R’ can be computed uniformly from a code for the
+witness {U,, }nen. For details, see [Hoyrup 2008, Thm. 1.6.2.1]; this generalizes a classical result of
+Kuratowski [Kechris 1995, 1.3.B, Thm. 3.8]. In conclusion, one can always assume that the set R is an
+effective Gs set.
+
+We will introduce a weaker notion of computability for functions in Section 2.6.
+
+2.4 Computable and Almost Computable Random Variables
+
+Intuitively, a random variable maps an input source of randomness to an output, inducing a distribu-
+tion on the output space. Here we will use a sequence of independent fair coin flips as our source of
+randomness. We formalize this via the probability space ({0, 1}°, #, P), where {0, 1}°° is the product
+space of infinite binary sequences, ¥ is its Borel o-algebra (generated by the set of basic clopen
+cylinders extending each finite binary sequence), and P is the product measure formed from the
+uniform distribution on {0,1}. Throughout the rest of the paper we will take ({0, 1}°, F, P) to be
+the basic probability space. We will use a SANS SERIF font for random variables.
+
+On the Computability of Conditional Probability 11
+
+Definition 2.12 (Random variable and its distribution). Let S be a Polish space. A random variable
+in S is a measurable function X: {0,1}° — S. For a measurable subset A C S, we let {X € A}
+denote the inverse image X“![A] = {@ € {0,1}© : X(@) € A}, and for x € S we similarly define the
+event {X = x}. We will write Py for the distribution of X, which is the measure on S defined by
+
+If S is a computable Polish space then we say a random variable X in S is a P-almost computable
+random variable it is P-almost computable as a measurable function. Intuitively, X is a P-almost
+computable random variable when there is a program that, given access to an oracle bit tape
+@ € {0,1}, outputs a representation of the point X(@) (i.e., enumerates a sequence {x;} in D where
+5(x;,X(@)) < 27 for all i), for all but a P-measure zero subset of bit tapes @ € {0, 1}®.
+
+Even though the source of randomness is a sequence of discrete bits, there are P-almost computable
+random variables with continuous distributions, such as a uniform random variable (gotten by
+subdividing the unit interval according to the random bit tape) or an iid. sequence of uniformly
+distributed random variables (by splitting up the given element of {0,1}° into countably many
+disjoint subsequences and dovetailing the constructions). (For explicit constructions, see, e.g., [Freer
+and Roy 2010, Ex. 3, 4].)
+
+It is crucial that we consider random variables that are merely computable on a P-measure one
+subset of {0, 1}°°. To see why, consider the following example, which was communicated to us by
+Martin Escard6. For a real a € [0,1], we say that a binary random variable X: {0,1}° — {0,1} is
+a Bernoulli(a) random variable when Py {1} = a. There is a Bernoulli($) random variable that is
+computable on all of {0,1}°, given by the program that simply outputs the first bit of the input
+sequence. Likewise, when a@ is dyadic (i-e., a rational whose denominator is a power of 2), there is a
+Bernoulli(@) random variable that is computable on all of {0, 1}°°. However, this is not possible for
+any other choices of a (e.g., 4).
+
+LEMMA 2.13. Let a € [0, 1] be a nondyadic real. Every Bernoulli(a) random variable X: {0,1}° >
+{0, 1} is discontinuous, hence not computable on all of {0,1}°.
+
+Proor. Assume X is continuous. Let Zp := X~1(0) and Z, := X71(1). Then {0,1} = Zp U Z,, and
+so both are closed (as well as open). The compactness of {0, 1}° implies that these closed subspaces
+are also compact, and so Zp and Z, can each be written as the finite disjoint union of clopen basis
+elements. But each of these elements has dyadic measure, hence their sum cannot be either @ or
+1 — a, contradicting the fact that P(Z,) = 1 — P(Zo) = a. im
+
+On the other hand, for an arbitrary computable a € [0,1], consider the random variable Xq
+given by Xq(x) = 1 if 132, x;27'1 < @ and 0 otherwise. This construction, due to Mann [1973],
+is a Bernoulli(a) random variable and is computable on every point of {0, 1} other than a binary
+expansion of a. Not only are these random variables P-almost computable, but they can be shown to
+be optimal in their use of input bits, via the classic analysis of rational-weight coins by Knuth and
+Yao [1976]. Hence it is natural to focus our attention on random variables that are merely P-almost
+computable.
+
+The setting of P-almost computable random variables is a natural one for probability theory,
+and the standard operations on random variables preserve P-almost computability, including, e.g.,
+addition and multiplication of P-almost computable real random variables, composition with P-almost
+computable measurable functions, and cartesian products.
+
+On the Computability of Conditional Probability 12
+
+2.5 Computable Probability Measures
+
+We now introduce the class of computable probability measures on computable Polish spaces.
+
+Let (S, ds, Ds) be a computable Polish space, and recall that Bs denotes its Borel sets and M,(S)
+its Borel probability measures. Consider the subset Dp,5 € M,(S) comprised of those probability
+measures that are concentrated on a finite subset of D5 and where the measure of each atom is
+rational, ie., v € Dp,s if and only if v = q16;, + --- + qx6+, for some rationals q; > 0 such that
+qi t+-+-+qk = 1 and some points t; € Ds, where for t € S the {0,1}-valued Dirac measure 6,
+satisfies 6;(A) = 1 if and only if ¢ € A for all measurable sets A. It is a standard fact (see, e.g., Gacs
+[2005, §B.6.2]) that Dp is dense in the Prokhorov metric dp given by
+
+Op(p, v) = inf {e > 0 : VA € Bs, pA) < vV(A*) + €}, (2)
+where
+A’ = {pe S 2 Aqe A, ds(p,q) < €} = Upea Be(p) (3)
+
+is the e-neighborhood of A and B,(p) is the open ball of radius ¢ about p. Moreover, (M,(S), dp, Dp. s)
+is a computable Polish space. (See [Hoyrup and Rojas 2009b, Prop. 4.1.1].) We say that wp € M,(S) is
+a computable probability measure when p is a computable point in M,(S) as a computable Polish
+space. Note when the space S is clear from context we will refer to Dp_s simply as Dp.
+
+One can define computability on the space of probability measures in other natural ways. Early
+work by Weihrauch [1999] and Miiller [1999] formalized the computability of probability measure
+in terms of the lower semicomputability of the measure as a function on the set of open sets and
+in terms of the computability of the measure as a linear operator acting on bounded continuous
+functions; these notions are equivalent. (See Schréder [2007] for a more general setting.) These
+notions of computability also agree with the notion of computability defined here in terms of the
+Prokhorov metric.
+
+PROPOSITION 2.14 ([HoyRuP AND Rojas 20098, THM. 4.2.1]). Let S be a computable Polish space. A
+probability measure p € M,(S) is computable if and only if the measure 1(A) of ac.e. open set A C S is
+ac.e. real, uniformly in A. o
+
+Note that the measure P on {0, 1}° is a computable probability measure.
+We can also characterize the class of computable probability measures in terms of the uniform
+computability of the integrals of bounded continuous functions:
+
+PROPOSITION 2.15 ([HoryRuUP AND RojAs 2009s, Cor. 4.3.1]). Let S be a computable Polish space, let
+ut be a probability measure on S, and let F be the set of computable functions from S to R*. Then p is
+computable if and only if [ f dp is ac.e. real, uniformly in f € F. o
+
+CoroLiary 2.16. Let S be a computable Polish space, let 1 be a probability measure on S, and let
+F be the set of computable functions from S to [0,1]. Then p is computable if and only if [ f du is
+computable, uniformly in f € F.
+
+Proor. First observe that both f and 1 — f are non-negative functions. Therefore, by Proposi-
+tion 2.15, the reals f[ f dp and fa — f) dp are both c.e., and hence the real f[ fdpiscomputable. o
+
+Having explained the computability of probability measures in terms of integration, we now relate
+it to the computability of random variables defined on computable Polish spaces.
+
+On the Computability of Conditional Probability 13
+
+Definition 2.17 (Computable probability space [Galatolo et al. 2010, Def. 2.4.1]). A computable
+probability space is a pair (S, ) where S is a computable Polish space and yp is a computable
+probability measure on S.
+
+The distribution of a P-almost computable random variable in a computable Polish space is
+computable.
+
+PROPOSITION 2.18 ([GALATOLO ET AL. 2010, Prop. 2.4.2]). Let X be a P-almost computable random
+variable in a computable Polish space S. Then its distribution is a computable point in the computable
+Polish space M,(S). ia
+
+On the other hand, given a computable measure, there is a P-almost computable random variable
+with that distribution.
+
+PROPOSITION 2.19 ([HorRUP AND Rojas 20098, THM. 5.1.1]). Let p be a computable probability
+measure on a computable Polish space S. Then there is a P-almost computable random variable in S
+whose distribution is pl. o
+
+In summary, the computable probability measures on a computable Polish space are precisely
+the distributions of P-almost computable random variables in that space. For this result in a more
+general setting, see [Schréder 2007, Prop. 4.3].
+
+Further, if p is a computable probability measure and and f is computable on a p-measure one set,
+then the pushforward 1 o f~! is a computable distribution. This fact, along with Proposition 2.19,
+shows that we have lost no generality in taking ({0, 1}°, .F, P) to be our basic probability space.
+
+All of the standard distributions (e.g., normal, uniform, geometric, exponential) found in probability
+textbooks, and then all the transformations of these distributions by P-almost computable functions,
+are easily shown to be computable distributions.
+
+2.6 Weaker Notions of Computability for Functions on Probability Spaces
+
+Another important class of functions on a probability space is the class of L'-computable functions.
+For more details, including some of the history of L!-computability, see Hoyrup and Rojas [2009a,
+§3.1] and Miyabe [2013].
+
+Definition 2.20 (The metric space of L'(1) functions [Hoyrup and Rojas 2009a, §3.1]). Let 1 be a
+probability measure on a Polish space S, and let F be the set of p-integrable functions from S to
+R. Then d(f, 9) := f[ |f — g| dp is a metric on the quotient space of F defined by the equivalence
+relation f ~ g iff f[ |f —g|dp = 0. This metric space is called the space of L'(j:) functions on S,
+and we will often speak interchangeably of a p-integrable function S — R and its equivalence class.
+
+We will make use of the following set of L} functions.
+
+Definition 2.21 (Ideal points for L’ [Gacs 2005, §2]). Let (S,5,D) be a computable Polish space.
+Define & to be the smallest set of functions containing the constant function 1 and the functions
+{Jurijn ? UES, r €Q, n= 1}, where
+
+Ju,r,e(X) = max(0, 1 — max(0, 5(x,u) — r)/e), (4)
+
+and closed under max, min, and rational linear combinations.
+
+On the Computability of Conditional Probability 14
+
+Such functions can be thought of as continuous analogues of step functions having a finite number
+of steps, each step of which corresponds to a basic open ball with rational radius and ideal center.
+
+LEMMA 2.22 ([Hoyrup AND Rojas 20094, Prop. 3]). Let p be a computable probability measure on
+a computable Polish space (5,5, D). The set & is dense in the L'() functions on S, and the distances
+between points in & are computable under the standard enumeration, making this space into a computable
+Polish space. o
+
+We say that an L}(y) function on a computable Polish space S is L!(j2)-computable when it is a
+computable point in the L’(y) functions on S.
+
+LEMMA 2.23 (HoyruP AND Rojas [2009a, THM. 4 CLAIM 2 AND THM. 5 CLAIM 2]). Let (S, 1) bea
+computable probability space and let T be a computable Polish space. A function f : S > T is L(1)-
+computable if and only if [ f du is a computable real and for eachr € N, the function f is computable
+on some set of Px-measure at least 1 — 2~", uniformly inr. o
+
+In particular, note that every integrable p-almost computable function is L!(1)-computable.
+
+We obtain the following immediate corollary of Lemma 2.23 using the fact that if a function is
+p-almost computable with a computable y-integral, then we can uniformly find a collection of ideal
+points that converge to it in L1(y).
+
+CoROLLARY 2.24. Let (S, py) be a computable probability space and let T be a computable Polish
+
+space. Let fo, fi,...: S — T be a sequence of uniformly p-almost computable functions taking values
+in a computable Polish space T that converge effectively in L'(1) to a function f € L(y). Then f is
+L}()-computable. o
+
+2.7 Almost Decidable Sets and Bases
+
+Let (S, ) be a computable probability space. We know that the y-measure of a c.e. open set A C S is
+ac.e. real. In general, the measure of a c.e. open set is not a computable real. On the other hand, if A
+is a decidable subset (ie., S \ Ais c.e. open) then p(S \ A) ac.e. real, and therefore, by the identity
+p(A) + u(S \ A) = 1, we have that (A) is a computable real. In connected spaces, the only decidable
+subsets are the empty set and the whole space. However, there exists a useful surrogate when dealing
+with measure spaces.
+
+Definition 2.25 (Almost decidable set [Galatolo et al. 2010, Def: 3.1.3]). Let (S, ) be a computable
+probability space. A measurable subset A C S is said to be -almost decidable when there are two
+c.e. open sets U and V such that U C Aand V C S \ Aand p(U) + p(V) = 1. In this case we say that
+(U, V) witnesses the p-almost decidability of A.
+
+The following lemma is immediate.
+
+LEMMA 2.26 ([GALATOLO ET AL. 2010, Prop. 3.1.1]). Let (S, 1) be a computable probability space, and
+let A be p-almost decidable. Then p(A) is a computable real. o
+
+While we may not be able to compute the probability measure of ideal balls, we can compute a
+new basis of ideal balls for which we can. (See also Bosserhoff [2008, Lem. 2.15].)
+
+LEMMA 2.27 ([GALATOLO ET AL. 2010, THM. 3.1.2]). Let (S, py) be a computable probability space,
+and let Ds be the ideal points of S with standard enumeration {d;};cax. There is a computable sequence
+
+On the Computability of Conditional Probability 15
+
+{rj tien of reals, dense in the positive reals, such that the balls {B(d;,r;)}i,jen form a basis of -almost
+decidable sets, which we call a p-almost decidable basis. o
+
+We now show that every c.e. open set of a computable probability space (S, y:) is the union of a
+computable sequence of p-almost decidable subsets.
+
+LEMMA 2.28 (ALMOST DECIDABLE SUBSETS). Let (S, 1) be a computable probability space with ideal
+points {dj }ien, and let {rj}jen be a computable sequence of reals such that {B(d;,rj)}i,jen is a p-almost
+decidable basis. Let V be ac.e. open set. Then, uniformly in {r;}jen and V, we can compute a sequence
+of p-almost decidable sets {Vi }xen such that Vy © Ve+1 for each k, and Uren Ve = V.
+
+Proor. Let {Bx }xen be a standard enumeration of the ideal balls of S where By = B(dm,,qi,), and
+let E C N beac. set such that V = );.¢, By. Consider the c.e. set
+
+Because {d;}ien is dense in S and {r;}jen is dense in the positive reals we have for each k € N that
+Be = Ua,jer, Bd, 7;). In particular this implies that the set F := Ugeg Fx is ace. set with V =
+Ui. jer Bi, 1;). Let {(in. in) }nen be a computable enumeration of F and let Ve := Un <x Bi,» jn);
+which is p-almost decidable. By construction, Vz © V+ for each k, and Upen Ve = V. o
+
+Using the notion of an almost decidable set, we have the following characterization of computable
+measures.
+
+COROLLARY 2.29. Let (S, ) be a computable probability space with ideal points {d;}; ax, and let
+{rj}jen be a computable sequence of reals such that {B(di,rj)}i,jen is a p-almost decidable basis. Let
+v € M,(S) be a probability measure on S that is absolutely continuous with respect to pt. Then v is
+computable uniformly in the sequence {v(B(dj, r;))}i,jen-
+
+Proor. Let V be ac.e. open set of S. By Proposition 2.14, it suffices to show that v(V) is a c.e. real,
+uniformly in V. By Lemma 2.28, we can compute a nested sequence {Vi }xen of p-almost decidable
+sets whose union is V. By the absolute continuity of v with respect to py, these sets are also v-almost
+decidable. Because V is open, v(V) = sup; ey V(Vi), which is the supremum of a sequence of reals
+that is computable uniformly in the sequence {v(B(dj, r;))}i,jen- Oo
+
+We close with the following extension of Corollary 2.16.
+
+PROPOSITION 2.30. Let S, T be computable Polish spaces, 1 a probability measure on T, B a p-almost
+decidable subset of R, and f : Sx T — Ra bounded function, computable on R X T with R C S. Then
+the map s > Is f(s, t)u(dt) is a computable function, uniformly in f and B.
+
+Proor. This follows immediately from Propositions 3.2.3 and 4.3.1 of [Hoyrup and Rojas 2009b].
+Oo
+
+3 CONDITIONAL PROBABILITIES AND DISTRIBUTIONS
+
+Let ys be a probability measure on a measurable space of outcomes S, and let A,B C S be events.
+Informally, given that event A has occurred, the probability that event B also occurs, written p(B|A),
+must satisfy (A) u(B|A) = w(AN B). Clearly p(B|A) is uniquely defined if and only if (A) > 0, which
+leads to the following definition.
+
+On the Computability of Conditional Probability 16
+
+Definition 3.1 (Conditioning on positive-measure events). Suppose that j1(A) > 0. Then the condi-
+tional probability of B given A, written (BIA), is defined by
+p(BN A)
+
+(A)
+
+It is straightforward to check that, for any fixed event A € S with p(A) > 0, the set function p(- |A)
+is a probability measure.
+
+We will often be interested in the case where B and A are events of the form {Y € D} and {X € C}.
+In this case, we define the abbreviation
+
+P{Y €D|Xe€C}:= P({Y € D} | {X €C}). (7)
+
+y(B|A) = (6)
+
+Again, this is well-defined when P{X € C} > 0. When P{X = x} > 0, we may simply write
+P{Y€D|X=x} (8)
+
+for P{Y € D| X € {x}}.
+
+This elementary notion of conditioning is undefined when the conditioning event has zero measure,
+such as when a continuous random variable takes a particular value. In the modern formulation of
+conditional probability due to Kolmogorov [1933], one defines conditioning with respect to (the
+o-algebra generated by) a random variable rather than an individual event. In theory, this yields
+a consistent solution to the problem of conditioning on the value of general (and in particular,
+continuous) random variables, although we will see that other issues arise. (See Kallenberg [2002,
+Ch. 6] for a rigorous treatment.)
+
+In order to bridge the divide between the elementary notion of conditioning on events and the
+abstract approach of conditioning on random variables, consider the case of conditioning on a random
+variable X taking values in a countable discrete set S and satisfying P{X = x} > 0 for all x € S. Let
+{Y € B} be an event. Then the conditional probability that Y € B given X, written P[Y € B|X], is
+the random variable satisfying P[Y € B|X] = P{Y € B | X = x} when X = x. Note that there is a
+measurable function fg: S — [0, 1] satisfying
+
+PY €B, Xe A} = / Fax) Px(dx) (9)
+
+for all measurable subsets A C S. For sets A of the form {x}, for x € S, we have P{Y € B, X =x} =
+fp(x)P{X = x}, hence fg(x) = P{Y € B|X = x}. In summary, P[Y € B|X] = fp(X), and so (9) yields a
+more abstract characterization of elementary conditional probability for positive-measure events.
+
+The general case is captured by the same defining property. Let X be a random variable in a
+measurable space S. Then the conditional probability that Y € B given X, written P[Y € B|X], is
+defined to be a random variable in [0, 1] of the form fg(X) where again fg: S — [0,1] is such that (9)
+holds for all measurable subsets A C S. In many situations, such a function fg is itself the object of
+interest and so we will let P[Y € B|X = - ] denote an arbitrary such function. We may then re-express
+its defining property in the following more intuitive form:
+
+P{Y eB, XE A}= aw € B|IX = x] Px(dx) (10)
+A
+
+for all measurable subsets A C S.
+
+On the Computability of Conditional Probability 17
+
+The existence of the conditional probability P[Y € B|X], or equivalently, the existence of
+PLY € B|X =- ], follows from the Radon-Nikodym theorem. Recall that a measure p on a mea-
+surable space S is absolutely continuous with respect to another measure v on the same space,
+written ps <« v, if v(A) = 0 implies y(A) = 0 for all measurable sets A C S.
+
+THEOREM 3.2 (RADON-Nikopym). Let S be a measurable space and let p and v be o-finite measures
+on S such that p « v. Then there exists a nonnegative measurable function ey S — Rx such that
+
+d
+u(A) = / 7 dv (11)
+for all measurable subsets A C S. o
+
+We call any function du satisfying Equation (11) for all measurable subsets A C S a Radon-
+Nikodym derivative (of with respect to v).
+
+Note that if g is also a Radon—Nikodym derivative of p with respect to v, then g = fu outside a
+v-null set, and so Radon—Nikodym derivatives are unique up to a null set. (Functions that agree a.e. are
+called versions.) We may safely refer to the Radon—Nikodym derivative when we want to ignore
+such differences, but in some cases these differences are important.
+
+It is straightforward to verify that the function P[Y € B|X = - ] is a Radon—Nikodym derivative
+of P{Y € B, X € - } with respect to P{X € - } = Px, both considered as measures on S, and so a
+function fp satisfying (9) for all measurable subsets A C S always exists, but it is only defined up
+to a null set. This is inconsequential when the conditional probability P[Y € B|X] is the object of
+interest. In applications, especially statistical ones, however, the function P[Y € B|X = - ] mapping
+values in S to probabilities is the object of interest, and, moreover, one typically wants to evaluate
+this function at particular observed values x € S. Because P[Y € B|X = - ] is merely determined up
+to a Py-null set, interpreting its values at individual points is problematic.
+
+As mentioned in the introduction, the fact that general conditional probabilities are not uniquely
+defined at points is the subject of a large literature. However, in some circumstances, two versions
+of P[Y € B|X = - | must agree at individual points. In particular, if two versions are continuous at a
+point in the support of the distribution Px, then they agree on the value at that point. In order to
+state this claim formally, we first recall the definition of the support of a distribution:
+
+Definition 3.3. Let 1 be a measure on a topological space S with open sets S. Then the support
+of 1, written supp(j), is defined to be the set of points x € S such that all open neighborhoods of x
+have positive measure, i.e.,
+
+supp(y) == {x ES: VBeES(x eB = 4B) > 0)}. (12)
+
+Note that the support of : can equivalently be defined as the smallest closed set of :-measure one.
+We now state our claim formally:
+
+LEMMA 3.4. Let S be a Polish space. Suppose fi, f2: S — [0,1] satisfy P[Y € B|X] = fi(X) = fa(X) as.
+Ifx € S is a point of continuity of fi and fz, and x € supp(Px), then fi(x) = fa(x). In particular, if f;
+and f are continuous on a Px-measure one set D C S, then they agree everywhere in DM supp(Px). O
+
+The proof is immediate from the following elementary result.
+
+On the Computability of Conditional Probability 18
+
+LEMMA 3.5. Let fi, f: S — T be two measurable functions between Polish spaces S and T, and
+suppose that f; = f2 almost everywhere with respect to some measure pp on S. Let D C S be a set of
+pi-measure one. If x € S is a point of continuity of f; and f, on D, and x € supp(y), then fi(x) = fo(x).
+In particular, if f; and f, are continuous on D, then they agree everywhere in DN supp(,2).
+
+Proor. Let dr be any metric under which T is complete. Define the measurable function g: S > R
+by
+G(x) = dr (fi(x), fax). (13)
+
+We know that g = 0 p-a.e., and also that g is continuous at x on D, because f; and f2 are continuous at
+x on D and 6r is continuous (on all of T). Assume, for the purpose of contradiction, that g(x) = € > 0.
+By the continuity of g on D, there is an open neighborhood B of x such that g(BN D) ¢ (, *). But
+x € supp(j/), hence p(B NM D) = p(B) > 0, contradicting g = 0 p-a.e. Oo
+
+The observation that continuity gives a unique answer to conditioning on zero-measure events of
+the form {X = x} is an old one, going back to at least Tjur [1974].
+
+3.1. Conditional Distributions
+
+For a pair of random variables X and Y taking values in a pair of measurable space S and T, respectively,
+it is natural to consider not just individual conditional probabilities P[Y € B|X], for measurable subsets
+B CT, but the entire conditional distribution P[Y|X] := P[Y € - |X]. Unfortunately, the fact that
+Radon-Nikodym derivatives are only defined up to a null set can cause problems. In particular, while
+it is the case that
+
+DY PLY € Bj|X] = PLY € Bix] as. (14)
+
+for every countable measurable partition Bo, B;,... of a measurable set B € T, the random set
+function given by B } P[Y € B|X] need not be a measure in general because the exceptional null set
+may depend on the sequence. However, when T is Polish, we can construct versions of the conditional
+probabilities that combine to produce a measure. In order to make this definition precise, we recall
+the notion of a probability kernel.
+
+Definition 3.6 (Probability kernel). Let S and T be Polish spaces. A function k: S x Br — [0, 1] is
+called a probability kernel (from S to T) when
+
+(1) for every s € S, the function k(s, - ) is a probability measure on T; and
+(2) for every B € Br, the function x(- , B) is measurable.
+
+For every k: SX Br — [0, 1], let K be the map s + K(s, - ). It can be shown that x is a probability
+kernel from S to T if and only if « is a (Borel) measurable function from S to M,(T) [Kallenberg 2002,
+Lem. 1.40], where we adopt the weak topology on M,(T), which is Polish because T is.
+
+We say that a conditional distribution P[Y|X] has a regular version when, for some probability
+kernel x from S to T,
+
+P[Y € B|X] = K(X, B) as. (15)
+
+for every measurable subset B C T. In this case, we would say that «(X) is a regular version of the
+conditional distribution.
+
+On the Computability of Conditional Probability 19
+
+PROPOSITION 3.7 (REGULAR VERSIONS [KALLENBERG 2002, LEM. 6.3]). Let X and Y be random
+variables in a Polish space S and a measurable space T, respectively. Then there is a regular version of
+the conditional distribution P[Y|X], which is, moreover, determined by the joint distribution of X and
+Y, oO
+
+As with the derivatives underlying conditional probabilities, « is only defined up to a Py-null
+set. When such a kernel x exists, i.e., when there is a regular version of the conditional distribution
+P[Y|X], we define P[Y|X = - ] to be equal to some arbitrary version of x.
+
+Despite the fact that the kernels underlying regular versions of conditional distributions are defined
+only up to sets of measure zero, it follows immediately from Lemma 3.5 that when S and T are Polish,
+any two versions of P[Y|X = - ] that are continuous on some subset of the support of Py must agree
+on that subset. More carefully, let K,(X) and k2(X) be regular versions of the conditional distribution
+P[Y|X]. If x € S is a point of continuity of K, and Kz, and x € supp(Px), then K(x) = k2(x). In
+particular, if both maps are continuous on a set D C S, then they agree everywhere in DN supp(Py).
+
+When conditioning on a random variable whose distribution concentrates on a countable set,
+it is well known that a regular version of the conditional distribution can be built by elementary
+conditioning with respect to single events. This includes the special case of conditioning on discrete
+random variables, i.e., those concentrating on a countable discrete subspace.
+
+LEMMA 3.8. Let X and Y be random variables in Polish spaces S and T, respectively. Suppose the
+distribution of X concentrates on a countable set R C S, i.e., Px(R) = 1 and x € R implies Px{x} > 0. Let
+v be an arbitrary probability measure on T. Define the function k: S x Br — [0,1] by
+
+k(x, B) = P{Y € B| X = x} (16)
+
+for allx € Rand K(x) = v forx ¢ R. Then x is a probability kernel and K(X) is a regular version of the
+conditional distribution P[Y|X].
+
+Proor. The function x is well-defined because P{X = x} > 0 for all x € R. It follows that K(x) is a
+probability measure for every x. Because R is countable, x is also measurable and so x is a probability
+kernel from S to T. Note that P{X € R} = 1 and so, for all measurable sets A C S and B C T, we have
+
+[xc B)Py(dx) = » P{Y €B| X=x}P{X =x} (17)
+A xERNA
+= » P{Y € B, X=x} (18)
+xERNA
+= P{Y € B, Xe A}. (19)
+
+That is, x(X, B) is the conditional probability of the event {Y € B} given X, and so x(X) is a regular
+version of the conditional distribution P[Y|X]. im
+
+3.2 Dominated Families
+
+Beyond the setting of conditioning on discrete random variables, explicit formulas for conditional
+distributions are also available when Bayes’ rule applies. We begin by introducing the notion of a
+dominated kernel. (The usual terms, such as dominated families or models, refers to measurable
+families of probability measures, i.e., probability kernels.)
+
+On the Computability of Conditional Probability 20
+
+Definition 3.9 (dominated kernel). A probability kernel « from T to S is dominated when there is
+a o-finite measure v on S such that «(t) « v for every t € T.
+
+Let X and Y be random variables in Polish spaces S and T, respectively, and let &x|y(X) be a regular
+version of P[X|Y] such that xx )y is dominated. Then there exists a (product) measurable function
+Pxiy(-|-): SX T — R* such that pxjy(- |y) is a Radon—Nikodym derivative of &x)y(y) with respect
+to v for every y € T,ie.,
+
+rxvlueA) =f pyyv(rly) v(dx) (20
+for every measurable set A C S and every y € T.
+
+Definition 3.10 (conditional density). We call any such function px|y a conditional density of X
+given Y (with respect to v).
+
+Common finite-dimensional, parametric families of distributions (e.g., exponential families like
+Gaussian, gamma, etc.) are dominated, and so, in probabilistic models composed from these families,
+conditional densities exist and Bayes’ rule gives a formula for expressing the conditional distribution.
+We give a proof of this classic result for completeness.
+
+LEMMA 3.11 (BAYES’ RULE [SCHERVISH 1995, THM. 1.13]). Let X and Y be random variables as in
+Proposition 3.7, and assume that there exists a conditional density px\y of X given Y with respect to a
+o-finite measure v. Let p be an arbitrary distribution on T and define x: S x Br — [0,1] by
+__ fg Pxiv(ly) Py(dy)
+
+f pxyvely) Py(dy) |
+for those points x € S where the denominator is positive and finite, and by K(x) = p otherwise. Then x is
+a probability kernel and K(X) is a regular version of the conditional distribution P[Y|X].
+
+x(x, B) € Br, (21)
+
+Proor. Let &x\y(Y) be a regular version of the conditional distribution P[X|Y]. By hypothesis, xx|y
+is dominated by v and pxjy is a conditional density with respect to v. By Proposition 3.7 and Fubini’s
+theorem, for measurable sets. A C S and B C T, we have that
+
+P(X € A, Ye B} = | kxjv(y, A) Py(dy) (22)
+- | [ privy) wd] Py(dy) (23)
+-[ [ pry) Pa) v(dx). (24)
+Taking B = T, we have
+aa)= / pxyala) (ae) v(de). (25)
+
+Because Px(S) = 1, this implies that the set of points x for which the denominator of the right-hand
+side of (21) is infinite has v-measure zero, and thus Py-measure zero. Taking A to be the set of points
+x for which the denominator is zero, we see that Py(A) = 0. It follows that (21) characterizes k up to
+a Px-null set.
+
+On the Computability of Conditional Probability 21
+
+By (25), we see that the denominator is a density of Py with respect to v, and so we have
+
+[ K(c, B) Py(dx) = [ K(e,B) / pev(ely) Pidy)| v(dx), (26)
+A A
+
+for all measurable sets A C S and B C T. Finally, by the definition of x, Equation (24), and the fact
+that the denominator is positive and finite for Px-almost every x, we see that K(X) is a regular version
+of the conditional distribution P[Y|X]. im
+
+Comparing Bayes’ rule (21) to the definition of conditional density (20), we see that any conditional
+density of Y given X (with respect to Py) satisfies
+
+pxiv(xly)
+
+ooo 27
+T Pxv(ely) Pv(dy) (7)
+
+Py\x(y|x) =
+
+for P(x,y)-almost every (x, y).
+The following result suggests why the mere a.e. definedness of conditional distributions can be
+ignored by those working entirely within the framework of dominated families.
+
+PROPOSITION 3.12. Let X and Y be random variables on Polish spaces S and T, respectively, let K(X) be
+a regular version of the conditional distribution P[Y|X], and let R C S. If a conditional density pxjy(x|y)
+of X given Y is continuous on R x T, positive, and bounded, then « as defined in (21) is a version of K
+that is continuous on R. In particular, if R is a Pxy-measure one subset, then x is a Px-almost continuous
+version.
+
+We defer the proof to Section 9.2. We will use this result in the proof of Lemma 7.3, towards our
+central result.
+
+4 COMPUTABLE CONDITIONAL PROBABILITIES AND DISTRIBUTIONS
+
+Before we lay the foundations for the remainder of the paper and define notions of computability
+for conditional probability and conditional distributions in the abstract setting, we address the
+computability of distributions conditioned on positive-measure sets. In order for the distributions
+obtained from positive measure sets to be computable, we will need the conditioning events to be
+almost decidable sets.
+
+LEMMA 4.1 ([GALATOLO ET AL. 2010, Prop. 3.1.2]). Let (S, 4) be a computable probability space and
+let A be a p-almost decidable subset of S satisfying (A) > 0. Then pp(- |A) is a computable probability
+measure, uniformly in a witness to the j1-almost decidability of A.
+
+Proor. By Lemma 2.27 there is a p-almost decidable basis for S. Note that p(- |A) is absolutely
+continuous with respect to jz. Hence by Corollary 2.29, it suffices to show that 4 oar
+for a p-almost decidable set B, uniformly in witnesses to the p-almost decidability of A and B. All
+subsequent statements in this proof are uniform in both. Now, B/ A is p-almost decidable with
+computable witness, and so its measure, the numerator, is a computable real. The denominator is
+likewise the measure of a set that is almost decidable with computable witness, hence is a computable
+
+real. Finally, the ratio of two computable reals is itself computable. o
+
+is computable
+
+On the Computability of Conditional Probability 22
+
+In the abstract setting, conditional probabilities are random variables. In many applications of
+probability, including statistics, the conditional probability map, or some version of it, is the actual
+object of interest, and so the computability of this map is our focus.
+
+Let B € T be a measurable set. Viewing P[Y € B|X = - ] as a function from S to [0, 1], recall that
+we can speak formally as to whether this function is everywhere computable, Px-almost computable,
+and/or L!-computable. Recall also that the function P[Y € B|X = - | may have many versions that
+agree only up to a null set. Despite this, their almost computability does not differ (up to a change in
+domain by a null set).
+
+LEMMA 4.2. Let f be a measurable function from a computable probability space (S, 1) to a computable
+Polish space T. If any version of f is computable on a p-measure p set, then every version of f is
+computable on a p-measure p set. In particular, if one version is p-almost computable, then all version
+are.
+
+Proor. Let f be computable on a p-measure p set D, and let g be a version of f, ie.,
+Z:= {s €S : f(s) # g(s)} is a p-null set. Therefore, f = g on D \ Z. Hence g is computable
+on the p-measure p set D \ Z. If f is p-almost computable, then it is computable on a ji-measure one
+set, and so g is as well. o
+
+We can develop notions of computability for conditional distributions in a similar way. We begin
+by characterizing the computability of probability kernels.
+
+Definition 4.3 (Computable probability kernel). Let S and T be computable Polish spaces and let
+kK: SX Br — [0,1] be a probability kernel from S to T. Then we say that x is a computable
+probability kernel when kK: S > M,(T) given by K(s) := k(s, - ) is a computable function in the
+ordinary sense between S and the computable Polish space M,(T) induced by T. Similarly, we say
+that x is computable on a subset D C S when x is computable on D.
+
+As we will see, this notion of computability corresponds with a more direct notion of computability
+for x, which we now develop. We begin by noting that the collection of sets of the form
+
+Pr(A,q) = {un € Mi(T) : p(A) > gh (28)
+
+for A open and q rational, form a subbasis for the weak topology on M,(T) (which is the topology
+induced by the Prokhorov metric). Indeed, it suffices for A to range over finite unions of some
+countable basis of T. We will also omit mention of T when the ambient space is clear from context.
+
+The next result relates balls in the Prokhorov metric to the subbasis elements above. Recall that
+dp denotes the Prokhorov metric and that the collection Dp of measures with finitely many point
+masses on elements Dr, each assigned rational mass, form a dense set.
+
+PRoposiTION 4.4 ([GAcs 2005, Prop. B.17]). Let v, p € M,(T), and assume that v is supported on a
+finite set S. Then the condition 5p(v, 1) < € is equivalent to the finite set of conditions
+
+H(A‘) > v(A) -€ (29)
+forallA CS. o
+
+The next corollary states that we can compute a representation for a Prokhorov ball in terms of
+the subbasis elements. The sets are easily defined from those in Proposition 4.4.
+
+On the Computability of Conditional Probability 23
+
+CoroLiary 4.5. Uniformly inv € Dp ande € Q, we can compute a finite collection of pairs
+(Aj, diJicn, each A; a finite union of open balls of radius € around elements of Dr and each qj a rational,
+such that
+
+{1 € MA(T) : dp(y.v) <e}=( )P(Ang). oO (30)
+i<n
+
+Finally, as a direct consequence of [Hoyrup and Rojas 2009b, Prop. 4.2.1], these subbasis elements
+are C.e. open.
+
+PROPOSITION 4.6. Let A be ac.e. open subset of T and q be a rational. Then the set P(A, q) is c.e. open
+in the Prokhorov metric, uniformly in A and q. o
+
+Recall that a lower semicomputable function from a computable Polish space to [0, 1] is one for
+which the preimage of (q, 1] is c.e. open, uniformly in rationals qg. Furthermore, we say that a function
+f from a computable Polish space S to [0,1] is lower semicomputable on D € S when there is a
+uniformly computable sequence {U,}q<o of c.e. open sets such that
+
+f'|@U|AD=U,ND. (31)
+
+We can also interpret a computable probability kernel x as a computable map sending each c.e.
+open set A € T to a lower semicomputable function k(- , A).
+
+Lemma 4.7. Let S and T be computable Polish spaces, let x be a probability kernel from S to T, and
+let D C S. If is computable on D then k(- , A) is lower semicomputable on D uniformly in the c.e. open
+set A, and conversely.
+
+Proor. Let q € (0, 1) be rational, let A C T be c.e. open, and define I := (q, 1]. Then
+k*(-, A)[] = {x : R(x)(A) € I} = '[P(A, Q)], (32)
+
+where P(A, q) is as in (28). By Proposition 4.6, P(A, q) is even c.e. open.
+Suppose x is computable on D. Then there is a c.e. open set V4,q, uniformly computable in q and
+A, such that
+
+Vag OD = '[P(A,g)]ND=xk(-,A)'[I]ND, (33)
+
+and so k(- , A) is lower semicomputable on D, uniformly in A.
+
+Conversely, suppose k(- , A) is lower semicomputable on D, uniformly in A. Then by (32), uniformly
+in A and q, we can find a c.e. open V4,q such that (33) holds.
+
+By Corollary 4.5, every basic open ball in the Prokhorov metric is the finite intersection of sets of
+the form P(A, q), which are c.e. open themselves because a finite intersection of c.e. open sets is c.e.
+open. Therefore, uniformly in a c.e. open set U in the Prokhorov metric, we can find a c.e. open set V
+in S such that
+
+VOD=«"[U]ND. (34)
+Hence x is computable on D. o
+
+Let X and Y be random variables in computable Polish spaces S and T, respectively, and let «(X)
+be a regular version of the conditional distribution P[Y|X]. The above notions of computability are
+suitable for talking about the computability of x or any other version of it, and are appropriate
+notions of computability for statistical applications.
+
+On the Computability of Conditional Probability 24
+
+Intuitively, a probability kernel « is computable when, for some (and hence for any) version of x,
+there is a program that, given as input a representation of a point s € S, outputs a representation of
+the measure «(s) for Px-almost every input s.
+
+5 DISCONTINUOUS CONDITIONAL DISTRIBUTIONS
+
+Our study of the computability of conditional distributions begins at the following roadblock: a con-
+ditional distribution need not have any version that is continuous or even almost continuous (in the
+sense described in Section 4). This will rule out almost computability (though not L!-computability).
+
+We will work with the standard effective presentations of the spaces R, N, {0, 1}, as well as product
+spaces thereof, as computable Polish spaces. For example, we will use R under the Euclidean metric,
+along with the ideal points Q under their standard enumeration.
+
+Recall that a random variable C is a Bernoulli(p) random variable when P{C = 1} =
+1-—P{C = 0} = p. A random variable N is a geometric(p) random variable when it takes val-
+ues in N = {0,1,2,... } and satisfies
+
+P{N =n} =p" (1—p) (35)
+
+for alln € N. A random variable that takes values in a finite set is uniformly distributed when it
+assigns equal probability to each element. A continuous random variable U on the unit interval is
+uniformly distributed when the probability that it falls in the subinterval [¢, r] is r — ¢. It is easy
+to show that the distributions of these random variables are computable, provided p, f, and r are
+computable reals and p € [0, 1].
+
+Let N, C, and U be independent P-almost computable random variables such that N is a geometric($)
+random variable, C isa Bernoulli(5) random variable, and U is a uniformly distributed random variable
+in [0, 1]. Fix a computable enumeration {r;}je of the rational numbers (without repetition) in (0, 1),
+and consider the random variable
+
+, ifC=1;
+X= fIN t (36)
+U, otherwise,
+
+which is also P-almost computable because it is a computable function of C, U, and N.
+
+PROPOSITION 5.1. Every version of P[C = 1|X = - | is discontinuous everywhere on every Px-measure
+one set. In particular, no version is Px-almost computable.
+
+Proor. Note that P{X rational} = $ and, furthermore, P{X = r,} = saa > 0. Therefore, any two
+versions of P[C = 1|X = - ] must agree on all rationals in [0, 1]. In addition, because Py « Px, ie.,
+
+P{U eA} >0 = P{XeE A} >0 (37)
+
+for all measurable sets A € [0,1], any two versions must agree on a Lebesgue-measure one set of the
+irrationals in [0, 1]. An elementary calculation shows that
+
+P{C =1| X rational} = 1, (38)
+while
+
+P{C = 1 | X irrational} = 0. (39)
+
+On the Computability of Conditional Probability 25
+
+It is also straightforward to verify that C and X are conditionally independent, given an indicator for
+the event {X rational}. Therefore, all versions f of P[C = 1|X = - ] satisfy, for Px-almost every x,
+
+flx) = ( x rational; (40)
+0, «x irrational.
+The right hand side, considered as a function of x, is called the Dirichlet function, and is nowhere
+continuous.
+
+Suppose some version of f were continuous at a point y on a Py-measure one set R. Then there
+would exist an open interval J containing y such that the image of IM R contains 0 or 1, but not both.
+However, R must contain all rationals in J and Lebesgue-almost every irrational in J. Furthermore,
+the image of every rational in IM R is 1, and the image of Lebesgue-almost every irrational in I 1 R
+is 0, a contradiction. o
+
+Although we cannot hope to compute P[C = 1|X = - ] on a Px-measure one set, we can compute
+it in a weaker sense.
+
+ProposiTIon 5.2. P[C = 1|X =- ] is L1(Px)-computable.
+
+Proor. By Corollary 2.24, it suffices to construct a sequence of uniformly Px-almost computable
+functions that converge effectively in L1(Px) to P[C = 1|X = - ]. Let ¢, = $ MiNm<n<k Irm — Tn| be
+half the minimum distance between any pair among /,..., 7%, and define, for every k €N,
+
+1, if |x —rp| < —1, min(2-*~%, $,) holds f <k;
+filx) = if |x -r,| Tan min( ¢x) holds for some n < (41)
+0, otherwise.
+
+Note that the set on which fj takes the value 1 is uniformly Px-almost decidable in part because
+its boundary points are irrationals, a null set. It is then clear that the functions f;, for k € N, are
+
+uniformly Px-almost computable. For every k € N, we have that P{X = r, for some n > k} = 2-*-?,
+Therefore,
+[pt = 1x =a1- Acorn (42)
+< P{X =r, for some n > k} + [ lerc = 1|X = x] -— fx (x)} Px(dx) (43)
+[0,1]\Q
+< okey gok-2 < g-k-1 (44)
+(k + rea we?
+completing the proof. o
+
+6 CONDITIONING IS DISCONTINUOUS
+
+Conditioning in general can produce discontinuous conditional distributions, which is an obstruction
+to a conditioning operator being computable. But even if we restrict our attention to distributions
+that admit conditional distributions that are continuous on their support, the operation of condi-
+tioning cannot be computable because, as we will show, it is discontinuous. Indeed, conditioning is
+discontinuous in a rather strong way. We use the recursion theorem to explain the computational
+consequences. Namely, for any potential program analysis that aims to perform conditioning on
+
+On the Computability of Conditional Probability 26
+
+an arbitrary given distribution, there is a representation of that distribution such that the program
+analysis cannot identify a single nontrivial fact about its conditional distribution.
+To begin, we formalize the notion of a conditioning operator.
+
+Definition 6.1. Let F € M,([0,1]*) be a set of probability measures. A map ®: M,([0,1]?) x
+[0, 1] > M,([0, 1]) is a conditioning operator (for F) if, for all distributions » € F and random
+variables X and Y with joint distribution pp, we have ®(y, x) = P[Y|X = x] for Px-almost all x.
+
+Observe, by Proposition 3.7, that there is a conditioning operator for all F C M,((0, 1]”).
+
+Definition 6.2. Let F C M,((0, 1]*). A conditioning operator for ¥ is computable if it is com-
+putable on F x [0,1], considered as a function M,((0, 1]*) x [0,1] — M,([0,1]), where both
+M,({0, 1]*) x [0, 1] and M,([0, 1]) are taken to be the canonical computable Polish spaces.
+
+The previous section motivates restricting one’s attention to conditioning operators for the set
+Fy) © M,((0, 1]”) of probability distributions on pairs (X, Y) of random variables in [0, 1] such that
+there exists a Px-almost continuous version of the conditional distribution map P[Y|X = - ]. We will
+show that conditioning operators for Fo are not computable, simply on grounds of continuity.
+
+Recall that the name of a probability measure yp € M,(T) on a computable Polish space T is given
+by a Cauchy sequence in the dense elements Dp,r of the associated Prokhorov metric. Note that Fo
+contains Dp jo,1)2- Further recall that Pr(A, q) is defined to be the set {7 € M,(T) : n(A) > q}, for
+any open set A C T and rational q € Q. Let A(T) := {(A,q) : Aisa finite union of open balls in T,
+and q € Q}.
+
+Given a computable Cauchy sequence in the Prokhorov metric that converges to a measure pi €
+M,(T), by Corollary 4.5 we can compute a sequence (Aj, gi)ien in A(T) such that (1); en Pr(Ai, qi) =
+{y}. Further by Proposition 4.6, given a finite sequence (Aj, gi)i<n in A(T) we can compute, uniformly
+in (Aj, qi)i<n, a ball in the Prokhorov metric contained in ();<, Pr(Ai, qi). Therefore, uniformly in a
+probability measure p and a collection (Aj, qi)ien with (je Pr(Ai, qi) = {yu}, we can computably
+recover a name for ys. Conversely, from a name for 1, we can uniformly compute such a collection.
+
+Lemma 6.3. Let ¥ © M,((0, 1]*) contain Dp. [o,12- For every @ € Dp,jo,1;, computable representation
+{vitien of v € M,([0, 1]?]), computable representation {x;}ien of x € [0,1], and rational € € (0,1), we
+can uniformly find a measure p € Dp.,jo,1)2 such that dp(p, v) < € and ®(p, x) = a for every conditioning
+operator ® for F .
+
+Proor. Relative to {vj }ien and {x;}ien, we can computably find an element p* € Dp jo,1)2 such
+that p*({x} x [0, 1]) = 0 and dp(p*, v) < §. Let 6, denote the Dirac measure on [0, 1] concentrating
+on x and let t ® r’ denote the product measure on [0, 1]? with respective marginal distributions
+t,t’ € M,((0, 1]). Defining p := $(6x ® a) + (1 — 5)p*, it is easy to check that dp(p, p*) < 5, hence
+Op(v, p) < €. Because p*({x} x[0, 1]) = 0 and p* is a finite mixture of point masses, every conditioning
+operator ® for F must satisfy O(y, x) = a. o
+
+Proposition 6.4. Let F € M,((0, 1]*) contain Dp_jo,1p- Every conditioning operator on F is
+discontinuous everywhere, hence noncomputable.
+
+Proor. On M,([0, 1]), adopt the weak topology (induced by the standard topology on [0, 1]).
+On M,((0, 1]*) x [0, 1], adopt the product topology induced by the weak and standard topologies,
+respectively. Then Lemma 6.3 implies that every conditioning operator ® for F is discontinuous
+everywhere. Hence every conditioning operator is noncomputable. o
+
+On the Computability of Conditional Probability 27
+
+The above definitions and proposition capture the essential difficulty of conditioning: a finite
+approximation to the joint distribution determines nothing about the result of conditioning on a
+particular point.
+
+We now establish a stronger notion of noncomputability, namely that it is not even possible to
+always produce some nontrivial fact about a conditional distribution. For e € N, let ge denote the
+partial computable function defined by code e. The recursion theorem, due to Kleene [1938], states
+that when F is a total computable function, there is some integer i for which the partial computable
+functions ¢; and gp,;) are equal partial functions (i.e., they are defined on the same inputs, and are
+equal where they are defined). For more details, see [Rogers 1987, Ch. 11].
+
+Definition 6.5. A program y,-: N — N represents a distribution pj, on a computable Polish
+space T if it is total and on input k, the output value ¢,(k) is a code for a pair (Ax, qx) € A(T) such
+that {1} = (en Pr(Ak, 9k).
+
+Definition 6.6. A program gg: N°? > N is a conditioning program for F C M,((0, 1]°) if it
+is total and whenever e represents a computable distribution py. € F, there exists a conditioning
+operator ® for F such that, for every code j € N for a computable real x € [0, 1], and for every k € N,
+the return value a(e, j,k) is a code for either the empty string or an element (A, q) € A([0, 1]) such
+that O(ye, x) € Plo, (A, gq) and Pio,1)(A, q) # Mi((0, 1).
+
+THEOREM 6.7 (NONAPPROXIMABLE CONDITIONAL DISTRIBUTIONS). Suppose that Pq is a conditioning
+program for a set ¥ © M,([0, 1]*) containing Dp, [o,12- Lete € N be acode for a computable distribution
+He on [0,1]?, and let j € N be a code for a computable real x € [0, 1]. Then uniformly in a, e, and j, we
+can compute ani € N such that pe = pi; and ¢,(i, j,k) is a code for the empty string for every k € N.
+
+Proor. Uniformly in a, we can compute some b € N such that for all n,m,r € N: if the value
+@a(n, m, r’) is a code for the empty string for all r’ < r, then p(n, m,r) is also a code for the empty
+string; and otherwise ,(n, m,r) = ~q(n,m,r’), where r’ is the least index such that g,(n, m, r’) is
+not a code for the empty string. Note that for each n,m € N, the value ¢,(n, m, k) is a code for the
+empty string for all k < N if and only if gq(n, m, k) is a code for the empty string for all k. Let nn, j
+denote the least index k € N such that g,(n, j, k) is not a code for the empty string, if such k exists,
+and oo otherwise. Note that for each k € N, we can compute (uniformly in n, e, a, and j) whether or
+not k < nj (even though the finiteness of 7,,; may not be computable). For k € N, let (Ax, qx) be
+the pair coded by ,(k).
+
+Define the total computable function F: N — N such that for n,k € N,
+
+@e(k) if k <j; and
+
+(45)
+gerl(k ~ 1n,j) if k 2 Yn, j>
+
+Pr(ny(k) =
+where e’ € N is defined as follows. Let (A’, q’) be the pair coded by p(n, j, nn,j). First, compute
+a Prokhorov ball B ¢ M,([0, 1]?) contained within Ne<nn,j Pto,12(Ae, ge). Next, compute some
+a € M,((0, 1]) such that a(A’) = 0, and hence a@ ¢ Pio, 1)(A’, q’). Then, by Lemma 6.3, compute a code
+e’ for a distribution v € B such that ®(v, x) = @ for every conditioning operator ® for F.
+
+By the recursion theorem, we can compute an index i, uniformly in a, e and j, such that gf(;) = 93.
+We now argue that 7;,; = 00, which implies that ~; = ge by (45).
+
+Suppose, for a contradiction, that 7;,; € N. Then gp(i, j, 9i,;) = (A’, q’) for some (A’, gq’) € A((0, 1]).
+Hence, as @, is a conditioning program, there is some conditioning operator ® for f, such that
+
+On the Computability of Conditional Probability 28
+
+O(y;,x) € Pio1(A’,q’), where py; is the measure represented by 9;. By construction, for every
+conditioning operator ® for F, we have ®(1;,x) ¢ Pio,1)(A’, q’), a contradiction. oO
+
+These results rely on the density of the finitely supported discrete probability distributions Dp jo, 1;2.
+However, analogous results can be established if we restrict ourselves to absolutely continuous
+distributions admitting continuous joint density functions. In this case, the role of the finitely
+supported continuous distributions would be played by absolutely continuous distributions with
+sharp but continuous bump functions concentrating on small sets. The fundamental obstruction is
+the same: partial information in the weak topology does not suffice to condition continuously.
+
+7 NONCOMPUTABLE ALMOST-CONTINUOUS CONDITIONAL DISTRIBUTIONS
+
+In this section, we construct a pair of P-almost computable random variables X in [0,1] and N in N
+such that the conditional probability map P[N = k|X = - ] is not even L!(Py)-computable, despite the
+existence of an Px-almost continuous version. Our construction in this section can be thought of as
+providing a single witness to the noncomputability of the conditioning operator.
+
+Let M,, denote the nth Turing machine, under a standard enumeration, and let h: N > N VU {oo}
+be the map given by h(n) := oo if M, does not halt (on input 0) and h(n) := k if M, halts (on input 0)
+at the kth step. We may then take @’: N — {0,1} to denote the halting set
+
+{€ : Me halts on input 0}, (46)
+
+which is computably enumerable but not computable. The set 0’ and the function h are computable
+from each other because
+
+0’ = {néeN: h(n) < ov}. (47)
+
+We now use h to define a pair of P-almost computable random variables (N, X) such that @’ is
+computable from P[N|X = - ].
+
+Let N, C, U, and V be independent P-almost computable random variables such that N is a
+geometric(=) random variable, C is a Bernoulli(3) random variable, and U and V are uniformly
+distributed random variables in [0, 1].
+
+Let |x| denote the greatest integer y < x, and note that [2*V| is uniformly distributed in
+{0,1,2,...,2* — 1} and is P-almost computable. For each k € N, consider the derived random
+variable
+
+_ 2lakvl]+C+U
+
+Xk ok+1
+
+(48)
+
+Note that limz_,.. Xx almost surely exists. Define Xoo := limg—soo Xx, and observe that X.. = V as.
+Finally, define X := Xjn).
+
+PRoposiTION 7.1. The random variable X is P-almost computable.
+
+Proor. Because U and V are computable on a P-measure one set and a.s. nondyadic, their binary
+expansions {U, : n € N} and {V,, : n € N} (which are uniquely determined with probability 1) are
+themselves P-almost computable random variables in {0, 1}, uniformly in n.
+
+On the Computability of Conditional Probability 29
+
+For each k > 0, define the random variable
+
+Vks A(N) > k;
+Di. =4C, A(N) = k; (49)
+Ux-nny-1,. A(N) < k.
+
+By simulating My for k steps, we can decide whether h(N) is less than, equal to, or greater than k.
+Therefore the random variables {Dx },>09 are P-almost computable, uniformly in k. We now show
+that, with probability one, {Dx}, is the binary expansion of X, thus demonstrating that X is itself a
+P-almost computable random variable.
+
+Let D denote the P-almost computable random real whose binary expansion is {Dx}x>0. There
+are two cases to consider.
+
+First, conditioned on the event {h(N) = co}, we have that D, = V, for all k > 0, and so
+D=V =X. = X almost surely.
+
+In the second case, let m € N, and condition on the event {h(N) = m}. We must then show that
+D = X» a.s. Note that
+
+m-1
+
+L2”"Xm] = [2"V] = >) 2 Vy = L2™D], (50)
+k=0
+
+and thus the binary expansions agree for the first m digits. Finally, notice that 2’"*!Xj, — 2|2™Xm] =
+C + U, and so the next binary digit of X, is C, followed by the binary expansion of U, thus agreeing
+with D for all k > 0. ao
+
+We now show that P[N|X = - ] is Px-almost continuous. We begin by characterizing the conditional
+density of X given N.
+
+LEMMA 7.2. For eachk € NU {oo}, the distribution of X; admits a density px, with respect to Lebesgue
+measure on [0, 1] given by px,,(x) = 1 and
+
+[2k+1x] even;
+
+[2*+1x] odd, (1)
+
+4
+px, (x) = 2
+3°?
+fork < 0,
+
+Proor. We have Xo = V a.s. and so the constant function taking the value 1 is a density of Xo
+with respect to Lebesgue measure on [0, 1].
+
+Let k € N. With probability one, the integer part of 2**!X; is 2|2*V| + C while the fractional part
+is U. Therefore, the distribution of 2‘*!X, (and hence X;) admits a piecewise constant density with
+respect to Lebesgue measure.
+
+In particular, |2**1X;,] = C (mod 2) almost surely and 2|2*V| is independent of C and uniformly
+distributed on {0, 2,...,2*+t! — 2}. Therefore,
+
+€ even;
+
+52
+€ odd, (62)
+
+Whe wits
+
+P{[2"*x,] =} =2°* -
+
+On the Computability of Conditional Probability 30
+
+1
+n=0
+1/2
+=]
+1/4
+n=2
+1
+n=3 [8
+ns
+i 0
+
+Fig. 1. A visualization of the distribution of (W, Y), as defined in Theorem 7.6. In this plot, the darkness of each
+pixel is proportional to the mass contained in that region. Note that this is not a plot of the (noncomputable)
+density, but rather of a discretization to a given pixel size. Regions that appear (at low resolution) to be uniform
+can suddenly be revealed (at higher resolutions) to be patterned. Deciding whether the pattern is in fact uniform
+(as opposed to nonuniform but at a finer granularity than the resolution of this printer/display) is tantamount
+to solving the halting problem, but it is possible to sample from this distribution nonetheless.
+
+for every € € {0,1,...,2**! — 1}. It follows immediately that a density p of 2*+1X;, with respect to
+Lebesgue measure on [0, 2**"] is given by
+
+2
+_ =, [Lx] even;
+=27k. 13 53
+p(x) {i [x] odd. (53)
+A density of X; is then obtained by the rescaling px, (x) = 2**1 - p(2**1!x). Oo
+
+As Xx admits a density with respect to Lebesgue measure on [0, 1] for all k € N U {ov}, it follows
+that the conditional distribution of X given N admits a conditional density px|j (with respect to
+Lebesgue measure on [0, 1]) given by
+
+PX|N(XI1) = Pxpc)(X) (54)
+
+On the Computability of Conditional Probability 31
+
+for x € [0,1] andn € N. By Bayes’ rule (Lemma 3.11), for every B C N and Px-almost every x € [0, 1],
+
+_ 4 _ $B)
+P[N € BIX = x] = bx, Ny’ (55)
+where
+$(x, B) =) pxin(eln) -P{N = n}. (56)
+
+neB
+
+LEMMA 7.3. P[N|X = - ] is Px-almost continuous.
+
+Proor. For every k € N U {co}, it holds that px, is bounded by 4/3, positive, and continuous on
+the Px-measure one set R of nondyadic reals in the unit interval. Therefore, px) is positive, bounded
+and continuous on R x N, and so, by Proposition 3.12, P[N|X = - ] is Px-almost continuous. oO
+
+LEMMA 7.4. P[N|X = - ] is 0’-computable on a Px-measure one set.
+
+Proor. Let B C N be a computable set. By Lemma 4.7, Equation (55), and the computability of
+division, it suffices to show that ¢g := $(-,B) is Px-almost computable from @’. Note that Px is
+absolutely continuous with respect to Lebesgue measure (on [0, 1]) and vice versa, and so Px-almost
+and Lebesgue-almost computability coincide. We will therefore drop the measure when referring to
+almost computability for the remainder of the proof. Define, for each n € N, the function a, on [0, 1]
+given by
+
+3, h(n) = 00;
+An(x):= 42, A(n) < co and [2x | even; and (57)
+4, h(n) < cand |2*x] odd.
+
+Clearly the functions {a,(x)}nen are almost computable from @’, uniformly in n. Observe that, for
+alln € N and x € [0, 1],
+
+An(x) = 3 px\n(x|n) (58)
+
+by Lemma 7.2. Also recall that P{N = n} = 4 -5-” for all n € N. Hence, for any finite set F C N, the
+function
+
+4 —n
+r(x) = G(x, F) =D) prin(xln) P(N =n} = =D an(x) 5 (59)
+neF neF
+is almost computable from 0’, uniformly in F. However, for every k € N and x ¢€ [0,1],
+4
+Isa(x) — Sr. (2)] <_D) Pinel) P(N =n} s 75%, (60)
+n>k °
+where Fy, = BN {1,...,k}. It follows that ¢g is almost computable from 0’. ao
+
+PROPOSITION 7.5. Let R € [0,1] be a measurable subset of Px-measure greater than 2, For each
+k EN, the conditional probability map P[N = k|X = - | is neither lower nor upper semicomputable on R.
+
+On the Computability of Conditional Probability 32
+
+Proor. First note that if R had Lebesgue measure no greater than 3, then, for k € N,
+4 12 5
+
+1
+Pp <-ee i 61
+WM Sa 3h a ge (61)
+and so Px(R) < 2, a contradiction. Hence R has Lebesgue measure greater that 3,
+Fix k € N. By (55) and the definition of ¢,
+x|k)-P{N=k
+PIN = kIX = x] = PANG BIN = BY (62)
+
+(x, N)
+
+for a.e. x. The density pxin(-|k) = px,,). given by Lemma 7.2, is a piecewise constant function and
+computable on a measure one set. Furthermore, P{N = k} = 4-5~*"! is a computable real. Hence it
+remains to show that, as a function of x, the denominator ¢(x,N) := Dinen Pxin(x|n) - P{N = n} of
+the right-hand-side is neither lower nor upper semicomputable on R. We will show the former; the
+latter follows in a similar fashion.
+
+Recall the sequence of functions {a,}ne on [0, 1] from (57), and define the function rt: [0,1] ~ R
+by
+
+r(x) =)" an(x) 5, (63)
+neN
+which furthermore satisfies
+5
+T(x) = » 3 pxjn(x|n) - — P{N = n} (64)
+neN 4
+
+for all x € [0, 1]. Observe that for every x € [0, 1], the real r(x) has a unique base-5 expansion with
+all the digits contained in {2, 3,4}, which must necessarily be given by the sequence ao(x), ai(x),....
+For each € € N, define
+
+Te(x) = 5¢ (r(x) - » An(x) « 5") = » Anse(x) 5°”. (65)
+n< neN
+Note that t (= rT) is lower semicomputable on R precisely when ¢(x, N) is lower semicomputable on
+R. Further note that if ag(x) = 2, then t¢(x) < 3 (where the inequality is strict because for every n,
+there exists an m > n such that h(m) = co). On the other hand, if ag(x) > 3, then te(x) > 3.
+
+We now prove by induction, uniformly in @, that, if t¢ is lower semicomputable on R, then t¢+; is
+lower semicomputable on R, and we can compute whether or not h(€) is finite. This then implies
+that if 7 were lower semicomputable on R, then 0’ would be computable, a contradiction.
+
+Suppose te is lower semicomputable on R. Then we can compute (as a c.e. open subset of
+[0,1]) a set S such that SN R = t, 103, co)] M R. Simultaneously run My (on input 0). If h(€) <
+oo, then we will eventually notice this fact by observing that Mz halts. It is also the case that
+SOR C {x € [0,1] : ag(x) = 4}, and so, by the definition of the functions {a,,}, the set SM R has
+Lebesgue measure at most ;. Therefore S has measure at most 5 plus the measure of [0, 1] — R, ie.,
+S has measure less than 3 +(1- 3) = 3. On the other hand, if h(€) = cv, then S D R, and hence
+S has Lebesgue measure greater than 3, which we will eventually notice (and which rules out the
+first case). Hence we can compute whether or not h(€) is finite, which in turn implies that ag is
+computable on a measure one set. Therefore, as t¢+1(x) = 5 - (te(x) — ae(x)), the function t¢41 is
+lower semicomputable on R. Oo
+
+On the Computability of Conditional Probability 33
+
+We may summarize our central result as follows.
+
+THEOREM 7.6. There are P-almost computable random variables W and Y on [0,1] such that the
+conditional distribution map P[Y|W = - | is Pw-almost continuous but not Pw-almost computable.
+
+Proor. Let X and N be as above, let Y be uniformly distributed on [0,1], and let M be the
+geometric(5) random variable given by M := [- log, Y]. Finally, let W be such that P[W|Y](@) =
+
+P[X|N = M(@)]. Note that we have P[Y «(2-7 1,2-")|W=x] = P[Ye[2-"%1,27"]|W = x]
+= P[N =n|X =x] for n € N andx € [0,1]. The result then follows from Lemma 7.3 and Proposi-
+tion 7.5. oO
+
+For a visualization of the distribution of (W, Y), see Figure 1.
+
+The proof of Proposition 7.5 shows that not only is the conditional distribution map P[N|X = - ]
+not Py-almost computable, but that, in fact, it computes the halting set 0’; to make this precise, we
+would define the notion of an oracle that encodes P[N|X = - ] using, e.g., infinite strings as in the
+Type-2 Theory of Effectivity. Despite not having a definition of computability from the conditional
+distribution map, we can easily relativize the notion of computability for the conditional distribution
+map, to obtain the following.
+
+Corotzary 7.7. If P[N|X = - ] is A-computable on a set of Px-measure greater than > for an oracle
+ACN, then A computes the halting set, i.e, A >y 0’. In particular, P[N|X = - ] is not computable on
+any set of Px-measure greater than 3, and hence no version of P[N|X = - ] is Px-almost computable.
+
+Proor. Suppose A is such that P[N|X = - ] is A-computable on a set of Px-measure greater than
+5/6. Then P[N = 1|X = - ] is A-computable on the same set. But then, by the argument in the proof
+of Proposition 7.5, the function h, and hence the halting set 0’, is computable from A. oO
+
+On the other hand, by Lemma 7.4, the conditional distribution map P[N|X = - ] is in fact 0’-
+computable on a Px-measure one set, and so the bound in Corollary 7.7 is the best possible.
+
+Computable operations map computable points to computable points, and so Corollary 7.7 provides
+another context in which conditioning operators are noncomputable (cf. Proposition 6.4).
+
+The next result shows that Proposition 7.5 also rules out the computability of conditional probability
+maps in the weaker sense of L1(Px)-computability. This extends [Hoyrup and Rojas 2011, Prop. 3],
+which states that there is a pair of computable measures ; < v on a computable Polish space such
+that the Radon-Nikodym derivative dy/dv is not L'-computable. Namely, we show that in the case
+of measures on [0,1], the measures can be taken to be of the form p = P{X € - ,N = k} and
+v=P{Xe -}=Py.
+
+ProposiTIon 7.8. For every k € N, the map P[N = k|X = - ] is not L1(Px)-computable.
+
+Proor. Let k € N. By Proposition 7.5, the conditional probability map P[N = k|X = - ] is not com-
+putable on any measurable set R of Px-measure greater than 5/6. On the other hand, by Lemma 2.23,
+the conditional probability map is L’(Px)-computable only if, for each r € N, the map is computable
+on some set of Px-measure at least 1-27", uniformly in r. This does not hold, and so every conditional
+probability map P[N = k|X = - ] is not L1(Px)-computable. Oo
+
+It is natural to ask whether this construction can be modified to produce a pair of P-almost
+computable random variables, like N and X, such that the corresponding conditional distribution
+
+On the Computability of Conditional Probability 34
+
+map is not Py-almost computable even though it has an everywhere continuous version. We provide
+such a strengthening in the next section.
+
+8 NONCOMPUTABLE EVERYWHERE CONTINUOUS CONDITIONAL DISTRIBUTIONS
+
+In Section 7, we demonstrated a pair of computable random variables that admit a conditional
+distribution that is continuous on a measure one set but still noncomputable on every measure one
+set. It is therefore natural to ask whether we can construct a pair of random variables (Z, N) that
+is computable and admits an everywhere continuous version of the conditional distribution map
+P[N|Z = - ], which is itself nonetheless not computable. In fact, we do so now, using a construction
+similar to that of (X, N) in Section 7.
+
+If we think of the construction of the kth bit of X as an iterative process, we see that there are
+two distinct stages. During the first stage, which occurs so long as k < h(N), the bits of X simply
+mimic those of the uniform random variable V. Then during the second stage, once k > h(N), the
+bits mimic that of 3(C + U).
+
+Our construction of Z will differ in the second stage, where the bits of Z will instead mimic those of
+a random variable S specially designed to smooth out the rough edges caused by the biased Bernoulli
+random variable C, while still allowing us to encode the halting set. In particular, S will be absolutely
+continuous and will have an infinitely differentiable density.
+
+We now begin the construction. Let N, U, V, and C be as in the first construction. We next define
+several random variables from which we will construct S, and then Z.
+
+LEMMA 8.1. There is a random variable F in [0,1] with the following properties:
+
+(1) F is P-almost computable.
+
+(2) Pe admits a computable density pp with respect to Lebesgue measure (on [0, 1]) that is infinitely
+differentiable everywhere.
+
+(3) pr(0) = 2 and pr(1) = 4.
+
+(4) & pe(0) = «pr(1) = 0, for alln > 1 (where rs and a are the left and right derivatives
+
+respectively). o
+
+(See Figure 2 for one such random variable.) Let F be as in Lemma 8.1, and independent of all
+earlier random variables mentioned. Note that F is almost surely nondyadic and so the r-th bit F, of
+F is a P-almost computable random variable, uniformly in r.
+
+Let D be a P-almost computable random variable, independent of all earlier random variables
+
+mentioned, and uniformly distributed on {0, 1,...,7}. Consider
+1 F, if D = 0;
+S= 5 x)4+4(1-F), if D = 4; (66)
+
+4C +(D mod 4)+ U, otherwise.
+
+It is clear that S is also P-almost computable, and straightforward to show that
+
+(i) Ps admits an infinitely differentiable and computable density ps with respect to Lebesgue
+measure on [0, 1]; and
+(ii) For all n > 0, we have A ps(0) = <ps(1).
+
+(For a visualization of the density ps see Figure 3.)
+
+On the Computability of Conditional Probability 35
+
+-l 1 1
+
+Fig. 2. (left) The graph of the function defined by f(x) = exp{—(1 — x?)~1}, for x € (—1, 1), and 0 otherwise, a
+Cc” bump function whose derivatives at +1 are all0. (right) A density p(y) = 2/3 (1 + ®(2y — 1)/®(1)), for
+y € (0,1), of a random variable satisfying Lemma 8.1, where ®(y) = fi f(x) dx is the integral of the bump
+function.
+
+Next we define, for every k € N, the random variables Z;, mimicking the construction of Xx.
+Specifically, for k € N, define
+
+[2kv] +s
+Zp =, (67)
+and let Zo := limgp_s0. Zz = V a.s. Then the nth bit of Z; is
+Vis n<k;
+Zk)n = a.s., 68
+(Zk) {ee n>k (68)
+
+where S¢ denotes the fth bit of S. It is straightforward to show from (i) and (ii) above that Pz, admits
+an infinitely differentiable density pz, with respect to Lebesgue measure on [0, 1].
+
+To complete the construction, we define Z := Zj,n). The following results are analogous to those
+in the almost continuous construction.
+
+LEMMA 8.2. The random variable Z is P-almost computable. Oo
+LEMMA 8.3. There is an everywhere continuous version of P[N|Z = - ].
+
+Proor. By construction, the conditional density of Z given N is everywhere continuous, bounded,
+and positive. The result follows from Proposition 3.12 for R = [0, 1]. o
+
+We next show that, for each k € N, the conditional probability map P[N = k|Z = - ] is not com-
+putable. Our proof relies on the fact that, for each k € N, there is a large set of points x € [0, 1]
+for which the density pzjn(x|k) := pzj4.(x) agrees with pxin(x|k). This will then allow us to use
+techniques similar to those of Proposition 7.5.
+
+We say a real x € [0, 1] is valid for Ps if x € (4, 3) U (2, 1). In particular, when D ¢ {0, 4}, then S
+is valid for Ps. The following are then consequences of the construction of S and the definition of
+valid points:
+
+On the Computability of Conditional Probability 36
+
+1/8 1/2 5/8 1
+
+Fig. 3. Graph of ps, the density of S, when S is constructed from F as given in Figure 2.
+
+(iii) If x is valid for Ps then ps(x) € {8, $}. In particular, ps(x) = 4 for x € (3 3)s and ps(x) = 5 for
+xe (3, 1).
+(iv) The Lebesgue measure of points valid for Ps is (G - 3) +(1- 2) = 3,
+For k < 00, we say that x € [0, 1] is valid for Pz, if the fractional part of 2* x is valid for Ps, and
+we say that x is valid for Pz,,, for all x. Let Ay be the collection of x valid for Pz,, and let Ac = [0, 1].
+Note that, at all points x that are valid for Pz,, the density pz, (x) agrees with px, (x), and, at all
+points x that are valid for Pz,,, the density pz,(x) agrees with px,, (x).
+For each k < ov, the set Ax consists of the set of points that are valid for Ps first dilated by a factor
+of 2-* and then tiled 2* -many times, and so Ax has Lebesgue measure 3; the set Aw = [0, 1] has
+Lebesgue measure one.
+
+PROPOSITION 8.4. Let R € [0,1] be a measurable subset of Pz-measure greater than 11/12. Then for
+eachk €N, the conditional probability map P[N = k|Z = - | is neither lower semicomputable nor upper
+semicomputable on R.
+
+Proor. We proceed analogously to the proof of Proposition 7.5. First note that if R had Lebesgue
+measure no greater than , then, fork € N,
+
+1 4 3 2 11
+P7,(R)< ---+=-2=— 69
+a aa ST) (69)
+and so Pz(R) < ot a contradiction. Hence R has Lebesgue measure greater that Z.
+Fix k € N. By Bayes’ rule (Lemma 3.11),
+x|k)-P{N=k
+PIN =k|Z=x]= Pzin(x|k) - Pf } (70)
+
+Den Pz|n(xln)-P{N = n}
+for Pz-a.e. x, and hence for Lebesgue-a.e. x.
+
+Now, pz|n(-|k) is piecewise (on a finite number of pieces with rational endpoints) the computable
+dilation and translation of the computable function ps. By (ii) above, the endpoints of the pieces line
+up, and so pzjn(-|k) is computable.
+
+On the Computability of Conditional Probability 37
+
+Because P{N = k} = 3 - 5~* is a computable real, it remains to show that, as a function of x, the
+denominator >) nen Pz|n(x|n) - P{N = n} of the right-hand side of (70) is neither lower nor upper
+semicomputable on R. We will show the former; the latter follows in a similar fashion. Define, for
+each € € N the function y: [0,1] — R by
+
+Ueto) = 5° D\ 3pzin(eln) P(N =n}. (71)
+
+n>t
+
+Note that yo is equal to 2 times the denominator. Hence it suffices to show that Y is not lower
+semicomputable on R.
+
+We now prove by induction, uniformly in @, that, if we is lower semicomputable on R, then We41 is
+lower semicomputable on R, and we can compute whether or not h(€) is finite. This then implies
+that if % were lower semicomputable on R, then @’ would be computable, a contradiction.
+
+Suppose that Wz is lower semicomputable on R. Then we can compute (as a c.e. open subset of
+[0, 1]) a set S such that $1 R = W7*[(3, 0) ] NR.
+
+If £ is such that h(€) = 00, then for x € [0, 1] we have pzjn(x | €) = 1, and so
+
+Uelx) = 34 - Vesi(x) > 3. (72)
+
+In particular, S will contain R, and hence have Lebesgue measure greater than Z.
+On the other hand, if £ is instead such that h(€) < oo, then SM RN Apne) has Lebesgue measure at
+most $ Hence
+
+SE(SARN Ane) VU (10, 1] \ R) U ((0, 1] \ Ane), (73)
+
+and so the Lebesgue measure of S is less than ; +(1- z) +(1- 3) = Z
+
+Simultaneously (1) enumerate a c.e. sequence of basic open sets whose union is S, hence computing
+arbitrarily good lower bounds on its measure, and (2) run M¢ (on input 0). Either S will have measure
+greater than Z or My will halt, but not both. Hence we will eventually learn whether or not h(€) is finite,
+which in turn shows that pz)n(- | €) is computable on [0, 1], and so +1 is also lower semicomputable
+on R. oO
+
+As before, it follows immediately that P[N|Z = - ] is not computable, even on a Pz-measure one
+set. It is possible to carry on the same development, showing that the conditional probability map is
+not computable as an element in L1(Pz). We state only the following strengthening of Corollary 7.7.
+
+Coro.iary 8.5. Let ® be a conditioning operator for the set of probability distributions on pairs (X, Y)
+of random variables in [0,1] such that there exists an everywhere continuous version of the conditional
+distribution map P[Y|X = - ]. Then ® is noncomputable. Oo
+
+9 POSITIVE RESULTS
+
+Despite the fact that conditioning is not computable in general, many practitioners view conditioning
+as a routine operation involving the application of Bayes’ rule. Indeed, below we show that condi-
+tioning is computable under mild assumptions when the observation is discrete, or when Bayes’ rule
+is applicable, or when the observation is corrupted by independent “smooth” computable noise. We
+conclude by examining the setting where a notion of symmetry known as exchangeability holds.
+
+On the Computability of Conditional Probability 38
+
+9.1. Discrete Random Variables
+
+We begin with the problem of conditioning on a random variable that takes values in a discrete set.
+Given an appropriate notion of computability for discrete sets, conditioning is always possible in
+this setting, as it reduces to the elementary notion of conditional probability with respect to single
+events.
+
+Definition 9.1 (Computably discrete set). Let S be a computable Polish space. A subset D C S is
+computably discrete when there exists a function f: S — N that is computable and injective on
+D. In particular, such a D is countable. We call f the witness to the discreteness of D.
+
+PROPOSITION 9.2. Let X and Y be P-almost computable random variables in computable Polish spaces
+S and T, respectively, let D C S be a computably discrete subset with witness f, and assume that
+P{X = d} > 0 for alld € D. Then the conditional distribution map P[Y|X = - | is computable on D,
+uniformly in X, Y, and f.
+
+Proor. Let A C T be a Py-almost decidable set. By Lemma 4.7, it suffices to show that
+P[Y € A|X =- ] is computable on D, uniformly in p, f, and (the witness for the Py-almost decidability
+of) A. Let x € D. Uniformly in f and x, we can find a witness to a Px-almost decidable set B, ¢ S
+
+such that x € B, and no other element of D is in B,. It then follows that
+P[Y € A|X = x] = P[Y € A|X € B,] as. (74)
+By Lemma 4.1, P[Y € A|X € B,] isa computable real uniformly in p and (the witness for the Py-almost
+
+decidability of) B,, hence uniformly in p, f, and x. oO
+
+The proof above relies on the ability to compute probabilities for continuity sets. In practice,
+computing probabilities can be inefficient. We give an alternative proof of Proposition 9.2 via a
+rejection-sampling argument, which yields an algorithm that can be much more efficient. We begin
+with a version of a well-known result.
+
+LEMMA 9.3 (REJECTION SAMPLING). Let X and Y be random variables in computable Polish spaces S
+and T, respectively, let B C S be a measurable set with positive Pxy-measure, let (Xo, Yo), (X1, Y1),---
+be a sequence of i.i.d. copies of (X, Y), and define v to be the distribution of (Xo, X1,...). Further define
+g: SN > N to be the map
+
+(xo,X1,...) P inf{neN : x, € B} (75)
+and set
+€ := (Xo, X1,---). (76)
+
+Then Y¢ has distribution P{Y € - | X € B} and, if B is a Px-almost decidable set, then g is v-almost
+computable, uniformly in a witness for B.
+
+Proor. For alln ¢ N, we have P{f = n} = P{X, € B} [] 29 P{X; ¢ B} = P{X € B} (1-P{X € B})".
+Summing this expression over all n € N, we obtain
+
+P{Z <oo} =1. (77)
+
+On the Computability of Conditional Probability 39
+
+For P;-almost all n € N,
+
+P{Y; € - | =n} =P{Yn € - |Xn € Band X; ¢ B for all j < n} (78)
+= P{Y, € -|Xp € B} = P{Ye - |X € B}, (79)
+
+where the first equality follows from the definition of ¢, the second from the iid. property, and the
+last by definition. As the right hand side has no dependence on 1, it follows from the chain rule of
+conditional expectation and (77) that P{Y; € - } = P{Y € - |X € B}.
+
+We now establish the v-almost computability of g. It follows from P{¢ < oo} = 1 that g is N-valued
+on a v-measure one set. By definition, the characteristic function for B, written
+XB: S — {0,1}, is Px-almost computable uniformly in a witness for the almost decidability of B.
+Hence g(x, x1,...) = min{n € N : yg(x,) = 1} ona v-measure one set A C SN of input sequences.
+But then AN g™1(n) = AN ((yq'(0))” x g1(1) x SN), and so g is v-almost computable. Oo
+
+We may now give an alternative proof of Proposition 9.2.
+
+PROOF OF PROPOSITION 9.2 (VIA REJECTION SAMPLING). Let yz be the distribution of (X, Y), which
+is computable. Uniformly in p, we may compute a sequence (Xo, Yo), (Xi, Y1),... of independent
+P-almost computable random variables with distribution p. Let f be a witness to the computable
+discreteness of D. Then (f (Xo), Yo), (f(X1), Y1),.-- is also a computable sequence of independent
+P-almost computable random variables. Uniformly in f, we can compute a sequence of disjoint Px-
+continuity sets (Bx)en such that x € Be(,) for Px-almost all x. For k € N, let 9, be the function from
+Lemma 9.3 with respect to the set By. Uniformly in k, the random variable (, = gx(f (Xo), f(X1),---)
+is P-almost computable, and then so is the random variable Yz,. For k € N, let y, be the distribution
+of Yz,. By Lemma 9.3, yx = P{Y € - | f(X) = k} and yx is computable, uniformly in k, f, and
+py. It follows that the map y: N > M,(T) given by k } yx is computable, uniformly in f and p.
+Note, however, that for Px-almost all x, we have P[Y|X = x] =P{Y € - | f(X) = f(x)}. Therefore
+P[Y|X =-]=yo f is Px-almost computable, uniformly in f and p. o
+
+Rejection sampling has been used to give informal semantics of conditioning operators for discrete
+random variables in probabilistic programming languages such as A. [Park et al. 2008] and Church
+[Goodman et al. 2008].
+
+9.2 Continuous and Dominated Setting
+
+The most common way to to perform conditioning given a continuous random variable is via Bayes’
+rule, which requires the existence of a conditional density. Using the characterization of computable
+measures in terms of the computability of integration, we can characterize when Bayes’ rule is
+computable.
+
+ProposiTIon 9.4. Let X and Y be P-almost computable random variables on computable Polish spaces
+S and T, and let R € S. If px\y(x|y) is a conditional density of X given Y that is positive, bounded, and
+computable on R x T, then x as defined in (21) is computable on R. In particular, if R is a Px-measure
+one subset, then x is a Px-almost computable version.
+
+On the Computability of Conditional Probability 40
+
+Proor. By Bayes’ rule (Lemma 3.11), a version of P[Y|X = - ] is given by the ratio in Equation (21):
+
+Jp Pxiv(xly) Py(dy)
+J pxy(wly) Py(dy)
+
+By Proposition 2.30, when B is an Py-almost decidable set, x >» Is pxiy(x|y) Py(dy) is a computable
+function of x on R, uniformly in a witness for the Py-almost decidability of B. Further we know
+that f[ Pxiy(xly) Py(dy) is non-zero on a Px-measure one set, and so the ratio x(-, B) is an Py-almost
+computable function, uniformly in a witness for the Py-almost decidability of B. Hence for c.e. open
+sets E, the function k(-, E) is lower semicomputable uniformly in a representation for E. Therefore,
+by Lemma 4.7, the function x is computable, as desired. o
+
+k(x, B) = € Br. (80)
+
+Remark 9.5. One might likewise obtain an algorithm for conditioning in the context of Propo-
+sition 9.4 using the proof of Proposition 9.2 via computable rejection sampling. In particular, the
+following classical argument may be carried out computably. For x € R, let Ex be a Px-almost
+continuous random variable in {0,1} such that P[E, = 1|Y = y] = aabxiv(xly), where M satisfies
+pxjy(xly) < M for all x € R and y € T. (Such an M exists because of the boundedness condition.)
+Then, for every Borel B € T and every x € R, we have
+
+P{Y € B, Ey = 1}
+P{E, = 1}
+
+providing the reduction to (classical) rejection sampling.
+
+K(x, B) = = P{Y € BIE, = 1}, (81)
+
+Because the computability result Proposition 9.4 was established in a way that obviously relativizes
+to any oracle, we now obtain a proof of its analogue for a continuous conditional density, as promised
+in Section 3.2.
+
+PROOF OF PROPOSITION 3.12. Follows from the proof of Proposition 9.4 by relativizing with respect
+to an arbitrary oracle. o
+
+COROLLARY 9.6 (DENSITY AND INDEPENDENCE). Let U, V, and X be P-almost computable random
+variables in computable Polish spaces, where X is independent of V given U. Assume that there exists a
+bounded and computable conditional density py\y(x|u) of X given U. Then the kernel P[(U, V)|X = - | is
+computable.
+
+Proor. Let Y = (U, V). Then pyjy(x|(u, v)) = pxju(x|u) is the conditional density of X given Y (with
+respect to v). The result then follows immediately from Proposition 9.4. o
+
+9.3. Conditioning on Noisy Observations
+
+As an immediate consequence of Corollary 9.6, we obtain the computability of the folowing common
+situation in probabilistic modeling, where the observed random variable has been corrupted by
+independent absolutely continuous noise.
+
+COROLLARY 9.7 (INDEPENDENT NOISE). Let U and E be P-almost computable random variables in R,
+and let V be aP-almost computable random variable in a computable Polish space. Define X = U + E. If
+Pe is absolutely continuous (with respect to Lebesgue measure) with a bounded computable density pe,
+and E is independent of U and V, then the conditional distribution map P[(U, V)|X = - ] is computable.
+
+On the Computability of Conditional Probability 41
+
+Proof. We have that
+
+Pxju(x|u) = pe(x — u) (82)
+
+is the conditional density of X given U (with respect to Lebesgue measure). The result then follows
+from Corollary 9.6. Oo
+
+Pour-El and Richards [1989, Ch. 1, Thm. 2] show that a twice continuously differentiable computable
+function has a computable derivative (despite the fact that Myhill [1971] exhibits a computable
+function from [0, 1] to R whose derivative is continuous, but not computable). Therefore, noise with
+a sufficiently smooth computable distribution has a computable density, and by Corollary 9.7, if such
+noise has a bounded density, then an almost computable random variable corrupted by such noise
+still admits a computable conditional distribution map.
+
+Furthermore, Corollary 9.7 implies that the conditional distribution of a random variable given a
+continuous observation cannot always be uniformly approximated using noise in the sense that one
+cannot computably tell how little noise must be present to obtain a given accuracy. For example,
+consider our main construction (Theorem 7.6) corrupted with noise E = oZ, where Z is a standard
+Gaussian noise and o > 0 determines the standard deviation. Even though, as o — 0, the conditional
+distribution given the corrupted observation converges weakly to the uncorrupted conditional
+distribution with o = 0, the noncomputability of the uncorrupted conditional distribution implies
+that one cannot uniformly compute a value of o from a desired bound on the error introduced to the
+conditional distribution corrupted by the noise oZ.
+
+9.4 Exchangeable Setting
+
+Freer and Roy [2010] show how to compute conditional distributions in the setting of exchangeable
+sequences, i.e., sequences of random variables whose joint distribution is invariant to permutations
+of the indices. A classic result by de Finetti shows that exchangeable sequences of random variables
+are in fact conditionally iid. sequences, conditioned on a random measure, often called the directing
+random measure. Freer and Roy describe how to transform an algorithm for sampling an exchangeable
+sequence into a rule for computing the posterior distribution of the directing random measure given
+observations. The result is a corollary of a computable version of de Finetti’s theorem [Freer and
+Roy 2009, 2012], and covers a wide range of common scenarios in nonparametric Bayesian statistics
+(often where no conditional density exists).
+
+ACKNOWLEDGMENTS
+
+A preliminary version of this article appears as “Noncomputable conditional distributions” in Pro-
+ceedings of the 26th Annual IEEE Symposium on Logic in Computer Science, 107-116 [Ackerman et al.
+2011], which was based upon results first appearing in an arXiv preprint [Ackerman et al. 2010].
+
+C. E. Freer was partially supported by NSF grants DMS-0901020 and DMS-0800198, DARPA
+Contract Award No. FA8750-14-C-0001, and a grant from the John Templeton Foundation.
+
+D. M. Roy was partially supported by graduate fellowships from the National Science Foundation
+and MIT Lincoln Laboratory, a Newton International Fellowship, a Research Fellowship at Emmanuel
+College, and an Ontario Early Researcher Award.
+
+Work on this publication was also made possible through the support of ARO grant W911NF-13-1-
+0212, ONR grant N00014-13-1-0333, DARPA Contract Award No. FA8750-14-2-0004, and Google’s
+
+On the Computability of Conditional Probability 42
+
+“Rethinking AI” project. The opinions expressed in this publication are those of the authors and do
+not necessarily reflect the views of the John Templeton Foundation or the U.S. Government.
+
+The authors would like to thank Jeremy Avigad, Henry Cohn, Leslie Kaelbling, Vikash Mansinghka,
+Arno Pauly, Hartley Rogers, Michael Sipser, and Joshua Tenenbaum for helpful discussions, Bill
+Thurston for a useful comment regarding Lemma 8.1, Martin Escardé for a helpful discussion
+regarding computable random variables, and Quinn Culver, Noah Goodman, Jonathan Huggins,
+Leslie Kaelbling, Bjorn Kjos-Hanssen, Vikash Mansinghka, Timothy O’Donnell, Geoff Patterson, and
+the anonymous referees for comments on earlier drafts.
+
+REFERENCES
+
+Nathanael L. Ackerman, Cameron E. Freer, and Daniel M. Roy. 2010. On the computability of conditional probability. (2010).
+Preprint, http://arxiv.org/abs/1005.3014v1 .
+
+Nathanael L. Ackerman, Cameron E. Freer, and Daniel M. Roy. 2011. Noncomputable conditional distributions. In Proc. of the
+26th Ann. IEEE Symp. on Logic in Comput. Sci. (LICS 2011). IEEE Computer Society, 107-116.
+
+Shai Ben-David, Benny Chor, Oded Goldreich, and Michael Luby. 1992. On the theory of average case complexity. J. Comput.
+System Sci. 44, 2 (1992), 193-219.
+
+Jens Blanck. 1997. Domain representability of metric spaces. Annals of Pure and Applied Logic 83, 3 (1997), 225-247.
+
+Volker Bosserhoff. 2008. Notions of probabilistic computability on represented spaces. J.UCS 14, 6 (2008), 956-995.
+
+Mark Braverman. 2005. On the complexity of real functions. In FOCS’05—Proc. of the 46th Ann. IEEE Symp. on Foundations of
+Comput. Sci. IEEE Computer Society, 155-164.
+
+Mark Braverman and Stephen Cook. 2006. Computing over the reals: foundations for scientific computing. Notices Amer.
+Math. Soc. 53, 3 (2006), 318-329.
+
+Gregory F. Cooper. 1990. The computational complexity of probabilistic inference using Bayesian belief networks. Artificial
+Intelligence 42, 2-3 (1990), 393-405.
+
+Paul Dagum and Michael Luby. 1993. Approximating probabilistic inference in Bayesian belief networks is NP-hard. Artificial
+Intelligence 60, 1 (1993), 141-153.
+
+Paul Dagum and Michael Luby. 1997. An optimal approximation algorithm for Bayesian inference. Artificial Intelligence 93,
+1-2 (1997), 1-27.
+
+Francois G. Dorais, Gerald Edgar, and Jason Rute. 2013. Continuity on a measure one set versus measure one set of points of
+continuity. MathOverflow. http://mathoverflow.net/q/146063 (version: 2013-10-27).
+
+Abbas Edalat. 1996. The Scott topology induces the weak topology. In Proc. of the 11th Ann. IEEE Symp. on Logic in Comput.
+Sci. (New Brunswick, NJ, 1996). IEEE Comput. Soc. Press, Los Alamitos, CA, 372-381.
+
+Abbas Edalat and Reinhold Heckmann. 1998. A computational model for metric spaces. Theoret. Comput. Sci. 193, 1-2 (1998),
+53-73.
+
+Cameron E. Freer and Daniel M. Roy. 2009. Computable exchangeable sequences have computable de Finetti measures. In
+Mathematical Theory and Computational Practice (CiE 2009), Proc. of the 5th Conf. on Computability in Europe (Lecture Notes
+in Comput. Sci.), Klaus Ambos-Spies, Benedikt Lowe, and Wolfgang Merkle (Eds.), Vol. 5635. Springer, 218-231.
+
+Cameron E. Freer and Daniel M. Roy. 2010. Posterior distributions are computable from predictive distributions. In Proc. of the
+13th Int. Conf. on Artificial Intelligence and Statistics (AISTATS 2010) (Y. W. Teh and M. Titterington, eds.), JMLR: W&CP 9.
+233-240.
+
+Cameron E. Freer and Daniel M. Roy. 2012. Computable de Finetti measures. Ann. Pure Appl. Logic 163, 5 (2012), 530-546.
+
+Peter Gacs. 2005. Uniform test of algorithmic randomness over a general space. Theoret. Comput. Sci. 341, 1-3 (2005), 91-137.
+
+Stefano Galatolo, Mathieu Hoyrup, and Cristobal Rojas. 2010. Effective symbolic dynamics, random points, statistical behavior,
+complexity and entropy. Inform. and Comput. 208, 1 (2010), 23-41.
+
+E. Mark Gold. 1967. Language identification in the limit. Inform. and Control 10, 5 (1967), 447-474.
+
+Noah D. Goodman, Vikash K. Mansinghka, Daniel M. Roy, Keith Bonawitz, and Joshua B. Tenenbaum. 2008. Church: a
+language for generative models. In Proc. of the 24th Conf: on Uncertainty in Artificial Intelligence.
+
+Armin Hemmerling. 2002. Effective metric spaces and representations of the reals. Theoret. Comput. Sci. 284, 2 (2002), 347-372.
+
+Mathieu Hoyrup. 2008. Computability, Randomness and Ergodic Theory on Metric Spaces. Ph.D. Dissertation. Université Paris
+Diderot (Paris VII).
+
+On the Computability of Conditional Probability 43
+
+Mathieu Hoyrup and Cristébal Rojas. 2009a. An application of Martin-Lof randomness to effective probability theory. In
+Mathematical Theory and Computational Practice, Klaus Ambos-Spies, Benedikt Lowe, and Wolfgang Merkle (Eds.). Lecture
+Notes in Comput. Sci., Vol. 5635. Springer, 260-269.
+
+Mathieu Hoyrup and Cristébal Rojas. 2009b. Computability of probability measures and Martin-Lof randomness over metric
+spaces. Inform. and Comput. 207, 7 (2009), 830-847.
+
+Mathieu Hoyrup and Cristobal Rojas. 2011. Absolute continuity of measures and preservation of randomness. (2011). Preprint,
+https://members.loria.fr/MHoyrup/abscont.pdf.
+
+Mathieu Hoyrup, Cristobal Rojas, and Klaus Weihrauch. 2011. Computability of the Radon-Nikodym derivative. In Models of
+Computation in Context, Proc. of the 7th Conf. on Computability in Europe (CiE 2011) (Lecture Notes in Comput. Sci.), Benedikt
+Léwe, Dag Normann, Ivan N. Soskov, and Alexandra A. Soskova (Eds.), Vol. 6735. Springer, 132-141.
+
+Marcus Hutter. 2007. On universal prediction and Bayesian confirmation. Theoret. Comput. Sci. 384, 1 (2007), 33-48.
+
+Olav Kallenberg. 2002. Foundations of modern probability (2nd ed.). Springer, New York. xx+638 pages.
+
+Alexander S. Kechris. 1995. Classical descriptive set theory. Graduate Texts in Mathematics, Vol. 156. Springer-Verlag, New
+York. xviii+402 pages.
+
+Oleg Kiselyov and Chung-chieh Shan. 2009. Embedded probabilistic programming. In Domain-Specific Languages (Lecture
+Notes in Computer Science), Walid Mohamed Taha (Ed.), Vol. 5658. Springer, 360-384.
+
+Stephen Cole Kleene. 1938. On Notation for Ordinal Numbers. 7. Symbolic Logic 3, 4 (1938), 150-155.
+
+Donald E. Knuth and Andrew C. Yao. 1976. The complexity of nonuniform random number generation. In Algorithms and
+complexity (Proc. Sympos., Carnegie-Mellon Univ., Pittsburgh, Pa., 1976). Academic Press, New York, 357-428.
+
+A.N. Kolmogorov. 1933. Grundbegriffe der Wahrscheinlichkeitsrechnung. Springer. vii+62 pages.
+
+Leonid A. Levin. 1986. Average case complete problems. SIAM 7. Comput. 15, 1 (1986), 285-286.
+
+Irwin Mann. 1973. Probabilistic recursive functions. Trans. Amer. Math. Soc. 177 (1973), 447-467.
+
+T. Minka, J.M. Winn, J.P. Guiver, and D.A. Knowles. 2010. Infer.NET 2.4. Microsoft Research Cambridge.
+http://research.microsoft.com/infernet.
+
+Kenshi Miyabe. 2013. L!-computability, layerwise computability and Solovay reducibility. Computability 2, 1 (2013), 15-29.
+
+Yiannis N. Moschovakis. 2009. Descriptive set theory (2nd ed.). Mathematical Surveys and Monographs, Vol. 155. American
+Mathematical Society, Providence, RI. xiv+502 pages.
+
+Norbert Th. Miiller. 1999. Computability on random variables. Theoret. Comput. Sci. 219, 1-2 (1999), 287-299.
+
+J. Myhill. 1971. A recursive function, defined on a compact interval and having a continuous derivative that is not recursive.
+Michigan Math. J. 18 (1971), 97-98.
+
+André Nies. 2009. Computability and randomness. Oxford Logic Guides, Vol. 51. Oxford University Press, Oxford. xvi+433
+pages.
+
+Daniel N. Osherson, Michael Stob, and Scott Weinstein. 1988. Mechanical learners pay a price for Bayesianism. J. Symbolic
+Logic 53, 4 (1988), 1245-1251.
+
+Sungwoo Park, Frank Pfenning, and Sebastian Thrun. 2008. A probabilistic language based on sampling functions. ACM
+Trans. Program. Lang. Syst. 31, 1 (2008), 1-46.
+
+J. Pfanzagl. 1979. Conditional distributions as derivatives. Ann. Probab. 7, 6 (1979), 1046-1050.
+
+Avi Pfeffer. 2001. IBAL: A probabilistic rational programming language. In Proc. of the 17th Int. Joint Conf. on Artificial
+Intelligence. Morgan Kaufmann Publ., 733-740.
+
+David Poole. 1991. Representing Bayesian networks within probabilistic Horn abduction. In Proc. of the 7th Conf: on Uncertainty
+in Artificial Intelligence. 271-278.
+
+Marian B. Pour-El and J. Ian Richards. 1989. Computability in analysis and physics. Springer-Verlag, Berlin. xii+206 pages.
+
+Hilary Putnam. 1965. Trial and error predicates and the solution to a problem of Mostowski. J. Symbolic Logic 30 (1965),
+49-57.
+
+M. M. Rao. 1988. Paradoxes in conditional probability. J. Multivariate Anal. 27, 2 (1988), 434-446.
+
+M. M. Rao. 2005. Conditional measures and applications (2nd ed.). Pure and Applied Mathematics, Vol. 271. Chapman &
+Hall/CRC, Boca Raton, FL. xxiv+483 pages.
+
+Matthew Richardson and Pedro Domingos. 2006. Markov logic networks. Machine Learning 62, 1-2 (2006), 107-136.
+
+Hartley Rogers, Jr. 1987. Theory of recursive functions and effective computability (2nd ed.). MIT Press, Cambridge, MA.
+xxii+482 pages.
+
+Daniel M. Roy. 2011. Computability, inference and modeling in probabilistic programming. Ph.D. Dissertation. Massachusetts
+Institute of Technology.
+
+On the Computability of Conditional Probability 44
+
+Mark J. Schervish. 1995. Theory of statistics. Springer-Verlag, New York. xvi+702 pages.
+
+Matthias Schréder. 2007. Admissible representations for probability measures. Math. Log. Q. 53, 4-5 (2007), 431-445.
+
+R. J. Solomonoff. 1964. A formal theory of inductive inference II. Inform. and Control 7 (1964), 224-254.
+
+Hayato Takahashi. 2008. On a definition of random sequences with respect to conditional probability. Inform. and Comput.
+206, 12 (2008), 1375-1382.
+
+Tue Tjur. 1974. Conditional probability distributions. Institute of Mathematical Statistics, University of Copenhagen, Copen-
+hagen. iv+370 pages.
+
+Tue Tjur. 1975. A Constructive definition of conditional distributions. Institute of Mathematical Statistics, University of
+Copenhagen, Copenhagen. 20 pages.
+
+Tue Tjur. 1980. Probability based on Radon measures. John Wiley & Sons Ltd., Chichester. xi+232 pages.
+
+Klaus Weihrauch. 1993. Computability on computable metric spaces. Theoret. Comput. Sci. 113, 2 (1993), 191-210.
+
+Klaus Weihrauch. 1999. Computability on the probability measures on the Borel sets of the unit interval. Theoret. Comput. Sci.
+219, 1-2 (1999), 421-437.
+
+Klaus Weihrauch. 2000. Computable analysis: an introduction. Springer-Verlag, Berlin. x+285 pages.
+
+Tomoyuki Yamakami. 1999. Polynomial time samplable distributions. 7. Complexity 15, 4 (1999), 557-574.
+
+A. K. Zvonkin and L. A. Levin. 1970. The complexity of finite objects and the development of the concepts of information and
+randomness by means of the theory of algorithms. Uspekhi Mat. Nauk 25, 6 (156) (1970), 85-127.

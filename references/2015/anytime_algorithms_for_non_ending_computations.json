@@ -50,5 +50,56 @@
       "本 JSON 对应 methodolgy.md 第 5.1 节“零号预处理（编目与分流）”输出。",
       "作者与出版元数据在本地文件中不完整，后续可在第一遍前补全。"
     ]
+  },
+  "unified_reading_card": {
+    "书目信息": {
+      "标题": "Anytime Algorithms for Non-Ending Computations",
+      "作者": "Unknown",
+      "年份": "2015",
+      "发表": "Technical Article"
+    },
+    "原初问题": "引言将计算任务从“终止即成功”重写为“持续改进且可随时交付”。",
+    "心理地图": "作者将问题组织为：non-ending 计算问题设定；anytime 质量度量；算法构造与性能讨论。",
+    "核心概念（3–7）": [
+      "non-ending 计算问题设定",
+      "anytime 质量度量",
+      "算法构造与性能讨论",
+      "open computation / limit / anytime",
+      "问题建模",
+      "边界条件",
+      "论证结构"
+    ],
+    "核心结构一句话": "本文按“non-ending 计算问题设定 → anytime 质量度量 → 算法构造与性能讨论”组织论证对象，并通过分层展开形成结构骨架。",
+    "方法承诺": "作者在 open computation / limit / anytime 路线内采用结构化建模与分层推进的方法承诺。",
+    "隐含假设": [
+      "研究对象可被形式化并稳定定义",
+      "关键变量或关系可被统一度量或比较",
+      "论证步骤可通过可回指结构组织推进"
+    ],
+    "边界动作": [
+      "优先处理文献中明确定义的问题对象，不外推到未定义任务",
+      "区分文献内部可证明主张与外部解释性扩展",
+      "重点防止误读：把 anytime 输出误读为任意时刻都具同等可靠性；忽略中断策略与评价函数对结论的影响"
+    ],
+    "被压抑支线": [
+      "文中强调的结构约束与边界动作在当代大模型/复杂系统研究中出现回流，并重新获得方法论意义。"
+    ],
+    "今日回看的结构性洞见": [
+      "命中型：该文献对“open computation / limit / anytime”路线中的核心对象给出可复用组织框架，后续研究持续沿用其问题分解方式。",
+      "误判型：该文献对适用域的刻画相对收束，面对更开放任务分布时解释力存在外延不足。",
+      "遮蔽型：其原始问题对象在后续语境中被改名或拆散，导致原文中的整体组织逻辑常被局部术语遮蔽。"
+    ],
+    "与 survey 的章节关系": "建议章节与证据类型：进入“open computation / LM / agent / AGI”相关章节，证据类型标记为 Interpretation。",
+    "一句判断": "该文献开辟了一个围绕“open computation / limit / anytime”组织问题并以结构化论证推进结论的问题空间。"
+  },
+  "unified_reading_card_source": {
+    "stage_files": [
+      "anytime_algorithms_for_non_ending_computations.1.md",
+      "anytime_algorithms_for_non_ending_computations.2.md",
+      "anytime_algorithms_for_non_ending_computations.3.md",
+      "anytime_algorithms_for_non_ending_computations.4.md"
+    ],
+    "extraction_mode": "from_stage_files",
+    "methodology_section": "§6 统一阅读卡字段"
   }
 }

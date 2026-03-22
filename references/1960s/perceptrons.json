@@ -50,5 +50,51 @@
     "notes": [
       "本 JSON 对应 methodolgy.md 第 5.1 节“零号预处理（编目与分流）”输出。"
     ]
+  },
+  "unified_reading_card": {
+    "书目信息": {
+      "标题": "Perceptrons",
+      "作者": "Marvin Minsky、Seymour Papert",
+      "年份": "1969",
+      "发表": "MIT Press"
+    },
+    "原初问题": "引言关注可计算结构与表示边界，而非单纯经验性能比较。",
+    "心理地图": "感知机模型与数学定义；能力分析与限制定理；结构任务上的反例与讨论",
+    "核心概念（3–7）": [
+      "感知机模型与数学定义",
+      "能力分析与限制定理",
+      "结构任务上的反例与讨论"
+    ],
+    "核心结构一句话": "该文献围绕“cybernetics / automata / Dartmouth”路线组织问题对象并推进论证。",
+    "方法承诺": "作者采用结构化建模并沿“cybernetics / automata / Dartmouth”路线推进。",
+    "隐含假设": [
+      "研究对象可被稳定定义",
+      "关键关系可被比较",
+      "步骤之间可回指"
+    ],
+    "边界动作": [
+      "把对特定架构的限制结论泛化为对全部神经方法的否定",
+      "忽略其问题设定中的表示约束与任务条件"
+    ],
+    "被压抑支线": [
+      "由回流线索反推的被压抑支线待补全"
+    ],
+    "今日回看的结构性洞见": [
+      "命中型：结构组织可复用",
+      "误判型：适用域可能偏窄",
+      "遮蔽型：术语改名导致语义漂移"
+    ],
+    "与 survey 的章节关系": "建议章节：历史前奏 / Transformer / ICL / PFN",
+    "一句判断": "该文献在“cybernetics / automata / Dartmouth”路线中具有结构性节点价值。"
+  },
+  "unified_reading_card_source": {
+    "stage_files": [
+      "perceptrons.1.md",
+      "perceptrons.2.md",
+      "perceptrons.3.md",
+      "perceptrons.4.md"
+    ],
+    "extraction_mode": "catalog_fallback",
+    "methodology_section": "§6 统一阅读卡字段"
   }
 }

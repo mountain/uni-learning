@@ -1,0 +1,55 @@
+{
+  "stage": "zero_preprocessing_catalog",
+  "source_pdf": {
+    "file_name": "strips_a_new_approach_to_the_application_of_theorem_proving_to_problem_solving.pdf",
+    "file_path": "/Users/mingli/Khex/uni-learning/references/1970s/strips_a_new_approach_to_the_application_of_theorem_proving_to_problem_solving.pdf",
+    "same_directory_output": true
+  },
+  "bibliography": {
+    "title": "STRIPS: A New Approach to the Application of Theorem Proving to Problem Solving",
+    "authors": [
+      "Richard Fikes",
+      "Nils Nilsson"
+    ],
+    "year": 1971,
+    "publication": "Artificial Intelligence",
+    "volume": "2",
+    "pages": "189-208"
+  },
+  "input_context_for_catalog": {
+    "abstract_brief": "论文提出 STRIPS 规划框架，以状态表示、动作前提与效果规则组织问题求解，建立经典符号规划的可计算路径。",
+    "toc_brief": [
+      "问题表示与世界状态建模",
+      "动作算子与前提-效果机制",
+      "定理证明与规划搜索结合",
+      "系统实现与示例任务"
+    ],
+    "preface_or_intro_brief": "引言强调将一般定理证明技术转化为可操作的规划流程。"
+  },
+  "catalog_result": {
+    "document_type": "技术论文",
+    "primary_route": "cybernetics / automata / Dartmouth",
+    "estimated_difficulty": {
+      "concept_density": "中",
+      "math_density": "中",
+      "historical_context_density": "中"
+    },
+    "reading_priority": "高",
+    "recommended_survey_chapters": [
+      "历史前奏",
+      "LM / agent / AGI"
+    ],
+    "misreading_risks": [
+      "把 STRIPS 的封闭世界假设忽略后直接外推到开放环境",
+      "将符号规划等同于一般智能而忽略其任务结构前提",
+      "只看算法流程而忽视表示语言对可解性的决定作用",
+      "以后来神经规划术语覆盖原始问题边界"
+    ]
+  },
+  "generation_notes": {
+    "methodology_file": "/Users/mingli/Khex/uni-learning/agents/reader/methodolgy.md",
+    "notes": [
+      "本 JSON 对应 methodolgy.md 第 5.1 节“零号预处理（编目与分流）”输出。"
+    ]
+  }
+}

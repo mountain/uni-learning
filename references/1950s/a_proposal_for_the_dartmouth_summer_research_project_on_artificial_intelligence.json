@@ -1,0 +1,56 @@
+{
+  "stage": "zero_preprocessing_catalog",
+  "source_pdf": {
+    "file_name": "a_proposal_for_the_dartmouth_summer_research_project_on_artificial_intelligence.pdf",
+    "file_path": "/Users/mingli/Khex/uni-learning/references/1950s/a_proposal_for_the_dartmouth_summer_research_project_on_artificial_intelligence.pdf",
+    "same_directory_output": true
+  },
+  "bibliography": {
+    "title": "A Proposal for the Dartmouth Summer Research Project on Artificial Intelligence",
+    "authors": [
+      "John McCarthy",
+      "Marvin L. Minsky",
+      "Nathaniel Rochester",
+      "Claude E. Shannon"
+    ],
+    "year": 1955,
+    "publication": "Research Proposal",
+    "volume": "",
+    "pages": ""
+  },
+  "input_context_for_catalog": {
+    "abstract_brief": "文本提出以“artificial intelligence”为名组织跨学科夏季研究，假定学习、抽象、语言使用与改进等智能特征可由机器精确描述与实现。",
+    "toc_brief": [
+      "项目动机与问题设定",
+      "研究议题分组（自动机、神经网络、学习、抽象等）",
+      "组织方式与预期产出"
+    ],
+    "preface_or_intro_brief": "开篇以命名与议题组织为核心动作，目标是建立新研究共同体与问题边界。"
+  },
+  "catalog_result": {
+    "document_type": "会议 proposal",
+    "primary_route": "cybernetics / automata / Dartmouth",
+    "estimated_difficulty": {
+      "concept_density": "高",
+      "math_density": "低",
+      "historical_context_density": "高"
+    },
+    "reading_priority": "高",
+    "recommended_survey_chapters": [
+      "历史前奏",
+      "LM / agent / AGI"
+    ],
+    "misreading_risks": [
+      "将 proposal 误读为成熟技术论文而忽略其制度性边界重划功能",
+      "只把其视为 AI 命名事件，忽略其未分化问题场的结构价值",
+      "以后来 symbolic/neural 分裂回填文本，遮蔽原始共域设定",
+      "把愿景性主张直接等同为已证实技术路线"
+    ]
+  },
+  "generation_notes": {
+    "methodology_file": "/Users/mingli/Khex/uni-learning/agents/reader/methodolgy.md",
+    "notes": [
+      "本 JSON 对应 methodolgy.md 第 5.1 节“零号预处理（编目与分流）”输出。"
+    ]
+  }
+}

@@ -1,0 +1,56 @@
+{
+  "stage": "zero_preprocessing_catalog",
+  "source_pdf": {
+    "file_name": "a_logical_calculus_of_the_ideas_immanent_in_nervous_activity.pdf",
+    "file_path": "/Users/mingli/Khex/uni-learning/references/1940s/a_logical_calculus_of_the_ideas_immanent_in_nervous_activity.pdf",
+    "same_directory_output": true
+  },
+  "bibliography": {
+    "title": "A Logical Calculus of the Ideas Immanent in Nervous Activity",
+    "authors": [
+      "Warren S. McCulloch",
+      "Walter H. Pitts"
+    ],
+    "year": 1943,
+    "publication": "The Bulletin of Mathematical Biophysics",
+    "volume": "5",
+    "pages": "115-133"
+  },
+  "input_context_for_catalog": {
+    "abstract_brief": "论文提出神经元阈值单元的形式化模型，并证明由此可构造实现逻辑运算与可计算过程的网络，为神经计算与计算理论之间建立早期桥接。",
+    "toc_brief": [
+      "神经活动的形式化假设",
+      "阈值神经元与逻辑表达",
+      "网络构造与命题演算关系",
+      "可计算过程的表达能力讨论"
+    ],
+    "preface_or_intro_brief": "引言将神经系统活动与逻辑演算联结，目标是给出可形式推演的神经机制描述。"
+  },
+  "catalog_result": {
+    "document_type": "技术论文",
+    "primary_route": "cybernetics / automata / Dartmouth",
+    "estimated_difficulty": {
+      "concept_density": "高",
+      "math_density": "中",
+      "historical_context_density": "高"
+    },
+    "reading_priority": "高",
+    "recommended_survey_chapters": [
+      "历史前奏",
+      "open computation"
+    ],
+    "misreading_risks": [
+      "将其直接等同为当代深度学习模型而忽略其逻辑-神经混合语境",
+      "只关注神经元抽象而忽略其关于可计算性的理论野心",
+      "以后来 symbolic/neural 分裂回填原文，遮蔽其未分化问题场",
+      "把形式构造的可表达性直接误读为现实可学习性与工程可行性"
+    ]
+  },
+  "generation_notes": {
+    "methodology_file": "/Users/mingli/Khex/uni-learning/agents/reader/methodolgy.md",
+    "notes": [
+      "本 JSON 对应 methodolgy.md 第 5.1 节“零号预处理（编目与分流）”输出。",
+      "编目信息依据文件题名、常见书目信息与本地元数据完成。"
+    ]
+  }
+}

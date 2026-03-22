@@ -1,0 +1,53 @@
+{
+  "stage": "zero_preprocessing_catalog",
+  "source_pdf": {
+    "file_name": "language_identification_in_the_limit.pdf",
+    "file_path": "/Users/mingli/Khex/uni-learning/references/1960s/language_identification_in_the_limit.pdf",
+    "same_directory_output": true
+  },
+  "bibliography": {
+    "title": "Language Identification in the Limit",
+    "authors": [
+      "E. Mark Gold"
+    ],
+    "year": 1967,
+    "publication": "Information and Control",
+    "volume": "10",
+    "pages": "447-474"
+  },
+  "input_context_for_catalog": {
+    "abstract_brief": "论文定义极限识别框架，研究学习者在无限样本序列中是否最终收敛到正确语言，建立可学习性与不可学习性的经典边界。",
+    "toc_brief": [
+      "极限学习模型定义",
+      "可识别语言类与反例",
+      "收敛条件与理论边界"
+    ],
+    "preface_or_intro_brief": "引言将学习问题转化为时间展开下的收敛判据，而非一次性正确判定。"
+  },
+  "catalog_result": {
+    "document_type": "技术论文",
+    "primary_route": "open computation / limit / anytime",
+    "estimated_difficulty": {
+      "concept_density": "高",
+      "math_density": "高",
+      "historical_context_density": "中"
+    },
+    "reading_priority": "高",
+    "recommended_survey_chapters": [
+      "open computation",
+      "历史前奏"
+    ],
+    "misreading_risks": [
+      "把极限可识别误读为有限样本可学习",
+      "忽略输入呈现模式对可识别性的决定性影响",
+      "将理论收敛结论直接外推为工程训练稳定性",
+      "以现代监督学习框架覆盖原文学习模型"
+    ]
+  },
+  "generation_notes": {
+    "methodology_file": "/Users/mingli/Khex/uni-learning/agents/reader/methodolgy.md",
+    "notes": [
+      "本 JSON 对应 methodolgy.md 第 5.1 节“零号预处理（编目与分流）”输出。"
+    ]
+  }
+}

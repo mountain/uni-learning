@@ -1,0 +1,89 @@
+{
+  "total": 40,
+  "downloaded": 1,
+  "exists": 23,
+  "failed_download": [
+    "Cybernetics: Or Control and Communication in the Animal and the Machine",
+    "Presentation of a Maze-Solving Machine",
+    "Design for a Brain",
+    "Empirical Explorations with the Logic Theory Machine",
+    "The Perceptron: A Probabilistic Model for Information Storage and Organization in the Brain",
+    "Some Methods of Artificial Intelligence and Heuristic Programming",
+    "Some Studies in Machine Learning Using the Game of Checkers",
+    "Report on a General Problem-Solving Program",
+    "A Machine-Oriented Logic Based on the Resolution Principle",
+    "A Formal Basis for the Heuristic Determination of Minimum Cost Paths",
+    "Production Rules as a Representation for a Knowledge-Based Consultation Program",
+    "Neural Networks and Physical Systems with Emergent Collective Computational Abilities",
+    "Fusion, Propagation, and Structuring in Belief Networks",
+    "Occam's Razor",
+    "Computational Limitations on Learning from Examples",
+    "Reducing the Dimensionality of Data with Neural Networks"
+  ],
+  "failed_verify": [
+    {
+      "title": "Cybernetics: Or Control and Communication in the Animal and the Machine",
+      "reason": "missing-file"
+    },
+    {
+      "title": "Presentation of a Maze-Solving Machine",
+      "reason": "missing-file"
+    },
+    {
+      "title": "Design for a Brain",
+      "reason": "missing-file"
+    },
+    {
+      "title": "Empirical Explorations with the Logic Theory Machine",
+      "reason": "missing-file"
+    },
+    {
+      "title": "The Perceptron: A Probabilistic Model for Information Storage and Organization in the Brain",
+      "reason": "missing-file"
+    },
+    {
+      "title": "Some Methods of Artificial Intelligence and Heuristic Programming",
+      "reason": "missing-file"
+    },
+    {
+      "title": "Some Studies in Machine Learning Using the Game of Checkers",
+      "reason": "missing-file"
+    },
+    {
+      "title": "Report on a General Problem-Solving Program",
+      "reason": "missing-file"
+    },
+    {
+      "title": "A Machine-Oriented Logic Based on the Resolution Principle",
+      "reason": "missing-file"
+    },
+    {
+      "title": "A Formal Basis for the Heuristic Determination of Minimum Cost Paths",
+      "reason": "missing-file"
+    },
+    {
+      "title": "Production Rules as a Representation for a Knowledge-Based Consultation Program",
+      "reason": "missing-file"
+    },
+    {
+      "title": "Neural Networks and Physical Systems with Emergent Collective Computational Abilities",
+      "reason": "missing-file"
+    },
+    {
+      "title": "Fusion, Propagation, and Structuring in Belief Networks",
+      "reason": "missing-file"
+    },
+    {
+      "title": "Occam's Razor",
+      "reason": "missing-file"
+    },
+    {
+      "title": "Computational Limitations on Learning from Examples",
+      "reason": "missing-file"
+    },
+    {
+      "title": "Reducing the Dimensionality of Data with Neural Networks",
+      "reason": "missing-file"
+    }
+  ]
+}

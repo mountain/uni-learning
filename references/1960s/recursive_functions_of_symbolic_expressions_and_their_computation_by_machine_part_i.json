@@ -1,0 +1,53 @@
+{
+  "stage": "zero_preprocessing_catalog",
+  "source_pdf": {
+    "file_name": "recursive_functions_of_symbolic_expressions_and_their_computation_by_machine_part_i.pdf",
+    "file_path": "/Users/mingli/Khex/uni-learning/references/1960s/recursive_functions_of_symbolic_expressions_and_their_computation_by_machine_part_i.pdf",
+    "same_directory_output": true
+  },
+  "bibliography": {
+    "title": "Recursive Functions of Symbolic Expressions and Their Computation by Machine, Part I",
+    "authors": [
+      "John McCarthy"
+    ],
+    "year": 1960,
+    "publication": "Communications of the ACM",
+    "volume": "3",
+    "pages": "184-195"
+  },
+  "input_context_for_catalog": {
+    "abstract_brief": "论文提出以递归函数处理符号表达式的统一计算框架，为 Lisp 及符号 AI 的程序化推理机制奠定形式基础。",
+    "toc_brief": [
+      "符号表达式与递归函数定义",
+      "计算规则与求值机制",
+      "机器实现与表达能力讨论"
+    ],
+    "preface_or_intro_brief": "引言强调用统一形式系统描述符号操作与机器可执行推理。"
+  },
+  "catalog_result": {
+    "document_type": "技术论文",
+    "primary_route": "cybernetics / automata / Dartmouth",
+    "estimated_difficulty": {
+      "concept_density": "高",
+      "math_density": "中",
+      "historical_context_density": "中"
+    },
+    "reading_priority": "高",
+    "recommended_survey_chapters": [
+      "历史前奏",
+      "LM / agent / AGI"
+    ],
+    "misreading_risks": [
+      "将其仅视为语言实现细节而忽略其统一符号计算的理论企图",
+      "以后来工程语言生态覆盖原文的形式化目标",
+      "把表达能力结论误读为完整可学习性结论",
+      "忽视其在学科分叉中的边界重划作用"
+    ]
+  },
+  "generation_notes": {
+    "methodology_file": "/Users/mingli/Khex/uni-learning/agents/reader/methodolgy.md",
+    "notes": [
+      "本 JSON 对应 methodolgy.md 第 5.1 节“零号预处理（编目与分流）”输出。"
+    ]
+  }
+}

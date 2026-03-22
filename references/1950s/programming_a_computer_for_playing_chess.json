@@ -1,0 +1,54 @@
+{
+  "stage": "zero_preprocessing_catalog",
+  "source_pdf": {
+    "file_name": "programming_a_computer_for_playing_chess.pdf",
+    "file_path": "/Users/mingli/Khex/uni-learning/references/1950s/programming_a_computer_for_playing_chess.pdf",
+    "same_directory_output": true
+  },
+  "bibliography": {
+    "title": "Programming a Computer for Playing Chess",
+    "authors": [
+      "Claude E. Shannon"
+    ],
+    "year": 1950,
+    "publication": "Philosophical Magazine",
+    "volume": "41",
+    "pages": "256-275"
+  },
+  "input_context_for_catalog": {
+    "abstract_brief": "论文提出计算机下棋的程序化框架，讨论搜索深度、评估函数与策略近似，在有限资源下定义可行博弈计算路径。",
+    "toc_brief": [
+      "棋类问题与机器求解设定",
+      "搜索策略与分支控制",
+      "评估函数与启发式近似",
+      "算力约束下的程序设计原则"
+    ],
+    "preface_or_intro_brief": "引言将下棋建模为可计算决策问题，强调资源受限条件下的程序构造。"
+  },
+  "catalog_result": {
+    "document_type": "技术论文",
+    "primary_route": "cybernetics / automata / Dartmouth",
+    "estimated_difficulty": {
+      "concept_density": "中",
+      "math_density": "中",
+      "historical_context_density": "中"
+    },
+    "reading_priority": "高",
+    "recommended_survey_chapters": [
+      "历史前奏",
+      "open computation"
+    ],
+    "misreading_risks": [
+      "将启发式搜索直接等同为现代最优规划或强化学习",
+      "忽略其核心问题是资源受限下的近似决策而非完全最优",
+      "把棋类特定构造无条件外推为一般智能架构",
+      "只关注算法细节而忽视其方法承诺（可行近似优先）"
+    ]
+  },
+  "generation_notes": {
+    "methodology_file": "/Users/mingli/Khex/uni-learning/agents/reader/methodolgy.md",
+    "notes": [
+      "本 JSON 对应 methodolgy.md 第 5.1 节“零号预处理（编目与分流）”输出。"
+    ]
+  }
+}

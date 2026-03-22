@@ -1,0 +1,53 @@
+{
+  "stage": "zero_preprocessing_catalog",
+  "source_pdf": {
+    "file_name": "a_formal_theory_of_inductive_inference_part_i.pdf",
+    "file_path": "/Users/mingli/Khex/uni-learning/references/1960s/a_formal_theory_of_inductive_inference_part_i.pdf",
+    "same_directory_output": true
+  },
+  "bibliography": {
+    "title": "A Formal Theory of Inductive Inference, Part I",
+    "authors": [
+      "Ray J. Solomonoff"
+    ],
+    "year": 1964,
+    "publication": "Information and Control",
+    "volume": "7",
+    "pages": "1-22"
+  },
+  "input_context_for_catalog": {
+    "abstract_brief": "论文以程序空间与先验权重为核心，建立可计算预测中的归纳推断框架，奠定后续 algorithmic probability 与 universal induction 路线。",
+    "toc_brief": [
+      "归纳推断问题的形式化",
+      "程序描述与概率权重",
+      "通用预测机制与性质讨论"
+    ],
+    "preface_or_intro_brief": "引言将归纳问题转写为计算过程上的先验与预测规则构造。"
+  },
+  "catalog_result": {
+    "document_type": "技术论文",
+    "primary_route": "Solomonoff / universal induction",
+    "estimated_difficulty": {
+      "concept_density": "高",
+      "math_density": "高",
+      "historical_context_density": "中"
+    },
+    "reading_priority": "高",
+    "recommended_survey_chapters": [
+      "Solomonoff / universal induction",
+      "open computation"
+    ],
+    "misreading_risks": [
+      "把先验权重简化为普通参数正则而忽略程序空间语义",
+      "只读公式而忽略其对归纳问题重写的结构意义",
+      "将理论最优误读为直接工程可实现性",
+      "用当代语言模型术语回填并遮蔽原始问题边界"
+    ]
+  },
+  "generation_notes": {
+    "methodology_file": "/Users/mingli/Khex/uni-learning/agents/reader/methodolgy.md",
+    "notes": [
+      "本 JSON 对应 methodolgy.md 第 5.1 节“零号预处理（编目与分流）”输出。"
+    ]
+  }
+}

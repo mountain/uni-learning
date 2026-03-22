@@ -1,0 +1,55 @@
+{
+  "stage": "zero_preprocessing_catalog",
+  "source_pdf": {
+    "file_name": "understanding_natural_language.pdf",
+    "file_path": "/Users/mingli/Khex/uni-learning/references/1970s/understanding_natural_language.pdf",
+    "same_directory_output": true
+  },
+  "bibliography": {
+    "title": "Understanding Natural Language",
+    "authors": [
+      "Terry Winograd"
+    ],
+    "year": 1972,
+    "publication": "Academic Press",
+    "volume": "",
+    "pages": ""
+  },
+  "input_context_for_catalog": {
+    "abstract_brief": "文本围绕自然语言理解与语义表示，结合规则推理与情境建模讨论语言系统的可执行理解机制，是早期符号 NLP 的关键节点。",
+    "toc_brief": [
+      "语言理解问题设定",
+      "语法与语义表示结构",
+      "对话与情境推理机制",
+      "系统行为与局限讨论"
+    ],
+    "preface_or_intro_brief": "引言强调语言理解不仅是句法分析，还涉及语义、语境与行动关联。"
+  },
+  "catalog_result": {
+    "document_type": "技术论文",
+    "primary_route": "cybernetics / automata / Dartmouth",
+    "estimated_difficulty": {
+      "concept_density": "高",
+      "math_density": "低",
+      "historical_context_density": "高"
+    },
+    "reading_priority": "中",
+    "recommended_survey_chapters": [
+      "历史前奏",
+      "LM / agent / AGI"
+    ],
+    "misreading_risks": [
+      "把符号语义系统直接等同于现代大模型语言能力",
+      "忽视封闭微世界设定对结果的强约束",
+      "仅以当代 benchmark 标准评价而遗漏其结构性贡献",
+      "将语言理解简化为句法处理，忽略语境与行动耦合"
+    ]
+  },
+  "generation_notes": {
+    "methodology_file": "/Users/mingli/Khex/uni-learning/agents/reader/methodolgy.md",
+    "notes": [
+      "本 JSON 对应 methodolgy.md 第 5.1 节“零号预处理（编目与分流）”输出。",
+      "该文件元数据标题与经典文献标题存在偏差，编目采用文件名指向的经典条目。"
+    ]
+  }
+}

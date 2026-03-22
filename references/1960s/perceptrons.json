@@ -1,0 +1,54 @@
+{
+  "stage": "zero_preprocessing_catalog",
+  "source_pdf": {
+    "file_name": "perceptrons.pdf",
+    "file_path": "/Users/mingli/Khex/uni-learning/references/1960s/perceptrons.pdf",
+    "same_directory_output": true
+  },
+  "bibliography": {
+    "title": "Perceptrons",
+    "authors": [
+      "Marvin Minsky",
+      "Seymour Papert"
+    ],
+    "year": 1969,
+    "publication": "MIT Press",
+    "volume": "",
+    "pages": ""
+  },
+  "input_context_for_catalog": {
+    "abstract_brief": "文本系统分析单层感知机的表示能力与限制，揭示特定结构任务上的不可表达边界，深刻影响后续神经网络研究路径。",
+    "toc_brief": [
+      "感知机模型与数学定义",
+      "能力分析与限制定理",
+      "结构任务上的反例与讨论"
+    ],
+    "preface_or_intro_brief": "引言关注可计算结构与表示边界，而非单纯经验性能比较。"
+  },
+  "catalog_result": {
+    "document_type": "技术论文",
+    "primary_route": "cybernetics / automata / Dartmouth",
+    "estimated_difficulty": {
+      "concept_density": "高",
+      "math_density": "高",
+      "historical_context_density": "高"
+    },
+    "reading_priority": "高",
+    "recommended_survey_chapters": [
+      "历史前奏",
+      "Transformer / ICL / PFN"
+    ],
+    "misreading_risks": [
+      "把对特定架构的限制结论泛化为对全部神经方法的否定",
+      "忽略其问题设定中的表示约束与任务条件",
+      "以后来“AI 冬天”叙事覆盖原文技术论证结构",
+      "将其读成立场文本而非形式分析工作"
+    ]
+  },
+  "generation_notes": {
+    "methodology_file": "/Users/mingli/Khex/uni-learning/agents/reader/methodolgy.md",
+    "notes": [
+      "本 JSON 对应 methodolgy.md 第 5.1 节“零号预处理（编目与分流）”输出。"
+    ]
+  }
+}
